@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "935125939702",
+    "project_id": "medstick-8ba98",
+    "storage_bucket": "medstick-8ba98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935125939702:android:0865327b2a2f02b16e43d7",
+        "android_client_info": {
+          "package_name": "com.medstick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935125939702-9bk1ikdep6rb2gsbqong91v7onsd8keh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medstick",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "935125939702-7qj1svk0htc94jqtd66e4l4i23iv3ata.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA48pLtZdhHz1uGKgQ6hka-Lug29lwwAYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "935125939702-7qj1svk0htc94jqtd66e4l4i23iv3ata.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
