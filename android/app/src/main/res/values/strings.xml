@@ -1,3 +1,7 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">MedStick_FE</string>
+=======
+    <string name="app_name">MedStick</string>
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
 </resources>

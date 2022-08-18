@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
   package="com.medstick_fe">
+=======
+  package="com.medstick">
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
 
     <uses-permission android:name="android.permission.INTERNET" />
 

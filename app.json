@@ -1,4 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "MedStick_FE",
   "displayName": "MedStick_FE"
+=======
+  "name": "MedStick",
+  "displayName": "MedStick"
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
 }

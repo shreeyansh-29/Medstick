@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -110,3 +111,26 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+=======
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoginScreen from "./Screens/LoginScreen";
+
+const Stack = createNativeStackNavigator();
+
+const App=()=> {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen options={{ headerShown:false }} name="Login" component={LoginScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
+
+
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f

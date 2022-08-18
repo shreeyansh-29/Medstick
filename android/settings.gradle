@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 rootProject.name = 'MedStick_FE'
+=======
+rootProject.name = 'MedStick'
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
 includeBuild('../node_modules/react-native-gradle-plugin')

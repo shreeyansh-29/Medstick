@@ -35,12 +35,20 @@ android_library(
 
 android_build_config(
     name = "build_config",
+<<<<<<< HEAD
     package = "com.medstick_fe",
+=======
+    package = "com.medstick",
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
 )
 
 android_resource(
     name = "res",
+<<<<<<< HEAD
     package = "com.medstick_fe",
+=======
+    package = "com.medstick",
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
     res = "src/main/res",
 )
 

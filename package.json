@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "medstick_fe",
+=======
+  "name": "medstick",
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,8 +14,19 @@
     "lint": "eslint ."
   },
   "dependencies": {
+<<<<<<< HEAD
     "react": "18.0.0",
     "react-native": "0.69.1"
+=======
+    "@react-native-firebase/app": "^15.3.0",
+    "@react-native-google-signin/google-signin": "^8.0.0",
+    "@react-navigation/native": "^6.0.11",
+    "@react-navigation/native-stack": "^6.7.0",
+    "react": "18.0.0",
+    "react-native": "^0.69.4",
+    "react-native-safe-area-context": "^4.3.1",
+    "react-native-screens": "^3.15.0"
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

@@ -134,7 +134,11 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
+<<<<<<< HEAD
         applicationId "com.medstick_fe"
+=======
+        applicationId "com.medstick"
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -157,7 +161,11 @@ android {
                     cppFlags "-std=c++17"
                     // Make sure this target name is the same you specify inside the
                     // src/main/jni/Android.mk file for the `LOCAL_MODULE` variable.
+<<<<<<< HEAD
                     targets "medstick_fe_appmodules"
+=======
+                    targets "medstick_appmodules"
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
                 }
             }
             if (!enableSeparateBuildPerCPUArchitecture) {
@@ -310,6 +318,10 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+<<<<<<< HEAD
+=======
+apply plugin: 'com.google.gms.google-services'
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
 
 def isNewArchitectureEnabled() {
     // To opt-in for the New Architecture, you can either:

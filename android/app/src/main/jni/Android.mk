@@ -10,7 +10,11 @@ include $(CLEAR_VARS)
 LOCAL_PATH := $(THIS_DIR)
 
 # You can customize the name of your application .so file here.
+<<<<<<< HEAD
 LOCAL_MODULE := medstick_fe_appmodules
+=======
+LOCAL_MODULE := medstick_appmodules
+>>>>>>> 1f6d13847a4889eda6a3aef75d1ea410d7b9f56f
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)
 LOCAL_SRC_FILES := $(wildcard $(LOCAL_PATH)/*.cpp)
