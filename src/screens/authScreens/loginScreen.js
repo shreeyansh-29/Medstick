@@ -5,6 +5,9 @@ const loginScreen = () => {
   return (
     <View>
       <Text>loginScreen</Text>
+      <View>
+        <Button title="Login" />
+      </View>
     </View>
   );
 };
