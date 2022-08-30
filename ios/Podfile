@@ -19,8 +19,6 @@ target 'MedStick_FE' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
-
   target 'MedStick_FETests' do
     inherit! :complete
     # Pods for testing
