@@ -1,12 +1,14 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, StatusBar} from 'react-native';
 import React from 'react';
+import UserHeader from '../../components/molecules/headers/userHeader';
+import Calender from '../../components/organisms/calender';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = () => {
   return (
     <View>
-      <Text>homeScreen</Text>
-      <TouchableOpacity onPress={()=> navigation?.navigate('medicinePanel')}>
-      <Text>Press me</Text></TouchableOpacity>
+      <UserHeader title={'MEDSTICK'} />
+      <Calender />
+      <StatusBar backgroundColor="#4B68EB" />
     </View>
   );
 };

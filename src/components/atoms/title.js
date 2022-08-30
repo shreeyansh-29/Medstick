@@ -1,11 +1,11 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import {styles} from '../../assests/styles/headerFont';
+import {styles} from '../../assests/styles/headerStyles';
 
 const Title = ({title}) => {
   return (
     <View>
-      <Text style={headerFont.headerFont}>{title}</Text>
+      <Text style={styles.headerFont}>{title}</Text>
     </View>
   );
 };
