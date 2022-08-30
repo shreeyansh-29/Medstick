@@ -1,13 +1,14 @@
 import {View} from 'react-native';
 import React from 'react';
 import Title from '../../atoms/title';
+import {styles} from '../../../assests/styles/headerStyles';
 
-const userHeader = () => {
+const UserHeader = ({title}) => {
   return (
-    <View>
-      <Title title={'HomeScreen'} />
+    <View style={styles.header}>
+      <Title title={title} />
     </View>
   );
 };
 
-export default userHeader;
+export default UserHeader;
