@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native';
 
-
 export const styles = StyleSheet.create({
   calendarContainer: {
     flex: 1,
@@ -26,8 +25,8 @@ export const styles = StyleSheet.create({
   },
   icon: {flex: 0.14},
   iconStyle: {
-    height: 20,
-    width: 20
+    height: 21,
+    width: 21,
   },
   highlightedDateNumber: {
     color: '#0EA5E9',
