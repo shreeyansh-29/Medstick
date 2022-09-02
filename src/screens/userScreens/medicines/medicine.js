@@ -3,7 +3,6 @@ import React from 'react';
 import UserHeader from '../../../components/molecules/headers/userHeader';
 import {styles} from '../../../styles/homeScreenStyles/headerStyles';
 import BarIcon from '../../../components/atoms/barIcon';
-import CameraIcon from '../../../components/molecules/cameraIcon';
 
 const Medicine = ({navigation}) => {
   return (
@@ -11,7 +10,6 @@ const Medicine = ({navigation}) => {
       <View style={styles.headerItem}>
         <BarIcon navigation={navigation} />
         <UserHeader title={'MEDICINE'} />
-        <CameraIcon />
       </View>
     </View>
   );

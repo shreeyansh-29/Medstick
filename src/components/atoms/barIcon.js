@@ -14,7 +14,7 @@ const BarIcon = ({navigation}) => {
         }}>
         <FontAwesomeIcon
           icon={faBars}
-          size={24}
+          size={20}
           color={colorPalette.barColor}
         />
       </TouchableOpacity>
