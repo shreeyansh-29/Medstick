@@ -6,21 +6,17 @@ import Feather from 'react-native-vector-icons/Feather';
 import {colorPalette} from '../atoms/colorPalette';
 import {styles} from '../../styles/homeScreenStyles/headerStyles';
 
-const CameraIcon = ({navigation, title}) => {
-  if (title === 'MEDSTICK') {
-    return (
-      <View style={styles.cameraIcon}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('ClickImage');
-          }}>
-          <Feather name="camera" size={32} color={colorPalette.barColor} />
-        </TouchableOpacity>
-      </View>
-    );
-  } else {
-    return <View style={{flex: 0.5}}></View>;
-  }
+const CameraIcon = ({navigation}) => {
+  return (
+    <View style={styles.cameraIcon}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('ClickImage');
+        }}>
+        <Feather name="camera" size={32} color={colorPalette.barColor} />
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 export default CameraIcon;

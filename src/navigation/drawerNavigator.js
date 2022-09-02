@@ -2,6 +2,7 @@ import React from 'react';
 import BottomNavigator from './bottomNavigator';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeScreen from '../screens/userScreens/homeScreen';
+import {colorPalette} from '../components/atoms/colorPalette';
 
 const Drawer = createDrawerNavigator();
 
@@ -11,7 +12,7 @@ const DrawerNavigator = () => {
       screenOptions={{
         headerShown: false,
         headerStyle: {
-          backgroundColor: '#667EEA',
+          backgroundColor: colorPalette.colorTabs,
         },
       }}>
       <Drawer.Screen name="MEDSTICK" component={BottomNavigator} />

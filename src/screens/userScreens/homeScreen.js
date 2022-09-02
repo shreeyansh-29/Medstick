@@ -14,7 +14,6 @@ const HomeScreen = ({navigation}) => {
       <View style={styles.headerItem}>
         <BarIcon navigation={navigation} />
         <UserHeader title={'MEDSTICK'} />
-        <CameraIcon navigation={navigation} title={'MEDSTICK'} />
       </View>
       <Calender />
       <PerformanceCircle />

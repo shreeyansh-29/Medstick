@@ -7,7 +7,7 @@ import moment from 'moment';
 const Calender = () => {
   const [date, setDate] = useState('');
   return (
-    <View style={styles.calendarContainer}>
+    <View>
       <CalendarStrip
         scrollable
         selectedDate={moment()}

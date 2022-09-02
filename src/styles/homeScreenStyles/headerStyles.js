@@ -4,10 +4,10 @@ import {colorPalette} from '../../components/atoms/colorPalette';
 export const styles = StyleSheet.create({
   header: {
     flex: 2,
-    paddingLeft: 8,
+    paddingLeft: 0,
   },
   headerFont: {
-    fontSize: 20,
+    fontSize: 22,
     color: colorPalette.headerColor,
   },
   headerItem: {
@@ -17,6 +17,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     backgroundColor: colorPalette.colorTabs,
   },
-  barIcon: {flex: 0.5, alignItems: 'center'},
+  barIcon: {flex: 0.4, alignItems: 'center'},
   cameraIcon: {flex: 0.5, alignItems: 'center'},
 });
