@@ -1,9 +1,8 @@
 import {View, Text} from 'react-native';
 import React, {useState} from 'react';
 import CalendarStrip from 'react-native-calendar-strip';
-import {styles} from '../../assests/styles/calenderStyles';
+import {styles} from '../../styles/homeScreenStyles/calenderStyles';
 import moment from 'moment';
-import LottieView from 'lottie-react-native';
 
 const Calender = () => {
   const [date, setDate] = useState('');

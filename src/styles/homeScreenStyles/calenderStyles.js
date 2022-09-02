@@ -1,19 +1,16 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  calendarContainer: {
-    flex: 1,
-  },
+  calendarContainer: {},
   calendar: {
-    height: 110,
-    paddingTop: 10,
-    paddingBottom: 20,
+    height: 120,
+    paddingTop: 22,
+    paddingBottom: 24,
   },
   calenderHeaderStyle: {
     color: '#F1F5F9',
     fontSize: 20,
     paddingBottom: 18,
-    paddingTop: 5,
   },
   calendarColor: '#667EEA',
   dateNumberStyle: {color: '#f1f5f9', fontSize: 11.5},

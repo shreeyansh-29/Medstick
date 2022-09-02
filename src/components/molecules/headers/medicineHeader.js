@@ -1,7 +1,7 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {styles} from '../../../assests/styles/headerStyle';
+import {styles} from '../../../styles/homeScreenStyles/headerStyles';
 import Title from '../../atoms/title';
 
 const MedicineHeader = ({title}) => {

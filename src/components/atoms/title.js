@@ -1,13 +1,9 @@
-import {View, Text} from 'react-native';
+import {Text} from 'react-native';
 import React from 'react';
-import {styles} from '../../assests/styles/headerStyles';
+import {styles} from '../../styles/homeScreenStyles/headerStyles';
 
 const Title = ({title}) => {
-  return (
-    <View>
-      <Text style={styles.headerFont}>{title}</Text>
-    </View>
-  );
+  return <Text style={styles.headerFont}>{title}</Text>;
 };
 
 export default Title;

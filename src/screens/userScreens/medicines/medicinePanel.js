@@ -1,8 +1,8 @@
 import { View, Text, FlatList } from 'react-native'
 import React from 'react'
 import MedicineHeader from '../../../components/molecules/headers/medicineHeader'
-import { styles } from '../../../assests/styles/MedicinePanelStyles'
-import { fontStyle } from '../../../assests/styles/fontStyles'
+import { styles } from '../../../styles/MedicinePanelStyles'
+import { fontStyle } from '../../../styles/fontStyles'
 const MedicinePanel = () => {
     const medicines = [
     {name: 'Paracetamol',type:'xjox',Power:'600mg'},

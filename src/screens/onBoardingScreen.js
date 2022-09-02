@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Image} from 'react-native';
-import styles from '../assests/styles/onBoardingStyles';
+import styles from '../styles/onBoardingStyles';
 
 const OnboardingScreen = ({navigation}) => {
   setTimeout(() => {
@@ -12,7 +12,7 @@ const OnboardingScreen = ({navigation}) => {
     <View
       style={styles.container}>
       <Image
-        source={require('../assests/images/Medstick_1.png')}
+        source={require('../assets/images/Medstick_1.png')}
         style={styles.img}
         resizeMode="contain"></Image>
     </View>
