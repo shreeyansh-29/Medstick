@@ -1,15 +1,10 @@
 import {View, Animated, TouchableOpacity} from 'react-native';
 import React, {useEffect, useRef} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCameraAlt, faCameraRetro} from '@fortawesome/free-solid-svg-icons';
-import Feather from 'react-native-vector-icons/Feather';
-import {colorPalette} from '../atoms/colorPalette';
 import {styles} from '../../styles/homeScreenStyles/headerStyles';
 import LottieView from 'lottie-react-native';
 
 const BellIcon = ({navigation}) => {
   const progress = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
     Animated.timing(progress, {
       toValue: 1,
@@ -17,6 +12,7 @@ const BellIcon = ({navigation}) => {
       useNativeDriver: true,
     }).start();
   }, []);
+
   return (
     <View style={styles.bellIcon}>
       <TouchableOpacity

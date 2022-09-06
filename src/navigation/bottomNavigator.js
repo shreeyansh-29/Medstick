@@ -35,7 +35,7 @@ const BottomNavigator = ({navigation}) => {
   const TabBarButton = props => {
     const {onPress, accessibilityState, item} = props;
     const focused = accessibilityState.selected;
-    size = 24;
+    size = 26;
     fontSize = 12;
     colors = focused ? colorPalette.colorTabs : colorPalette.colorTabsOutline;
     return (
@@ -45,7 +45,7 @@ const BottomNavigator = ({navigation}) => {
           justifyContent: 'center',
           alignItems: 'center',
           flex: 1,
-          padding: 15,
+          // padding: 15,
           flexDirection: 'column',
         }}
         rippleCentered={true}

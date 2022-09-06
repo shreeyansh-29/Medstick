@@ -4,8 +4,10 @@ import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
 import PerformanceCircle from '../../components/molecules/performanceCircle';
 import Reminders from './reminders';
-import CameraIcon from '../../components/molecules/cameraIcon';
+import {styles} from '../../styles/homeScreenStyles/headerStyles';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import AppIcon from '../../components/atoms/appIcon';
+import BellIcon from '../../components/molecules/bellIcon';
 
 const HomeScreen = ({navigation}) => {
   return (

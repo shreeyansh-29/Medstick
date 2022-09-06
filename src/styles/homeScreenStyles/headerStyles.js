@@ -3,17 +3,18 @@ import {colorPalette} from '../../components/atoms/colorPalette';
 
 export const styles = StyleSheet.create({
   headerItem: {
-    height: 68,
+    height: 56,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
     backgroundColor: colorPalette.basicColor,
+    // backgroundColor: 'red',
   },
   header: {
     flex: 2,
   },
   headerFont: {
-    fontSize: 28,
+    fontSize: 24,
     fontFamily: '',
     paddingLeft: 10,
     color: colorPalette.mainColor,

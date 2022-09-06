@@ -3,7 +3,7 @@ import React from 'react';
 import Title from '../../atoms/title';
 import {styles} from '../../../styles/homeScreenStyles/headerStyles';
 import AppIcon from '../../atoms/appIcon';
-import BellIcon from '../cameraIcon';
+import BellIcon from '../bellIcon';
 
 const MainHeader = ({title, navigation}) => {
   return (
@@ -13,7 +13,7 @@ const MainHeader = ({title, navigation}) => {
         <Title title={title} />
       </View>
       {title === 'PROFILE' ? (
-        <View style={styles.bellIcon}></View>
+        <View style={styles.appIcon}></View>
       ) : (
         <BellIcon navigation={navigation} />
       )}
