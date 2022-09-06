@@ -5,12 +5,12 @@ export const styles = StyleSheet.create({
   performanceContainer: {
     alignItems: 'center',
     paddingBottom: 12,
-    backgroundColor: colorPalette.barColor,
+    backgroundColor:colorPalette.basicColor,
   },
   outerCircle: {top: 16},
-  percentage: {fontSize: 18, color: colorPalette.hightlightedColor},
+  percentage: {fontSize: 18, color: colorPalette.redPercentageColor},
   performance: {
-    color: 'black',
+    color: colorPalette.redPercentageColor,
     marginTop: 20,
     marginBottom: 8,
     fontSize: 24,

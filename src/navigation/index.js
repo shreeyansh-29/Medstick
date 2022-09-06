@@ -11,6 +11,7 @@ import OnboardingScreen from '../screens/onBoardingScreen';
 import DrawerNavigator from './drawerNavigator';
 import Medicine from '../screens/userScreens/medicines/medicine';
 import ClickImage from '../components/atoms/clickImage';
+import BottomNavigator from './bottomNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,7 @@ const MainNavigation = () => {
         screenOptions={{headerShown: false}}
         initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={OnboardingScreen} />
-        <Stack.Screen name="Drawer" component={DrawerNavigator} />
+        <Stack.Screen name="Bottom" component={BottomNavigator} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="MedicinePanel" component={MedicinePanel} />
         <Stack.Screen name="AddMedicine" component={AddMedicine} />

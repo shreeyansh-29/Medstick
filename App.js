@@ -3,13 +3,14 @@ import {Provider} from 'react-redux';
 import MainNavigation from './src/navigation';
 import 'react-native-gesture-handler';
 import {StatusBar} from 'react-native';
+import {colorPalette} from './src/components/atoms/colorPalette';
 // import store from './src/redux/store';
 
 const App = () => {
   return (
     // <Provider store={store}>
     <>
-      <StatusBar backgroundColor="#3743ab" />
+      <StatusBar backgroundColor={colorPalette.mainColor} />
       <MainNavigation />
     </>
 

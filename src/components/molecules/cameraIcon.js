@@ -1,22 +1,37 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {View, Animated, TouchableOpacity} from 'react-native';
+import React, {useEffect, useRef} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCameraAlt, faCameraRetro} from '@fortawesome/free-solid-svg-icons';
 import Feather from 'react-native-vector-icons/Feather';
 import {colorPalette} from '../atoms/colorPalette';
 import {styles} from '../../styles/homeScreenStyles/headerStyles';
+import LottieView from 'lottie-react-native';
 
-const CameraIcon = ({navigation}) => {
+const BellIcon = ({navigation}) => {
+  const progress = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(progress, {
+      toValue: 1,
+      duration: 3000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
   return (
-    <View style={styles.cameraIcon}>
+    <View style={styles.bellIcon}>
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('ClickImage');
         }}>
-        <Feather name="camera" size={32} color={colorPalette.barColor} />
+        <LottieView
+          style={{height: 40, width: 40}}
+          speed={0.6}
+          source={require('../../assets/animation/notificationBell.json')}
+          progress={progress}
+        />
       </TouchableOpacity>
     </View>
   );
 };
 
-export default CameraIcon;
+export default BellIcon;

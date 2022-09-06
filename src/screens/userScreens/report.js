@@ -1,16 +1,13 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import UserHeader from '../../components/molecules/headers/userHeader';
+import MainHeader from '../../components/molecules/headers/mainHeader';
 import {styles} from '../../styles/homeScreenStyles/headerStyles';
-import BarIcon from '../../components/atoms/barIcon';
+import AppIcon from '../../components/atoms/appIcon';
 
 const Report = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
-      <View style={styles.headerItem}>
-        <BarIcon navigation={navigation} style={{marginLeft: 20}} />
-        <UserHeader title={'REPORTS'} />
-      </View>
+      <MainHeader title={'REPORTS'} navigation={navigation} />
       <View style={{height: 110, backgroundColor: 'BFB8B8'}}>
         <Text style={{color: 'red'}}>{'Reports'}</Text>
         <Text style={{color: 'red'}}>{'Reports'}</Text>
