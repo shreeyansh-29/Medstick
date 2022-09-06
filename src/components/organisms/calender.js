@@ -6,9 +6,11 @@ import moment from 'moment';
 
 const Calender = () => {
   const [date, setDate] = useState('');
+  console.log(date);
   return (
     <View>
       <CalendarStrip
+        numDaysInWeek={7}
         scrollable
         selectedDate={moment()}
         onDateSelected={todayDate => {

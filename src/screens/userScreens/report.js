@@ -1,22 +1,14 @@
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
-import UserHeader from '../../components/molecules/headers/userHeader';
-import {styles} from '../../styles/homeScreenStyles/headerStyles';
-import BarIcon from '../../components/atoms/barIcon';
+import MainHeader from '../../components/molecules/headers/mainHeader';
+import {reportStyles} from '../../styles/reportScreenStyles/reportScreenStyles';
+import CalenderIcon from '../../components/molecules/calenderIcon';
 
 const Report = ({navigation}) => {
   return (
-    <View style={{flex: 1}}>
-      <View style={styles.headerItem}>
-        <BarIcon navigation={navigation} style={{marginLeft: 20}} />
-        <UserHeader title={'REPORTS'} />
-      </View>
-      <View style={{height: 110, backgroundColor: 'BFB8B8'}}>
-        <Text style={{color: 'red'}}>{'Reports'}</Text>
-        <Text style={{color: 'red'}}>{'Reports'}</Text>
-        <Text style={{color: 'red'}}>{'Reports'}</Text>
-        <Text style={{color: 'red'}}>{'Reports'}</Text>
-      </View>
+    <View style={reportStyles.report}>
+      <MainHeader title={'REPORTS'} navigation={navigation} />
+      <CalenderIcon navigation={navigation} />
     </View>
   );
 };

@@ -11,12 +11,14 @@ const PerformanceCircle = () => {
         percent={30}
         radius={52}
         borderWidth={8}
-        color={colorPalette.hightlightedColor}
+        color={colorPalette.redPercentageColor}
+        shadowColor={colorPalette.restPercentageColor}
         outerCircleStyle={styles.outerCircle}
-        shadowColor={colorPalette.shadowColor}
-        bgColor={colorPalette.barColor}>
+        bgColor={colorPalette.basicColor}
+        >
         <Text style={styles.percentage}>{'30%'}</Text>
       </ProgressCircle>
+
       <Text style={styles.performance}>{"Today's Performance"}</Text>
     </View>
   );

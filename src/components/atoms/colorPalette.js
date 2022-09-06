@@ -1,8 +1,10 @@
 export const colorPalette = {
-  colorTabs: '#667EEA',
+  mainColor: '#02A6AB',
+  basicColor: '#FFF',
+  colorTabs: '#02A6AB',
   colorTabsOutline: 'grey',
-  barColor: '#FFF',
-  headerColor: '#F1F5F9',
-  hightlightedColor: '#0EA5E9',
-  shadowColor: '#BFB8B8',
+  appColor: '#02A6AB',
+  greenPercentageColor: '#66BB6A',
+  redPercentageColor: '#EE534F',
+  restPercentageColor: '#EFEFEF',
 };

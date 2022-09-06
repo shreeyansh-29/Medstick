@@ -8,16 +8,16 @@ export const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   calenderHeaderStyle: {
-    color: colorPalette.colorTabs,
+    color: colorPalette.mainColor,
     fontSize: 20,
     paddingBottom: 18,
   },
-  calendarColor: colorPalette.barColor,
-  dateNumberStyle: {color: colorPalette.colorTabs, fontSize: 11.5},
-  dateNameStyle: {color: colorPalette.colorTabs, fontSize: 11.5},
+  calendarColor: colorPalette.basicColor,
+  dateNumberStyle: {color: colorPalette.mainColor, fontSize: 11.5},
+  dateNameStyle: {color: colorPalette.mainColor, fontSize: 11.5},
   daySelection: {
     type: 'background',
-    highlightColor: colorPalette.colorTabs,
+    highlightColor: colorPalette.mainColor,
   },
   icon: {flex: 0.14},
   iconStyle: {
@@ -25,12 +25,12 @@ export const styles = StyleSheet.create({
     width: 21,
   },
   highlightedDateNumber: {
-    color: colorPalette.barColor,
+    color: colorPalette.basicColor,
     fontSize: 12.5,
     fontWeight: '900',
   },
   highlightedDateName: {
-    color: colorPalette.barColor,
+    color: colorPalette.basicColor,
     fontSize: 12.5,
     fontWeight: '900',
   },

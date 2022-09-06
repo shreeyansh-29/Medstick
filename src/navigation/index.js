@@ -8,9 +8,10 @@ import AddMedicine from '../screens/userScreens/medicines/addMedicine';
 import MyCareTaker from '../screens/userScreens/myCareTaker';
 import AddPatient from '../screens/userScreens/addPatient';
 import OnboardingScreen from '../screens/onBoardingScreen';
-import DrawerNavigator from './drawerNavigator';
 import Medicine from '../screens/userScreens/medicines/medicine';
 import ClickImage from '../components/atoms/clickImage';
+import BottomNavigator from './bottomNavigator';
+import calenderScreen from '../screens/calenderScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,7 @@ const MainNavigation = () => {
         screenOptions={{headerShown: false}}
         initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={OnboardingScreen} />
-        <Stack.Screen name="Drawer" component={DrawerNavigator} />
+        <Stack.Screen name="Bottom" component={BottomNavigator} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="MedicinePanel" component={MedicinePanel} />
         <Stack.Screen name="AddMedicine" component={AddMedicine} />
@@ -30,6 +31,7 @@ const MainNavigation = () => {
         <Stack.Screen name="AddPatient" component={AddPatient} />
         <Stack.Screen name="Medicine" component={Medicine} />
         <Stack.Screen name="ClickImage" component={ClickImage} />
+        <Stack.Screen name="Calender" component={calenderScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

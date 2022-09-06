@@ -6,11 +6,10 @@ import styles from '../styles/onBoardingStyles';
 
 const OnboardingScreen = ({navigation}) => {
   setTimeout(() => {
-    navigation.navigate('Drawer');
+    navigation.navigate('Bottom');
   }, 2000);
-  return (  
-    <View
-      style={styles.container}>
+  return (
+    <View style={styles.container}>
       <Image
         source={require('../assets/images/Medstick_1.png')}
         style={styles.img}
