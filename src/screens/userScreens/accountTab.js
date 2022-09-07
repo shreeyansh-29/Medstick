@@ -1,15 +1,46 @@
-import {View, Text, SafeAreaView, Image} from 'react-native';
+import {View, Text, SafeAreaView, Image, Alert} from 'react-native';
 import React from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import TwoTouchable from '../../components/molecules/twoTouchable';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import TouchableButton from '../../components/atoms/touchableButton';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const UserProfile = ({navigation}) => {
+const AccountTab = ({navigation}) => {
+  useFocusEffect(() => {
+    async function checkforlog() {
+      const islogged = await GoogleSignin.isSignedIn();
+      const checkforlogin = await AsyncStorage.getItem('user_id');
+
+      if (checkforlogin === null) {
+        Alert.alert(
+          'Sign in first to use this feature',
+          'Click ok to proceed',
+          [
+            {
+              text: 'Ok',
+              onPress: () => {
+                navigation.navigate('Login');
+              },
+            },
+            {
+              text: 'Cancel',
+              onPress: () => {
+                navigation.navigate('HomeScreen');
+              },
+            },
+          ],
+        );
+      }
+    }
+
+    checkforlog();
+  });
   return (
     <View style={{flex: 1}}>
-      <MainHeader title={'PROFILE'} navigation={navigation} />
+      <MainHeader title={'ACCOUNT'} navigation={navigation} />
       <SafeAreaView style={{flex: 2, backgroundColor: colorPalette.mainColor}}>
         <View style={{flexDirection: 'row', padding: 20, marginBottom: 15}}>
           <Image
@@ -49,7 +80,13 @@ const UserProfile = ({navigation}) => {
             style={{
               padding: 10,
             }}>
-            <TwoTouchable title1="My Caretaker" title2="My patients" />
+            <TwoTouchable
+              title1="My Caretaker"
+              title2="My Patients"
+              navigationTitle1="CareTaker"
+              navigationTitle2="Patients"
+              navigation={navigation}
+            />
             <TwoTouchable
               title1="Prescription"
               title2="Appointment Reminders"
@@ -66,4 +103,4 @@ const UserProfile = ({navigation}) => {
   );
 };
 
-export default UserProfile;
+export default AccountTab;

@@ -1,33 +1,30 @@
 import React from 'react';
-import {Animated, Dimensions, TouchableOpacity, View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/userScreens/homeScreen';
 import Report from '../screens/userScreens/report';
-import Profile from '../screens/userScreens/userProfile';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import LottieView from 'lottie-react-native';
 import Ripple from 'react-native-material-ripple';
 import '../../ignoreWarnings';
 import {
-  faBriefcaseMedical,
   faCapsules,
   faCircleUser,
   faFileContract,
   faGear,
   faHouseMedical,
-  faTablet,
 } from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../components/atoms/colorPalette';
-import Medicine from '../screens/userScreens/medicines/medicine';
 import AddMedicine from '../screens/userScreens/medicines/addMedicine';
+import AccountTab from '../screens/userScreens/accountTab';
+import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
+import AddButton from '../components/atoms/addButton';
 
 const TabBar = [
   {route: 'Home', component: HomeScreen, iconName: faHouseMedical},
   {route: 'Report', component: Report, iconName: faFileContract},
   {route: 'Add', component: AddMedicine, iconName: faGear},
-  {route: 'Medicine', component: Medicine, iconName: faCapsules},
-  {route: 'Profile', component: Profile, iconName: faCircleUser},
+  {route: 'Medicine', component: MedicinePanel, iconName: faCapsules},
+  {route: 'Account', component: AccountTab, iconName: faCircleUser},
 ];
 const Tab = createBottomTabNavigator();
 
@@ -86,20 +83,13 @@ const BottomNavigator = ({navigation}) => {
               component={item.component}
               options={{
                 tabBarIcon: () => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('AddMedicine');
-                    }}>
-                    <View style={{bottom: 28}}>
-                      <LottieView
-                        style={{height: 84, width: 84}}
-                        speed={0.6}
-                        source={require('../assets/animation/addButton.json')}
-                        autoPlay
-                        loop
-                      />
-                    </View>
-                  </TouchableOpacity>
+                  <View style={{marginBottom: 57}}>
+                    <AddButton
+                      routeName={'AddMedicine'}
+                      navigation={navigation}
+                      styles={styles.btn}
+                    />
+                  </View>
                 ),
               }}
             />
@@ -121,3 +111,7 @@ const BottomNavigator = ({navigation}) => {
 };
 
 export default BottomNavigator;
+
+const styles = StyleSheet.create({
+  btn: {height: 84, width: 84},
+});
