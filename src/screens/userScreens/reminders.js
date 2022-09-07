@@ -24,7 +24,6 @@ const Reminders = () => {
           style={{height: 280, width: 192}}
           source={require('../../assets/images/noremtoday.png')}
         />
-
       </View>
     </View>
   );

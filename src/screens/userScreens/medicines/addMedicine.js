@@ -1,12 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {View, Text} from 'react-native';
+import React from 'react';
+import SubHeader from '../../../components/molecules/headers/subHeader';
 
-const AddMedicine = () => {
+const AddMedicine = ({navigation}) => {
   return (
-    <View>
-      <Text>AddMedicine</Text>
+    <View style={{flex: 1}}>
+      <SubHeader title={'Add Medicine'} navigation={navigation} />
     </View>
-  )
-}
+  );
+};
 
-export default AddMedicine
+export default AddMedicine;

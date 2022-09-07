@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   performanceContainer: {
     alignItems: 'center',
     paddingBottom: 12,
-    backgroundColor:colorPalette.basicColor,
+    backgroundColor: colorPalette.basicColor,
   },
   outerCircle: {top: 16},
   percentage: {fontSize: 18, color: colorPalette.redPercentageColor},
@@ -16,4 +16,7 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     paddingTop: 10,
   },
+  color: colorPalette.redPercentageColor,
+  shadowColor: colorPalette.restPercentageColor,
+  bgColor: colorPalette.basicColor,
 });

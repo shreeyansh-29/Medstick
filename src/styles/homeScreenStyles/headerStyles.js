@@ -30,4 +30,24 @@ export const styles = StyleSheet.create({
     flex: 0.5,
     alignItems: 'center',
   },
+  subHeader: {
+    height: 54,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    backgroundColor: colorPalette.basicColor,
+  },
+  subHeaderFont: {
+    fontSize: 20,
+    fontFamily: '',
+    paddingLeft: 4,
+    color: colorPalette.mainColor,
+  },
+  backIcon: {
+    flex: 0.2,
+    paddingLeft: 10,
+    alignItems: 'flex-start',
+    height: '80%',
+    justifyContent: 'center',
+  },
 });

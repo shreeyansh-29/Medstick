@@ -6,7 +6,6 @@ import moment from 'moment';
 
 const Calender = () => {
   const [date, setDate] = useState('');
-  console.log(date);
   return (
     <View>
       <CalendarStrip
