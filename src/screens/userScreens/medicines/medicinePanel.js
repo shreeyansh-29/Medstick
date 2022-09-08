@@ -1,6 +1,6 @@
 import {View, Text, FlatList, Animated} from 'react-native';
 import React, {useRef, useEffect} from 'react';
-import {styles} from '../../../styles/MedicinePanelStyles';
+import {styles} from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {fontStyle} from '../../../styles/fontStyles';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import LottieView from 'lottie-react-native';

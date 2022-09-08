@@ -7,13 +7,15 @@ import Report from '../screens/userScreens/report';
 import AddMedicine from '../screens/userScreens/medicines/addMedicine';
 import CareTaker from '../screens/userScreens/careTaker/careTaker';
 import OnboardingScreen from '../screens/onBoardingScreen';
-import ClickImage from '../components/atoms/clickImage';
+import ClickImage from '../components/atoms/sendSnap';
 import BottomNavigator from './bottomNavigator';
 import calenderScreen from '../screens/calenderScreen';
 import Patients from '../screens/userScreens/patients/patients';
 import AccountTab from '../screens/userScreens/accountTab';
 import LoginScreen from '../screens/authScreens/loginScreen';
 import SearchScreen from '../components/organisms/searchScreen';
+import Settings from '../screens/userScreens/settings';
+import About from '../screens/userScreens/aboutApp';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +38,8 @@ const MainNavigation = () => {
         <Stack.Screen name="ClickImage" component={ClickImage} />
         <Stack.Screen name="Calender" component={calenderScreen} />
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
+        <Stack.Screen name="Settings" component={Settings} />
+        <Stack.Screen name="About" component={About} />
       </Stack.Navigator>
     </NavigationContainer>
   );
