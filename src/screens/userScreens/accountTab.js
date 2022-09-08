@@ -91,7 +91,13 @@ const AccountTab = ({navigation}) => {
               title1="Prescription"
               title2="Appointment Reminders"
             />
-            <TwoTouchable title1="Send snap" title2="Settings" />
+            <TwoTouchable
+              title1="Send snap"
+              title2="Settings"
+              navigationTitle1="ClickImage"
+              navigationTitle2="Settings"
+              navigation={navigation}
+            />
           </View>
           <View style={{justifyContent: 'center'}}>
             <TouchableButton title="Help & Support" />

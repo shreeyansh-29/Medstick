@@ -22,7 +22,7 @@ import AddButton from '../components/atoms/addButton';
 const TabBar = [
   {route: 'Home', component: HomeScreen, iconName: faHouseMedical},
   {route: 'Report', component: Report, iconName: faFileContract},
-  {route: 'Add', component: AddMedicine, iconName: faGear},
+  {route: 'Add', component: AddMedicine},
   {route: 'Medicine', component: MedicinePanel, iconName: faCapsules},
   {route: 'Account', component: AccountTab, iconName: faCircleUser},
 ];

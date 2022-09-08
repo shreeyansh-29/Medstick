@@ -10,7 +10,8 @@ export const styles = StyleSheet.create({
   outerCircle: {top: 16},
   percentage: {fontSize: 18, color: colorPalette.redPercentageColor},
   performance: {
-    color: colorPalette.redPercentageColor,
+    // color: colorPalette.mainColor,
+    color: '#EB5E0B',
     marginTop: 20,
     marginBottom: 8,
     fontSize: 24,
