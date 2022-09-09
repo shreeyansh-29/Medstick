@@ -5,15 +5,15 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
-import {TextInput} from 'react-native-paper';
-import {styles} from '../../../styles/medicinePanelStyles/medicinePanelStyles';
-import {Picker} from '@react-native-picker/picker';
-import {useEffect} from 'react';
+import React, { useState } from 'react';
+import { TextInput } from 'react-native-paper';
+import { styles } from '../../../styles/medicinePanelStyles/medicinePanelStyles';
+import { Picker } from '@react-native-picker/picker';
+import { useEffect } from 'react';
 import LottieView from 'lottie-react-native';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 
-const AddMedicine = ({navigation}) => {
+const AddMedicine = ({ navigation }) => {
   const [medicineName, setMedicineName] = useState('');
   const [dose, setDose] = useState('');
   const [pill, setPill] = useState('');
@@ -49,7 +49,7 @@ const AddMedicine = ({navigation}) => {
     setType();
   }, [pill]);
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SubHeader title={'Add Medicine'} navigation={navigation} />
       <View style={styles.constainer}>
         <ScrollView>
@@ -95,7 +95,7 @@ const AddMedicine = ({navigation}) => {
                 marginTop: 10,
               }}>
               <TextInput
-                style={{width: '48%'}}
+                style={{ width: '48%' }}
                 id="name"
                 label="Dose"
                 value={dose}
@@ -106,7 +106,7 @@ const AddMedicine = ({navigation}) => {
               />
               <TextInput
                 id="name"
-                style={{width: '50%'}}
+                style={{ width: '50%' }}
                 label="Dose Type"
                 value={doseType}
                 disabled="true"
@@ -122,12 +122,12 @@ const AddMedicine = ({navigation}) => {
                 justifyContent: 'space-between',
                 marginTop: 10,
               }}>
-              <Text style={{margin: 15, fontSize: 18, color: '#008A81'}}>
+              <Text style={{ margin: 15, fontSize: 18, color: '#008A81' }}>
                 Stock Unit
               </Text>
               <TextInput
                 id="name"
-                style={{width: '47%'}}
+                style={{ width: '47%' }}
                 label="units"
                 value={stock}
                 mode="outlined"
@@ -143,12 +143,12 @@ const AddMedicine = ({navigation}) => {
                 justifyContent: 'space-between',
                 marginTop: 10,
               }}>
-              <Text style={{margin: 10, fontSize: 18, color: '#008A81'}}>
+              <Text style={{ margin: 10, fontSize: 18, color: '#008A81' }}>
                 Notify me when only{' '}
               </Text>
               <TextInput
                 id="name"
-                style={{width: '47%'}}
+                style={{ width: '47%' }}
                 label="units"
                 value={limitStock}
                 mode="outlined"
@@ -177,7 +177,7 @@ const AddMedicine = ({navigation}) => {
               }}>
               <TouchableOpacity>
                 <LottieView
-                  style={{width: 50}}
+                  style={{ width: 50 }}
                   autoPlay
                   loop
                   source={require('../../../assets/animation/saveButton.json')}
