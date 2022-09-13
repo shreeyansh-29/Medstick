@@ -43,14 +43,14 @@
     "react-native-settings-list": "^1.8.0",
     "react-native-svg": "^13.1.0",
     "react-native-toast-message": "^2.1.5",
+    "react-native-user-avatar": "^1.0.8",
     "react-native-vector-icons": "^9.2.0",
     "react-navigation": "^4.4.4",
     "react-redux": "^8.0.2",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "redux": "^4.2.0",
     "redux-saga": "^1.2.1",
-    "yup": "^0.32.11",
-    "react-native-user-avatar": "^1.0.8"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
