@@ -11,7 +11,7 @@ const OnboardingScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../assets/images/Medstick_1.png')}
+        source={require('../assets/images/medstick.png')}
         style={styles.img}
         resizeMode="contain"></Image>
     </View>

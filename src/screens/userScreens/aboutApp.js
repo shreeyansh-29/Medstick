@@ -1,14 +1,16 @@
 import {Text, View, Image} from 'react-native';
 import React from 'react';
 import styles from '../../styles/aboutAppStyles';
-
-const About = () => {
+import SubHeader from '../../components/molecules/headers/subHeader';
+const About = ({navigation}) => {
   return (
     <View style={styles.container}>
+      <SubHeader title={'About'} navigation={navigation} />
       <View style={styles.imageContainer}>
         <Image
+          resizeMode="stretch"
           style={styles.image}
-          source={require('../../assets/images/Medstick_1.png')}
+          source={require('../../assets/images/medstick.png')}
         />
       </View>
       <View style={styles.textContainer}>

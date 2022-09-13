@@ -17,7 +17,7 @@ const SubHeader = ({title, navigation}) => {
         <FontAwesomeIcon
           icon={faArrowLeft}
           size={20}
-          color={colorPalette.appColor}
+          color={colorPalette.basicColor}
         />
       </TouchableOpacity>
       <View style={styles.header}>

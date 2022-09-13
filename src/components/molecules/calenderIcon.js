@@ -22,9 +22,9 @@ const CalenderIcon = ({navigation}) => {
           navigation.navigate('Calender');
         }}>
         <LottieView
-          style={{height: 44, width: 44}}
+          style={{height: 40, width: 40}}
           speed={0.6}
-          source={require('../../assets/animation/calenderIcon.json')}
+          source={require('../../assets/animation/calender2.json')}
           progress={progress}
         />
       </TouchableOpacity>

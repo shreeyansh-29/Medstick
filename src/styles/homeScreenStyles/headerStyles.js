@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPalette.mainColor,
     // backgroundColor: 'red',
   },
   header: {
@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: '',
     paddingLeft: 10,
-    color: colorPalette.mainColor,
+    color: colorPalette.basicColor,
   },
   appIcon: {
     flex: 0.4,
@@ -35,13 +35,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPalette.mainColor,
   },
   subHeaderFont: {
     fontSize: 20,
     fontFamily: '',
     paddingLeft: 4,
-    color: colorPalette.mainColor,
+    color: colorPalette.basicColor,
   },
   backIcon: {
     flex: 0.2,

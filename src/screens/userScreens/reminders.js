@@ -4,10 +4,9 @@ import {styles} from '../../styles/homeScreenStyles/reminderStyles';
 import {Card, Title, Paragraph} from 'react-native-paper';
 import {colorPalette} from '../../components/atoms/colorPalette';
 
-
 const Reminders = () => {
   return (
-    <View style={{flex: 1}}>
+    <Card>
       <Card style={styles.card}>
         <View style={styles.container}>
           <Text style={styles.reminder}>{'Reminders'}</Text>
@@ -25,7 +24,7 @@ const Reminders = () => {
           source={require('../../assets/images/noremtoday.png')}
         />
       </View>
-    </View>
+    </Card>
   );
 };
 

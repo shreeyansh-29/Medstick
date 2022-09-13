@@ -6,7 +6,7 @@ import {View} from 'react-native';
 import {Tab, TabView} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUserFriends, faHospitalUser} from '@fortawesome/free-solid-svg-icons';
-import styles from '../../../styles/patientStyles/myPatientsStyles';
+import {styles} from '../../../styles/patientStyles/patientsStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 

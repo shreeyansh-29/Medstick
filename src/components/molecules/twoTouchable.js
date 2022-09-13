@@ -1,7 +1,11 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {Styles} from '../../styles/twoTouchableStyles';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {colorPalette} from '../atoms/colorPalette';
 const TwoTouchable = ({
+  icon1,
+  icon2,
   title1,
   title2,
   navigation,
@@ -13,26 +17,39 @@ const TwoTouchable = ({
       style={{
         flexDirection: 'row',
         justifyContent: 'center',
-        marginLeft: 90,
-        padding: 15,
-        maxWidth: 200,
+        paddingTop: 15,
       }}>
       <TouchableOpacity
         style={Styles.box1}
         onPress={() => {
           navigation.navigate(navigationTitle1);
         }}>
-        <Text style={{fontSize: 18, color: 'black'}}>{`${title1}`}</Text>
+        <FontAwesomeIcon
+          icon={icon1}
+          size={20}
+          color={colorPalette.mainColor}
+        />
+        <Text
+          style={{
+            fontSize: 18,
+            color: 'black',
+            marginTop: 8,
+          }}>{`${title1}`}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={Styles.box2}
         onPress={() => {
           navigation.navigate(navigationTitle2);
         }}>
+        <FontAwesomeIcon
+          icon={icon2}
+          size={20}
+          color={colorPalette.mainColor}
+        />
         <Text
           style={{
+            marginTop: 8,
             fontSize: 18,
-            textAlign: 'center',
             color: 'black',
           }}>{`${title2}`}</Text>
       </TouchableOpacity>

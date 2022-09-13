@@ -26,7 +26,7 @@ const MedicinePanel = () => {
         flex: 1,
         backgroundColor: colorPalette.basicColor,
       }}>
-      <MainHeader title={'MEDICINES'} />
+      <MainHeader title={'Medicine'} />
       <View
         style={{
           flex: 1,
