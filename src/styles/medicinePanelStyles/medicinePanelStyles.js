@@ -40,13 +40,28 @@ const Styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     marginTop: verticalScale(16),
   },
-  card: {
-    borderRadius: 20,
-    margin: 4,
-    borderColor: 'lightgrey',
-    elevation: 4,
-    shadowColor: 'black',
-    marginHorizontal: horizontalScale(20),
+  text: {
+    margin: 10, fontSize: 18, color: '#02aba6',
+    justifyContent:'flex-start'
+  },
+  picker: {
+    width: '100%',
+    marginTop: 15,
+    marginLeft: 20,
+    marginRight: 20,
+    borderColor: '#02aba6',
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    alignSelf: 'center',
+    borderRadius: 5,
+  },
+  textView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    width: '100%'
   },
   listView: { marginBottom: 7 },
   list: { height: 80, marginHorizontal: 20, marginTop: 4 },
@@ -134,6 +149,9 @@ const Styles = StyleSheet.create({
   addMedicinePage: {
     backgroundColor: colorPalette.appColor,
     flex: 1,
+    borderTopEndRadius:20,
+    borderTopStartRadius:20,
+    backgroundColor:colorPalette.basicColor,
   },
   addingPrescription: {
     flexDirection: 'row',
@@ -166,19 +184,5 @@ const Styles = StyleSheet.create({
 
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default Styles
