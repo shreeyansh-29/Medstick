@@ -3,7 +3,7 @@ import {colorPalette} from '../components/atoms/colorPalette';
 
 const styles = StyleSheet.create({
   container: {height: '100%', backgroundColor: colorPalette.basicColor},
-  setting: {color: 'gray', fontSize: 16, marginLeft: 15},
+  setting: {color: 'gray', fontSize: 16, marginLeft: 15,marginTop: 8},
   settingItems: {color: 'black', fontSize: 18},
   general: {color: 'gray', fontSize: 16, marginLeft: 15},
 });

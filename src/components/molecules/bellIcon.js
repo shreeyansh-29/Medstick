@@ -1,7 +1,8 @@
 import {View, Animated, TouchableOpacity} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import {styles} from '../../styles/homeScreenStyles/headerStyles';
-import LottieView from 'lottie-react-native';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faBell} from '@fortawesome/free-solid-svg-icons';
 
 const BellIcon = ({navigation}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -17,14 +18,9 @@ const BellIcon = ({navigation}) => {
     <View style={styles.bellIcon}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ClickImage');
+          navigation.navigate('Notifications');
         }}>
-        <LottieView
-          style={{height: 40, width: 40}}
-          speed={0.6}
-          source={require('../../assets/animation/notificationBell.json')}
-          progress={progress}
-        />
+        <FontAwesomeIcon icon={faBell} color={'white'} size={24} />
       </TouchableOpacity>
     </View>
   );

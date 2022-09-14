@@ -7,7 +7,7 @@ import SubHeader from '../../components/molecules/headers/subHeader';
 const Settings = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <SubHeader title={'SETTINGS'} navigation={navigation} />
+      <SubHeader title={'Settings'} navigation={navigation} />
       <SettingsList borderColor="white" backgroundColor="white">
         <SettingsList.Header
           headerText="Settings"

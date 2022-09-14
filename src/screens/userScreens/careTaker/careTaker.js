@@ -7,7 +7,7 @@ import CareTakerRequest from './careTakerRequest';
 import {View} from 'react-native';
 import {Tab, TabView} from 'react-native-elements';
 import {Caretaker_nurse, Userfriend} from './allIcons';
-import styles from '../../../styles/careTakerStyles/careTakerStyles';
+import {styles} from '../../../styles/careTakerStyles/careTakerStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 
 const CareTaker = ({navigation}) => {

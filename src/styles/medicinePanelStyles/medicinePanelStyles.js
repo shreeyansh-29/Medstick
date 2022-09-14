@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { colorPalette } from '../../components/atoms/colorPalette';
-export const MedicinePanel = StyleSheet.create({
+import { verticalScale, horizontalScale } from '../../components/atoms/constant';
+
+const Styles = StyleSheet.create({
   flatlistL: {
     width: '100%',
     backgroundColor: '#ffff',
@@ -9,7 +11,7 @@ export const MedicinePanel = StyleSheet.create({
   },
   text: {
     margin: 10, fontSize: 18, color: '#02aba6',
-    justifyContent:'flex-start'
+    justifyContent: 'flex-start'
   },
   picker: {
     width: '100%',
@@ -30,6 +32,30 @@ export const MedicinePanel = StyleSheet.create({
     marginTop: 10,
     width: '100%'
   },
+  //medicine panel styles
+  container: { flex: 1, backgroundColor: '#fafafa' },
+  lottie: { justifyContent: 'center', alignItems: 'center', flex: 1 },
+  flatlist: {
+    flex: 1,
+    backgroundColor: '#fafafa',
+    marginTop: verticalScale(16),
+  },
+  card: {
+    borderRadius: 20,
+    margin: 4,
+    borderColor: 'lightgrey',
+    elevation: 4,
+    shadowColor: 'black',
+    marginHorizontal: horizontalScale(20),
+  },
+  listView: { marginBottom: 7 },
+  list: { height: 80, marginHorizontal: 20, marginTop: 4 },
+  avatarView: { flexDirection: 'row' },
+  medNameView: { flexDirection: 'column', margin: 3 },
+  medName: { fontWeight: '600' },
+  rem: { marginRight: 12 },
+
+  //add medicine styles
   flatlistMainInfo: {
     shadowColor: '#6777',
     elevation: 20,
@@ -47,9 +73,9 @@ export const MedicinePanel = StyleSheet.create({
   constainer: {
     padding: 15,
     flex: 1,
-    borderTopEndRadius:20,
-    borderTopStartRadius:20,
-    backgroundColor:colorPalette.basicColor,
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
+    backgroundColor: colorPalette.basicColor,
   },
   addMedicinesHeader: {
     width: '100%',
@@ -68,7 +94,7 @@ export const MedicinePanel = StyleSheet.create({
   },
   addPrescriptionIcon: {
     width: '15%',
-    marginLeft:35,
+    marginLeft: 35,
 
   },
   savelogo: {
@@ -79,9 +105,9 @@ export const MedicinePanel = StyleSheet.create({
     height: '100%',
   },
   addPrescriptionHeader: {
-    width:'100%',
-    height:'30%',
-    marginTop:30,
+    width: '100%',
+    height: '30%',
+    marginTop: 30,
     backgroundColor: colorPalette.appColor,
     justifyContent: 'center',
 
@@ -89,9 +115,9 @@ export const MedicinePanel = StyleSheet.create({
   addPrescriptionContainer: {
     height: '100%',
     width: '100%',
-    paddingTop:10,
+    paddingTop: 10,
     backgroundColor: colorPalette.appColor,
-    
+
   },
   addPrescriptionLottie: {
     alignItems: 'center',
@@ -99,44 +125,44 @@ export const MedicinePanel = StyleSheet.create({
   },
   addPrescriptionList: {
     height: '70%',
-    width:'100%',
+    width: '100%',
     padding: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     backgroundColor: colorPalette.basicColor,
   },
-  addMedicinePage:{
-    backgroundColor:colorPalette.appColor,
-    flex:1,
+  addMedicinePage: {
+    backgroundColor: colorPalette.appColor,
+    flex: 1,
   },
-  addingPrescription:{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'flex-end',
+  addingPrescription: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
 
   },
-  addingPrescriptionIcon:{
-    width:'30%',
-paddingLeft:40,
+  addingPrescriptionIcon: {
+    width: '30%',
+    paddingLeft: 40,
   },
-  addingPrescriptionTouchable:{
-justifyContent:'flex-end',
+  addingPrescriptionTouchable: {
+    justifyContent: 'flex-end',
   },
 
-  textInput:{
-width:'70%'
+  textInput: {
+    width: '70%'
   },
-  saveButton:{
-    width:'50%',
+  saveButton: {
+    width: '50%',
     // backgroundColor:'#000'
-   
+
   },
-  saveTouchable:{
-    position:'absolute',
-    right:0,
-    bottom:0,
-    alignItems:'flex-end',
-    marginEnd:20,
+  saveTouchable: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    alignItems: 'flex-end',
+    marginEnd: 20,
 
   }
 });
@@ -154,3 +180,5 @@ width:'70%'
 
 
 
+
+export default Styles

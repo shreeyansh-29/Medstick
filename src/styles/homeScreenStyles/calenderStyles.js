@@ -6,6 +6,9 @@ export const styles = StyleSheet.create({
     height: 120,
     paddingTop: 22,
     paddingBottom: 24,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+    // borderTopWidth: 0,
   },
   calenderHeaderStyle: {
     color: colorPalette.mainColor,
@@ -21,8 +24,8 @@ export const styles = StyleSheet.create({
   },
   icon: {flex: 0.14},
   iconStyle: {
-    height: 21,
-    width: 21,
+    height: 18,
+    width: 18,
   },
   highlightedDateNumber: {
     color: colorPalette.basicColor,
