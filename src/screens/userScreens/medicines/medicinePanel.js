@@ -1,17 +1,32 @@
-import {View, Text, FlatList, Animated} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Animated,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import React, {useRef, useEffect} from 'react';
 import {styles} from '../../../styles/medicinePanelStyles/medicinePanelStyles';
-import {fontStyle} from '../../../styles/fontStyles';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import LottieView from 'lottie-react-native';
+import * as Animatable from 'react-native-animatable';
+import {Card, List} from 'react-native-paper';
+import {Avatar, ListItem} from 'react-native-elements';
+import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
+import {
+  horizontalScale,
+  verticalScale,
+} from '../../../components/atoms/constant';
 
-const MedicinePanel = () => {
-  // const medicines = [
-  //   {name: 'Paracetamol', type: 'xjox', Power: '600mg'},
-  //   {name: 'evil', type: 'bava', Power: '500mg'},
-  //   {name: 'Pain killer', type: 'bava', Power: '300mg'},
-  // ];
+const MedicinePanel = ({navigation}) => {
+  const medicines = [
+    {name: 'Paracetamol', type: 'Tablet', power: '600 mg', status: 0},
+    {name: 'Triohale', type: 'Inhaler', power: '5 dose', status: 1},
+    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
+  ];
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     Animated.timing(progress, {
@@ -20,43 +35,103 @@ const MedicinePanel = () => {
       useNativeDriver: true,
     }).start();
   }, []);
+
+  const renderItem = ({item}) => {
+    return (
+      <>
+        <Animatable.View animation="zoomInUp" duration={400}>
+          <Card style={styles.card}>
+            <View style={styles.listView}>
+              <ListItem style={styles.list}>
+                <ListItem.Content>
+                  <View style={styles.avatarView}>
+                    <FontAwesomeIcon
+                      icon={faPills}
+                      size={36}
+                      color={colorPalette.mainColor}
+                      style={{
+                        marginTop: verticalScale(6),
+                        marginRight: horizontalScale(6),
+                      }}
+                    />
+                    <View style={styles.medNameView}>
+                      <ListItem.Title style={styles.medName}>
+                        {item.name}
+                      </ListItem.Title>
+                      <ListItem.Subtitle>{item.type}</ListItem.Subtitle>
+                      <ListItem.Subtitle>{item.power}</ListItem.Subtitle>
+                    </View>
+                  </View>
+                </ListItem.Content>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                  }}>
+                  <TouchableOpacity
+                    style={styles.rem}
+                    onPress={() =>
+                      navigation.navigate('Add Reminder', {id: item.index})
+                    }>
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      color={colorPalette.mainColor}
+                      size={24}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Alert.alert('Delete it!', 'Sure you want delete it', [
+                        {
+                          text: 'Delete',
+                          onPress: () => deleteitem(item.user_id),
+                        },
+                        {
+                          text: 'Cancel',
+                        },
+                      ]);
+                    }}>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      color={colorPalette.mainColor}
+                      size={24}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </ListItem>
+            </View>
+          </Card>
+        </Animatable.View>
+        {/* <View>
+          <Text style={fontStyle.header1}>{item.name}</Text>
+          <Text style={fontStyle.header1}>{item.type}</Text>
+          <Text>{item.Power}</Text>
+        </View> */}
+      </>
+    );
+  };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colorPalette.basicColor,
-      }}>
+    <View style={styles.container}>
       <MainHeader title={'Medicine'} />
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <LottieView
-          style={{width: '60%'}}
-          speed={0.8}
-          source={require('../../../assets/animation/noMedicine2.json')}
-          autoPlay
-          loop
-        />
-      </View>
-      {/* <View style={styles.flatlistL}>
-        <FlatList
-          data={medicines}
-          renderItem={Element => {
-            return (
-              <View>
-                <Text style={fontStyle.header1}>{Element.item.name}</Text>
-                <Text style={fontStyle.header1}>{Element.item.type}</Text>
-                <Text>{Element.item.Power}</Text>
-              </View>
-            );
-          }}
-          initialNumToRender={10}
-          numColumns={1}
-        />
-      </View> */}
+      {medicines.length !== 0 ? (
+        <View style={styles.lottie}>
+          <LottieView
+            style={{width: '60%'}}
+            speed={0.8}
+            source={require('../../../assets/animation/noMedicine2.json')}
+            progress={progress}
+          />
+        </View>
+      ) : (
+        <View style={styles.flatlist}>
+          <FlatList
+            data={medicines}
+            renderItem={renderItem}
+            // initialNumToRender={10}
+            numColumns={1}
+          />
+        </View>
+      )}
     </View>
   );
 };

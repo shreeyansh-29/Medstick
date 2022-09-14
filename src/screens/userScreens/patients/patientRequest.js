@@ -37,7 +37,8 @@ const PatientRequest = () => {
                   {item.patientName}
                 </ListItem.Title>
                 <ListItem.Subtitle style={styles.listSubTitle}>
-                  {'Phone No : ' + item.phoneNo}
+                  
+                  
                 </ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>

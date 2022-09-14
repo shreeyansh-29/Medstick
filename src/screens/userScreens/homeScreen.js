@@ -107,44 +107,6 @@ const HomeScreen = ({navigation}) => {
             <Text
               style={{
                 fontSize: 20,
-                paddingLeft: 24,
-                paddingTop: 12,
-                paddingBottom: 12,
-                backgroundColor: colorPalette.basicColor,
-                color: colorPalette.mainColor,
-                borderTopLeftRadius: 18,
-                borderTopRightRadius: 18,
-              }}>
-              Reminders
-            </Text>
-            <View
-              style={{
-                backgroundColor: 'white',
-                alignItems: 'center',
-                borderBottomStartRadius: 18,
-                borderBottomEndRadius: 18,
-              }}>
-              <Image
-                resizeMode="contain"
-                style={{height: 280, width: 192}}
-                source={require('../../assets/images/noremtoday.png')}
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              borderRadius: 20,
-              borderColor: 'white',
-              marginTop: 16,
-              width: '92%',
-              borderWidth: 1,
-              shadowColor: 'black',
-              elevation: 4,
-              marginBottom: 20,
-            }}>
-            <Text
-              style={{
-                fontSize: 20,
                 paddingLeft: 18,
                 paddingTop: 12,
                 paddingBottom: 12,
@@ -205,6 +167,7 @@ const HomeScreen = ({navigation}) => {
                             style={{
                               fontSize: 16,
                               fontWeight: 'bold',
+                              color: 'black',
                             }}>
                             8:00 AM
                           </Text>
@@ -284,6 +247,7 @@ const HomeScreen = ({navigation}) => {
                             style={{
                               fontSize: 16,
                               fontWeight: 'bold',
+                              color: 'black',
                             }}>
                             8:00 AM
                           </Text>
