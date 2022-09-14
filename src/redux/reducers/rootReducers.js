@@ -1,6 +1,8 @@
 import {combineReducers} from 'redux';
 import medicineListReducer from './userMedicine/medicineListReducer';
 
-export const rootReducer = combineReducers({
+const rootReducer = combineReducers({
     medicineList:medicineListReducer
 });
+
+export default rootReducer

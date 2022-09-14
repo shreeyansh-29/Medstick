@@ -16,6 +16,7 @@ import LoginScreen from '../screens/authScreens/loginScreen';
 import SearchScreen from '../components/organisms/searchScreen';
 import Settings from '../screens/userScreens/settings';
 import About from '../screens/userScreens/aboutApp';
+import AddPrescription from '../screens/userScreens/medicines/addPrescription';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ const MainNavigation = () => {
         <Stack.Screen name="MedicinePanel" component={MedicinePanel} />
         <Stack.Screen name="AddMedicine" component={AddMedicine} />
         <Stack.Screen name="Report" component={Report} />
+        <Stack.Screen name='Prescription' component={AddPrescription} />
         <Stack.Screen name="Account" component={AccountTab} />
         <Stack.Screen name="CareTaker" component={CareTaker} />
         <Stack.Screen name="Patients" component={Patients} />
