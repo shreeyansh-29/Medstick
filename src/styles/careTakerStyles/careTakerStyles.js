@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   //Add a caretaker screen
   container: {flex: 1, backgroundColor: 'white', height: '100%'},
   img: {width: 250},
@@ -44,4 +44,3 @@ const styles = StyleSheet.create({
   tabItemTitle: {fontSize: 12, color: colorPalette.mainColor},
   tabItem: {backgroundColor: colorPalette.basicColor, width: '100%'},
 });
-export default styles;

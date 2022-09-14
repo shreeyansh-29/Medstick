@@ -1,12 +1,31 @@
 import {StyleSheet} from 'react-native';
+import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
-  flatlistL: {
-    width: '100%',
-    backgroundColor: '#ffff',
-    paddingHorizontal: 40,
-    paddingTop: 20,
+  //medicine panel styles
+  container: {flex: 1, backgroundColor: '#fafafa'},
+  lottie: {justifyContent: 'center', alignItems: 'center', flex: 1},
+  flatlist: {
+    flex: 1,
+    backgroundColor: '#fafafa',
+    marginTop: verticalScale(16),
   },
+  card: {
+    borderRadius: 20,
+    margin: 4,
+    borderColor: 'lightgrey',
+    elevation: 4,
+    shadowColor: 'black',
+    marginHorizontal: horizontalScale(20),
+  },
+  listView: {marginBottom: 7},
+  list: {height: 80, marginHorizontal: 20, marginTop: 4},
+  avatarView: {flexDirection: 'row'},
+  medNameView: {flexDirection: 'column', margin: 3},
+  medName: {fontWeight: '600'},
+  rem: {marginRight: 12},
+
+  //add medicine styles
   flatlistMainInfo: {
     shadowColor: '#6777',
     elevation: 20,

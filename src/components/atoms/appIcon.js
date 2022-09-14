@@ -10,8 +10,8 @@ const AppIcon = () => {
     <View style={styles.appIcon}>
       <FontAwesomeIcon
         icon={faCircleUser}
-        size={40}
-        color={colorPalette.mainColor}
+        size={36}
+        color={colorPalette.basicColor}
       />
     </View>
   );

@@ -17,8 +17,8 @@ const SearchScreen = ({navigation}) => {
         value={text}
         mode="outlined"
         onChangeText={text => setText(text)}
-        outlineColor="#008A81"
-        activeOutlineColor="#008A81"
+        outlineColor={colorPalette.mainColor}
+        activeOutlineColor={colorPalette.mainColor}
       />
       {/* <TextInput
           placeholder="Search"

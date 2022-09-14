@@ -8,7 +8,7 @@ import ProgressReport from '../../components/atoms/progressCircle';
 const Report = ({navigation}) => {
   return (
     <View style={styles.report}>
-      <MainHeader title={'REPORTS'} navigation={navigation} />
+      <MainHeader title={'Reports'} navigation={navigation} />
       <CalenderIcon navigation={navigation} />
       <View style={styles.reportContainer}>
         <View style={styles.analytics}>

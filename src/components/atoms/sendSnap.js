@@ -1,12 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {View} from 'react-native';
+import React from 'react';
+import SubHeader from '../molecules/headers/subHeader';
 
-const SendSnap = () => {
+const SendSnap = ({navigation}) => {
   return (
-    <View>
-      <Text>sendSnap</Text>
+    <View style={{flex: 1}}>
+      <SubHeader title={'Send Snap'} navigation={navigation} />
     </View>
-  )
-}
+  );
+};
 
-export default SendSnap
+export default SendSnap;

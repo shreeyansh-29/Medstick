@@ -5,9 +5,9 @@ export const Styles = StyleSheet.create({
     padding: 20,
     borderRadius: 9,
     height: 95,
-    shadowColor: '#52006A',
+    shadowColor: 'black',
     width: 150,
-    elevation: 20,
+    elevation: 4,
     marginRight: 10,
   },
   box2: {
@@ -18,7 +18,7 @@ export const Styles = StyleSheet.create({
     height: 95,
     width: 150,
     borderRadius: 9,
-    shadowColor: '#52006A',
-    elevation: 20,
+    shadowColor: 'black',
+    elevation: 4,
   },
 });
