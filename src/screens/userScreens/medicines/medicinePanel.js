@@ -6,26 +6,26 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import React, {useRef, useEffect} from 'react';
-import {styles} from '../../../styles/medicinePanelStyles/medicinePanelStyles';
+import React, { useRef, useEffect } from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
-import {Card, List} from 'react-native-paper';
-import {Avatar, ListItem} from 'react-native-elements';
-import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import { Card, List } from 'react-native-paper';
+import { Avatar, ListItem } from 'react-native-elements';
+import { faClock, faPills, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { colorPalette } from '../../../components/atoms/colorPalette';
 import {
   horizontalScale,
   verticalScale,
 } from '../../../components/atoms/constant';
+import Styles from "../../../styles/medicinePanelStyles/medicinePanelStyles"
 
-const MedicinePanel = ({navigation}) => {
+const MedicinePanel = ({ navigation }) => {
   const medicines = [
-    {name: 'Paracetamol', type: 'Tablet', power: '600 mg', status: 0},
-    {name: 'Triohale', type: 'Inhaler', power: '5 dose', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
+    { name: 'Paracetamol', type: 'Tablet', power: '600 mg', status: 0 },
+    { name: 'Triohale', type: 'Inhaler', power: '5 dose', status: 1 },
+    { name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1 },
   ];
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -36,15 +36,15 @@ const MedicinePanel = ({navigation}) => {
     }).start();
   }, []);
 
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     return (
       <>
         <Animatable.View animation="zoomInUp" duration={400}>
-          <Card style={styles.card}>
-            <View style={styles.listView}>
-              <ListItem style={styles.list}>
+          <Card style={Styles.card}>
+            <View style={Styles.listView}>
+              <ListItem style={Styles.list}>
                 <ListItem.Content>
-                  <View style={styles.avatarView}>
+                  <View style={Styles.avatarView}>
                     <FontAwesomeIcon
                       icon={faPills}
                       size={36}
@@ -54,8 +54,8 @@ const MedicinePanel = ({navigation}) => {
                         marginRight: horizontalScale(6),
                       }}
                     />
-                    <View style={styles.medNameView}>
-                      <ListItem.Title style={styles.medName}>
+                    <View style={Styles.medNameView}>
+                      <ListItem.Title style={Styles.medName}>
                         {item.name}
                       </ListItem.Title>
                       <ListItem.Subtitle>{item.type}</ListItem.Subtitle>
@@ -68,9 +68,9 @@ const MedicinePanel = ({navigation}) => {
                     flexDirection: 'row',
                   }}>
                   <TouchableOpacity
-                    style={styles.rem}
+                    style={Styles.rem}
                     onPress={() =>
-                      navigation.navigate('Add Reminder', {id: item.index})
+                      navigation.navigate('Add Reminder', { id: item.index })
                     }>
                     <FontAwesomeIcon
                       icon={faClock}
@@ -111,19 +111,19 @@ const MedicinePanel = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={Styles.container}>
       <MainHeader title={'Medicine'} />
-      {medicines.length !== 0 ? (
-        <View style={styles.lottie}>
+      {medicines.length === 0 ? (
+        <View style={Styles.lottie}>
           <LottieView
-            style={{width: '60%'}}
+            style={{ width: '60%' }}
             speed={0.8}
             source={require('../../../assets/animation/noMedicine2.json')}
             progress={progress}
           />
         </View>
       ) : (
-        <View style={styles.flatlist}>
+        <View style={Styles.flatlist}>
           <FlatList
             data={medicines}
             renderItem={renderItem}
