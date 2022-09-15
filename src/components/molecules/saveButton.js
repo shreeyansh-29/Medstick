@@ -1,7 +1,7 @@
 import { Animated, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import LottieView from 'lottie-react-native'
-import { MedicinePanel } from '../../styles/medicinePanelStyles/medicinePanelStyles';
+import Styles  from '../../styles/medicinePanelStyles/medicinePanelStyles';
 
 const SaveButton = () => {
 
@@ -15,9 +15,9 @@ const SaveButton = () => {
     }, []); 
 
     return (
-        <TouchableOpacity style={MedicinePanel.saveTouchable}>
+        <TouchableOpacity style={Styles.saveTouchable}>
             <LottieView
-                style={MedicinePanel.saveButton}
+                style={Styles.saveButton}
                 speed={0.9}
                 progress={progress}
                 source={require('../../assets/animation/saveLogos.json')}

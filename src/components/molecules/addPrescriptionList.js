@@ -1,6 +1,6 @@
 import { Text, KeyboardAvoidingView, Animated, View, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { MedicinePanel } from '../../styles/medicinePanelStyles/medicinePanelStyles'
+import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles'
 import { TextInput } from 'react-native-paper'
 import LottieView from 'lottie-react-native';
 
@@ -10,8 +10,8 @@ const AddPrescriptionList = () => {
   const [specialization, setSpecialization] = useState('')
   const [number, setNumber] = useState('')
   const [location, setLocation] = useState('')
-  const [gallary,setGallary]=useState('')
-  const [imagePre,setImagePre]=useState('')
+  const [gallary, setGallary] = useState('')
+  const [imagePre, setImagePre] = useState('')
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -21,32 +21,32 @@ const AddPrescriptionList = () => {
       useNativeDriver: true,
     }).start();
   }, []);
-  
-//   const options={
-//     title:'Select Image',
-//     type:'libary',
-//     options: {
-//       maxHeight: 200,
-//       maxWidth: 200,
-//       selectionLimit: 1,
-//       mediaType: 'photo',
-//       includeBase64: true,
-//     },
 
-//   }
+  //   const options={
+  //     title:'Select Image',
+  //     type:'libary',
+  //     options: {
+  //       maxHeight: 200,
+  //       maxWidth: 200,
+  //       selectionLimit: 1,
+  //       mediaType: 'photo',
+  //       includeBase64: true,
+  //     },
 
-//   const uploadPrescription=async()=>{
-// const gallery=await launchImageLibrary(options)
-// if(gallery.didCanel===true)
-// {
-//   alert("cancel")
-// }
-// else{
-//   setGallary(gallery.assets[0])
-//   setImagePre(gallery.assets[0].uri)
-//   console.log("success")
-// }
-//   }
+  //   }
+
+  //   const uploadPrescription=async()=>{
+  // const gallery=await launchImageLibrary(options)
+  // if(gallery.didCanel===true)
+  // {
+  //   alert("cancel")
+  // }
+  // else{
+  //   setGallary(gallery.assets[0])
+  //   setImagePre(gallery.assets[0].uri)
+  //   console.log("success")
+  // }
+  //   }
 
   return (
     <KeyboardAvoidingView >
@@ -87,31 +87,31 @@ const AddPrescriptionList = () => {
         outlineColor="#02ABA6"
         activeOutlineColor="#02ABA6"
       />
-      <View style={MedicinePanel.addingPrescription}>
-      <View style={MedicinePanel.textInput}>
-      <Text style={MedicinePanel.text}>Add Existing Prescription</Text>
+      <View style={Styles.addingPrescription}>
+        <View style={Styles.textInput}>
+          <Text style={Styles.text}>Add Existing Prescription</Text>
+        </View>
+        <TouchableOpacity style={Styles.addingPrescriptionTouchable}>
+          <LottieView
+            style={Styles.addingPrescriptionIcon}
+            speed={0.7}
+            progress={progress}
+            source={require('../../assets/animation/addPrescriptionButton.json')}
+          />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={MedicinePanel.addingPrescriptionTouchable}>
-      <LottieView
-        style={MedicinePanel.addingPrescriptionIcon}
-        speed={0.7}
-        progress={progress}
-        source={require('../../assets/animation/addPrescriptionButton.json')}
-      />
-      </TouchableOpacity>
-      </View>
-      <View style={MedicinePanel.addingPrescription}>
-      <View style={MedicinePanel.textInput}>
-      <Text style={MedicinePanel.text}>Add New Prescription</Text>
-      </View>
-      <TouchableOpacity onPress={()=>uploadPrescription()}>
-      <LottieView
-        style={MedicinePanel.addingPrescriptionIcon}
-        speed={0.7}
-        progress={progress}
-        source={require('../../assets/animation/addPrescriptionButton.json')}
-      />
-      </TouchableOpacity>
+      <View style={Styles.addingPrescription}>
+        <View style={Styles.textInput}>
+          <Text style={Styles.text}>Add New Prescription</Text>
+        </View>
+        <TouchableOpacity onPress={() => {}}>
+          <LottieView
+            style={Styles.addingPrescriptionIcon}
+            speed={0.7}
+            progress={progress}
+            source={require('../../assets/animation/addPrescriptionButton.json')}
+          />
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   )

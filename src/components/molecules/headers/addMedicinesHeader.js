@@ -1,7 +1,7 @@
 import { Animated, View } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import LottieView from 'lottie-react-native'
-import { MedicinePanel } from '../../../styles/medicinePanelStyles/medicinePanelStyles'
+import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles'
 const AddMedicinesHeader = () => {
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -12,7 +12,7 @@ const AddMedicinesHeader = () => {
     }).start();
   }, []);
   return (
-    <View style={MedicinePanel.addMedicinesLogo}>
+    <View style={Styles.addMedicinesLogo}>
       <LottieView
         styles={{ width: '100%' }}
         speed={0.6}

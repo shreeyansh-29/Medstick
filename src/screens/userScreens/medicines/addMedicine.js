@@ -5,7 +5,7 @@ import { styles } from '../../../styles/homeScreenStyles/headerStyles';
 import { colorPalette } from '../../../components/atoms/colorPalette'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { MedicinePanel } from '../../../styles/medicinePanelStyles/medicinePanelStyles'
+import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles'
 import { TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import LottieView from 'lottie-react-native';
@@ -53,8 +53,8 @@ const AddMedicines = ({ navigation }) => {
     setType();
   }, [pill]);
   return (
-    <View style={MedicinePanel.addMedicinePage}>
-      <View style={MedicinePanel.addMedicinesHeader}>
+    <View style={Styles.addMedicinePage}>
+      <View style={Styles.addMedicinesHeader}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => {
@@ -70,7 +70,7 @@ const AddMedicines = ({ navigation }) => {
           navigation={navigation}
         />
       </View>
-      <View style={MedicinePanel.constainer} >
+      <View style={Styles.constainer} >
         <ScrollView >
           <KeyboardAvoidingView>
             <TextInput
@@ -83,7 +83,7 @@ const AddMedicines = ({ navigation }) => {
               activeOutlineColor="#02aba6"
             />
             <View
-              style={MedicinePanel.picker}>
+              style={Styles.picker}>
               <Picker
                 id="picker1"
                 placeholder="Select Medicine Type"
@@ -96,7 +96,7 @@ const AddMedicines = ({ navigation }) => {
               </Picker>
             </View>
             <View
-              style={MedicinePanel.textView}>
+              style={Styles.textView}>
               <TextInput
                 style={{ width: '47%' }}
                 id="name"
@@ -120,8 +120,8 @@ const AddMedicines = ({ navigation }) => {
               />
             </View>
             <View
-              style={MedicinePanel.textView}>
-              <Text style={MedicinePanel.text}>
+              style={Styles.textView}>
+              <Text style={Styles.text}>
                 Stock Unit
               </Text>
               <TextInput
@@ -142,7 +142,7 @@ const AddMedicines = ({ navigation }) => {
                 justifyContent: 'space-between',
                 marginTop: 10,
               }}>
-              <Text style={MedicinePanel.text}>
+              <Text style={Styles.text}>
                 Notify me when only{' '}
               </Text>
               <TextInput
@@ -157,20 +157,20 @@ const AddMedicines = ({ navigation }) => {
                 activeOutlineColor="#02aba6"
               />
             </View>
-            <View style={MedicinePanel.textView}>
-              <Text style={MedicinePanel.text}>Add Prescription Here   </Text>
-              <TouchableOpacity style={MedicinePanel.touchableOpacity} onPress={() => { navigation.navigate('Prescription') }}>
+            <View style={Styles.textView}>
+              <Text style={Styles.text}>Add Prescription Here   </Text>
+              <TouchableOpacity style={Styles.touchableOpacity} onPress={() => { navigation.navigate('Prescription') }}>
                 <LottieView
-                  style={MedicinePanel.addPrescriptionIcon}
+                  style={Styles.addPrescriptionIcon}
                   speed={0.7}
                   progress={progress}
                   source={require('../../../assets/animation/addPrescriptionButton.json')}
                 />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={MedicinePanel.touchableOpacity}>
+            <TouchableOpacity style={Styles.touchableOpacity}>
               <LottieView
-                style={MedicinePanel.savelogo}
+                style={Styles.savelogo}
                 speed={0.8}
                 progress={progress}
                 source={require('../../../assets/animation/saveButton.json')}
