@@ -7,7 +7,6 @@ import {
   Alert,
 } from 'react-native';
 import React, {useRef, useEffect} from 'react';
-import {styles} from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
@@ -20,6 +19,7 @@ import {
   horizontalScale,
   verticalScale,
 } from '../../../components/atoms/constant';
+import { styles } from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 
 const MedicinePanel = ({navigation}) => {
   const medicines = [
@@ -70,7 +70,7 @@ const MedicinePanel = ({navigation}) => {
                   <TouchableOpacity
                     style={styles.rem}
                     onPress={() =>
-                      navigation.navigate('Add Reminder', {id: item.index})
+                      navigation.navigate("AddRemainder", {id: item.index})
                     }>
                     <FontAwesomeIcon
                       icon={faClock}
@@ -113,7 +113,7 @@ const MedicinePanel = ({navigation}) => {
   return (
     <View style={styles.container}>
       <MainHeader title={'Medicine'} />
-      {medicines.length !== 0 ? (
+      {medicines.length === 0 ? (
         <View style={styles.lottie}>
           <LottieView
             style={{width: '60%'}}

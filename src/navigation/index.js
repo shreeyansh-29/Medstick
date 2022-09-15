@@ -22,6 +22,7 @@ import SendSnap from '../components/atoms/sendSnap';
 import Prescriptions from '../screens/userScreens/prescriptions';
 import AppointmentReminders from '../screens/userScreens/appointmentReminders';
 import Notifications from '../screens/userScreens/notifications';
+import AddRemainder from '../screens/userScreens/addRemainder';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +50,7 @@ const MainNavigation = () => {
         <Stack.Screen name="SavedDetails" component={SavedDetails} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="Prescriptions" component={Prescriptions} />
+        <Stack.Screen name="AddRemainder" component={AddRemainder} />
         <Stack.Screen
           name="AppointmentReminders"
           component={AppointmentReminders}
@@ -60,3 +62,4 @@ const MainNavigation = () => {
 };
 
 export default MainNavigation;
+
