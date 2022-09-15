@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import MainNavigation from './src/navigation';
+import MainNavigation from "./src/navigation/index"
 import 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
 import { colorPalette } from './src/components/atoms/colorPalette';
