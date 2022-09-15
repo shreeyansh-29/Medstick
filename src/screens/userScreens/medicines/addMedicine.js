@@ -53,7 +53,7 @@ const AddMedicines = ({ navigation }) => {
     setType();
   }, [pill]);
   return (
-    <View style={Styles.addMedicinePage}>
+    <View style={Styles.addMedicinePage }>
       <View style={Styles.addMedicinesHeader}>
         <TouchableOpacity
           style={styles.backButton}
