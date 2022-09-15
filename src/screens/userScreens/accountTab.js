@@ -27,34 +27,34 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const AccountTab = ({navigation}) => {
-  // useFocusEffect(() => {
-  //   async function checkforlog() {
-  //     const checkforlogin = await AsyncStorage.getItem('user_id');
+  useFocusEffect(() => {
+    async function checkforlog() {
+      const checkforlogin = await AsyncStorage.getItem('user_id');
 
-  //     if (checkforlogin === null) {
-  //       Alert.alert(
-  //         'Sign in first to use this feature',
-  //         'Click ok to proceed',
-  //         [
-  //           {
-  //             text: 'Ok',
-  //             onPress: () => {
-  //               navigation.navigate('Login');
-  //             },
-  //           },
-  //           {
-  //             text: 'Cancel',
-  //             onPress: () => {
-  //               navigation.navigate('HomeScreen');
-  //             },
-  //           },
-  //         ],
-  //       );
-  //     }
-  //   }
+      if (checkforlogin === null) {
+        Alert.alert(
+          'Sign in first to use this feature',
+          'Click ok to proceed',
+          [
+            {
+              text: 'Ok',
+              onPress: () => {
+                navigation.navigate('Login');
+              },
+            },
+            {
+              text: 'Cancel',
+              onPress: () => {
+                navigation.navigate('HomeScreen');
+              },
+            },
+          ],
+        );
+      }
+    }
 
-  //   checkforlog();
-  // });
+    checkforlog();
+  });
   return (
     <View style={{flex: 1}}>
       <MainHeader title={'Account'} navigation={navigation} />

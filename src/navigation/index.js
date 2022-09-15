@@ -22,6 +22,7 @@ import SendSnap from '../components/atoms/sendSnap';
 import Prescriptions from '../screens/userScreens/prescriptions';
 import AppointmentReminders from '../screens/userScreens/appointmentReminders';
 import Notifications from '../screens/userScreens/notifications';
+import SendSnapToCaretaker from '../screens/otherScreens/sendSnapToCaretaker';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +55,10 @@ const MainNavigation = () => {
           component={AppointmentReminders}
         />
         <Stack.Screen name="Notifications" component={Notifications} />
+        <Stack.Screen
+          name="SendSnapToCaretaker"
+          component={SendSnapToCaretaker}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

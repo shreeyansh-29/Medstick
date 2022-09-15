@@ -113,7 +113,7 @@ const MedicinePanel = ({navigation}) => {
   return (
     <View style={styles.container}>
       <MainHeader title={'Medicine'} />
-      {medicines.length !== 0 ? (
+      {medicines.length === 0 ? (
         <View style={styles.lottie}>
           <LottieView
             style={{width: '60%'}}

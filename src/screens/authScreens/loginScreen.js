@@ -6,7 +6,6 @@ import {styles} from '../../styles/loginScreenStyles';
 const LoginScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.loginText}>{'LOGIN'}</Text>
       <GoogleSigninButton
         style={styles.signInButton}
         size={GoogleSigninButton.Size.Wide}
