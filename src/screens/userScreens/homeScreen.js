@@ -31,13 +31,11 @@ const medicines = [
 
 const HomeScreen = ({navigation}) => {
   return (
-    <ImageBackground
-      style={{flex: 1}}
-      source={require('../../assets/images/background.png')}
-      resizeMode="stretch">
+    <>
       <MainHeader navigation={navigation} title={'Medstick'} />
       <View style={{flex: 1}}>
         <ScrollView
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             width: '100%',
             alignItems: 'center',
@@ -301,7 +299,7 @@ const HomeScreen = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
-    </ImageBackground>
+    </>
 
     // <View style={{flex: 1}}>
     //   <MainHeader navigation={navigation} title={'MEDSTICK'} />

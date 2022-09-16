@@ -15,7 +15,6 @@ import LoginScreen from '../screens/authScreens/loginScreen';
 import SearchScreen from '../components/organisms/searchScreen';
 import Settings from '../screens/userScreens/settings';
 import About from '../screens/userScreens/aboutApp';
-import UserProfile from '../screens/profile/editProfile';
 import SavedDetails from '../screens/profile/savedDetails';
 import EditProfile from '../screens/profile/editProfile';
 import SendSnap from '../components/atoms/sendSnap';
@@ -23,6 +22,7 @@ import Prescriptions from '../screens/userScreens/prescriptions';
 import AppointmentReminders from '../screens/userScreens/appointmentReminders';
 import Notifications from '../screens/userScreens/notifications';
 import SendSnapToCaretaker from '../screens/otherScreens/sendSnapToCaretaker';
+import AddPrescription from '../screens/userScreens/medicines/addPrescription';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +39,7 @@ const MainNavigation = () => {
         <Stack.Screen name="MedicinePanel" component={MedicinePanel} />
         <Stack.Screen name="AddMedicine" component={AddMedicine} />
         <Stack.Screen name="Report" component={Report} />
+        <Stack.Screen name='Prescription' component={AddPrescription} />
         <Stack.Screen name="Account" component={AccountTab} />
         <Stack.Screen name="CareTaker" component={CareTaker} />
         <Stack.Screen name="Patients" component={Patients} />

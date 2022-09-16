@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   headerItem: {
-    height: 56,
+    height: verticalScale(56),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
@@ -16,14 +17,13 @@ export const styles = StyleSheet.create({
   headerFont: {
     fontSize: 24,
     fontFamily: '',
-    paddingLeft: 10,
+    paddingLeft: horizontalScale(10),
     color: colorPalette.basicColor,
   },
   appIcon: {
     flex: 0.4,
-    paddingLeft: 8,
+    paddingLeft: horizontalScale(14),
     alignItems: 'center',
-    height: '80%',
     justifyContent: 'center',
   },
   bellIcon: {
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subHeader: {
-    height: 54,
+    height: verticalScale(54),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
@@ -40,14 +40,13 @@ export const styles = StyleSheet.create({
   subHeaderFont: {
     fontSize: 20,
     fontFamily: '',
-    paddingLeft: 4,
+    paddingLeft: horizontalScale(4),
     color: colorPalette.basicColor,
   },
   backIcon: {
     flex: 0.2,
-    paddingLeft: 10,
+    paddingLeft: horizontalScale(14),
     alignItems: 'flex-start',
-    height: '80%',
     justifyContent: 'center',
   },
 });
