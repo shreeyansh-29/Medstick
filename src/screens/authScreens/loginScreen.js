@@ -1,7 +1,7 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {GoogleSigninButton} from '@react-native-google-signin/google-signin';
-import {styles} from '../../styles/loginScreenStyles';
+import {styles} from '../../styles/authScreensStyles/loginScreenStyles';
 
 const LoginScreen = () => {
   return (

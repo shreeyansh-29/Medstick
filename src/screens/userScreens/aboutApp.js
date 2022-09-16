@@ -1,6 +1,6 @@
 import {Text, View, Image} from 'react-native';
 import React from 'react';
-import styles from '../../styles/aboutAppStyles';
+import styles from '../../styles/otherScreensStyles/aboutAppStyles';
 import SubHeader from '../../components/molecules/headers/subHeader';
 const About = ({navigation}) => {
   return (

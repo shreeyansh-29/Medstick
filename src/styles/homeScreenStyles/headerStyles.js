@@ -49,4 +49,15 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
+  background: {
+    position: 'absolute',
+    backgroundColor: colorPalette.mainColor,
+    height: '50%',
+    width: '200%',
+    // borderRadius: 180,
+    borderBottomEndRadius: 530,
+    borderBottomStartRadius: 590,
+    top: -120,
+    right: -120,
+  },
 });

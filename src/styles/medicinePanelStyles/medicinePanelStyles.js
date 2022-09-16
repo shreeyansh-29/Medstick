@@ -1,78 +1,43 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {verticalScale, horizontalScale} from '../../components/atoms/constant';
+import {
+  verticalScale,
+  horizontalScale,
+  moderateScale,
+} from '../../components/atoms/constant';
 
 const Styles = StyleSheet.create({
-  flatlistL: {
-    width: '100%',
-    backgroundColor: '#ffff',
-    paddingHorizontal: 40,
-    paddingTop: 20,
-  },
-  text: {
-    margin: 10,
-    fontSize: 18,
-    color: '#02aba6',
-    justifyContent: 'flex-start',
-  },
-  picker: {
-    width: '100%',
-    marginTop: 15,
-    marginLeft: 20,
-    marginRight: 20,
-    borderColor: '#02aba6',
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    alignSelf: 'center',
-    borderRadius: 5,
-  },
-  textView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    width: '100%',
-  },
   //medicine panel styles
   container: {flex: 1, backgroundColor: '#fafafa'},
   lottie: {justifyContent: 'center', alignItems: 'center', flex: 1},
+  lottieView: {width: '70%'},
   flatlist: {
     flex: 1,
+    top: 200,
     backgroundColor: '#fafafa',
     marginTop: verticalScale(16),
   },
-  text: {
-    margin: 10,
-    fontSize: 18,
-    color: '#02aba6',
-    justifyContent: 'flex-start',
+  card: {
+    borderRadius: 30,
+    borderColor: 'lightgrey',
+    elevation: 3,
+    shadowColor: 'black',
+    marginVertical: verticalScale(5),
+    marginHorizontal: horizontalScale(14),
   },
-  picker: {
-    width: '100%',
-    marginTop: 15,
-    marginLeft: 20,
-    marginRight: 20,
-    borderColor: '#02aba6',
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    alignSelf: 'center',
-    borderRadius: 5,
-  },
-  textView: {
+  listView: {margin: moderateScale(5)},
+  list: {marginHorizontal: moderateScale(16)},
+  avatarView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  listView: {marginBottom: 7},
-  list: {height: 80, marginHorizontal: 20, marginTop: 4},
-  avatarView: {flexDirection: 'row'},
-  medNameView: {flexDirection: 'column', margin: 3},
+  medNameView: {flexDirection: 'column', marginLeft: verticalScale(16)},
   medName: {fontWeight: '600'},
   rem: {marginRight: 12},
+  icon: {
+    flexDirection: 'row',
+  },
 
   //add medicine styles
   flatlistMainInfo: {
@@ -175,10 +140,10 @@ const Styles = StyleSheet.create({
     // backgroundColor:'#000'
   },
   saveTouchable: {
-    
-    // right: 0,
-    // bottom: 0,
-    // alignItems: 'flex-end',
+    right: 0,
+    position: 'absolute',
+    bottom: 0,
+    alignItems: 'flex-end',
     marginEnd: 20,
   },
 });

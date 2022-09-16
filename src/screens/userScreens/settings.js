@@ -1,7 +1,7 @@
 import {Linking, Share, View} from 'react-native';
 import React from 'react';
 import SettingsList from 'react-native-settings-list';
-import styles from '../../styles/settingsStyles';
+import styles from '../../styles/otherScreensStyles/settingsStyles';
 import SubHeader from '../../components/molecules/headers/subHeader';
 
 const Settings = ({navigation}) => {

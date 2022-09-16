@@ -1,29 +1,48 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
-  card: {
-    borderRadius: 22,
-    marginHorizontal: 28,
-    borderWidth: 1.8,
-    height: 50,
-    borderColor: colorPalette.mainColor,
-    elevation: 4,
-    shadowColor: colorPalette.appColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
   container: {
-    marginTop: 4,
-    paddingTop: 8,
-    width: '50%',
-    height: 40,
+    marginTop: verticalScale(6),
+    width: '82%',
+    alignItems: 'flex-start',
+    marginBottom: verticalScale(6),
   },
-  reminder: {
-    fontSize: 20,
-    textAlign: 'center',
-    backgroundColor: colorPalette.basicColor,
+  font: {
     color: colorPalette.mainColor,
+    fontSize: 24,
   },
+  imgContainer: {
+    backgroundColor: colorPalette.basicColor,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '92%',
+    marginTop: verticalScale(10),
+    borderRadius: 20,
+    shadowColor: 'black',
+    elevation: 4,
+  },
+  flatList: {
+    flex: 1,
+    width: '100%',
+  },
+  img: {height: 290, width: 192},
+  card: {
+    borderRadius: 30,
+    borderColor: 'lightgrey',
+    elevation: 3,
+    shadowColor: 'black',
+    marginVertical: verticalScale(6),
+    marginHorizontal: horizontalScale(14),
+  },
+  listView: {margin: moderateScale(5)},
+  list: {marginHorizontal: moderateScale(16)},
+  avatarView: {flexDirection: 'row'},
+  medNameView: {flexDirection: 'column'},
+  medName: {fontWeight: '600'},
 });

@@ -7,7 +7,6 @@ const TouchableButton = ({title}) => {
     <TouchableOpacity
       style={{
         borderRadius: 8,
-        marginTop: 20,
         padding: 12,
         backgroundColor: colorPalette.mainColor,
         width: '40%',
