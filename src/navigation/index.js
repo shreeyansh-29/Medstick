@@ -23,7 +23,6 @@ import SendSnap from '../components/atoms/sendSnap';
 import Prescriptions from '../screens/userScreens/prescriptions';
 import AppointmentReminders from '../screens/userScreens/appointmentReminders';
 import Notifications from '../screens/userScreens/notifications';
-import AddPrescription from '../screens/userScreens/medicines/addPrescription';
 
 const Stack = createNativeStackNavigator();
 
