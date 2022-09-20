@@ -15,6 +15,7 @@ import LoginScreen from '../screens/authScreens/loginScreen';
 import SearchScreen from '../components/organisms/searchScreen';
 import Settings from '../screens/userScreens/settings';
 import About from '../screens/userScreens/aboutApp';
+import AddPrescription from '../screens/userScreens/medicines/addPrescription';
 import UserProfile from '../screens/profile/editProfile';
 import SavedDetails from '../screens/profile/savedDetails';
 import EditProfile from '../screens/profile/editProfile';
@@ -23,6 +24,8 @@ import Prescriptions from '../screens/userScreens/prescriptions';
 import AppointmentReminders from '../screens/userScreens/appointmentReminders';
 import Notifications from '../screens/userScreens/notifications';
 import AddRemainder from '../screens/userScreens/addRemainder';
+import edit from '../components/organisms/alarm/edit';
+import alarm from '../components/organisms/alarm/alarm';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +42,7 @@ const MainNavigation = () => {
         <Stack.Screen name="MedicinePanel" component={MedicinePanel} />
         <Stack.Screen name="AddMedicine" component={AddMedicine} />
         <Stack.Screen name="Report" component={Report} />
+        <Stack.Screen name="Prescription" component={AddPrescription} />
         <Stack.Screen name="Account" component={AccountTab} />
         <Stack.Screen name="CareTaker" component={CareTaker} />
         <Stack.Screen name="Patients" component={Patients} />
@@ -56,10 +60,23 @@ const MainNavigation = () => {
           component={AppointmentReminders}
         />
         <Stack.Screen name="Notifications" component={Notifications} />
+        <Stack.Screen
+          name="edit"
+          component={edit}
+          options={{...headerStyles, title: 'Alarm'}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
+export const headerStyles = {
+  headerStyle: {
+    elevation: 0,
+  },
+  headerTintColor: '#000',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
+};
 
 export default MainNavigation;
-

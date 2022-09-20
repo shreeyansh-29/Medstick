@@ -1,18 +1,14 @@
-import { medicineListConstant } from "../../constant/userMedicine/medicineListConstant";
+import * as types from '../../actionTypes';
 
-const loadMedicineList= (id,token,userId)=>({
-    type:medicineListConstant.medicineListLoad,
-    payload:{
-        id,token,userId
-    }
-})
-const successMedicineList=data=>({
-    type:medicineListConstant.medicineListSuccess,
-    payload:data
-})
-const errorMedicineList=err=>({
-    type:medicineListConstant.medicineListError,
-    payload:err
-})
-
-export {loadMedicineList,successMedicineList,errorMedicineList}
+export const medicineListRequest = payload => ({
+  type: types.USER_MEDICINE_REQUEST,
+  payload,
+});
+export const medicineListSuccess = data => ({
+  type: types.USER_MEDICINE_SUCCESS,
+  data,
+});
+export const medicineListError = err => ({
+  type: types.USER_MEDICINE_ERROR,
+  err
+});

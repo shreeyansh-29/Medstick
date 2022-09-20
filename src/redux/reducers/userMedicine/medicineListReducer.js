@@ -1,43 +1,26 @@
-import { medicineListConstant } from "../../constant/userMedicine/medicineListConstant"
-const initialState={
-    data:null,
-    loading:{
-        medicineListLoader:false,
-    },
-    error:{
-        medicineListError:null
+import {
+  USER_MEDICINE_ERROR,
+  USER_MEDICINE_REQUEST,
+  USER_MEDICINE_SUCCESS,
+} from '../../actionTypes';
+
+const initialState = {
+  data: null,
+  isLoading: false,
+  error: '',
+};
+
+export const medicineListReducer = (state = initialState, action = {}) => {
+  switch (action.type) {
+    case USER_MEDICINE_REQUEST:
+      return {...state, isLoading: true};
+    case USER_MEDICINE_SUCCESS: {
+      return {...state, data: action.payload};
     }
-
-}
-
-const medicineListReducer=(state=initialState,action={})=>{
-    switch(action.type){
-        case medicineListConstant.medicineListLoad:{
-            return{
-                ...state,
-                loading:{...state.loading,medicineListLoader:true},
-                error:{...state.error,medicineListError:null}
-            }
-        }
-        case medicineListConstant.medicineListSuccess:{
-            return {
-                ...state,
-                loading:{...state.loading,medicineListLoader:false},
-                error:{...state.error,medicineListError:null},
-                data:action.payload
-
-            }
-        }
-        case medicineListConstant.medicineListError:{
-            return{
-                ...state,
-                loading:{...state.loading,medicineListLoader:false},
-                error:{...state.error,medicineListError:action.payload}
-            }
-        }
-        default:{
-            return state
-        }
+    case USER_MEDICINE_ERROR: {
+      return {...state,error: action};
     }
-}
-export default medicineListReducer
+    default: 
+      return state;
+  }
+};

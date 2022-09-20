@@ -17,6 +17,14 @@ import {Button, TextInput} from 'react-native-paper';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import DatePicker from 'react-native-date-picker';
 import {styles} from '../../styles/addRemainderStyles';
+import alarmView from '../../components/organisms/alarm/alarmView';
+import {
+  enableAlarm,
+  disableAlarm,
+  getAlarmState,
+  getAllAlarms,
+} from '../../components/organisms/alarm/alarmService';
+import TimePicker from '../../components/molecules/timePicker';
 
 const AddRemainder = props => {
   const [pill, setPill] = useState();
@@ -26,6 +34,27 @@ const AddRemainder = props => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [alarms, setAlarms] = useState(null);
+  const [scheduler, setScheduler] = useState(null);
+  const [alarm, setAlarm] = useState(null);
+
+  useEffect(() => {
+    props.navigation.addListener('focus', async () => {
+      setAlarms(await getAllAlarms());
+      setScheduler(setInterval(fetchState, 10000));
+    });
+    props.navigation.addListener('blur', async () => {
+      clearInterval(scheduler);
+    });
+    fetchState();
+  }, []);
+
+  async function fetchState() {
+    const alarmUid = await getAlarmState();
+    if (alarmUid) {
+      props.navigation.navigate('Ring', {alarmUid});
+    }
+  }
 
   const showDateTimePicker = () => {
     setDatePickerVisibility(true);
@@ -107,9 +136,14 @@ const AddRemainder = props => {
         <View style={{margin: 15, padding: 15}}>
           <Text>__________________________________________________</Text>
         </View>
+        <View>
+          <View style={{marginLeft:25}} >
+            <Text style={{fontSize:30}} >09:26</Text>
+          </View>
+        </View>
         <TouchableOpacity
           onPress={() => {
-            setOpen(true);
+            props.navigation.navigate('edit');
           }}
           style={{position: 'absolute', bottom: 10, marginLeft: '41%'}}>
           <LottieView
@@ -121,21 +155,6 @@ const AddRemainder = props => {
             progress={progress}
           />
         </TouchableOpacity>
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRquestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={styles.container} >
-            <View>
-            {/* fdddddddddddddddddd */}
-            </View>
-          </View>
-        </Modal>
 
         <DatePicker
           modal

@@ -1,9 +1,11 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import {styles} from '../../styles/addRemainderStyles';
+import { getAlarmState, getAllAlarms, disableAlarm, enableAlarm } from './alarmService';
+import {alarmStyles} from '../../../styles/alarmStyles';
 import {useState} from 'react';
+import alarmView from './alarmView';
 
-const alarm = ({navigation}) => {
+export default function ({ navigation }) {
   const [alarms, setAlarms] = useState(null);
   const [scheduler, setScheduler] = useState(null);
 
@@ -26,11 +28,11 @@ const alarm = ({navigation}) => {
   }
 
   return (
-    <View style={styles.innerContainer}>
+    <View style={alarmStyles.innerContainer}>
       {alarms && alarms.length === 0 && <Text>No alarms</Text>}
       {alarms &&
         alarms.map(a => (
-          <AlarmView
+          <alarmView
             key={a.uid}
             uid={a.uid}
             onChange={async active => {
@@ -47,6 +49,5 @@ const alarm = ({navigation}) => {
         ))}
     </View>
   );
-};
+}
 
-export default alarm;
