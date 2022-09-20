@@ -118,8 +118,6 @@ const Styles = StyleSheet.create({
     backgroundColor: colorPalette.basicColor,
   },
   addingPrescription: {
-    marginVertical: verticalScale(8),
-    marginHorizontal: horizontalScale(12),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -131,7 +129,6 @@ const Styles = StyleSheet.create({
   addingPrescriptionTouchable: {
     justifyContent: 'flex-end',
   },
-
   textInput: {
     width: '70%',
   },
@@ -140,8 +137,8 @@ const Styles = StyleSheet.create({
     // backgroundColor:'#000'
   },
   saveTouchable: {
-    right: 0,
     position: 'absolute',
+    right: 0,
     bottom: 0,
     alignItems: 'flex-end',
     marginEnd: 20,
