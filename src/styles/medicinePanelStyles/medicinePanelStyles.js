@@ -1,81 +1,50 @@
-import { StyleSheet } from 'react-native';
-import { colorPalette } from '../../components/atoms/colorPalette';
-import { verticalScale, horizontalScale } from '../../components/atoms/constant';
+import {StyleSheet} from 'react-native';
+import {colorPalette} from '../../components/atoms/colorPalette';
+import {
+  verticalScale,
+  horizontalScale,
+  moderateScale,
+} from '../../components/atoms/constant';
 
 const Styles = StyleSheet.create({
-  flatlistL: {
-    width: '100%',
-    backgroundColor: '#ffff',
-    paddingHorizontal: 40,
-    paddingTop: 20,
-  },
-  text: {
-    margin: 10, fontSize: 18, color: '#02aba6',
-    justifyContent: 'flex-start'
-  },
-  picker: {
-    width: '100%',
-    marginTop: 15,
-    marginLeft: 20,
-    marginRight: 20,
-    borderColor: '#02aba6',
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    alignSelf: 'center',
-    borderRadius: 5,
-  },
-  textView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    width: '100%'
-  },
   //medicine panel styles
-  container: { flex: 1, backgroundColor: '#fafafa' },
-  lottie: { justifyContent: 'center', alignItems: 'center', flex: 1 },
+  container: {flex: 1, backgroundColor: '#fafafa'},
+  lottie: {justifyContent: 'center', alignItems: 'center', flex: 1},
+  lottieView: {width: '70%'},
   flatlist: {
     flex: 1,
+    top: 200,
     backgroundColor: '#fafafa',
     marginTop: verticalScale(16),
   },
-  text: {
-    margin: 10, fontSize: 18, color: '#02aba6',
-    justifyContent:'flex-start'
+  card: {
+    borderRadius: 30,
+    borderColor: 'lightgrey',
+    elevation: 3,
+    shadowColor: 'black',
+    marginVertical: verticalScale(5),
+    marginHorizontal: horizontalScale(14),
   },
-  picker: {
-    width: '100%',
-    marginTop: 15,
-    marginLeft: 20,
-    marginRight: 20,
-    borderColor: '#02aba6',
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    alignSelf: 'center',
-    borderRadius: 5,
-  },
-  textView: {
+  listView: {margin: moderateScale(5)},
+  list: {marginHorizontal: moderateScale(16)},
+  avatarView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    width: '100%'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  listView: { marginBottom: 7 },
-  list: { height: 80, marginHorizontal: 20, marginTop: 4 },
-  avatarView: { flexDirection: 'row' },
-  medNameView: { flexDirection: 'column', margin: 3 },
-  medName: { fontWeight: '600' },
-  rem: { marginRight: 12 },
+  medNameView: {flexDirection: 'column', marginLeft: verticalScale(16)},
+  medName: {fontWeight: '600'},
+  rem: {marginRight: 12},
+  icon: {
+    flexDirection: 'row',
+  },
 
   //add medicine styles
   flatlistMainInfo: {
     shadowColor: '#6777',
     elevation: 20,
     paddingBottom: 20,
-    shadowOffset: { width: 0, height: 10 },
+    shadowOffset: {width: 0, height: 10},
     shadowColor: '#171717',
     shadowOpacity: 0.51,
     shadowRadius: 13,
@@ -95,13 +64,12 @@ const Styles = StyleSheet.create({
   addMedicinesHeader: {
     width: '100%',
     height: '30%',
-    backgroundColor: colorPalette.appColor
-  }
-  ,
+    backgroundColor: colorPalette.appColor,
+  },
   addMedicinesLogo: {
     width: '100%',
     height: '80%',
-    backgroundColor: colorPalette.appColor
+    backgroundColor: colorPalette.appColor,
   },
   saveButton: {
     width: '100%',
@@ -110,10 +78,9 @@ const Styles = StyleSheet.create({
   addPrescriptionIcon: {
     width: '15%',
     marginLeft: 35,
-
   },
   savelogo: {
-    width: '100%'
+    width: '100%',
   },
   touchableOpacity: {
     width: '100%',
@@ -125,18 +92,15 @@ const Styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: colorPalette.appColor,
     justifyContent: 'center',
-
   },
   addPrescriptionContainer: {
     height: '100%',
     width: '100%',
     paddingTop: 10,
     backgroundColor: colorPalette.appColor,
-
   },
   addPrescriptionLottie: {
     alignItems: 'center',
-
   },
   addPrescriptionList: {
     height: '70%',
@@ -149,15 +113,14 @@ const Styles = StyleSheet.create({
   addMedicinePage: {
     backgroundColor: colorPalette.appColor,
     flex: 1,
-    borderTopEndRadius:20,
-    borderTopStartRadius:20,
-    backgroundColor:colorPalette.basicColor,
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
+    backgroundColor: colorPalette.basicColor,
   },
   addingPrescription: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-
   },
   addingPrescriptionIcon: {
     width: '30%',
@@ -166,14 +129,12 @@ const Styles = StyleSheet.create({
   addingPrescriptionTouchable: {
     justifyContent: 'flex-end',
   },
-
   textInput: {
-    width: '70%'
+    width: '70%',
   },
   saveButton: {
     width: '50%',
     // backgroundColor:'#000'
-
   },
   saveTouchable: {
     position: 'absolute',
@@ -181,8 +142,7 @@ const Styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'flex-end',
     marginEnd: 20,
-
-  }
+  },
 });
 
-export default Styles
+export default Styles;

@@ -15,7 +15,7 @@ import {styles} from '../../../styles/patientStyles/myPatientsStyles';
 const MyPatients = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState([
-    {name: 'Manish Raj', phoneNo: '9695072068'},
+    {name: 'Shreeyansh Singh', phoneNo: '9695072068'},
     {name: 'Devanshu', phoneNo: '8391812091'},
     {name: 'Shiva', phoneNo: '8391812091'},
     // {name: 'Yatin Tripathi', phoneNo: '8391812091'},
@@ -28,14 +28,11 @@ const MyPatients = ({navigation}) => {
 
   const renderItem = ({item}) => {
     return (
-      // onPress={() => {
-      //   navigation.navigate('Patient Profile', {
-      //     user_id: item.patientId,
-      //   });
-      // }}
-      // style={styles.card}
-
-      <TouchableOpacity style={styles.top}>
+      <TouchableOpacity
+        style={styles.top}
+        onPress={() => {
+          navigation.navigate('PatientProfile');
+        }}>
         <ListItem
           style={styles.list}
           hasTVPreferredFocus={undefined}
@@ -49,12 +46,6 @@ const MyPatients = ({navigation}) => {
               {item.phoneNo}
             </ListItem.Subtitle>
           </ListItem.Content>
-
-          {/* <TouchableOpacity onPress={() => {}} style={styles.touch}>
-            <View style={styles.icon}>
-              <FontAwesomeIcon icon={faAngleRight} color={'black'} size={25} />
-            </View>
-          </TouchableOpacity> */}
         </ListItem>
       </TouchableOpacity>
     );

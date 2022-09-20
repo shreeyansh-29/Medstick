@@ -11,19 +11,21 @@ import BottomNavigator from './bottomNavigator';
 import CalenderScreen from '../screens/calenderScreen';
 import Patients from '../screens/userScreens/patients/patients';
 import AccountTab from '../screens/userScreens/accountTab';
-import LoginScreen from '../screens/authScreens/loginScreen';
+import LoginScreen from '../screens/authScreens/signUp';
 import SearchScreen from '../components/organisms/searchScreen';
 import Settings from '../screens/userScreens/settings';
 import About from '../screens/userScreens/aboutApp';
-import AddPrescription from '../screens/userScreens/medicines/addPrescription';
-import UserProfile from '../screens/profile/editProfile';
 import SavedDetails from '../screens/profile/savedDetails';
 import EditProfile from '../screens/profile/editProfile';
 import SendSnap from '../components/atoms/sendSnap';
 import Prescriptions from '../screens/userScreens/prescriptions';
 import AppointmentReminders from '../screens/userScreens/appointmentReminders';
 import Notifications from '../screens/userScreens/notifications';
+import SendSnapToCaretaker from '../screens/otherScreens/sendSnapToCaretaker';
 import AddPrescription from '../screens/userScreens/medicines/addPrescription';
+import PatientProfile from '../screens/userScreens/patients/patientProfile';
+import CareTakerProfile from '../screens/userScreens/careTaker/careTakerProfile';
+import AuthScreen from '../screens/authScreens/authScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,12 +37,12 @@ const MainNavigation = () => {
         initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={OnboardingScreen} />
         <Stack.Screen name="Bottom" component={BottomNavigator} />
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="AuthScreen" component={AuthScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="MedicinePanel" component={MedicinePanel} />
         <Stack.Screen name="AddMedicine" component={AddMedicine} />
         <Stack.Screen name="Report" component={Report} />
-        <Stack.Screen name='Prescription' component={AddPrescription} />
+        <Stack.Screen name="Prescription" component={AddPrescription} />
         <Stack.Screen name="Account" component={AccountTab} />
         <Stack.Screen name="CareTaker" component={CareTaker} />
         <Stack.Screen name="Patients" component={Patients} />
@@ -57,6 +59,12 @@ const MainNavigation = () => {
           component={AppointmentReminders}
         />
         <Stack.Screen name="Notifications" component={Notifications} />
+        <Stack.Screen
+          name="SendSnapToCaretaker"
+          component={SendSnapToCaretaker}
+        />
+        <Stack.Screen name="PatientProfile" component={PatientProfile} />
+        <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

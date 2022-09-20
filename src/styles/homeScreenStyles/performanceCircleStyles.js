@@ -1,22 +1,23 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import {verticalScale} from '../../components/atoms/constant';
 
-export const styles = StyleSheet.create({
+export const Styles = StyleSheet.create({
   performanceContainer: {
     borderWidth: 0,
     alignItems: 'center',
-    paddingBottom: 12,
+    paddingBottom: verticalScale(12),
     backgroundColor: colorPalette.basicColor,
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,
   },
-  outerCircle: {marginTop: 4},
+  outerCircle: {marginTop: verticalScale(4)},
   percentage: {fontSize: 18, color: colorPalette.redPercentageColor},
   performance: {
     // color: colorPalette.mainColor,
     color: '#EB5E0B',
-    marginTop: 20,
-    marginBottom: 8,
+    marginTop: verticalScale(20),
+    marginBottom: verticalScale(8),
     fontSize: 24,
     // paddingTop: 10,
   },

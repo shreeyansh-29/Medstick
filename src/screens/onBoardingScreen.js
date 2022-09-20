@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Image} from 'react-native';
-import styles from '../styles/onBoardingStyles';
+import styles from '../styles/otherScreensStyles/onBoardingStyles';
 
 const OnboardingScreen = ({navigation}) => {
   setTimeout(() => {

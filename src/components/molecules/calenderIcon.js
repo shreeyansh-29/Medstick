@@ -1,10 +1,7 @@
 import {View, TouchableOpacity, Animated} from 'react-native';
 import React, {useRef, useEffect} from 'react';
-import {styles} from '../../styles/reportScreenStyles/calenderIconStyles';
+import {styles} from '../../styles/reportScreenStyles/reportScreenStyles';
 import LottieView from 'lottie-react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../atoms/colorPalette';
-import {faCalendarPlus} from '@fortawesome/free-solid-svg-icons';
 
 const CalenderIcon = ({navigation}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -22,7 +19,7 @@ const CalenderIcon = ({navigation}) => {
           navigation.navigate('Calender');
         }}>
         <LottieView
-          style={{height: 40, width: 40}}
+          style={styles.lottie}
           speed={0.6}
           source={require('../../assets/animation/calender2.json')}
           progress={progress}
