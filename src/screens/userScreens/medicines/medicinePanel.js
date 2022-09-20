@@ -6,27 +6,27 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import React, { useRef, useEffect } from 'react';
+import React, {useRef, useEffect} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
-import { Card, List } from 'react-native-paper';
-import { Avatar, ListItem } from 'react-native-elements';
-import { faClock, faPills, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { colorPalette } from '../../../components/atoms/colorPalette';
+import {Card, List} from 'react-native-paper';
+import {Avatar, ListItem} from 'react-native-elements';
+import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {colorPalette} from '../../../components/atoms/colorPalette';
 import {
   horizontalScale,
   verticalScale,
 } from '../../../components/atoms/constant';
-import Styles from "../../../styles/medicinePanelStyles/medicinePanelStyles"
-import { medicineListRequest } from '../../../redux/action/userMedicine/medicineListAction';
+import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
+import {medicineListRequest} from '../../../redux/action/userMedicine/medicineListAction';
 
-const MedicinePanel = ({ navigation }) => {
+const MedicinePanel = ({navigation}) => {
   const medicines = [
-    { name: 'Paracetamol', type: 'Tablet', power: '600 mg', status: 0 },
-    { name: 'Triohale', type: 'Inhaler', power: '5 dose', status: 1 },
-    { name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1 },
+    {name: 'Paracetamol', type: 'Tablet', power: '600 mg', status: 0},
+    {name: 'Triohale', type: 'Inhaler', power: '5 dose', status: 1},
+    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
   ];
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -36,22 +36,8 @@ const MedicinePanel = ({ navigation }) => {
       useNativeDriver: true,
     }).start();
   }, []);
-  
-  const getMedicine = () =>{
-    fetch("https://e9d6-106-51-81-179.in.ngrok.io")
-    .then((res)=>res.json())
-    .then(resJson =>{
-      console.log('data',resJson)
-      setData(resJson);
-    }).catch(e=>{console.log(e)})
-  }
-  useEffect(()=>{
-    getMedicine();
-  },[])
 
-
-
-  const renderItem = ({ item }) => {
+  const renderItem = ({item}) => {
     return (
       <>
         <Animatable.View animation="zoomInUp" duration={400}>
@@ -85,7 +71,7 @@ const MedicinePanel = ({ navigation }) => {
                   <TouchableOpacity
                     style={Styles.rem}
                     onPress={() =>
-                      navigation.navigate("AddRemainder", {id: item.index})
+                      navigation.navigate('AddRemainder', {id: item.index})
                     }>
                     <FontAwesomeIcon
                       icon={faClock}
@@ -131,7 +117,7 @@ const MedicinePanel = ({ navigation }) => {
       {medicines.length === 0 ? (
         <View style={Styles.lottie}>
           <LottieView
-            style={{ width: '60%' }}
+            style={{width: '60%'}}
             speed={0.8}
             source={require('../../../assets/animation/noMedicine2.json')}
             progress={progress}

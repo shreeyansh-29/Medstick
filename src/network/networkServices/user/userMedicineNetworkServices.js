@@ -3,10 +3,9 @@ import {USER_MEDICINE} from '../../../constants/apiUrl';
 import RequestService from '../../requestService';
 
 class UserMedicineNetworkService {
-  getUserMedicine(payload) {
-    console.log(payload);
+  async getUserMedicine(payload) {
     const {id} = payload.payload;
-    const token = await AsyncStorage.getItem('accessToken')
+    const token = await AsyncStorage.getItem('accessToken');
     return RequestService.getRequest(`${USER_MEDICINE}?userId=${id}&id=${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,

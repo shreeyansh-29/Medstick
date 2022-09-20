@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import medicineListReducer from './userMedicine/medicineListReducer';
+import {medicineListReducer} from './userMedicine/medicineListReducer';
 
 const rootReducer = combineReducers({
   medicineList: medicineListReducer,
