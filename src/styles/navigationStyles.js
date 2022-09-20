@@ -1,8 +1,8 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  addbtn: {marginBottom: 57},
-  btn: {height: 84, width: 84},
+  addbtn: {marginBottom: 5},
+  btn: {height: 72, width: 72},
   ripple: {
     justifyContent: 'center',
     alignItems: 'center',

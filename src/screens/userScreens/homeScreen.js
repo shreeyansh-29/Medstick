@@ -23,7 +23,8 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../styles/homeScreenStyles/homeScreenStyles';
-import {verticalScale} from '../../components/atoms/constant';
+import CircularProgress from 'react-native-circular-progress-indicator';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
 
 const medicines = [
   {name: 'Paracetamol', dose: '200mg'},
@@ -34,11 +35,11 @@ const medicines = [
 const HomeScreen = ({navigation}) => {
   return (
     <>
+      <View style={styles.background} />
       <View style={styles.container}>
-        <View style={styles.background} />
         <MainHeader title={'Medstick'} />
-        {/* <View style={{flex: 1, width: '100%'}}> */}
-        {/* <ScrollView
+        {/* <View style={{flex: 1, width: '100%'}}>
+          <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               width: '100%',

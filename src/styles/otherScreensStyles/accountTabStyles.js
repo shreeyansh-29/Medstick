@@ -38,4 +38,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: verticalScale(16),
   },
+  lineCont: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: verticalScale(16),
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'lightgrey',
+    marginHorizontal: horizontalScale(24),
+  },
 });

@@ -24,7 +24,9 @@ const SendSnap = ({navigation}) => {
           onPress={async () => {
             const data = await takePicture();
             console.log(data.uri);
-            navigation.navigate('SendSnapToCaretaker');
+            navigation.navigate('SendSnapToCaretaker', {
+              image_uri: data.uri,
+            });
           }}
           style={styles.image}>
           <LottieView

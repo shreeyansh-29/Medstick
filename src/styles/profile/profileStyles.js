@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   saveButtonView: {paddingBottom: 20},
   saveButton: {
     backgroundColor: colorPalette.mainColor,
-    width: 300,
+    width: '48%',
     marginTop: 8,
     borderRadius: 30,
   },

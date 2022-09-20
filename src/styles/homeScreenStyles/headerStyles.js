@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subHeader: {
-    height: verticalScale(54),
+    height: verticalScale(50),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   },
   backIcon: {
     flex: 0.2,
-    paddingLeft: horizontalScale(14),
+    paddingLeft: horizontalScale(20),
     alignItems: 'flex-start',
     justifyContent: 'center',
   },

@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  signUpCont: {
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    marginTop: 15,
+    width: '81%',
   },
-  signInButton: {width: 292, height: 58, margin: 20, borderRadius: 40},
+  signInCont: {alignItems: 'center', width: '83%'},
+  signInButton: {width: '100%', height: 54, borderRadius: 44, marginTop: 6},
 });

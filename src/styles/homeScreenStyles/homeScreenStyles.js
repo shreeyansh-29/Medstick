@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: colorPalette.backgroundColor,
+    // backgroundColor: colorPalette.backgroundColor,
   },
   card: {
     borderRadius: 20,

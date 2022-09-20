@@ -25,7 +25,7 @@ const CareTakerRequest = () => {
               size={80}
               rounded
               source={require('../../../assets/images/shreeyansh.jpg')}
-            />
+            />  
           </View>
           <View style={styles.container1}>
             <ListItem

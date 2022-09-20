@@ -8,6 +8,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  img: {width: 400, height: 400},
+  img: {width: '100%', height: '100%'},
 });
 export default styles;

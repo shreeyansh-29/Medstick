@@ -10,6 +10,7 @@ import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faEllipsisVertical, faPills} from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import {Picker} from '@react-native-picker/picker';
 
 const Reminders = () => {
   const [reminders, setReminders] = useState([
@@ -89,10 +90,7 @@ const Reminders = () => {
                 </View>
               </ListItem.Content>
 
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Add Reminder', {id: item.index})
-                }>
+              <TouchableOpacity onPress={() => {}}>
                 <FontAwesomeIcon
                   icon={faEllipsisVertical}
                   color={colorPalette.mainColor}

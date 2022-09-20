@@ -12,9 +12,18 @@ export const styles = StyleSheet.create({
     marginHorizontal: 14,
     marginBottom: 4,
   },
-  cardInner: {flexDirection: 'row', paddingVertical: 4},
-  avatar: {marginTop: 10, marginLeft: 20},
-  container1: {flexDirection: 'column'},
+  cardInner: {
+    flexDirection: 'row',
+    paddingVertical: 4,
+  },
+  avatar: {
+    marginLeft: 20,
+    justifyContent: 'center',
+  },
+  container1: {
+    flexDirection: 'column',
+    width: '80%',
+  },
   list: {
     flexDirection: 'row',
     justifyContent: 'space-between',
