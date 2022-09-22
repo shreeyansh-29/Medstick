@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
     marginHorizontal: horizontalScale(24),
   },
-  imgCont: {marginTop: verticalScale(28), marginBottom: verticalScale(8)},
+  imgCont: {marginTop: verticalScale(50), marginBottom: verticalScale(8)},
   img: {
     width: 120,
     height: 120,
