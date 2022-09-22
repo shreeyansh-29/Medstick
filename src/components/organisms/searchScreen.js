@@ -11,7 +11,11 @@ const SearchScreen = ({navigation}) => {
       <SubHeader title={'Search'} navigation={navigation} />
 
       <TextInput
-        style={{marginHorizontal: 20,marginTop: 10}}
+        style={{
+          marginHorizontal: 20,
+          marginTop: 10,
+          outlineColor: colorPalette.mainColor,
+        }}
         id="name"
         label="Search Name"
         value={text}
@@ -20,13 +24,6 @@ const SearchScreen = ({navigation}) => {
         outlineColor={colorPalette.mainColor}
         activeOutlineColor={colorPalette.mainColor}
       />
-      {/* <TextInput
-          placeholder="Search"
-          value={text}
-          onChangeText={text => setText(text)}
-          activeOutlineColor={colorPalette.mainColor}
-          activeUnderlineColor={colorPalette.mainColor}
-        /> */}
     </View>
   );
 };

@@ -7,6 +7,7 @@ export const editProfileRequest = payload => {
   };
 };
 export const editProfileSuccess = payload => {
+  console.log('action', payload);
   return {
     type: types.EDIT_PROFILE_SUCCESS,
     payload,
