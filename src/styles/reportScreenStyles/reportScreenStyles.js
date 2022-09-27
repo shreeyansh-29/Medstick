@@ -4,13 +4,13 @@ import {colorPalette} from '../../components/atoms/colorPalette';
 export const styles = StyleSheet.create({
   report: {
     flex: 1,
-    backgroundColor: colorPalette.basicColor,
+    // backgroundColor: colorPalette.basicColor,
   },
   reportContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 0.5,
-    backgroundColor: colorPalette.basicColor,
+    // backgroundColor: colorPalette.basicColor,
   },
   analytics: {
     alignItems: 'center',
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     paddingTop: 50,
     borderRadius: 20,
     paddingBottom: 50,
-    backgroundColor: "#EEEEEE",
+    backgroundColor: colorPalette.basicColor,
   },
   font: {
     color: colorPalette.mainColor,
@@ -51,4 +51,10 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
   },
+  calenderIcon: {
+    position: 'absolute',
+    right: '16%',
+    top: '1.5%',
+  },
+  lottie: {height: 40, width: 40},
 });

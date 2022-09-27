@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../components/atoms/colorPalette';
+import {colorPalette} from '../../components/atoms/colorPalette';
 
 const styles = StyleSheet.create({
   container: {
@@ -8,6 +8,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  img: {width: 400, height: 400},
+  img: {width: '100%', height: '100%'},
 });
 export default styles;

@@ -10,7 +10,6 @@ import {
   faCapsules,
   faCircleUser,
   faFileContract,
-  faGear,
   faHouseMedical,
 } from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../components/atoms/colorPalette';
@@ -18,6 +17,7 @@ import AddMedicine from '../screens/userScreens/medicines/addMedicine';
 import AccountTab from '../screens/userScreens/accountTab';
 import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
 import AddButton from '../components/atoms/addButton';
+import {styles} from '../styles/navigationStyles';
 
 const TabBar = [
   {route: 'Home', component: HomeScreen, iconName: faHouseMedical},
@@ -38,26 +38,16 @@ const BottomNavigator = ({navigation}) => {
     return (
       <Ripple
         onPress={onPress}
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          flex: 1,
-          // padding: 15,
-          flexDirection: 'column',
-        }}
+        style={styles.ripple}
         rippleCentered={true}
         rippleColor={colorPalette.colorTabs}
         rippleDuration={800}>
         <FontAwesomeIcon icon={item.iconName} size={size} color={colors} />
-        <Text
-          style={{
-            fontSize: 11,
-            marginTop: 4,
-            color: focused ? 'black' : 'grey',
-            fontWeight: focused ? '500' : '300',
-          }}>
-          {item.route}
-        </Text>
+        {focused ? (
+          <Text style={styles.focused}>{item.route}</Text>
+        ) : (
+          <Text style={styles.notFocused}>{item.route}</Text>
+        )}
       </Ripple>
     );
   };
@@ -66,7 +56,7 @@ const BottomNavigator = ({navigation}) => {
       screenOptions={{
         tabBarStyle: {
           height: 58,
-          backgroundColor: 'white',
+          backgroundColor: colorPalette.basicColor,
           paddingHorizontal: 16,
         },
         tabBarShowLabel: false,
@@ -83,7 +73,7 @@ const BottomNavigator = ({navigation}) => {
               component={item.component}
               options={{
                 tabBarIcon: () => (
-                  <View style={{marginBottom: 57}}>
+                  <View style={styles.addbtn}>
                     <AddButton
                       routeName={'AddMedicine'}
                       navigation={navigation}
@@ -111,7 +101,3 @@ const BottomNavigator = ({navigation}) => {
 };
 
 export default BottomNavigator;
-
-const styles = StyleSheet.create({
-  btn: {height: 84, width: 84},
-});

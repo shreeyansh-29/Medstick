@@ -1,19 +1,19 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import {verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   calendar: {
     height: 120,
-    paddingTop: 22,
-    paddingBottom: 24,
+    paddingTop: verticalScale(22),
+    paddingBottom: verticalScale(24),
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
-    // borderTopWidth: 0,
   },
   calenderHeaderStyle: {
     color: colorPalette.mainColor,
     fontSize: 20,
-    paddingBottom: 18,
+    paddingBottom: verticalScale(18),
   },
   calendarColor: colorPalette.basicColor,
   dateNumberStyle: {color: colorPalette.mainColor, fontSize: 11.5},

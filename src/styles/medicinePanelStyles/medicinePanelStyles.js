@@ -1,18 +1,31 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {verticalScale, horizontalScale} from '../../components/atoms/constant';
+import {
+  verticalScale,
+  horizontalScale,
+  moderateScale,
+} from '../../components/atoms/constant';
 
 const Styles = StyleSheet.create({
   //medicine panel styles
-  container: {flex: 1, backgroundColor: '#FAFAFA'},
+  container: {flex: 1, backgroundColor: '#fafafa'},
   lottie: {justifyContent: 'center', alignItems: 'center', flex: 1},
   lottieView: {width: '70%'},
   flatlist: {
     flex: 1,
     top: 200,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#fafafa',
     marginTop: verticalScale(16),
   },
+  image: {
+    borderColor: 'white',
+    position: 'absolute',
+    bottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  lottieAnimation: {width: 240, height: 240},
   card: {
     borderRadius: 30,
     borderColor: 'lightgrey',
@@ -21,6 +34,7 @@ const Styles = StyleSheet.create({
     marginVertical: verticalScale(5),
     marginHorizontal: horizontalScale(14),
   },
+  camera: {height: '100%'},
   listView: {margin: moderateScale(5)},
   list: {marginHorizontal: moderateScale(16)},
   avatarView: {
@@ -125,7 +139,6 @@ const Styles = StyleSheet.create({
   addingPrescriptionTouchable: {
     justifyContent: 'flex-end',
   },
-
   textInput: {
     width: '70%',
   },

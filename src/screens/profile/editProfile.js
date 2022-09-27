@@ -26,6 +26,8 @@ import styles from '../../styles/profile/profileStyles';
 import SavedDetails from './savedDetails';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import {useDispatch} from 'react-redux';
+import {editProfileRequest} from '../../redux/action/editProfileAction/editProfileAction';
 
 const loginValidationSchema = yup.object().shape({
   Bio: yup.string().required('Bio is Required'),
@@ -50,6 +52,7 @@ const loginValidationSchema = yup.object().shape({
 });
 
 const EditProfile = ({navigation}) => {
+  const dispatch = useDispatch();
   const [name, namestate] = React.useState({
     user: {name: 'Not logged in!', photo: '', email: ''},
   });
@@ -59,26 +62,38 @@ const EditProfile = ({navigation}) => {
 
   const [editenabled, editstate] = React.useState(false);
 
-  // async function storeuserdetails(values: any) {
-  //   loadstate(true);
-  //   await AsyncStorage.setItem('bio', values.Bio);
-  //   await AsyncStorage.setItem('contact', values.Contact);
-  //   await AsyncStorage.setItem('age', values.Age);
-  //   await AsyncStorage.setItem('weight', values.Weight);
-  //   await AsyncStorage.setItem('gender', values.Gender);
-  //   await AsyncStorage.setItem('maritalstatus', values.MaritalStatus);
-  //   await AsyncStorage.setItem('bloodgroup', values.BloodGroup);
+  async function storeuserdetails(values) {
+    loadstate(true);
+    await AsyncStorage.setItem('bio', values.Bio);
+    await AsyncStorage.setItem('contact', values.Contact);
+    await AsyncStorage.setItem('age', values.Age);
+    await AsyncStorage.setItem('weight', values.Weight);
+    await AsyncStorage.setItem('gender', values.Gender);
+    await AsyncStorage.setItem('maritalstatus', values.MaritalStatus);
+    await AsyncStorage.setItem('bloodgroup', values.BloodGroup);
 
-  //   let sbio = await AsyncStorage.getItem('bio');
-  //   let scontact = await AsyncStorage.getItem('contact');
-  //   let sage = await AsyncStorage.getItem('age');
-  //   let sweight = await AsyncStorage.getItem('weight');
-  //   let sgender = await AsyncStorage.getItem('gender');
-  //   let maritalstatus = await AsyncStorage.getItem('maritalstatus');
-  //   let sblood = await AsyncStorage.getItem('bloodgroup');
+    let sbio = await AsyncStorage.getItem('bio');
+    let scontact = await AsyncStorage.getItem('contact');
+    let sage = await AsyncStorage.getItem('age');
+    let sweight = await AsyncStorage.getItem('weight');
+    let sgender = await AsyncStorage.getItem('gender');
+    let maritalstatus = await AsyncStorage.getItem('maritalstatus');
+    let sblood = await AsyncStorage.getItem('bloodgroup');
 
-  //   const user_id = await AsyncStorage.getItem('user_id');
-
+    const user_id = await AsyncStorage.getItem('user_id');
+    dispatch(
+      editProfileRequest({
+        user_id,
+        bio: sbio,
+        age: sage,
+        usercontact: scontact,
+        gender: sgender,
+        martialStatus: maritalstatus,
+        bloodGroup: sblood,
+        weight: sweight,
+      }),
+    );
+  }
   //   await fetch(`${API_URL}/api/v1/user-details?userId=${user_id}`, {
   //     method: 'PUT',
   //     body: JSON.stringify({
@@ -347,7 +362,6 @@ const EditProfile = ({navigation}) => {
                                   value="BloodGroup"
                                   style={styles.pickerItem}
                                 />
-
                                 <Picker.Item label="A+" value="A+" />
                                 <Picker.Item label="A-" value="A" />
                                 <Picker.Item label="B+" value="B+" />

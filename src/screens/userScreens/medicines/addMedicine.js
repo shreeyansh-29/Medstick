@@ -1,16 +1,23 @@
-import { View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Animated } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  Animated,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import AddMedicinesHeader from '../../../components/molecules/headers/addMedicinesHeader';
-import { styles } from '../../../styles/homeScreenStyles/headerStyles';
-import { colorPalette } from '../../../components/atoms/colorPalette'
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles'
-import { TextInput } from 'react-native-paper';
-import { Picker } from '@react-native-picker/picker';
+import {styles} from '../../../styles/homeScreenStyles/headerStyles';
+import {colorPalette} from '../../../components/atoms/colorPalette';
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
+import {TextInput} from 'react-native-paper';
+import {Picker} from '@react-native-picker/picker';
 import LottieView from 'lottie-react-native';
 
-const AddMedicines = ({ navigation }) => {
+const AddMedicines = ({navigation}) => {
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     Animated.timing(progress, {
@@ -53,12 +60,12 @@ const AddMedicines = ({ navigation }) => {
     setType();
   }, [pill]);
   return (
-    <View style={Styles.addMedicinePage }>
+    <View style={Styles.addMedicinePage}>
       <View style={Styles.addMedicinesHeader}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => {
-            navigation.pop()
+            navigation.pop();
           }}>
           <FontAwesomeIcon
             icon={faArrowLeft}
@@ -66,12 +73,10 @@ const AddMedicines = ({ navigation }) => {
             color={colorPalette.basicColor}
           />
         </TouchableOpacity>
-        <AddMedicinesHeader
-          navigation={navigation}
-        />
+        <AddMedicinesHeader navigation={navigation} />
       </View>
-      <View style={Styles.constainer} >
-        <ScrollView >
+      <View style={Styles.constainer}>
+        <ScrollView>
           <KeyboardAvoidingView>
             <TextInput
               id="name"
@@ -82,8 +87,7 @@ const AddMedicines = ({ navigation }) => {
               outlineColor="#02aba6"
               activeOutlineColor="#02aba6"
             />
-            <View
-              style={Styles.picker}>
+            <View style={Styles.picker}>
               <Picker
                 id="picker1"
                 placeholder="Select Medicine Type"
@@ -95,10 +99,9 @@ const AddMedicines = ({ navigation }) => {
                 <Picker.Item label="Syrup" value="syrup" />
               </Picker>
             </View>
-            <View
-              style={Styles.textView}>
+            <View style={Styles.textView}>
               <TextInput
-                style={{ width: '47%' }}
+                style={{width: '47%'}}
                 id="name"
                 label="Dose"
                 value={dose}
@@ -109,7 +112,7 @@ const AddMedicines = ({ navigation }) => {
               />
               <TextInput
                 id="name"
-                style={{ width: '47%' }}
+                style={{width: '47%'}}
                 label="Dose Type"
                 value={doseType}
                 disabled="true"
@@ -119,14 +122,11 @@ const AddMedicines = ({ navigation }) => {
                 activeOutlineColor="#02aba6"
               />
             </View>
-            <View
-              style={Styles.textView}>
-              <Text style={Styles.text}>
-                Stock Unit
-              </Text>
+            <View style={Styles.textView}>
+              <Text style={Styles.text}>Stock Unit</Text>
               <TextInput
                 id="name"
-                style={{ width: '47%' }}
+                style={{width: '47%'}}
                 label="units"
                 value={stock}
                 mode="outlined"
@@ -142,12 +142,10 @@ const AddMedicines = ({ navigation }) => {
                 justifyContent: 'space-between',
                 marginTop: 10,
               }}>
-              <Text style={Styles.text}>
-                Notify me when only{' '}
-              </Text>
+              <Text style={Styles.text}>Notify me when only </Text>
               <TextInput
                 id="name"
-                style={{ width: '47%' }}
+                style={{width: '47%'}}
                 label="units"
                 value={limitStock}
                 mode="outlined"
@@ -158,8 +156,12 @@ const AddMedicines = ({ navigation }) => {
               />
             </View>
             <View style={Styles.textView}>
-              <Text style={Styles.text}>Add Prescription Here   </Text>
-              <TouchableOpacity style={Styles.touchableOpacity} onPress={() => { navigation.navigate('Prescription') }}>
+              <Text style={Styles.text}>Add Prescription Here </Text>
+              <TouchableOpacity
+                style={Styles.touchableOpacity}
+                onPress={() => {
+                  navigation.navigate('Prescription');
+                }}>
                 <LottieView
                   style={Styles.addPrescriptionIcon}
                   speed={0.7}
@@ -180,6 +182,6 @@ const AddMedicines = ({ navigation }) => {
         </ScrollView>
       </View>
     </View>
-  )
-}
-export default AddMedicines
+  );
+};
+export default AddMedicines;
