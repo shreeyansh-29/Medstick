@@ -1,6 +1,10 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {verticalScale} from '../../components/atoms/constant';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   //cn --- caretakerName
@@ -16,40 +20,34 @@ export const styles = StyleSheet.create({
   // cnView: {marginTop: 5},
 
   //mn --- medicineNAme
-  mnView: {marginTop: 15, marginBottom: 6},
-  mnText: {marginLeft: 8, fontSize: 18, fontWeight: '700', color: '#858383'},
+  mnView: {marginTop: verticalScale(14), marginBottom: verticalScale(5)},
+  mnText: {
+    marginLeft: horizontalScale(6),
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#858383',
+  },
 
   //main container
-  container: {flex: 1, backgroundColor: 'white'},
-  modal: {alignItems: 'center'},
-  modalOuterView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 200,
-  },
-  modalInnerView: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    width: '70%',
-    height: '50%',
-  },
+  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
   container1: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    margin: 10,
+    margin: moderateScale(9),
   },
   container1Text: {fontWeight: 'bold', fontSize: 20},
   image: {height: '100%', width: '100%', borderRadius: 10},
   imgContainer: {
     height: verticalScale(260),
-    padding: 7,
+    padding: moderateScale(7),
   },
   //BottomButton
   button: {
     backgroundColor: colorPalette.mainColor,
-    marginHorizontal: 100,
-    paddingVertical: 10,
+    marginHorizontal: horizontalScale(100),
+    paddingVertical: verticalScale(10),
+    borderRadius: 8,
   },
   buttonContainer: {marginVertical: 100},
   share: {
@@ -57,19 +55,26 @@ export const styles = StyleSheet.create({
     color: colorPalette.basicColor,
     fontSize: 16,
   },
-  shareIcon: {marginRight: 8},
+  shareIcon: {marginRight: horizontalScale(8)},
   shareCont: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colorPalette.mainColor,
-    padding: 12,
+    padding: moderateScale(12),
     borderRadius: 8,
   },
   parentCont: {
-    paddingHorizontal: 10,
+    paddingHorizontal: horizontalScale(10),
     flex: 1,
     backgroundColor: colorPalette.backgroundColor,
   },
-  renderMeds: {marginHorizontal: 9, marginTop: -14, marginBottom: 10},
-  renderCT: {marginHorizontal: 9, marginTop: -14},
+  renderMeds: {
+    marginHorizontal: horizontalScale(7),
+    marginTop: verticalScale(-14),
+    marginBottom: verticalScale(10),
+  },
+  renderCT: {
+    marginHorizontal: horizontalScale(7),
+    marginTop: verticalScale(-14),
+  },
 });

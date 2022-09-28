@@ -6,7 +6,7 @@ import {deletePatientReqReducer} from './patients/deletePatientReqReducer';
 import {myPatientsReducer} from './patients/myPatientsReducer';
 import {patientsRequestReducer} from './patients/patientsRequestReducer';
 import {signUpReducer} from './signUpReducer/signUpReducer';
-import {sendSnapReducer} from './sendSnapReducer';
+import {sendSnapReducer} from './otherScreenReducer/sendSnapReducer';
 import medicineListReducer from './userMedicine/medicineListReducer';
 
 const rootReducer = combineReducers({

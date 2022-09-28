@@ -3,7 +3,7 @@ import {
   SEND_SNAP_ERROR,
   SEND_SNAP_REQUEST,
   SEND_SNAP_SUCCESS,
-} from '../actionTypes';
+} from '../../actionTypes';
 
 const initialState = {
   data: null,
