@@ -3,11 +3,10 @@ class RequestService {
   getRequest(url, object) {
     return axios.get(url, object);
   }
-  postRequest(url, object) {
-    return axios.post(url, object);
+  postRequest(url, object, headers) {
+    return axios.post(url, object, headers);
   }
   putRequest(url, object, headers) {
-    console.log(object);
     return axios.put(url, object, headers);
   }
   deleteRequest(url) {

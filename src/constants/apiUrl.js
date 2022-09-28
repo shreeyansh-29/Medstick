@@ -6,3 +6,4 @@ export const MY_PATIENTS = `${apiUrl}/request/my-patients`;
 export const PATIENTS_REQUEST = `${apiUrl}/request/patient-requests`;
 export const EDIT_PROFILE = `${apiUrl}/user-details`;
 export const ACCEPT_REQUEST = `${apiUrl}/request/accepted`;
+export const SEND_SNAP = `${apiUrl}/image`;
