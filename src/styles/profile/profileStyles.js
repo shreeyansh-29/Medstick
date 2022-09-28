@@ -2,20 +2,19 @@ import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
 
 const styles = StyleSheet.create({
-  container: {height: '100%', backgroundColor: 'white'},
-  container1: {
-    backgroundColor: 'white',
-    height: '100%',
-    flexDirection: 'column',
-    width: '100%',
-  },
-  top: {
-    backgroundColor: colorPalette.mainColor,
-    marginBottom: 12,
-    justifyContent: 'center',
+  container: {
+    flex: 1,
+    backgroundColor: colorPalette.backgroundColor,
     alignItems: 'center',
+  },
+  container1: {
+    backgroundColor: colorPalette.mainColor,
+    height: 190,
+    width: '100%',
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   avatar: {
     width: 100,
@@ -23,19 +22,27 @@ const styles = StyleSheet.create({
     borderRadius: 83,
     borderWidth: 4,
     borderColor: 'white',
-    alignSelf: 'center',
-    marginTop: 20,
-    marginBottom: 10,
   },
-  topItem: {alignItems: 'center', marginBottom: 8},
-  topItemText1: {color: 'white', fontWeight: 'bold', fontSize: 20},
-  topItemText2: {color: 'white', fontWeight: 'bold', marginVertical: 4},
+  topItem: {
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  topItemText1: {color: 'white', fontWeight: 'bold', fontSize: 21},
+  topItemText2: {
+    fontSize: 16,
+    color: 'white',
+    fontWeight: 'bold',
+    marginTop: 6,
+  },
   editButton: {
     backgroundColor: colorPalette.mainColor,
-    width: '48%',
-    borderRadius: 30,
+    width: '40%',
+    borderRadius: 10,
   },
-  editButtonConatiner: {alignItems: 'center'},
+  editButtonConatiner: {
+    alignItems: 'center',
+    marginTop: 10,
+  },
   inputContainer: {
     backgroundColor: 'white',
     width: '95%',
@@ -111,6 +118,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   saveButtonContainer: {alignItems: 'center'},
+
+  //savedDetails
   sd: {
     marginTop: 10,
     marginLeft: 8,
@@ -119,11 +128,10 @@ const styles = StyleSheet.create({
   sdContainer: {
     flex: 1,
     flexDirection: 'row',
-    marginLeft: 0,
     borderBottomWidth: 1,
     borderColor: 'lightgrey',
-    marginBottom: 12,
     padding: 15,
+    alignItems: 'center',
   },
   sdSubContainer: {
     justifyContent: 'center',

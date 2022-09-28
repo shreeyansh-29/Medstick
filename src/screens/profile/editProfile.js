@@ -55,7 +55,7 @@ const EditProfile = ({navigation}) => {
 
   const [editenabled, editstate] = React.useState(false);
 
-    const handleClick = async values => {
+  const handleClick = async values => {
     loadstate(true);
     await AsyncStorage.setItem('bio', values.Bio);
     await AsyncStorage.setItem('contact', values.Contact);
@@ -98,250 +98,63 @@ const EditProfile = ({navigation}) => {
   return (
     <View style={styles.container}>
       <SubHeader navigation={navigation} title={'Profile'} />
-      <ScrollView>
-        <Toast visibilityTime={1500}></Toast>
-        <View style={styles.container1}>
-          <View style={styles.top}>
-            <Image source={{uri: img}} style={styles.avatar}></Image>
-            <View style={styles.topItem}>
-              <Text style={styles.topItemText1}>{name.user.name}</Text>
-              <Text style={styles.topItemText2}>{name.user.email}</Text>
-            </View>
-          </View>
-          <View>
-            <Button
-              title="Edit profile"
-              buttonStyle={styles.editButton}
-              containerStyle={styles.editButtonConatiner}
-              onPress={() => editstate(true)}></Button>
-          </View>
-          <View>
-            <View>
-              {editenabled ? (
-                <>
-                  <View>
-                    <Formik
-                      enableReinitialize
-                      validationSchema={profileValidationSchema}
-                      initialValues={{
-                        Bio: '',
-                        Contact: '',
-                        DateOfBirth: '',
-                        Country: '',
-                        Gender: '',
-                        BloodGroup: '',
-                      }}
-                      onSubmit={values => handleClick(values)}>
-                      {({
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        values,
-                        errors,
-                        isValid,
-                        touched,
-                        setFieldValue,
-                      }) => (
-                        <View style={styles.inputContainer}>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              borderBottomWidth: 1,
-                              borderColor: 'lightgrey',
-                            }}>
-                            <FontAwesomeIcon
-                              style={{marginLeft: 20}}
-                              size={18}
-                              icon={faUser}
-                              color={colorPalette.mainColor}
-                            />
-                            <TextInput
-                              label=" Bio"
-                              mode="flat"
-                              style={styles.textInput}
-                              onChangeText={handleChange('Bio')}
-                              onBlur={handleBlur('Bio')}
-                              value={values.Bio}
-                              outlineColor={colorPalette.mainColor}
-                              activeOutlineColor={colorPalette.mainColor}
-                            />
-                            {errors.Bio && touched.Bio && (
-                              <Text style={styles.errorText}>{errors.Bio}</Text>
-                            )}
-                          </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              borderBottomWidth: 1,
-                              borderColor: 'lightgrey',
-                            }}>
-                            <FontAwesomeIcon
-                              style={{marginLeft: 22}}
-                              size={18}
-                              icon={faPhone}
-                              color={colorPalette.mainColor}
-                            />
-                            <TextInput
-                              label=" Contact"
-                              mode="flat"
-                              style={styles.textInput}
-                              onChangeText={handleChange('Contact')}
-                              onBlur={handleBlur('Contact')}
-                              value={values.Contact}
-                              outlineColor={colorPalette.mainColor}
-                              activeOutlineColor={colorPalette.mainColor}
-                            />
-                            {errors.Contact && touched.Contact && (
-                              <Text style={styles.errorText}>{errors.Bio}</Text>
-                            )}
-                          </View>
-
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              borderBottomWidth: 1,
-                              borderColor: 'lightgrey',
-                            }}>
-                            <FontAwesomeIcon
-                              style={{marginLeft: 22}}
-                              size={18}
-                              icon={faCalendarCheck}
-                              color={colorPalette.mainColor}
-                            />
-                            <TextInput
-                              label=" Date of Birth"
-                              mode="flat"
-                              style={styles.textInput}
-                              onChangeText={handleChange('DateOfBirth')}
-                              onBlur={handleBlur('DateOfBirth')}
-                              value={values.DateOfBirth}
-                              outlineColor={colorPalette.mainColor}
-                              activeOutlineColor={colorPalette.mainColor}
-                            />
-                            {errors.DateOfBirth && touched.DateOfBirth && (
-                              <Text style={styles.errorText}>{errors.Bio}</Text>
-                            )}
-                          </View>
-
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              borderBottomWidth: 1,
-                              borderColor: 'lightgrey',
-                            }}>
-                            <FontAwesomeIcon
-                              style={{marginLeft: 22}}
-                              size={18}
-                              icon={faFlag}
-                              color={colorPalette.mainColor}
-                            />
-                            <TextInput
-                              label=" Country"
-                              mode="flat"
-                              style={styles.textInput}
-                              onChangeText={handleChange('Country')}
-                              onBlur={handleBlur('Country')}
-                              value={values.Country}
-                              outlineColor={colorPalette.mainColor}
-                              activeOutlineColor={colorPalette.mainColor}
-                            />
-                            {errors.Country && touched.Country && (
-                              <Text style={styles.errorText}>{errors.Bio}</Text>
-                            )}
-                          </View>
-                          <View style={styles.pickerContainer}>
-                            <View style={styles.pickerIcon}>
-                              <FontAwesomeIcon
-                                size={18}
-                                icon={faMarsAndVenus}
-                                color={
-                                  colorPalette.mainColor
-                                }></FontAwesomeIcon>
-                            </View>
-                            <View style={styles.picker}>
-                              <Picker
-                                mode="dropdown"
-                                selectedValue={values.Gender}
-                                onValueChange={itemchange =>
-                                  setFieldValue('Gender', itemchange)
-                                }>
-                                <Picker.Item
-                                  label="Gender"
-                                  value="Gender"
-                                  style={styles.pickerItem}
-                                />
-                                <Picker.Item label="Male" value="Male" />
-                                <Picker.Item label="Female" value="Female" />
-                                <Picker.Item label="Other" value="Other" />
-                              </Picker>
-                            </View>
-                            <Text style={styles.pickerText}>
-                              {touched.Gender && errors.Gender}
-                            </Text>
-                          </View>
-
-                          <View style={styles.pickerContainer}>
-                            <View style={styles.pickerIcon}>
-                              <FontAwesomeIcon
-                                size={18}
-                                icon={faDroplet}
-                                color={
-                                  colorPalette.mainColor
-                                }></FontAwesomeIcon>
-                            </View>
-                            <View style={styles.bgPickerView}>
-                              <Picker
-                                mode="dropdown"
-                                style={styles.bgPicker}
-                                selectedValue={values.BloodGroup}
-                                onValueChange={itemchange =>
-                                  setFieldValue('BloodGroup', itemchange)
-                                }>
-                                <Picker.Item
-                                  label="BloodGroup"
-                                  value="BloodGroup"
-                                  style={styles.pickerItem}
-                                />
-                                <Picker.Item label="A+" value="A+" />
-                                <Picker.Item label="A-" value="A" />
-                                <Picker.Item label="B+" value="B+" />
-                                <Picker.Item label="B-" value="B-" />
-                                <Picker.Item label="O+" value="O+" />
-                                <Picker.Item label="O-" value="O-" />
-                                <Picker.Item label="AB+" value="AB+" />
-                                <Picker.Item label="AB-" value="AB-" />
-                              </Picker>
-                            </View>
-                            <Text style={styles.pickerText}>
-                              {touched.BloodGroup && errors.BloodGroup}
-                            </Text>
-                          </View>
-                          <View style={styles.saveButtonView}>
-                            <Button
-                              loading={load}
-                              onPress={handleSubmit}
-                              title="SAVE"
-                              buttonStyle={styles.saveButton}
-                              containerStyle={styles.saveButtonContainer}
-                              // disabled={!isValid}
-                            />
-                          </View>
-                        </View>
-                      )}
-                    </Formik>
-                  </View>
-                </>
-              ) : (
-                <SavedDetails />
-              )}
-            </View>
-          </View>
+      <Toast visibilityTime={1500} />
+      <View style={styles.container1}>
+        <Image source={{uri: img}} style={styles.avatar} />
+        <View style={styles.topItem}>
+          <Text style={styles.topItemText1}>{name.user.name}</Text>
+          <Text style={styles.topItemText2}>{name.user.email}</Text>
         </View>
-      </ScrollView>
+      </View>
+      <Button
+        title="Edit Profile"
+        onPress={() => editstate(true)}
+        buttonStyle={styles.editButton}
+        containerStyle={styles.editButtonConatiner}
+      />
+      <View>
+        {editenabled ? (
+          <>
+            <Formik
+              enableReinitialize
+              validationSchema={profileValidationSchema}
+              initialValues={{
+                Bio: '',
+                Contact: '',
+                DateOfBirth: '',
+                Country: '',
+                Gender: '',
+                BloodGroup: '',
+              }}
+              onSubmit={values => handleClick(values)}>
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                isValid,
+                touched,
+                setFieldValue,
+              }) => <></>}
+            </Formik>
+          </>
+        ) : (
+          <View
+            style={{
+              marginTop: 20,
+              width: '95%',
+              backgroundColor: 'yellow',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <View style={{flexDirection: 'row'}}>
+              <Text>Hy</Text>
+              <Text>Hello</Text>
+            </View>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
