@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import {horizontalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   report: {
@@ -9,32 +10,56 @@ export const styles = StyleSheet.create({
   reportContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 0.5,
-    // backgroundColor: colorPalette.basicColor,
+    flex: 3,
+    marginTop: 15,
+    marginBottom: 20,
   },
   analytics: {
     alignItems: 'center',
-    width: '80%',
-    paddingTop: 50,
-    borderRadius: 20,
-    paddingBottom: 50,
+    width: '92%',
+    paddingTop: 20,
+    borderRadius: 10,
+    paddingBottom: 20,
     backgroundColor: colorPalette.basicColor,
+    justifyContent: 'center',
+    elevation: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   font: {
     color: colorPalette.mainColor,
-    fontSize: 22,
-    top: 16,
+    fontSize: 20,
+    top: 8,
+    fontWeight:'600'
   },
-  percentage: {fontSize: 18, color: colorPalette.redPercentageColor},
+  fontSmall: {
+    color: "grey",
+    fontSize: 14,
+    paddingTop: 13,
+  },
+  percentage: {fontSize: 16, color: colorPalette.redPercentageColor},
   color: colorPalette.greenPercentageColor,
-  shadowColor: colorPalette.redPercentageColor,
+  shadowColor: 'lightgrey',
   bgColor: colorPalette.basicColor,
-  outerCircle: {bottom: 12},
+  outerCircle: {bottom: 2},
   performance: {
     color: colorPalette.hightlightedColor,
     marginTop: 20,
     fontSize: 24,
-    paddingTop: 20,
+    paddingTop: 10,
+  },
+  reportHeading: {
+    flex: 0.5,
+    marginHorizontal: 18,
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  reportText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: 'black',
+    textAlign: 'left',
+    fontFamily: 'roboto',
   },
   statistics: {
     marginTop: 10,
@@ -57,4 +82,40 @@ export const styles = StyleSheet.create({
     top: '1.5%',
   },
   lottie: {height: 40, width: 40},
+  theme: {
+    backgroundColor: 'yellow',
+    calendarBackground: '#ffffff',
+    textSectionTitleColor: '#b6c1cd',
+    textSectionTitleDisabledColor: '#d9e1e8',
+    selectedDayBackgroundColor: '#00adf5',
+    selectedDayTextColor: '#ffffff',
+    todayTextColor: '#00adf5',
+    dayTextColor: '#2d4150',
+    textDisabledColor: '#d9e1e8',
+    dotColor: '#00adf5',
+    selectedDotColor: '#ffffff',
+    arrowColor: colorPalette.appColor,
+    disabledArrowColor: '#d9e1e8',
+    monthTextColor: 'blue',
+    indicatorColor: 'blue',
+    textDayFontFamily: 'monospace',
+    textMonthFontFamily: 'monospace',
+    textDayHeaderFontFamily: 'monospace',
+    textDayFontWeight: '700',
+    textMonthFontWeight: 'bold',
+    textDayHeaderFontWeight: '800',
+    textDayFontSize: 13,
+    textMonthFontSize: 10,
+    textDayHeaderFontSize: 14,
+    arrowStyle: {
+      // height:10,
+      // width:20
+    },
+  },
+  calendar: {
+    elevation: 2,
+    borderRadius: 7,
+    width: horizontalScale(320),
+    // paddingHorizontal: 10,
+  },
 });

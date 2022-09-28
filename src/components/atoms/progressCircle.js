@@ -6,8 +6,8 @@ const ProgressReport = ({styles}) => {
   return (
     <ProgressCircle
       percent={30}
-      radius={52}
-      borderWidth={8}
+      radius={42}
+      borderWidth={6}
       color={styles.color}
       shadowColor={styles.shadowColor}
       outerCircleStyle={styles.outerCircle}
