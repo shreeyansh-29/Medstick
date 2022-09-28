@@ -1,8 +1,17 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {horizontalScale} from '../../components/atoms/constant';
+import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
+  container:{position: 'absolute',
+  backgroundColor: colorPalette.mainColor,
+  height: '50%',
+  width: '200%',
+  // borderRadius: 180,
+  borderBottomEndRadius: 530,
+  borderBottomStartRadius: 590,
+  top: -150,
+  right: -120,},
   report: {
     flex: 1,
     // backgroundColor: colorPalette.basicColor,
@@ -11,31 +20,39 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 3,
-    marginTop: 15,
+    marginTop: 25,
     marginBottom: 20,
   },
   analytics: {
     alignItems: 'center',
     width: '92%',
-    paddingTop: 20,
     borderRadius: 10,
-    paddingBottom: 20,
     backgroundColor: colorPalette.basicColor,
     justifyContent: 'center',
     elevation: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingVertical:30
+  },
+  container1Text:{
+    width: '65%',
+    backgroundColor: 'white',
+    paddingLeft: horizontalScale(20),
   },
   font: {
     color: colorPalette.mainColor,
-    fontSize: 20,
-    top: 8,
-    fontWeight:'600'
+    fontSize: 22,
+    fontWeight:'600',
+    paddingVertical:verticalScale(10)
   },
   fontSmall: {
     color: "grey",
-    fontSize: 14,
-    paddingTop: 13,
+    fontSize: 16,
+  },
+  progressView:{
+    width: '35%',
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
   percentage: {fontSize: 16, color: colorPalette.redPercentageColor},
   color: colorPalette.greenPercentageColor,
@@ -112,6 +129,7 @@ export const styles = StyleSheet.create({
       // width:20
     },
   },
+  calendarView:{flex: 5.5, alignItems: 'center', marginBottom: 10},
   calendar: {
     elevation: 2,
     borderRadius: 7,

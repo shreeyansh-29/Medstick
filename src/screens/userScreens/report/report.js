@@ -5,6 +5,7 @@ import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
+import { horizontalScale } from '../../../components/atoms/constant';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -48,21 +49,11 @@ LocaleConfig.locales['en'] = {
 };
 LocaleConfig.defaultLocale = 'en';
 const Report = ({navigation}) => {
-  let startDate = new Date();
+  let startDate = new Date().toDateString();
   return (
     <>
       <View
-        style={{
-          position: 'absolute',
-          backgroundColor: colorPalette.mainColor,
-          height: '50%',
-          width: '200%',
-          // borderRadius: 180,
-          borderBottomEndRadius: 530,
-          borderBottomStartRadius: 590,
-          top: -150,
-          right: -120,
-        }}
+        style={styles.container}
       />
       <View style={styles.report}>
         <MainHeader title={'Reports'} navigation={navigation} />
@@ -70,11 +61,14 @@ const Report = ({navigation}) => {
           <View style={styles.reportContainer}>
             <View style={styles.analytics}>
               <View
-                style={{width: '65%',backgroundColor:'white', paddingLeft:"8%", justifyContent:'space-between'}}>
+                style={styles.container1Text}>
                 <Text style={styles.font}>Overall Performance</Text>
-                <Text style={styles.fontSmall}>This percentage shows your overall adherence rate.</Text>
+                <Text style={styles.fontSmall}>
+                  This percentage shows your overall adherence rate.
+                </Text>
               </View>
-              <View style={{width: '35%', alignItems:"center", backgroundColor:'white'}}>
+              <View
+                style={styles.progressView}>
                 <ProgressReport styles={styles} />
               </View>
             </View>
@@ -82,7 +76,7 @@ const Report = ({navigation}) => {
           <View style={styles.reportHeading}>
             <Text style={styles.reportText}>Your Report</Text>
           </View>
-          <View style={{flex: 5.5, alignItems: 'center', marginBottom: 10}}>
+          <View style={styles.calendarView}>
             <Calendar
               style={styles.calendar}
               theme={styles.theme}
