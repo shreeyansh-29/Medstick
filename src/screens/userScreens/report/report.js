@@ -1,10 +1,10 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import MainHeader from '../../components/molecules/headers/mainHeader';
-import {styles} from '../../styles/reportScreenStyles/reportScreenStyles';
-import CalenderIcon from '../../components/molecules/calenderIcon';
-import ProgressReport from '../../components/atoms/progressCircle';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import MainHeader from '../../../components/molecules/headers/mainHeader';
+import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
+import CalenderIcon from '../../../components/molecules/calenderIcon';
+import ProgressReport from '../../../components/atoms/progressCircle';
+import {colorPalette} from '../../../components/atoms/colorPalette';
 
 const Report = ({navigation}) => {
   return (

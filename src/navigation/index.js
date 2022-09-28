@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/userScreens/homeScreen';
 import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
-import Report from '../screens/userScreens/report';
+import Report from '../screens/userScreens/report/report';
 import AddMedicine from '../screens/userScreens/medicines/addMedicine';
 import CareTaker from '../screens/userScreens/careTaker/careTaker';
 import OnboardingScreen from '../screens/onBoardingScreen';
