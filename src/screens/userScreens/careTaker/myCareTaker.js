@@ -5,9 +5,9 @@ import {styles} from '../../../styles/careTakerStyles/myCareTakerStyles';
 import {ListItem} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
 import {useDispatch, useSelector} from 'react-redux';
-import {myCaretakerSelector} from '../../../network/Selector/myCaretakerSelector';
 import {caretakerRequest} from '../../../redux/action/caretakerAction/myCaretakerAction';
 import {useIsFocused} from '@react-navigation/native';
+import { myCaretakerSelector } from '../../../constants/Selector/myCaretakerSelector';
 
 const MyCareTaker = ({navigation}) => {
   const res = useSelector(myCaretakerSelector.caretaker);

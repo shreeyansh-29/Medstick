@@ -11,7 +11,6 @@ import Toast from 'react-native-toast-message';
 const AuthScreen = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
-    {console.log('hy')}
       <SubHeader navigation={navigation} />
       <Toast visibilityTime={3000} />
       <View

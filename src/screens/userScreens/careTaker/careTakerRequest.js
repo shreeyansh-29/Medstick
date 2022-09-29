@@ -4,10 +4,10 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
-import { myCaretakerSelector } from '../../../network/Selector/myCaretakerSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import {listCaretakerRequest} from '../../../redux/action/caretakerAction/caretakerRequestAction'
+import { myCaretakerSelector } from '../../../constants/Selector/myCaretakerSelector';
 
 const CareTakerRequest = () => {
   const res = useSelector(myCaretakerSelector.caretakerList);

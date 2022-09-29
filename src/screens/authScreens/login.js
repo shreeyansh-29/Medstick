@@ -14,6 +14,7 @@ import {useIsFocused} from '@react-navigation/native';
 
 const Login = ({navigation}) => {
   const res = useSelector(state => state.signIn.data);
+  console.log(res,"resssss")
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 

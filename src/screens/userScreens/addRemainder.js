@@ -8,7 +8,6 @@ import {
   Modal,
 } from 'react-native';
 import React, {useEffect, useRef} from 'react';
-import {Icon} from 'react-native-vector-icons/AntDesign';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
 import LottieView from 'lottie-react-native';
@@ -25,6 +24,7 @@ import {
   getAllAlarms,
 } from '../../components/organisms/alarm/alarmService';
 import TimePicker from '../../components/molecules/timePicker';
+import {colorPalette} from '../../components/atoms/colorPalette';
 
 const AddRemainder = props => {
   const [pill, setPill] = useState();
@@ -134,11 +134,12 @@ const AddRemainder = props => {
           </Picker>
         </View>
         <View style={{margin: 15, padding: 15}}>
-          <Text>__________________________________________________</Text>
+          <Text>______________________________________________</Text>
         </View>
         <View>
-          <View style={{marginLeft:25}} >
-            <Text style={{fontSize:30}} >09:26</Text>
+          <View style={{marginLeft: 25}}>
+            <Text style={{fontSize: 30}}>09:26</Text>
+        
           </View>
         </View>
         <TouchableOpacity
