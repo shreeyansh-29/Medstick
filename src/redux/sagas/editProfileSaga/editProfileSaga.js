@@ -9,8 +9,7 @@ import editProfileService from '../../../network/networkServices/editProfile/edi
 export function* editProfileSaga(data) {
   try {
     let response = yield call(editProfileService.editProfile, data);
-    console.log(response);
-    yield put(editProfileSuccess(response));
+    yield put(editProfileSuccess(response.data));
   } catch (error) {
     yield put(editProfileError(error));
   }
