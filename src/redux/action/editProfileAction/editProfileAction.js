@@ -7,7 +7,6 @@ export const editProfileRequest = payload => {
   };
 };
 export const editProfileSuccess = payload => {
-  console.log('action', payload);
   return {
     type: types.EDIT_PROFILE_SUCCESS,
     payload,
@@ -17,5 +16,10 @@ export const editProfileError = payload => {
   return {
     type: types.EDIT_PROFILE_ERROR,
     payload,
+  };
+};
+export const resetProfile = () => {
+  return {
+    type: types.RESET_PROFILE,
   };
 };

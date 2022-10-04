@@ -4,8 +4,16 @@ import {EDIT_PROFILE} from '../../../constants/apiUrl';
 
 class EditProfileService {
   async editProfile(payload) {
-    const {bio, dateOfBirth, country, bloodGroup, contact, gender} =
-      payload.payload;
+    const {
+      bio,
+      dateOfBirth,
+      country,
+      bloodGroup,
+      contact,
+      gender,
+      address,
+      state,
+    } = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
     return RequestService.putRequest(
@@ -13,8 +21,8 @@ class EditProfileService {
       {
         bio: bio,
         dateOfBirth: dateOfBirth,
-        latitude: 152.01,
-        longitude: 122.9,
+        address: address,
+        state: state,
         country: country,
         bloodGroup: bloodGroup,
         contact: contact,
