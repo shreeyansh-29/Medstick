@@ -6,6 +6,8 @@ import {watchEditProfileSaga} from './editProfileSaga/editProfileSaga';
 import {watchPatientsRequestSaga} from './patients/patientsRequestSaga';
 import {watchAcceptPatientReqSaga} from './patients/acceptPatientReqSaga';
 import {watchSendSnapSaga} from './otherScreenSaga/sendSnapSaga';
+import {medicineListWatcherSaga} from './userMedicine/medicineListWatcherSaga';
+import {watchDeleteMedicineSaga} from './userMedicine/deleteMedicineSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -16,5 +18,7 @@ export default function* RootSaga() {
     watchPatientsRequestSaga(),
     watchAcceptPatientReqSaga(),
     watchSendSnapSaga(),
+    medicineListWatcherSaga(),
+    watchDeleteMedicineSaga(),
   ]);
 }

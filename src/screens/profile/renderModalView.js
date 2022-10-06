@@ -116,7 +116,6 @@ const RenderModalVisible = ({isCancel, onPress, setModalVisible, setEdit}) => {
             }}
             validationSchema={profileValidationSchema}
             onSubmit={values => {
-              console.log('hy');
               handleClick(values);
             }}>
             {({

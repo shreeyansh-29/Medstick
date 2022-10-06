@@ -1,11 +1,17 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RequestService from '../../requestService';
-const base_url = 'https://3c39-106-51-81-179.in.ngrok.io/api/v1/user';
+import {USER_MEDICINE} from '../../../constants/apiUrl';
 
 class UserMedicineNetworkService {
-  getUserMedicine(payload) {
-    const {id, token, userId} = payload;
-    let url = base_url + `/medicines?userId=${id}&Id=${userId}`;
-    return RequestService.getRequest(url, token);
+  async getUserMedicine() {
+    const token = await AsyncStorage.getItem('accessToken');
+    const id = await AsyncStorage.getItem('user_id');
+
+    return RequestService.getRequest(`${USER_MEDICINE}?userId=${id}&Id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }
 export default new UserMedicineNetworkService();
