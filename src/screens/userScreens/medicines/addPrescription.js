@@ -17,9 +17,9 @@ const AddPrescription = ({ navigation }) => {
             <View style={Styles.addPrescriptionList}>
                 <AddPrescriptionList />
             </View>
-            {/* <View >
+            <View >
                 <SaveButton/>
-            </View> */}
+            </View>
         </View>
     )
 }

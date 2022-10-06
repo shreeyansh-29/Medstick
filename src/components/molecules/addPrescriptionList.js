@@ -8,9 +8,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
-import {RNCamera} from 'react-native-camera';
 import DatePicker from 'react-native-date-picker';
-import {useCamera} from 'react-native-camera-hooks';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
 import {TextInput} from 'react-native-paper';
 import LottieView from 'lottie-react-native';
@@ -25,11 +23,9 @@ const AddPrescriptionList = ({navigation}) => {
   const [specialization, setSpecialization] = useState('');
   const [number, setNumber] = useState('');
   const [location, setLocation] = useState('');
-  const [{cameraRef}, {takePicture}] = useCamera(null);
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(new Date());
-  console.log(Date(), 'datekkkkkkkkk');
-  console.log(date, "date")
+  const [image, setImage]= useState('')
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {

@@ -1,7 +1,6 @@
 import * as types from '../../actionTypes';
 
 export const loginRequest = payload => {
-  console.log(action);
   return {
     type: types.LOGIN_REQUEST,
     payload,
