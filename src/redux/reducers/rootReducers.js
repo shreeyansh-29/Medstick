@@ -8,6 +8,7 @@ import {patientsRequestReducer} from './patients/patientsRequestReducer';
 import {signUpReducer} from './signUpReducer/signUpReducer';
 import {sendSnapReducer} from './otherScreenReducer/sendSnapReducer';
 import medicineListReducer from './userMedicine/medicineListReducer';
+import {deleteMedicineReducer} from './userMedicine/deleteMedicineReducer';
 
 const rootReducer = combineReducers({
   medicineList: medicineListReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   deletePatientRequest: deletePatientReqReducer,
   editProfile: editProfileReducer,
   sendSnap: sendSnapReducer,
+  deleteMedicine: deleteMedicineReducer,
 });
 
 export default rootReducer;
