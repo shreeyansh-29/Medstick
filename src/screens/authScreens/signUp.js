@@ -15,7 +15,6 @@ const SignUp = ({navigation}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.signUp.data);
   const [connected, connectedstate] = useState(false);
-  console.log(res)
 
   const isFocused = useIsFocused();
 

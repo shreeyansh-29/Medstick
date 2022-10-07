@@ -1,20 +1,20 @@
 import * as types from '../../actionTypes';
 
-export const listCaretakerRequest = payload => {
+export const caretakerRequestRequest = payload => {
   return {
-    type: types.CARETAKER_LIST_REQUEST,
+    type: types.CARETAKER_REQUEST_REQUEST,
     payload,
   };
 };
-export const listCaretakerSuccess = payload => {
+export const caretakerRequestSuccess = payload => {
   return {
-    type: types.CARETAKER_LIST_SUCCESS,
+    type: types.CARETAKER_REQUEST_SUCCESS,
     payload,
   };
 };
-export const listCaretakerError = payload => {
+export const caretakerRequestError = payload => {
   return {
-    type: types.CARETAKER_LIST_ERROR,
+    type: types.CARETAKER_REQUEST_ERROR,
     payload,
   };
 };

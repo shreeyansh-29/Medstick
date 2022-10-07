@@ -10,13 +10,11 @@ const initialState = {
   isLoading: false,
   error: '',
 };
-export const caretakerListReducer = (state = initialState, action) => {
+export const caretakerRequestReducer = (state = initialState, action) => {
   switch (action.type) {
     case CARETAKER_LIST_REQUEST:
-      console.log('Request');
       return {...state, isLoading: true};
     case CARETAKER_LIST_SUCCESS:
-      console.log('Success');
       return {...state, data: action.payload.data, isLoading: false};
     case CARETAKER_LIST_ERROR:
       return {...state, error: action};

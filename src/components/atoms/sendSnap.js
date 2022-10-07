@@ -13,7 +13,7 @@ const SendSnap = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <SubHeader title={'Send Snap'} navigation={navigation} />
+      <SubHeader title={'Camera'} navigation={navigation} />
       <View style={styles.innerView}>
         <RNCamera
           ref={cameraRef}
@@ -22,8 +22,6 @@ const SendSnap = ({navigation}) => {
 
         <TouchableOpacity
           onPress={async () => {
-            const data = await takePicture();
-            console.log(data.uri);
             navigation.navigate('SendSnapToCaretaker', {
               image_uri: data.uri,
             });

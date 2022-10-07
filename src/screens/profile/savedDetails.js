@@ -1,49 +1,41 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {Text, View} from 'react-native';
-import {
-  faContactBook,
-  faDroplet,
-  faMarsAndVenus,
-  faRing,
-  faSortNumericUp,
-  faUser,
-  faWeight,
-} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import React, {useState} from 'react';
+import {Text, View, ScrollView} from 'react-native';
 import styles from '../../styles/profile/profileStyles';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SubHeader from '../../components/molecules/headers/subHeader';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {Card} from 'react-native-paper';
 
-const SavedDetails = ({navigation}) => {
-  const [bio, biostate] = React.useState('');
-  const [contact, contactstate] = React.useState('');
-  const [age, agestate] = React.useState('');
-  const [weight, weightstate] = React.useState('');
-  const [gender, genderstate] = React.useState('');
-  const [ms, msstate] = React.useState('');
-  const [blood, bloodstate] = React.useState('');
+const SavedDetails = () => {
+  const [bio, setBio] = useState('');
+  const [contact, setContact] = useState('');
+  const [dob, setDob] = useState('');
+  const [country, setCountry] = useState('');
+  const [gender, setGender] = useState('');
+  const [bloodGroup, setBloodGroup] = useState('');
+  const [address, setAddress] = useState('');
+  const [state, setState] = useState('');
 
   useFocusEffect(() => {
     async function getuserdetail() {
-      let sbio = await AsyncStorage.getItem('bio');
-      let scontact = await AsyncStorage.getItem('contact');
-      let sage = await AsyncStorage.getItem('age');
-      let sweight = await AsyncStorage.getItem('weight');
-      let sgender = await AsyncStorage.getItem('gender');
-      let maritalstatus = await AsyncStorage.getItem('maritalstatus');
-      let sblood = await AsyncStorage.getItem('bloodgroup');
+      let patient_bio = await AsyncStorage.getItem('bio');
+      let patient_contact = await AsyncStorage.getItem('contact');
+      let patient_dob = await AsyncStorage.getItem('dob');
+      let patient_country = await AsyncStorage.getItem('country');
+      let patient_gender = await AsyncStorage.getItem('gender');
+      let patient_bloodGroup = await AsyncStorage.getItem('bloodgroup');
+      let patient_address = await AsyncStorage.getItem('address');
+      let patient_state = await AsyncStorage.getItem('state');
 
-      biostate(sbio);
-      contactstate(scontact);
-      agestate(sage);
-      weightstate(sweight);
-      genderstate(sgender);
-      msstate(maritalstatus);
-      bloodstate(sblood);
+      setBio(patient_bio);
+      setContact(patient_contact);
+      setDob(patient_dob);
+      setGender(patient_gender);
+      setCountry(patient_country);
+      setBloodGroup(patient_bloodGroup);
+      setAddress(patient_address);
+      setState(patient_state);
     }
 
     getuserdetail();
@@ -51,85 +43,100 @@ const SavedDetails = ({navigation}) => {
 
   return (
     <>
-      <View style={styles.sd}>
-        <View style={styles.sdContainer}>
-          <View style={styles.sdSubContainer}>
-            <FontAwesomeIcon
-              size={18}
-              icon={faUser}
-              color={colorPalette.mainColor}></FontAwesomeIcon>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Card style={styles.card}>
+          <View style={styles.mainView}>
+            <View style={styles.subCont}>
+              <View style={styles.subView1}>
+                <Text style={styles.heading}>Bio</Text>
+              </View>
+
+              <View style={styles.subView2}>
+                <Text style={styles.content}>{bio}</Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.sdText}>
-            <Text style={styles.sdText1}>{bio}</Text>
+        </Card>
+
+        <Card style={styles.card}>
+          <View style={styles.mainView}>
+            <View style={styles.subCont}>
+              <View style={styles.subView1}>
+                <Text style={styles.heading}>Contact</Text>
+              </View>
+
+              <View style={styles.subView2}>
+                <Text style={styles.content}>{contact}</Text>
+              </View>
+            </View>
+            <View style={styles.subCont}>
+              <View style={styles.subView1}>
+                <Text style={styles.heading}>Date Of Birth</Text>
+              </View>
+
+              <View style={styles.subView2}>
+                <Text style={styles.content}>{dob}</Text>
+              </View>
+            </View>
           </View>
-        </View>
-        <View style={styles.sdContainer}>
-          <View style={styles.sdSubContainer}>
-            <FontAwesomeIcon
-              size={18}
-              icon={faContactBook}
-              color={colorPalette.mainColor}></FontAwesomeIcon>
+        </Card>
+
+        <Card style={styles.card}>
+          <View style={styles.mainView}>
+            <View style={styles.subCont}>
+              <View style={styles.subView1}>
+                <Text style={styles.heading}>BloodGroup</Text>
+              </View>
+
+              <View style={styles.subView2}>
+                <Text style={styles.content}>{bloodGroup}</Text>
+              </View>
+            </View>
+
+            <View style={styles.subCont}>
+              <View style={styles.subView1}>
+                <Text style={styles.heading}>Gender</Text>
+              </View>
+
+              <View style={styles.subView2}>
+                <Text style={styles.content}>{gender}</Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.sdText}>
-            <Text style={styles.sdText1}>{contact}</Text>
+        </Card>
+        <Card style={styles.card}>
+          <View style={styles.mainView}>
+            <View style={styles.subCont}>
+              <View style={styles.subView1}>
+                <Text style={styles.heading}>Address</Text>
+              </View>
+
+              <View style={styles.subView2}>
+                <Text style={styles.content}>{address}</Text>
+              </View>
+            </View>
+
+            <View style={styles.subCont}>
+              <View style={styles.subView1}>
+                <Text style={styles.heading}>State</Text>
+              </View>
+              <View style={styles.subView2}>
+                <Text style={styles.content}>{state}</Text>
+              </View>
+            </View>
+
+            <View style={styles.subCont}>
+              <View style={styles.subView1}>
+                <Text style={styles.heading}>Country</Text>
+              </View>
+
+              <View style={styles.subView2}>
+                <Text style={styles.content}>{country}</Text>
+              </View>
+            </View>
           </View>
-        </View>
-        <View style={styles.sdContainer}>
-          <View style={styles.sdSubContainer}>
-            <FontAwesomeIcon
-              size={18}
-              icon={faSortNumericUp}
-              color={colorPalette.mainColor}></FontAwesomeIcon>
-          </View>
-          <View style={styles.sdText}>
-            <Text style={styles.sdText1}>{age + ' yrs'}</Text>
-          </View>
-        </View>
-        <View style={styles.sdContainer}>
-          <View style={styles.sdSubContainer}>
-            <FontAwesomeIcon
-              size={18}
-              icon={faWeight}
-              color={colorPalette.mainColor}></FontAwesomeIcon>
-          </View>
-          <View style={styles.sdText}>
-            <Text style={styles.sdText1}>{weight + ' kg'}</Text>
-          </View>
-        </View>
-        <View style={styles.sdContainer}>
-          <View style={styles.sdSubContainer}>
-            <FontAwesomeIcon
-              size={18}
-              icon={faMarsAndVenus}
-              color={colorPalette.mainColor}></FontAwesomeIcon>
-          </View>
-          <View style={styles.sdText}>
-            <Text style={styles.sdText1}>{gender}</Text>
-          </View>
-        </View>
-        <View style={styles.sdContainer}>
-          <View style={styles.sdSubContainer}>
-            <FontAwesomeIcon
-              size={18}
-              icon={faRing}
-              color={colorPalette.mainColor}></FontAwesomeIcon>
-          </View>
-          <View style={styles.sdText}>
-            <Text style={styles.sdText1}>{ms}</Text>
-          </View>
-        </View>
-        <View style={styles.sdContainer}>
-          <View style={styles.sdSubContainer}>
-            <FontAwesomeIcon
-              size={18}
-              icon={faDroplet}
-              color={colorPalette.mainColor}></FontAwesomeIcon>
-          </View>
-          <View style={styles.sdText}>
-            <Text style={styles.sdText1}>{blood}</Text>
-          </View>
-        </View>
-      </View>
+        </Card>
+      </ScrollView>
     </>
   );
 };

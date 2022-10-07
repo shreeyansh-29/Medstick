@@ -53,7 +53,6 @@ const Login = ({navigation}) => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const token = await messaging().getToken();
-
       const {email, photo} = userInfo.user;
       await AsyncStorage.setItem('user_photo', photo);
       

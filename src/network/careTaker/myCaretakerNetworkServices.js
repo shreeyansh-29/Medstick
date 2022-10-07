@@ -8,7 +8,7 @@ class myCaretakerNetworkServices {
     const Id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
     return RequestService.getRequest(
-      `${GET_MY_CARETAKER}?patientId=${Id}&pageNo=${pageNo}&pageSize=2&Id=${Id}`,
+      `${GET_MY_CARETAKER}?patientId=${Id}&pageNo=${pageNo}&pageSize=9&Id=${Id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

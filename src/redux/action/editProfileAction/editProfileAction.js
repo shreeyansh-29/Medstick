@@ -18,3 +18,8 @@ export const editProfileError = payload => {
     payload,
   };
 };
+export const resetProfile = () => {
+  return {
+    type: types.RESET_PROFILE,
+  };
+};

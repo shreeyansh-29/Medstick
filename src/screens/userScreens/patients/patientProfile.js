@@ -3,8 +3,10 @@ import React, {useState} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import * as Animatable from 'react-native-animatable';
 import {
+  faCalendarCheck,
   faDroplet,
   faEnvelope,
+  faFlag,
   faLocationDot,
   faMarsAndVenus,
   faPhone,
@@ -15,8 +17,11 @@ import {styles} from '../../../styles/careTakerStyles/careTakerProfileStyles';
 import Divider from '../../../components/atoms/divider';
 import ProfileField from '../careTaker/profileField';
 
-const PatientProfile = ({navigation}) => {
-  const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
+const PatientProfile = ({navigation, route}) => {
+  const {profile} = route.params.profile[0];
+  console.log(profile);
+  let img = '';
+
   return (
     <>
       <View style={styles.sd}>
@@ -24,28 +29,31 @@ const PatientProfile = ({navigation}) => {
         <SubHeader navigation={navigation} />
         <View style={styles.imgCont}>
           <Image
-            source={require('../../../assets/images/shreeyansh.jpg')}
+            source={{uri: profile.userDetails.picPath}}
             style={styles.img}
           />
         </View>
         <View style={styles.sdContainer}>
           <Animatable.View animation="zoomInUp" duration={400}>
-            <ProfileField icon={faUser} value={'Shreeyansh Singh'} />
+            <ProfileField icon={faUser} value={profile.userName} />
+            <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
+            <ProfileField icon={faEnvelope} value={profile.email} />
+            <ProfileField icon={faPhone} value={profile.contact} />
             <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
             <ProfileField
-              icon={faLocationDot}
-              value={'Sec-14/339, Vikas Nagar, Lucknow  '}
+              icon={faCalendarCheck}
+              value={profile.userDetails.dateOfBirth}
             />
-            <ProfileField icon={faPhone} value={'9695072060, 7451942905'} />
+            <ProfileField icon={faFlag} value={profile.userDetails.country} />
             <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
             <ProfileField
-              icon={faEnvelope}
-              value={'shreeyansh.singh@nineleaps.com'}
+              icon={faDroplet}
+              value={profile.userDetails.bloodGroup}
             />
-            <ProfileField icon={faMarsAndVenus} value={'Male'} />
-            <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
-            <ProfileField icon={faDroplet} value={'O+'} />
-            <ProfileField icon={faSortNumericUp} value={'21 yrs'} />
+            <ProfileField
+              icon={faMarsAndVenus}
+              value={profile.userDetails.gender}
+            />
           </Animatable.View>
         </View>
       </View>

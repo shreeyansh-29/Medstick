@@ -9,10 +9,8 @@ import signUpNetworkService from '../../../network/networkServices/authNetworkSe
 export function* signUpSaga(data) {
   try {
     let response = yield call(signUpNetworkService.signUp, data);
-    console.log(response);
     yield put(signUpSuccess(response));
   } catch (error) {
-    console.log(error);
     yield put(signUpError(error));
   }
 }

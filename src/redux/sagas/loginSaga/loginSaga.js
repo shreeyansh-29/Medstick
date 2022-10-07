@@ -5,16 +5,13 @@ import loginNetworkService from '../../../network/networkServices/authNetworkSer
 
 export function* loginSaga(payload) {
   try {
-    let response = yield call(loginNetworkService.login, payload);
-    console.log("success")
+    let response = yield call(loginNetworkService.login, payload);    
     yield put(loginSuccess(response));
   } catch (error) {
-    console.log("errpr")
     yield put(loginError(error));
   }
 }
 
 export function* watchLoginSaga() {
-  console.log("reuest")
   yield takeLatest(types.LOGIN_REQUEST, loginSaga);
 }

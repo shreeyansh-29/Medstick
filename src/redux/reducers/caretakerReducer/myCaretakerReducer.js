@@ -13,13 +13,13 @@ const initialState = {
 export const myCaretakerReducer = (state = initialState, action) => {
   switch (action.type) {
     case MY_CARETAKER_REQUEST:
-      console.log('Request');
+      console.log('Requestttt');
       return {...state, isLoading: true};
     case MY_CARETAKER_SUCCESS:
-      console.log(action,"Success");
+      // console.log(action,"Success");
       return {...state, data: action.payload.data, isLoading:false};
     case MY_CARETAKER_ERROR:
-      console.log('Error')
+      // console.log('Errorrrrr')
       return {...state, error: action};
     default:
       return state;

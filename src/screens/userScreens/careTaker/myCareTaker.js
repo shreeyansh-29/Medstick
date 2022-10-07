@@ -11,7 +11,6 @@ import { myCaretakerSelector } from '../../../constants/Selector/myCaretakerSele
 
 const MyCareTaker = ({navigation}) => {
   const res = useSelector(myCaretakerSelector.caretaker);
-  console.log(res);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [pageNo, setPageNo] = useState(0);
@@ -20,7 +19,7 @@ const MyCareTaker = ({navigation}) => {
 
   useEffect(() => {
     if (res !== null) {
-      setMyPatients([...myCaretaker, ...res.result]);
+      setMyCaretaker([...myCaretaker, ...res.result]);
       setIsLoading(false);
     }
   }, [res]);
@@ -38,7 +37,7 @@ const MyCareTaker = ({navigation}) => {
   };
 
   useEffect(() => {
-    dispatch(myCaretakerRequest(pageNo));
+    dispatch(caretakerRequest(pageNo));
     setIsLoading(true);
   }, [pageNo]);
 
@@ -71,7 +70,7 @@ const MyCareTaker = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {data.length === 0 ? (
+      {myCaretaker.length === 0 ? (
         <View style={styles.imgView}>
           <Image
             resizeMode="contain"

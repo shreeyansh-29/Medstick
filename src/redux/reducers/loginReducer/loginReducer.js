@@ -14,7 +14,6 @@ const initialState = {
 export const signInReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
-      console.log("hello");
       return {...state, isLoading: true};
     case LOGIN_SUCCESS:
       return {...state, data: action.payload.data, isLoading: false};

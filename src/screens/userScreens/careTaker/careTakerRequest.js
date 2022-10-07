@@ -4,10 +4,10 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
-import { useDispatch, useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
-import {listCaretakerRequest} from '../../../redux/action/caretakerAction/caretakerRequestAction'
-import { myCaretakerSelector } from '../../../constants/Selector/myCaretakerSelector';
+import {useDispatch, useSelector} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
+import {caretakerRequestRequest} from '../../../redux/action/caretakerAction/caretakerRequestAction';
+import {myCaretakerSelector} from '../../../constants/Selector/myCaretakerSelector';
 
 const CareTakerRequest = () => {
   const res = useSelector(myCaretakerSelector.caretakerList);
@@ -16,7 +16,7 @@ const CareTakerRequest = () => {
   const isFocused = useIsFocused();
   const [pageNo, setPageNo] = useState(0);
   const [data, setData] = useState([]);
-  const [refresh, setRefresh] = useState(false); 
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     if (res !== null) {
@@ -34,7 +34,7 @@ const CareTakerRequest = () => {
   useEffect(() => {
     if (isFocused) {
       // setIsLoading(true);
-      dispatch(listCaretakerRequest(pageNo));
+      dispatch(caretakerRequestRequest(pageNo));
     }
   }, [pageNo, isFocused]);
 
@@ -59,7 +59,7 @@ const CareTakerRequest = () => {
               size={80}
               rounded
               source={require('../../../assets/images/shreeyansh.jpg')}
-            />  
+            />
           </View>
           <View style={styles.container1}>
             <ListItem
@@ -135,4 +135,3 @@ const CareTakerRequest = () => {
 };
 
 export default CareTakerRequest;
-
