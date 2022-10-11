@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import TwoTouchable from '../../components/molecules/twoTouchable';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   faUserNurse,
@@ -22,16 +22,10 @@ import {resetSignUp} from '../../redux/action/signUpAction/signUpAction';
 
 const AccountTab = ({navigation}) => {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name, setName] = useState('Please Login First');
   const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
-
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '380266789888-bupnp07eamd8bo5aoacs6vv7fv4mhkah.apps.googleusercontent.com',
-    });
-  });
 
   useFocusEffect(() => {
     async function checkforlog() {
@@ -64,6 +58,13 @@ const AccountTab = ({navigation}) => {
     }
 
     checkforlog();
+  });
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '380266789888-bupnp07eamd8bo5aoacs6vv7fv4mhkah.apps.googleusercontent.com',
+    });
   });
 
   return (
@@ -114,7 +115,7 @@ const AccountTab = ({navigation}) => {
         <TwoTouchable
           icon1={faCameraRetro}
           icon2={faGear}
-          title1="Send snap"
+          title1="Send Snap"
           title2="Settings"
           navigationTitle1="SendSnap"
           navigationTitle2="Settings"
@@ -133,28 +134,18 @@ const AccountTab = ({navigation}) => {
               alignItems: 'center',
             }}
             onPress={async () => {
-              Alert.alert('Do you want to Logout?', '', [
-                {
-                  text: 'Logout',
-                  onPress: async () => {
-                    await GoogleSignin.signOut();
-                    await AsyncStorage.setItem('user_id', '');
-                    await AsyncStorage.setItem('user_name', '');
-                    await AsyncStorage.setItem('user_photo', '');
-                    await AsyncStorage.setItem('user_email', '');
-                    await AsyncStorage.setItem('accessToken', '');
-                    imgstate('https://i.stack.imgur.com/l60Hf.png');
-                    setName('Please Login First');
-                    setIsLoggedIn(false);
-                    dispatch(resetLogin());
-                    dispatch(resetSignUp());
-                  },
-                },
-                {
-                  text: 'Cancel',
-                  onPress: () => {},
-                },
-              ]);
+              await GoogleSignin.signOut();
+              await AsyncStorage.setItem('user_id', '');
+              await AsyncStorage.setItem('user_name', '');
+              await AsyncStorage.setItem('user_photo', '');
+              await AsyncStorage.setItem('user_email', '');
+              await AsyncStorage.setItem('accessToken', '');
+              imgstate('https://i.stack.imgur.com/l60Hf.png');
+              setName('Please Login First');
+              setIsLoggedIn(false);
+              dispatch(resetLogin());
+              dispatch(resetSignUp());
+              // navigation.navigate('Logout');
             }}>
             <Text
               style={{

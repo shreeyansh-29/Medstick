@@ -3,19 +3,18 @@ import * as types from '../../actionTypes';
 export const getAppointmentRequest = payload => {
   return {
     type: types.GET_APPOINTMENT_REQUEST,
-    payload,
+    payload: payload
   };
 };
-export const getAppointmentSuccess = payload => {
+export const getAppointmentSuccess = data => {
   return {
     type: types.GET_APPOINTMENT_SUCCESS,
-    payload,
+    payload: data,
   };
 };
-export const getAppointmentError = payload => {
+export const getAppointmentError = err => {
   return {
     type: types.GET_APPOINTMENT_ERROR,
-    payload,
+    payload: err,
   };
 };
-

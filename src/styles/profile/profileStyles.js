@@ -38,6 +38,22 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   content: {color: 'grey'},
+  modalView: {
+    backgroundColor: 'white',
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    height: '90%',
+  },
 
   //editProfile
   parentContainer: {
@@ -95,7 +111,7 @@ const styles = StyleSheet.create({
   inputField: {
     marginBottom: 10,
   },
-  editButtonContainer: {alignItems: 'center', marginTop: 20},
+  editButtonContainer: {alignItems: 'center', marginVertical: 20},
   editButton: {
     backgroundColor: colorPalette.mainColor,
     width: '50%',
@@ -106,12 +122,14 @@ const styles = StyleSheet.create({
     color: 'red',
     alignSelf: 'flex-start',
     marginLeft: 14,
+    marginTop: 1,
   },
   errorText1: {
     fontSize: 15,
     color: 'red',
     alignSelf: 'flex-start',
     marginLeft: 14,
+    marginTop: 1,
   },
   inputGroup: {
     flexDirection: 'row',

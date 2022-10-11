@@ -2,9 +2,9 @@ import {call, put, takeLatest} from 'redux-saga/effects';
 import {
   editProfileError,
   editProfileSuccess,
-} from '../../action/editProfileAction/editProfileAction';
+} from '../../action/profileAction/editProfileAction';
 import * as types from '../../actionTypes';
-import editProfileService from '../../../network/networkServices/editProfile/editProfileService';
+import editProfileService from '../../../network/networkServices/profile/editProfileService';
 
 export function* editProfileSaga(data) {
   try {

@@ -31,7 +31,7 @@ const MedicinePanel = ({navigation}) => {
     state => state.medicineList?.loading?.medicineListLoader,
   );
   const res1 = useSelector(state => state.deleteMedicine);
-  // console.log(res1);
+
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     Animated.timing(progress, {

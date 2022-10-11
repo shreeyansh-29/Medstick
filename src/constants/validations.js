@@ -13,10 +13,7 @@ export const profileValidationSchema = yup.object().shape({
     .required('Contact is Required*')
     .nullable(),
   dateofBirth: yup.string().required('Date of Birth is Required*').nullable(),
-  gender: yup
-    .string()
-    .min(3, ({min}) => `Gender must be at least ${min} characters`)
-    .required('Gender is Required*'),
+  gender: yup.string().required('Gender is Required*').nullable(),
   bloodGroup: yup.string().required('Blood Group is Required*').nullable(),
   country: yup.string().required('Country is Required*').nullable(),
   address: yup

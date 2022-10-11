@@ -1,25 +1,24 @@
 /* eslint-disable indent */
 import {
-    APPOINTMENT_REMINDER_ERROR,
-    APPOINTMENT_REMINDER_SUCCESS,
-    APPOINTMENT_REMINDER_REQUEST
+  MY_PRESCRIPTIONS_ERROR,
+  MY_PRESCRIPTIONS_REQUEST,
+  MY_PRESCRIPTIONS_SUCCESS,
 } from '../../actionTypes';
 
 const initialState = {
   data: null,
   isLoading: false,
-  error: '',
+  error: null,
 };
-export const appointmentReminderReducer = (state = initialState, action) => {
+export const myPrescriptionsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case APPOINTMENT_REMINDER_REQUEST:
+    case MY_PRESCRIPTIONS_REQUEST:
       return {...state, isLoading: true};
-    case APPOINTMENT_REMINDER_SUCCESS:
+    case MY_PRESCRIPTIONS_SUCCESS:
       return {...state, data: action.payload, isLoading: false};
-    case APPOINTMENT_REMINDER_ERROR:
+    case MY_PRESCRIPTIONS_ERROR:
       return {...state, error: action.payload, isLoading: false};
     default:
       return state;
   }
 };
-

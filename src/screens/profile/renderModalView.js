@@ -4,23 +4,29 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCircleXmark} from '@fortawesome/free-solid-svg-icons';
 import {Formik} from 'formik';
 import ProfileForm from './profileForm';
 import {profileValidationSchema} from '../../constants/validations';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   editProfileRequest,
   resetProfile,
-} from '../../redux/action/editProfileAction/editProfileAction';
+} from '../../redux/action/profileAction/editProfileAction';
 import {useDispatch} from 'react-redux';
 import {deviceWidth} from '../../components/atoms/constant';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import {colorPalette} from '../../components/atoms/colorPalette';
+import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 
-const RenderModalVisible = ({isCancel, onPress, setModalVisible, setEdit}) => {
+const RenderModalVisible = ({
+  isCancel,
+  onPress,
+  setModalVisible,
+  setEdit,
+  result,
+}) => {
   const res = useSelector(state => state.editProfile);
   const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -47,35 +53,17 @@ const RenderModalVisible = ({isCancel, onPress, setModalVisible, setEdit}) => {
     }
   }, [res]);
 
-  const handleClick = async values => {
-    await AsyncStorage.setItem('bio', values.bio);
-    await AsyncStorage.setItem('contact', values.contact);
-    await AsyncStorage.setItem('dob', values.dateofBirth);
-    await AsyncStorage.setItem('gender', values.gender);
-    await AsyncStorage.setItem('bloodgroup', values.bloodGroup);
-    await AsyncStorage.setItem('address', values.address);
-    await AsyncStorage.setItem('state', values.state);
-    await AsyncStorage.setItem('country', values.country);
-
-    let patient_bio = await AsyncStorage.getItem('bio');
-    let patient_contact = await AsyncStorage.getItem('contact');
-    let patient_dob = await AsyncStorage.getItem('dob');
-    let patient_country = await AsyncStorage.getItem('country');
-    let patient_gender = await AsyncStorage.getItem('gender');
-    let patient_bloodGroup = await AsyncStorage.getItem('bloodgroup');
-    let patient_address = await AsyncStorage.getItem('address');
-    let patient_state = await AsyncStorage.getItem('state');
-
+  const handleClick = values => {
     dispatch(
       editProfileRequest({
-        bio: patient_bio,
-        contact: patient_contact,
-        dateOfBirth: patient_dob,
-        gender: patient_gender,
-        bloodGroup: patient_bloodGroup,
-        country: patient_country,
-        state: patient_state,
-        address: patient_address,
+        bio: values.bio,
+        dateOfBirth: values.dateofBirth,
+        gender: values.gender,
+        bloodGroup: values.bloodGroup,
+        country: values.country,
+        state: values.state,
+        address: values.address,
+        contact: values.contact,
       }),
     );
   };
@@ -87,7 +75,11 @@ const RenderModalVisible = ({isCancel, onPress, setModalVisible, setEdit}) => {
         {isCancel ? (
           <>
             <TouchableOpacity onPress={onPress}>
-              <FontAwesomeIcon icon={faCircleXmark} size={28} color={'red'} />
+              <FontAwesomeIcon
+                icon={faCircleXmark}
+                size={26}
+                color={colorPalette.mainColor}
+              />
             </TouchableOpacity>
           </>
         ) : null}
@@ -104,15 +96,14 @@ const RenderModalVisible = ({isCancel, onPress, setModalVisible, setEdit}) => {
             validator={() => ({})}
             enableReinitialize
             initialValues={{
-              // userName: '',
-              bio: '',
-              contact: '',
-              dateofBirth: '',
-              gender: '',
-              country: '',
-              bloodGroup: '',
-              address: '',
-              state: '',
+              bio: result?.bio,
+              contact: result?.contact,
+              dateofBirth: result?.dateOfBirth,
+              gender: result?.gender,
+              country: result?.country,
+              bloodGroup: result?.bloodGroup,
+              address: result?.address,
+              state: result?.state,
             }}
             validationSchema={profileValidationSchema}
             onSubmit={values => {

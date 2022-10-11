@@ -19,3 +19,5 @@ export const APPOINTMENT_REMINDER=`${apiUrl}/doctor-prescriptions-name`;
 export const SAVE_DOCTOR_APPOINTMENT = `${apiUrl}/create-doctor-appointment`;
 export const GET_DOCTOR_APPOINTMENT = `${apiUrl}/doctor-appointments`;
 
+export const MY_PRESCRIPTIONS = `${apiUrl}/doctor-prescriptions`;
+export const GET_USER = `${apiUrl}/id`;

@@ -8,7 +8,7 @@ import {colorPalette} from '../../components/atoms/colorPalette';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import Toast from 'react-native-toast-message';
 
-const AuthScreen = ({navigation}) => {
+const AuthScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <SubHeader navigation={navigation} />
@@ -83,7 +83,7 @@ const AuthScreen = ({navigation}) => {
             Already have an account!
           </Text>
         </View>
-        <Login navigation={navigation} />
+        <Login navigation={navigation} text={route.params?.text} />
       </View>
     </View>
   );

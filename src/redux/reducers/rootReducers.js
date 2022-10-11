@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 import {myCaretakerReducer} from './caretakerReducer/myCaretakerReducer';
-import {editProfileReducer} from './editProfileReducer/editProfileReducer';
+import {editProfileReducer} from './profileReducer/editProfileReducer';
 import {signInReducer} from './loginReducer/loginReducer';
 import {acceptPatientReqReducer} from './patients/acceptPatientReqReducer';
 import {deletePatientReqReducer} from './patients/deletePatientReqReducer';
@@ -13,6 +13,8 @@ import {deleteMedicineReducer} from './userMedicine/deleteMedicineReducer';
 import { appointmentReminderReducer } from './userMedicine/appointmentReminderReducer';
 import { saveAppointmentReminderReducer } from './appointmentReminderReducer/saveAppointmentReminderReducer';
 import { getAppointmentReducer } from './appointmentReminderReducer/getAppointmentReducer';
+import {myPrescriptionsReducer} from './otherScreenReducer/myPrescriptionsReducer';
+import {getUserProfileReducer} from './profileReducer/getUserProfileReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -29,6 +31,8 @@ const rootReducer = combineReducers({
   appointmentReminder: appointmentReminderReducer,
   saveAppointment: saveAppointmentReminderReducer,
   getAppointment: getAppointmentReducer,
+  myPrescriptions: myPrescriptionsReducer,
+  getUserProfile: getUserProfileReducer,
 });
 
 export default rootReducer;

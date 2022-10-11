@@ -1,26 +1,41 @@
 /* eslint-disable indent */
 import {
-    GET_APPOINTMENT_ERROR,
-    GET_APPOINTMENT_SUCCESS,
-    GET_APPOINTMENT_REQUEST
+  GET_APPOINTMENT_ERROR,
+  GET_APPOINTMENT_REQUEST,
+  GET_APPOINTMENT_SUCCESS,
 } from '../../actionTypes';
 
 const initialState = {
   data: null,
-  isLoading: false,
-  error: '',
+  isLoading: {
+    loader: false,
+  },
+  error: {
+    error: null,
+  },
 };
 export const getAppointmentReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_APPOINTMENT_REQUEST:
-      return {...state, isLoading: true};
+      return {
+        ...state,
+        isLoading: {...state.isLoading, loader: true},
+        error: {...state.error, error: null},
+      };
     case GET_APPOINTMENT_SUCCESS:
-      return {...state, data: action.payload, isLoading: false};
+      return {
+        ...state,
+        data: action.payload,
+        isLoading: {...state.isLoading, loader: false},
+        error: {...state.error, error: null},
+      };
     case GET_APPOINTMENT_ERROR:
-      return {...state, error: action.payload, isLoading: false};
+      return {
+        ...state,
+        isLoading: {...state.isLoading, loader: false},
+        error: {...state.error, error: action.payload},
+      };
     default:
       return state;
   }
 };
-
-

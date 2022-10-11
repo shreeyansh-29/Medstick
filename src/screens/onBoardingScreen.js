@@ -1,7 +1,8 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Image} from 'react-native';
+import {View} from 'react-native';
+import CustomImage from '../components/atoms/customImage';
 import styles from '../styles/otherScreensStyles/onBoardingStyles';
 
 const OnboardingScreen = ({navigation}) => {
@@ -10,10 +11,11 @@ const OnboardingScreen = ({navigation}) => {
   }, 2000);
   return (
     <View style={styles.container}>
-      <Image
+      <CustomImage
         source={require('../assets/images/medstick.png')}
-        style={styles.img}
-        resizeMode="contain"></Image>
+        styles={styles.img}
+        resizeMode="contain"
+      />
     </View>
   );
 };

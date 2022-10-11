@@ -1,21 +1,24 @@
 import * as types from '../../actionTypes';
 
-export const saveAppointmentRequest = payload => {
+export const saveAppointmentRequest = (fDate, time, notes1) => {
   return {
     type: types.SAVE_APPOINTMENT_REQUEST,
-    payload,
+    payload: {
+      fDate,
+      time,
+      notes1,
+    },
   };
 };
-export const saveAppointmentSuccess = payload => {
+export const saveAppointmentSuccess = data => {
   return {
     type: types.SAVE_APPOINTMENT_SUCCESS,
-    payload,
+    payload:data,
   };
 };
-export const saveAppointmentError = payload => {
+export const saveAppointmentError = err => {
   return {
     type: types.SAVE_APPOINTMENT_ERROR,
-    payload,
+    payload:err,
   };
 };
-

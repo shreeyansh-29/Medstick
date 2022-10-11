@@ -6,9 +6,8 @@ import * as types from '../../actionTypes';
 
 export function* getAppointmentWorkerSaga(data) {
   try {
-    let response = yield call(getAppointmentNetworkService.getAppointmentRequest, data);
-    console.log(response,"response for get");
-    yield put(getAppointmentSuccess(response));
+    let response = yield call(getAppointmentNetworkService.getAppointmentRequest,data);
+    yield put(getAppointmentSuccess(response?.data));
   } catch (error) {
     yield put(getAppointmentError(error));
   }

@@ -7,6 +7,7 @@ class getAppointmentNetworkService{
     const pageNo = payload.payload;
     const Id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
+    
     return RequestService.getRequest(
       `${GET_DOCTOR_APPOINTMENT}?Id=${Id}&pageNo=${pageNo}&pageSize=8&userId=${Id}`,
       {

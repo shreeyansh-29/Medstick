@@ -1,6 +1,6 @@
 import * as types from '../../actionTypes';
 
-export const appointmentReminderRequest = payload => {console.log("hrloofk");
+export const appointmentReminderRequest = payload => {
   return {
     type: types.APPOINTMENT_REMINDER_REQUEST,
     payload,

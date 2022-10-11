@@ -5,9 +5,7 @@ import * as types from '../../actionTypes';
 
 export function* appointmentReminderWorkerSaga(data) {
   try {
-    console.log("data",data);
     const response = yield call(appointmentReminderNetworkService.appointmentReminder,data);
-    console.log(response,"response");
     yield put(appointmentReminderSuccess(response?.data));
   } catch (error) {
     yield put(appointmentReminderError(error));

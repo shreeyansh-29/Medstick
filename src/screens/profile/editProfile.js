@@ -9,8 +9,17 @@ import {useIsFocused} from '@react-navigation/native';
 import CustomModal from '../../components/molecules/customModal';
 import styles from '../../styles/profile/profileStyles';
 import RenderModalView from './renderModalView';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserProfileRequest} from '../../redux/action/profileAction/getUserProfileAction';
 
 const EditProfile = ({navigation}) => {
+  const dispatch = useDispatch();
+  const res = useSelector(state => state.getUserProfile?.data);
+
+  useEffect(() => {
+    dispatch(getUserProfileRequest());
+  }, []);
+
   const [name, namestate] = useState({
     user: {name: '', photo: '', email: ''},
   });
@@ -59,6 +68,7 @@ const EditProfile = ({navigation}) => {
       {edit ? (
         <>
           <CustomModal
+            type="slide"
             modalVisible={modalVisible}
             modalView={
               <RenderModalView
@@ -69,8 +79,10 @@ const EditProfile = ({navigation}) => {
                 }}
                 setModalVisible={setModalVisible}
                 setEdit={setEdit}
+                result={res}
               />
             }
+            customStyles={styles.modalView}
           />
         </>
       ) : (

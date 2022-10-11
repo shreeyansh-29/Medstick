@@ -5,7 +5,7 @@ const InputField = props => {
   const text = props?.text;
   return (
     <TextInput
-      
+      dense={props.dense}
       placeholder={props.placeholder}
       mode={props.mode}
       outlineColor={props.outlineColor}

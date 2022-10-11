@@ -5,9 +5,8 @@ import * as types from '../../actionTypes';
 
 export function* saveAppointmentWorkerSaga(data) {
   try {
-    console.log("data",data);
     const response = yield call(saveAppointmentNetworkService.saveAppointmentReminder,data);
-    console.log(response,"response");
+    console.log(response,"responseddd");
     yield put(saveAppointmentSuccess(response?.data));
   } catch (error) {
     yield put(saveAppointmentError(error));
