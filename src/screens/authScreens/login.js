@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {useIsFocused} from '@react-navigation/native';
 
-const Login = ({navigation}) => {
+const Login = ({navigation, text}) => {
   const res = useSelector(state => state.signIn.data);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -29,9 +29,15 @@ const Login = ({navigation}) => {
         text1: 'Logged In Successfully',
       });
 
-      setTimeout(() => {
-        navigation.pop(1);
-      }, 3000);
+      if (text === 'logout') {
+        setTimeout(() => {
+          navigation.pop(2);
+        }, 3000);
+      } else {
+        setTimeout(() => {
+          navigation.pop(1);
+        }, 3000);
+      }
     } else {
       Toast.show({
         type: 'error',

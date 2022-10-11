@@ -1,18 +1,21 @@
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {styles} from '../../styles/homeScreenStyles/reminderStyles';
-import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import {Card} from 'react-native-paper';
 import {verticalScale, horizontalScale} from '../../components/atoms/constant';
 import {ListItem} from 'react-native-elements';
-
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faEllipsisVertical, faPills} from '@fortawesome/free-solid-svg-icons';
+import {
+  faEllipsisVertical,
+  faPills,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {Picker} from '@react-native-picker/picker';
 
 const Reminders = () => {
+  const [visible, setVisible] = useState(false);
   const [reminders, setReminders] = useState([
     {
       endDate: '2022-09-30',
@@ -90,7 +93,10 @@ const Reminders = () => {
                 </View>
               </ListItem.Content>
 
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => {
+                  setVisible(true);
+                }}>
                 <FontAwesomeIcon
                   icon={faEllipsisVertical}
                   color={colorPalette.mainColor}

@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {editProfileReducer} from './editProfileReducer/editProfileReducer';
+import {editProfileReducer} from './profileReducer/editProfileReducer';
 import {signInReducer} from './loginReducer/loginReducer';
 import {acceptPatientReqReducer} from './patients/acceptPatientReqReducer';
 import {deletePatientReqReducer} from './patients/deletePatientReqReducer';
@@ -9,6 +9,8 @@ import {signUpReducer} from './signUpReducer/signUpReducer';
 import {sendSnapReducer} from './otherScreenReducer/sendSnapReducer';
 import medicineListReducer from './userMedicine/medicineListReducer';
 import {deleteMedicineReducer} from './userMedicine/deleteMedicineReducer';
+import {myPrescriptionsReducer} from './otherScreenReducer/myPrescriptionsReducer';
+import {getUserProfileReducer} from './profileReducer/getUserProfileReducer';
 
 const rootReducer = combineReducers({
   medicineList: medicineListReducer,
@@ -21,6 +23,8 @@ const rootReducer = combineReducers({
   editProfile: editProfileReducer,
   sendSnap: sendSnapReducer,
   deleteMedicine: deleteMedicineReducer,
+  myPrescriptions: myPrescriptionsReducer,
+  getUserProfile: getUserProfileReducer,
 });
 
 export default rootReducer;

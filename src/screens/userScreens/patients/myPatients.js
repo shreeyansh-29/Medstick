@@ -14,6 +14,7 @@ import {styles} from '../../../styles/patientStyles/myPatientsStyles';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {myPatientsRequest} from '../../../redux/action/patients/myPatientsAction';
+import CustomImage from '../../../components/atoms/customImage';
 
 const MyPatients = ({navigation}) => {
   const dispatch = useDispatch();
@@ -88,9 +89,9 @@ const MyPatients = ({navigation}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Image
+          <CustomImage
             resizeMode="contain"
-            style={{height: 320, width: 240}}
+            styles={{width: '70%'}}
             source={require('../../../assets/images/nopatients.png')}
           />
         </View>

@@ -8,24 +8,25 @@ import AddMedicine from '../screens/userScreens/medicines/addMedicine';
 import CareTaker from '../screens/userScreens/careTaker/careTaker';
 import OnboardingScreen from '../screens/onBoardingScreen';
 import BottomNavigator from './bottomNavigator';
-import CalenderScreen from '../screens/calenderScreen';
 import Patients from '../screens/userScreens/patients/patients';
 import AccountTab from '../screens/userScreens/accountTab';
-import LoginScreen from '../screens/authScreens/signUp';
 import SearchScreen from '../components/organisms/searchScreen';
-import Settings from '../screens/userScreens/settings';
-import About from '../screens/userScreens/aboutApp';
+import Settings from '../screens/otherScreens/settings';
+import About from '../screens/otherScreens/aboutApp';
 import SavedDetails from '../screens/profile/savedDetails';
 import EditProfile from '../screens/profile/editProfile';
 import SendSnap from '../components/atoms/sendSnap';
-import Prescriptions from '../screens/userScreens/prescriptions';
-import AppointmentReminders from '../screens/userScreens/appointmentReminders';
-import Notifications from '../screens/userScreens/notifications';
+import Prescriptions from '../screens/otherScreens/prescriptions';
+import AppointmentReminders from '../screens/otherScreens/appointmentReminders';
+import Notifications from '../screens/otherScreens/notifications';
 import SendSnapToCaretaker from '../screens/otherScreens/sendSnapToCaretaker';
 import AddPrescription from '../screens/userScreens/medicines/addPrescription';
 import PatientProfile from '../screens/userScreens/patients/patientProfile';
 import CareTakerProfile from '../screens/userScreens/careTaker/careTakerProfile';
 import AuthScreen from '../screens/authScreens/authScreen';
+import Logout from '../Logout';
+import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
+// import RenderModalView from '../screens/otherScreens/renderModalView';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,7 +48,6 @@ const MainNavigation = () => {
         <Stack.Screen name="CareTaker" component={CareTaker} />
         <Stack.Screen name="Patients" component={Patients} />
         <Stack.Screen name="SendSnap" component={SendSnap} />
-        <Stack.Screen name="Calender" component={CalenderScreen} />
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="About" component={About} />
@@ -65,6 +65,8 @@ const MainNavigation = () => {
         />
         <Stack.Screen name="PatientProfile" component={PatientProfile} />
         <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
+        <Stack.Screen name="Logout" component={Logout} />
+        <Stack.Screen name="ViewPrescription" component={DoctorPrescription} />
       </Stack.Navigator>
     </NavigationContainer>
   );

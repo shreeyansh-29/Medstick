@@ -3,29 +3,16 @@ import React from 'react';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import InputField from '../../components/atoms/inputField';
 import styles from '../../styles/profile/profileStyles';
-import PickerField from '../../components/atoms/pickerField';
+import PickerField from '../../components/atoms/customPicker';
 import {bloodGroup, gender} from '../../constants/pickerItem';
 import {Button} from 'react-native-elements';
-import {Picker} from '@react-native-picker/picker';
 
 const ProfileForm = props => {
   return (
     <View style={styles.inputForm}>
-      {/* <View style={styles.inputField}>
-        <InputField
-          styles={styles.field}
-          placeholder="Full Name"
-          mode="outlined"
-          outlineColor="lightgrey"
-          text="userName"
-          activeOutlineColor={colorPalette.mainColor}
-          {...props}
-          value={props.values.userName}
-        />
-      </View> */}
-
       <View style={styles.inputField}>
         <InputField
+          dense={true}
           styles={styles.bio}
           placeholder="Bio"
           mode="outlined"
@@ -34,7 +21,6 @@ const ProfileForm = props => {
           activeOutlineColor={colorPalette.mainColor}
           {...props}
           value={props.values.bio}
-          // maxLength={200}
           multiline={true}
           selectTextOnFocus={true}
         />
@@ -46,6 +32,7 @@ const ProfileForm = props => {
       <View style={styles.inputField}>
         <InputField
           styles={styles.field}
+          dense={true}
           placeholder="Contact"
           mode="outlined"
           outlineColor="lightgrey"
@@ -62,6 +49,7 @@ const ProfileForm = props => {
       <View style={styles.inputField}>
         <InputField
           styles={styles.field}
+          dense={true}
           placeholder="Date of Birth(yyyy-mm-dd)"
           mode="outlined"
           outlineColor="lightgrey"
@@ -78,6 +66,7 @@ const ProfileForm = props => {
       <View style={styles.inputField}>
         <InputField
           styles={styles.field}
+          dense={true}
           placeholder="Address"
           mode="outlined"
           outlineColor="lightgrey"
@@ -85,7 +74,6 @@ const ProfileForm = props => {
           activeOutlineColor={colorPalette.mainColor}
           {...props}
           value={props.values.address}
-          // maxLength={100}
         />
         {props.errors.address && props.touched.address && (
           <Text style={styles.errorText}>{props.errors.address}</Text>
@@ -94,7 +82,8 @@ const ProfileForm = props => {
       <View style={styles.inputGroup}>
         <View style={styles.subInputGroup}>
           <InputField
-            styles={{backgroundColor: 'white'}}
+            styles={{backgroundColor: 'white', height: 50}}
+            dense={true}
             placeholder="State"
             mode="outlined"
             outlineColor="lightgrey"
@@ -109,7 +98,7 @@ const ProfileForm = props => {
         </View>
         <View style={styles.subInputGroup}>
           <InputField
-            styles={{backgroundColor: 'white'}}
+            styles={{backgroundColor: 'white', height: 50}}
             placeholder="Country"
             mode="outlined"
             outlineColor="lightgrey"

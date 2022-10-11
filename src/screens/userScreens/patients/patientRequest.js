@@ -1,4 +1,4 @@
-import {View, Image, FlatList, ActivityIndicator} from 'react-native';
+import {View, FlatList, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {patientsReqRequest} from '../../../redux/action/patients/patientsRequestAction';
 import {acceptPatientReqRequest} from '../../../redux/action/patients/acceptPatientReqAction';
+import CustomImage from '../../../components/atoms/customImage';
 
 const PatientRequest = () => {
   const dispatch = useDispatch();
@@ -116,9 +117,9 @@ const PatientRequest = () => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Image
+          <CustomImage
             resizeMode="contain"
-            style={{height: 320, width: 240}}
+            styles={{width: '70%'}}
             source={require('../../../assets/images/nopatientreq.png')}
           />
         </View>
