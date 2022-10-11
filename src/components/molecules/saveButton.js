@@ -2,6 +2,7 @@ import {Animated, TouchableOpacity} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import LottieView from 'lottie-react-native';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
+import { View } from 'react-native-animatable';
 
 const SaveButton = () => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -14,14 +15,14 @@ const SaveButton = () => {
   }, []);
 
   return (
-    <TouchableOpacity style={Styles.saveTouchable}>
+    <View style={Styles.saveTouchable}>
       <LottieView
         style={Styles.saveButton}
         speed={0.9}
         progress={progress}
         source={require('../../assets/animation/saveLogos.json')}
       />
-    </TouchableOpacity>
+    </View>
   );
 };
 

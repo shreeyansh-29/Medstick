@@ -1,20 +1,54 @@
 import {FlatList, Image, RefreshControl, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
+import {useDispatch, useSelector} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
+import {caretakerRequestRequest} from '../../../redux/action/caretakerAction/caretakerRequestAction';
+import {myCaretakerSelector} from '../../../constants/Selector/myCaretakerSelector';
 
 const CareTakerRequest = () => {
-  const [caretakers, setCaretakers] = useState([
-    {patientName: 'Anil Kumar', phoneNo: '9695072068'},
-    {patientName: 'Ritesh', phoneNo: '9695072061'},
-    {patientName: 'Ritesh', phoneNo: '9695072061'},
-    {patientName: 'Ritesh', phoneNo: '9695072061'},
-  ]);
+  const res = useSelector(myCaretakerSelector.caretakerList);
+  console.log(res);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const [pageNo, setPageNo] = useState(0);
+  const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
-  const fetchcaretakerreq = () => {};
+  useEffect(() => {
+    if (res !== null) {
+      let list = res?.result?.map(item => {
+        return {
+          name: item.result.userName,
+          contact: item.result.contact,
+        };
+      });
+
+      setData([...data, ...list]);
+    }
+  }, [res]);
+
+  useEffect(() => {
+    if (isFocused) {
+      // setIsLoading(true);
+      dispatch(caretakerRequestRequest(pageNo));
+    }
+  }, [pageNo, isFocused]);
+
+  const onEnd = () => {
+    setPageNo(pageNo + 1);
+  };
+
+  const renderLoader = () => {
+    return res.result.length === 7 ? (
+      <View style={{marginVertical: 26, alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={colorPalette.mainColor} />
+      </View>
+    ) : null;
+  };
 
   const renderItem = ({item}) => {
     return (
@@ -25,7 +59,7 @@ const CareTakerRequest = () => {
               size={80}
               rounded
               source={require('../../../assets/images/shreeyansh.jpg')}
-            />  
+            />
           </View>
           <View style={styles.container1}>
             <ListItem
@@ -66,7 +100,7 @@ const CareTakerRequest = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fafafa'}}>
-      {caretakers.length === 0 ? (
+      {data.length === 0 ? (
         <View
           style={{
             flex: 1,
@@ -87,8 +121,13 @@ const CareTakerRequest = () => {
               refreshing={refresh}
               onRefresh={fetchcaretakerreq}></RefreshControl>
           }
-          data={caretakers}
+          data={data}
           renderItem={renderItem}
+          numColumns={1}
+          keyExtractor={item => item.contact}
+          onEndReached={onEnd}
+          ListFooterComponent={renderLoader}
+          onEndReachedThreshold={0}
         />
       )}
     </View>

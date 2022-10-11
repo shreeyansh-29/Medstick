@@ -7,7 +7,7 @@ class SignUpNetworkService {
     return RequestService.postRequest(SIGN_UP, {
       userName: name,
       email: email,
-      contact: '',
+      contact: '1234567890',
       picPath: photo,
       fcmToken: token,
     });

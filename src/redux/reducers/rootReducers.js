@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+import {myCaretakerReducer} from './caretakerReducer/myCaretakerReducer';
 import {editProfileReducer} from './profileReducer/editProfileReducer';
 import {signInReducer} from './loginReducer/loginReducer';
 import {acceptPatientReqReducer} from './patients/acceptPatientReqReducer';
@@ -7,15 +8,19 @@ import {myPatientsReducer} from './patients/myPatientsReducer';
 import {patientsRequestReducer} from './patients/patientsRequestReducer';
 import {signUpReducer} from './signUpReducer/signUpReducer';
 import {sendSnapReducer} from './otherScreenReducer/sendSnapReducer';
-import medicineListReducer from './userMedicine/medicineListReducer';
+import { caretakerRequestReducer } from './caretakerReducer/caretakerRequestReducer';
 import {deleteMedicineReducer} from './userMedicine/deleteMedicineReducer';
+import { appointmentReminderReducer } from './userMedicine/appointmentReminderReducer';
+import { saveAppointmentReminderReducer } from './appointmentReminderReducer/saveAppointmentReminderReducer';
+import { getAppointmentReducer } from './appointmentReminderReducer/getAppointmentReducer';
 import {myPrescriptionsReducer} from './otherScreenReducer/myPrescriptionsReducer';
 import {getUserProfileReducer} from './profileReducer/getUserProfileReducer';
 
 const rootReducer = combineReducers({
-  medicineList: medicineListReducer,
   signIn: signInReducer,
   signUp: signUpReducer,
+  careTaker: myCaretakerReducer,
+  listCaretaker: caretakerRequestReducer, 
   myPatients: myPatientsReducer,
   patientsRequest: patientsRequestReducer,
   acceptPatientRequest: acceptPatientReqReducer,
@@ -23,6 +28,9 @@ const rootReducer = combineReducers({
   editProfile: editProfileReducer,
   sendSnap: sendSnapReducer,
   deleteMedicine: deleteMedicineReducer,
+  appointmentReminder: appointmentReminderReducer,
+  saveAppointment: saveAppointmentReminderReducer,
+  getAppointment: getAppointmentReducer,
   myPrescriptions: myPrescriptionsReducer,
   getUserProfile: getUserProfileReducer,
 });

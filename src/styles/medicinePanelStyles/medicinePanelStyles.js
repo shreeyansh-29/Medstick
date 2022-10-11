@@ -21,6 +21,15 @@ const Styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     marginTop: verticalScale(16),
   },
+  image: {
+    borderColor: 'white',
+    position: 'absolute',
+    bottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  lottieAnimation: {width: 240, height: 240},
   card: {
     borderRadius: 30,
     borderColor: 'lightgrey',
@@ -29,6 +38,7 @@ const Styles = StyleSheet.create({
     marginVertical: verticalScale(5),
     marginHorizontal: horizontalScale(14),
   },
+  camera: {height: '100%'},
   listView: {margin: moderateScale(5)},
   list: {marginHorizontal: moderateScale(16)},
   avatarView: {
@@ -85,10 +95,11 @@ const Styles = StyleSheet.create({
     height: '80%',
     backgroundColor: colorPalette.appColor,
   },
-  saveButton: {
-    width: '100%',
-    height: '10%',
-  },
+  // saveButton: {
+  //   width: '100%',
+  //   height: '10%',
+  //   alignItems:"center"
+  // },
   addPrescriptionIcon: {
     width: '15%',
     marginLeft: 35,
@@ -110,7 +121,7 @@ const Styles = StyleSheet.create({
   addPrescriptionContainer: {
     height: '100%',
     width: '100%',
-    paddingTop: 10,
+    paddingTop: 5,
     backgroundColor: colorPalette.appColor,
   },
   addPrescriptionLottie: {
@@ -132,6 +143,7 @@ const Styles = StyleSheet.create({
     backgroundColor: colorPalette.basicColor,
   },
   addingPrescription: {
+    marginLeft: '6%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -142,20 +154,55 @@ const Styles = StyleSheet.create({
   },
   addingPrescriptionTouchable: {
     justifyContent: 'flex-end',
+    marginTop: '8%',
   },
   textInput: {
     width: '70%',
+    marginTop: '9%',
   },
   saveButton: {
     width: '50%',
-    // backgroundColor:'#000'
+    alignItems: 'center',
   },
   saveTouchable: {
     position: 'absolute',
-    right: 0,
     bottom: 0,
     alignItems: 'flex-end',
     marginEnd: 20,
+  },
+  box: {
+    margin: '3.6%',
+    marginBottom:"30%",
+    borderWidth: 1.2,
+    padding: '4%',
+    borderRadius: 5,
+    borderColor: colorPalette.mainColor,
+  },
+  box1: {
+    margin: '3.6%',
+    borderWidth: 1.2,
+    alignItems: 'center',
+    flexDirection:'row',
+    padding: '2%',
+    borderRadius: 5,
+    paddingBottom:"5%",
+    paddingHorizontal:"0.5%",
+    borderColor: colorPalette.mainColor,
+  },
+  text: {
+    fontSize: 17,
+    margin: '3%',
+    paddingHorizontal:3,
+  },
+  box2: {
+    margin: '1.6%',
+    borderWidth: 1.2,
+    alignItems: 'center',
+    marginLeft:'3%',
+    padding: '2.5%',
+    borderRadius: 5,
+    paddingHorizontal:2,
+    borderColor: colorPalette.mainColor,
   },
 });
 

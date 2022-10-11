@@ -1,11 +1,11 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, Pressable} from 'react-native';
 import React from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
-import { horizontalScale } from '../../../components/atoms/constant';
+import {horizontalScale} from '../../../components/atoms/constant';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -49,26 +49,24 @@ LocaleConfig.locales['en'] = {
 };
 LocaleConfig.defaultLocale = 'en';
 const Report = ({navigation}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   let startDate = new Date().toDateString();
   return (
     <>
-      <View
-        style={styles.container}
-      />
+      <View style={styles.container} />
       <View style={styles.report}>
         <MainHeader title={'Reports'} navigation={navigation} />
         <ScrollView>
           <View style={styles.reportContainer}>
             <View style={styles.analytics}>
-              <View
-                style={styles.container1Text}>
+              <View style={styles.container1Text}>
                 <Text style={styles.font}>Overall Performance</Text>
                 <Text style={styles.fontSmall}>
                   This percentage shows your overall adherence rate.
                 </Text>
               </View>
-              <View
-                style={styles.progressView}>
+              <View style={styles.progressView}>
                 <ProgressReport styles={styles} />
               </View>
             </View>
@@ -77,6 +75,27 @@ const Report = ({navigation}) => {
             <Text style={styles.reportText}>Your Report</Text>
           </View>
           <View style={styles.calendarView}>
+            <View>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert('Modal has been closed.');
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Hello World!</Text>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalVisible(!modalVisible)}>
+                      <Text style={styles.textStyle}>Hide Modal</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </Modal>
+            </View>
             <Calendar
               style={styles.calendar}
               theme={styles.theme}
@@ -84,7 +103,7 @@ const Report = ({navigation}) => {
               minDate={'2012-05-10'}
               maxDate={'2222-12-30'}
               onDayPress={day => {
-                // console.log('selected day', day);
+                <Pressable onPress={() => setModalVisible(true)} />;
               }}
               onDayLongPress={day => {
                 // console.log('selected day', day);
@@ -114,6 +133,13 @@ const Report = ({navigation}) => {
               markedDates={markedDay}
             />
           </View>
+          {data.date == '2022-09-22' ? (
+            <View></View>
+          ) : (
+            <View style={{margin: 15}}>
+              <Text style={{fontSize: 17, color: 'black'}}>No Remainders</Text>
+            </View>
+          )}
         </ScrollView>
       </View>
     </>

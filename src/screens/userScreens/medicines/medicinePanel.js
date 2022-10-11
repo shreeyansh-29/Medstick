@@ -97,7 +97,7 @@ const MedicinePanel = ({navigation}) => {
                   <TouchableOpacity
                     style={Styles.rem}
                     onPress={() =>
-                      navigation.navigate('Add Reminder', {id: item.index})
+                      navigation.navigate('AddRemainder', {id: item.index})
                     }>
                     <FontAwesomeIcon
                       icon={faClock}

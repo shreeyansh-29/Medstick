@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/userScreens/homeScreen';
-import Report from '../screens/userScreens/report/report';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Ripple from 'react-native-material-ripple';
 import '../../ignoreWarnings';
@@ -18,6 +17,7 @@ import AccountTab from '../screens/userScreens/accountTab';
 import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
 import AddButton from '../components/atoms/addButton';
 import {styles} from '../styles/navigationStyles';
+import Report from '../screens/userScreens/report/report';
 
 const TabBar = [
   {route: 'Home', component: HomeScreen, iconName: faHouseMedical},

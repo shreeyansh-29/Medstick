@@ -66,6 +66,7 @@ const Login = ({navigation, text}) => {
       const token = await messaging().getToken();
       const {email, photo} = userInfo.user;
       await AsyncStorage.setItem('user_photo', photo);
+      
       dispatch(loginRequest({email, token}));
     } catch (err) {
       if (await GoogleSignin.isSignedIn()) {

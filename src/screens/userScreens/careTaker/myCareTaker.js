@@ -1,32 +1,54 @@
-import {
-  View,
-  Image,
-  FlatList,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
-import React, {useState} from 'react';
+import {View, Image, FlatList, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import AddButton from '../../../components/atoms/addButton';
 import {styles} from '../../../styles/careTakerStyles/myCareTakerStyles';
 import {ListItem} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
+import {useDispatch, useSelector} from 'react-redux';
+import {caretakerRequest} from '../../../redux/action/caretakerAction/myCaretakerAction';
+import {useIsFocused} from '@react-navigation/native';
+import { myCaretakerSelector } from '../../../constants/Selector/myCaretakerSelector';
 
 const MyCareTaker = ({navigation}) => {
-  const [refreshing, setRefreshing] = useState(false);
-  const [data, setData] = useState([
-    {name: 'Shreeyansh Singh', phoneNo: '9695072068'},
-    {name: 'Devanshu', phoneNo: '8391812091'},
-    {name: 'Shiva', phoneNo: '8391812091'},
-  ]);
+  const res = useSelector(myCaretakerSelector.caretaker);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const [pageNo, setPageNo] = useState(0);
+  const [myCaretaker, setMyCaretaker] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchPatients = () => {};
+  useEffect(() => {
+    if (res !== null) {
+      setMyCaretaker([...myCaretaker, ...res.result]);
+      setIsLoading(false);
+    }
+  }, [res]);
+
+  const onEnd = () => {
+    setPageNo(pageNo + 1);
+  };
+
+  const renderLoader = () => {
+    return isLoading ? (
+      <View style={{marginVertical: 26, alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={colorPalette.mainColor} />
+      </View>
+    ) : null;
+  };
+
+  useEffect(() => {
+    dispatch(caretakerRequest(pageNo));
+    // setIsLoading(true);
+  }, [pageNo]);
 
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
         style={styles.top}
         onPress={() => {
-          navigation.navigate('CareTakerProfile');
+          navigation.navigate('CareTakerProfile',{
+            profile:item.userDetails.picPath,
+          });
         }}>
         <ListItem
           style={styles.list}
@@ -34,11 +56,11 @@ const MyCareTaker = ({navigation}) => {
           tvParallaxProperties={undefined}>
           <UserAvatar size={60} name={item.name} />
           <ListItem.Content>
-            <ListItem.Title style={styles.patientName}>
-              {item.name}
+            <ListItem.Title key={item} style={styles.patientName}>
+              {item.result?.userName}
             </ListItem.Title>
-            <ListItem.Subtitle style={styles.subtitle}>
-              {item.phoneNo}
+            <ListItem.Subtitle key={item} style={styles.subtitle}>
+              {item.contact}
             </ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
@@ -48,7 +70,7 @@ const MyCareTaker = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {data.length === 0 ? (
+      {myCaretaker.length === 0 ? (
         <View style={styles.imgView}>
           <Image
             resizeMode="contain"
@@ -61,9 +83,10 @@ const MyCareTaker = ({navigation}) => {
           data={data}
           renderItem={renderItem}
           numColumns={1}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={fetchPatients} />
-          }
+          keyExtractor={item => item.contact}
+          onEndReached={onEnd}
+          ListFooterComponent={renderLoader}
+          onEndReachedThreshold={0}
         />
       )}
 

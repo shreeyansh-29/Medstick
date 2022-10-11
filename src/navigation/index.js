@@ -16,6 +16,9 @@ import About from '../screens/otherScreens/aboutApp';
 import SavedDetails from '../screens/profile/savedDetails';
 import EditProfile from '../screens/profile/editProfile';
 import SendSnap from '../components/atoms/sendSnap';
+import AddRemainder from '../screens/userScreens/addRemainder';
+import edit from '../components/organisms/alarm/edit';
+import alarm from '../components/organisms/alarm/alarm';
 import Prescriptions from '../screens/otherScreens/prescriptions';
 import AppointmentReminders from '../screens/otherScreens/appointmentReminders';
 import Notifications from '../screens/otherScreens/notifications';
@@ -26,7 +29,6 @@ import CareTakerProfile from '../screens/userScreens/careTaker/careTakerProfile'
 import AuthScreen from '../screens/authScreens/authScreen';
 import Logout from '../Logout';
 import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
-// import RenderModalView from '../screens/otherScreens/renderModalView';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,11 +56,17 @@ const MainNavigation = () => {
         <Stack.Screen name="SavedDetails" component={SavedDetails} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="Prescriptions" component={Prescriptions} />
+        <Stack.Screen name="AddRemainder" component={AddRemainder} />
         <Stack.Screen
           name="AppointmentReminders"
           component={AppointmentReminders}
         />
         <Stack.Screen name="Notifications" component={Notifications} />
+        <Stack.Screen
+          name="edit"
+          component={edit}
+          options={{...headerStyles, title: 'Alarm'}}
+        />
         <Stack.Screen
           name="SendSnapToCaretaker"
           component={SendSnapToCaretaker}
@@ -70,6 +78,15 @@ const MainNavigation = () => {
       </Stack.Navigator>
     </NavigationContainer>
   );
+};
+export const headerStyles = {
+  headerStyle: {
+    elevation: 0,
+  },
+  headerTintColor: '#000',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
 };
 
 export default MainNavigation;
