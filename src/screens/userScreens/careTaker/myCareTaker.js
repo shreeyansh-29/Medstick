@@ -38,7 +38,7 @@ const MyCareTaker = ({navigation}) => {
 
   useEffect(() => {
     dispatch(caretakerRequest(pageNo));
-    setIsLoading(true);
+    // setIsLoading(true);
   }, [pageNo]);
 
   const renderItem = ({item}) => {

@@ -9,6 +9,10 @@ import {patientsRequestReducer} from './patients/patientsRequestReducer';
 import {signUpReducer} from './signUpReducer/signUpReducer';
 import {sendSnapReducer} from './otherScreenReducer/sendSnapReducer';
 import { caretakerRequestReducer } from './caretakerReducer/caretakerRequestReducer';
+import {deleteMedicineReducer} from './userMedicine/deleteMedicineReducer';
+import { appointmentReminderReducer } from './userMedicine/appointmentReminderReducer';
+import { saveAppointmentReminderReducer } from './appointmentReminderReducer/saveAppointmentReminderReducer';
+import { getAppointmentReducer } from './appointmentReminderReducer/getAppointmentReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -21,6 +25,10 @@ const rootReducer = combineReducers({
   deletePatientRequest: deletePatientReqReducer,
   editProfile: editProfileReducer,
   sendSnap: sendSnapReducer,
+  deleteMedicine: deleteMedicineReducer,
+  appointmentReminder: appointmentReminderReducer,
+  saveAppointment: saveAppointmentReminderReducer,
+  getAppointment: getAppointmentReducer,
 });
 
 export default rootReducer;

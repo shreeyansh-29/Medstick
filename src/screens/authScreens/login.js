@@ -34,7 +34,7 @@ const Login = ({navigation}) => {
       }, 3000);
     } else {
       Toast.show({
-        type: 'info',
+        type: 'error',
         text1: 'Error While Login',
       });
     }
@@ -44,6 +44,11 @@ const Login = ({navigation}) => {
     if (isFocused) {
       if (res?.status === 'Success') {
         getResponse();
+      } else if (res?.status === 'Failed') {
+        Toast.show({
+          type: 'info',
+          text1: 'User Not Found',
+        });
       }
     }
   }, [isFocused, res]);

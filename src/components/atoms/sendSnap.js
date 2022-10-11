@@ -22,6 +22,7 @@ const SendSnap = ({navigation}) => {
 
         <TouchableOpacity
           onPress={async () => {
+            const data = await takePicture();
             navigation.navigate('SendSnapToCaretaker', {
               image_uri: data.uri,
             });

@@ -1,4 +1,4 @@
-let apiUrl = 'https://d168-106-51-81-179.in.ngrok.io/api/v1/user';
+let apiUrl = 'https://ddda-106-51-81-179.in.ngrok.io/api/v1/user';
 
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
@@ -14,3 +14,8 @@ export const PATIENTS_REQUEST = `${apiUrl}/request/patient-requests`;
 export const EDIT_PROFILE = `${apiUrl}/user-details`;
 export const ACCEPT_REQUEST = `${apiUrl}/request/accepted`;
 export const SEND_SNAP = `${apiUrl}/image`;
+export const DELETE_MEDICINE = `${apiUrl}/medicine/delete`;
+export const APPOINTMENT_REMINDER=`${apiUrl}/doctor-prescriptions-name`;
+export const SAVE_DOCTOR_APPOINTMENT = `${apiUrl}/create-doctor-appointment`;
+export const GET_DOCTOR_APPOINTMENT = `${apiUrl}/doctor-appointments`;
+

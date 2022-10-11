@@ -1,5 +1,12 @@
-import {View, FlatList, Animated, TouchableOpacity, Alert} from 'react-native';
-import React, {useRef, useEffect} from 'react';
+import {
+  View,
+  FlatList,
+  Animated,
+  TouchableOpacity,
+  Alert,
+  Text,
+} from 'react-native';
+import React, {useRef, useEffect, useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
@@ -9,22 +16,22 @@ import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadMedicineList} from '../../../redux/action/userMedicine/medicineListAction';
+import {useIsFocused} from '@react-navigation/native';
+import {deleteMedicineRequest} from '../../../redux/action/userMedicine/deleteMedicine';
+import Loader from '../../../components/atoms/loader';
 
 const MedicinePanel = ({navigation}) => {
-  const medicines = [
-    {name: 'Paracetamol', type: 'Tablet', power: '600 mg', status: 0},
-    {name: 'Triohale', type: 'Inhaler', power: '5 dose', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-    {name: 'Cofsils', type: 'Syrup', power: '30 ml', status: 1},
-  ];
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const [medicines, setMedicines] = useState([]);
+  const res = useSelector(state => state.medicineList);
+  const loading = useSelector(
+    state => state.medicineList?.loading?.medicineListLoader,
+  );
+  const res1 = useSelector(state => state.deleteMedicine);
+  // console.log(res1);
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     Animated.timing(progress, {
@@ -33,6 +40,25 @@ const MedicinePanel = ({navigation}) => {
       useNativeDriver: true,
     }).start();
   }, []);
+
+  useEffect(() => {
+    if (res?.data !== null) {
+      setMedicines(res?.data?.result);
+    }
+  }, [res]);
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(loadMedicineList());
+    }
+  }, [isFocused]);
+
+  const deleteMedicine = userMedicineId => {
+    dispatch(deleteMedicineRequest(userMedicineId));
+    setTimeout(() => {
+      dispatch(loadMedicineList());
+    }, 300);
+  };
 
   const renderItem = ({item}) => {
     return (
@@ -50,10 +76,20 @@ const MedicinePanel = ({navigation}) => {
                     />
                     <View style={Styles.medNameView}>
                       <ListItem.Title style={Styles.medName}>
-                        {item.name}
+                        {item.medicineName}
                       </ListItem.Title>
-                      <ListItem.Subtitle>{item.type}</ListItem.Subtitle>
-                      <ListItem.Subtitle>{item.power}</ListItem.Subtitle>
+                      <ListItem.Subtitle>
+                        <Text style={{color: 'black'}}>Type: </Text>
+                        {item.dosageQuantity}
+                      </ListItem.Subtitle>
+                      <ListItem.Subtitle>
+                        <Text style={{color: 'black'}}>Dosage: </Text>
+                        {item.dosageUnit}
+                      </ListItem.Subtitle>
+                      <ListItem.Subtitle>
+                        <Text style={{color: 'black'}}>Stock: </Text>
+                        {item.stock}
+                      </ListItem.Subtitle>
                     </View>
                   </View>
                 </ListItem.Content>
@@ -74,7 +110,7 @@ const MedicinePanel = ({navigation}) => {
                       Alert.alert('Delete it!', 'Sure you want delete it', [
                         {
                           text: 'Delete',
-                          onPress: () => deleteitem(item.user_id),
+                          onPress: () => deleteMedicine(item.userMedicineId),
                         },
                         {
                           text: 'Cancel',
@@ -99,35 +135,31 @@ const MedicinePanel = ({navigation}) => {
   return (
     <>
       <View style={Styles.container}>
-        <View
-          style={{
-            position: 'absolute',
-            backgroundColor: colorPalette.mainColor,
-            height: '50%',
-            width: '200%',
-            borderBottomEndRadius: 530,
-            borderBottomStartRadius: 590,
-            top: -140,
-            right: -120,
-          }}
-        />
+        <View style={Styles.background} />
         <MainHeader title={'Medicine'} />
-        {medicines.length === 0 ? (
-          <View style={Styles.lottie}>
-            <LottieView
-              style={Styles.lottieView}
-              speed={0.8}
-              source={require('../../../assets/animation/noMedicine2.json')}
-              progress={progress}
-            />
-          </View>
+        {loading ? (
+          <Loader />
         ) : (
-          <FlatList
-            data={medicines}
-            renderItem={renderItem}
-            numColumns={1}
-            showsVerticalScrollIndicator={false}
-          />
+          <>
+            {medicines === null ? (
+              <View style={Styles.lottie}>
+                <LottieView
+                  style={Styles.lottieView}
+                  speed={0.8}
+                  source={require('../../../assets/animation/noMed1.json')}
+                  progress={progress}
+                />
+              </View>
+            ) : (
+              <>
+                <FlatList
+                  data={medicines}
+                  renderItem={renderItem}
+                  showsVerticalScrollIndicator={false}
+                />
+              </>
+            )}
+          </>
         )}
       </View>
     </>

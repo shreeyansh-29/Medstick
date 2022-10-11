@@ -1,4 +1,4 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, Pressable} from 'react-native';
 import React from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
@@ -49,6 +49,8 @@ LocaleConfig.locales['en'] = {
 };
 LocaleConfig.defaultLocale = 'en';
 const Report = ({navigation}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   let startDate = new Date().toDateString();
   return (
     <>
@@ -73,6 +75,27 @@ const Report = ({navigation}) => {
             <Text style={styles.reportText}>Your Report</Text>
           </View>
           <View style={styles.calendarView}>
+            <View>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert('Modal has been closed.');
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Hello World!</Text>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setModalVisible(!modalVisible)}>
+                      <Text style={styles.textStyle}>Hide Modal</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </Modal>
+            </View>
             <Calendar
               style={styles.calendar}
               theme={styles.theme}
@@ -80,7 +103,7 @@ const Report = ({navigation}) => {
               minDate={'2012-05-10'}
               maxDate={'2222-12-30'}
               onDayPress={day => {
-                // console.log('selected day', day);
+                <Pressable onPress={() => setModalVisible(true)} />;
               }}
               onDayLongPress={day => {
                 // console.log('selected day', day);

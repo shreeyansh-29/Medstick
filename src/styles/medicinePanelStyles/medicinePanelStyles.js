@@ -9,7 +9,11 @@ import {
 const Styles = StyleSheet.create({
   //medicine panel styles
   container: {flex: 1, backgroundColor: '#fafafa'},
-  lottie: {justifyContent: 'center', alignItems: 'center', flex: 1},
+  lottie: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
   lottieView: {width: '70%'},
   flatlist: {
     flex: 1,
@@ -43,10 +47,20 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
   },
   medNameView: {flexDirection: 'column', marginLeft: verticalScale(16)},
-  medName: {fontWeight: '600'},
+  medName: {fontWeight: '900'},
   rem: {marginRight: 12},
   icon: {
     flexDirection: 'row',
+  },
+  background: {
+    position: 'absolute',
+    backgroundColor: colorPalette.mainColor,
+    height: '50%',
+    width: '200%',
+    borderBottomEndRadius: 530,
+    borderBottomStartRadius: 590,
+    top: -140,
+    right: -120,
   },
 
   //add medicine styles
