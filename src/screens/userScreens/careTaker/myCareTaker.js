@@ -1,65 +1,63 @@
-import {View, Image, FlatList, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {View, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import AddButton from '../../../components/atoms/addButton';
 import {styles} from '../../../styles/careTakerStyles/myCareTakerStyles';
 import {ListItem} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
 import {useDispatch, useSelector} from 'react-redux';
-import {caretakerRequest} from '../../../redux/action/caretakerAction/myCaretakerAction';
-import {useIsFocused} from '@react-navigation/native';
-import { myCaretakerSelector } from '../../../constants/Selector/myCaretakerSelector';
+import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAction';
+import Loader from '../../../components/atoms/loader';
+import CustomImage from '../../../components/atoms/customImage';
 
 const MyCareTaker = ({navigation}) => {
-  const res = useSelector(myCaretakerSelector.caretaker);
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
+  const res = useSelector(state => state.myCaretaker);
+  console.log('caretakerRes', res);
   const [pageNo, setPageNo] = useState(0);
-  const [myCaretaker, setMyCaretaker] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [caretaker, setCaretaker] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    if (res !== null) {
-      setMyCaretaker([...myCaretaker, ...res.result]);
-      setIsLoading(false);
+    if (res?.data !== null) {
+      setCaretaker([...res.data]);
+    } else if (res?.data === null) {
+      setCaretaker([]);
     }
   }, [res]);
 
-  const onEnd = () => {
-    setPageNo(pageNo + 1);
-  };
-
-  const renderLoader = () => {
-    return isLoading ? (
-      <View style={{marginVertical: 26, alignItems: 'center'}}>
-        <ActivityIndicator size="large" color={colorPalette.mainColor} />
-      </View>
-    ) : null;
-  };
-
   useEffect(() => {
-    dispatch(caretakerRequest(pageNo));
-    // setIsLoading(true);
-  }, [pageNo]);
+    dispatch(myCaretakerRequest(pageNo));
+  }, []);
+
+  // const fetchCaretaker = () => {
+  //   dispatch(myCaretakerRequest(pageNo));
+  // };
+
+  // const loadMoreItem = () => {
+  //   if (res?.data?.length === 7) {
+  //     let a = pageNo + 1;
+  //     dispatch(myCaretakerRequest(a));
+  //     setPageNo(a);
+  //   }
+  // };
 
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
         style={styles.top}
         onPress={() => {
-          navigation.navigate('CareTakerProfile',{
-            profile:item.userDetails.picPath,
-          });
+          navigation.navigate('CareTakerProfile', {profile: item});
         }}>
         <ListItem
           style={styles.list}
           hasTVPreferredFocus={undefined}
           tvParallaxProperties={undefined}>
-          <UserAvatar size={60} name={item.name} />
+          <UserAvatar size={60} name={item.userName} />
           <ListItem.Content>
-            <ListItem.Title key={item} style={styles.patientName}>
-              {item.result?.userName}
+            <ListItem.Title style={styles.patientName}>
+              {item.userName}
             </ListItem.Title>
-            <ListItem.Subtitle key={item} style={styles.subtitle}>
+            <ListItem.Subtitle style={styles.subtitle}>
               {item.contact}
             </ListItem.Subtitle>
           </ListItem.Content>
@@ -70,33 +68,48 @@ const MyCareTaker = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {myCaretaker.length === 0 ? (
-        <View style={styles.imgView}>
-          <Image
-            resizeMode="contain"
-            style={styles.img}
-            source={require('../../../assets/images/nocaretakers.jpg')}
-          />
-        </View>
+      {res?.isLoading ? (
+        <Loader />
       ) : (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          numColumns={1}
-          keyExtractor={item => item.contact}
-          onEndReached={onEnd}
-          ListFooterComponent={renderLoader}
-          onEndReachedThreshold={0}
-        />
-      )}
+        <>
+          {caretaker.length === 0 ? (
+            <View style={styles.imgView}>
+              <CustomImage
+                resizeMode="contain"
+                styles={{width: '70%'}}
+                source={require('../../../assets/images/nocaretakers.jpg')}
+              />
+            </View>
+          ) : (
+            <FlatList
+              data={caretaker}
+              renderItem={renderItem}
+              // onEndReached={loadMoreItem}
+              // onEndReachedThreshold={0.5}
+              keyExtractor={(item, index) => index.toString()}
+              // numColumns={1}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    dispatch(myCaretakerRequest(pageNo));
+                    setRefresh(false);
+                  }}
+                />
+              }
+            />
+          )}
 
-      <View style={styles.button}>
-        <AddButton
-          routeName={'SearchScreen'}
-          navigation={navigation}
-          styles={styles.addBtn}
-        />
-      </View>
+          <View style={styles.button}>
+            <AddButton
+              routeName={'SearchScreen'}
+              navigation={navigation}
+              styles={styles.addBtn}
+            />
+          </View>
+        </>
+      )}
     </View>
   );
 };

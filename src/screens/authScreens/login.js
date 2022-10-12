@@ -32,11 +32,11 @@ const Login = ({navigation, text}) => {
       if (text === 'logout') {
         setTimeout(() => {
           navigation.pop(2);
-        }, 3000);
+        }, 2000);
       } else {
         setTimeout(() => {
           navigation.pop(1);
-        }, 3000);
+        }, 2000);
       }
     } else {
       Toast.show({

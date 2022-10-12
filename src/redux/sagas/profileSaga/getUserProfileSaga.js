@@ -9,7 +9,6 @@ import getUserProfileService from '../../../network/networkServices/profile/getU
 export function* getUserProfileSaga() {
   try {
     let response = yield call(getUserProfileService.getProfile);
-    console.log(response);
     yield put(getUserProfileSuccess(response.data));
   } catch (error) {
     yield put(getUserProfileError(error));

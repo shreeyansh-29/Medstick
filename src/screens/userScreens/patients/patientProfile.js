@@ -18,9 +18,8 @@ import Divider from '../../../components/atoms/divider';
 import ProfileField from '../careTaker/profileField';
 
 const PatientProfile = ({navigation, route}) => {
-  const {profile} = route.params.profile[0];
-  console.log(profile);
-  let img = '';
+  const item = route.params.profile;
+  console.log(item);
 
   return (
     <>
@@ -28,32 +27,20 @@ const PatientProfile = ({navigation, route}) => {
         <View style={styles.background} />
         <SubHeader navigation={navigation} />
         <View style={styles.imgCont}>
-          <Image
-            source={{uri: profile.userDetails.picPath}}
-            style={styles.img}
-          />
+          <Image source={{uri: item.picPath}} style={styles.img} />
         </View>
         <View style={styles.sdContainer}>
           <Animatable.View animation="zoomInUp" duration={400}>
-            <ProfileField icon={faUser} value={profile.userName} />
+            <ProfileField icon={faUser} value={item.userName} />
             <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
-            <ProfileField icon={faEnvelope} value={profile.email} />
-            <ProfileField icon={faPhone} value={profile.contact} />
+            <ProfileField icon={faEnvelope} value={item.email} />
+            <ProfileField icon={faPhone} value={item.contact} />
             <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
-            <ProfileField
-              icon={faCalendarCheck}
-              value={profile.userDetails.dateOfBirth}
-            />
-            <ProfileField icon={faFlag} value={profile.userDetails.country} />
+            <ProfileField icon={faCalendarCheck} value={item.dateOfBirth} />
+            <ProfileField icon={faFlag} value={item.country} />
             <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
-            <ProfileField
-              icon={faDroplet}
-              value={profile.userDetails.bloodGroup}
-            />
-            <ProfileField
-              icon={faMarsAndVenus}
-              value={profile.userDetails.gender}
-            />
+            <ProfileField icon={faDroplet} value={item.bloodGroup} />
+            <ProfileField icon={faMarsAndVenus} value={item.gender} />
           </Animatable.View>
         </View>
       </View>

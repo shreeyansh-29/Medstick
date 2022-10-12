@@ -4,9 +4,9 @@ import {
   acceptPatientReqError,
   acceptPatientReqSuccess,
 } from '../../action/patients/acceptPatientReqAction';
-import acceptPatientReqService from '../../../network/networkServices/patients/acceptPatientReqService';
+import acceptPatientReqService from '../../../network/networkServices/common/acceptRequestService';
 
-export function* patientsRequestSaga(data) {
+export function* acceptPatientRequestSaga(data) {
   try {
     let response = yield call(acceptPatientReqService.putAcceptRequest, data);
     yield put(acceptPatientReqSuccess(response));
@@ -16,5 +16,5 @@ export function* patientsRequestSaga(data) {
 }
 
 export function* watchAcceptPatientReqSaga() {
-  yield takeLatest(types.ACCEPT_PATIENT_REQ_REQUEST, patientsRequestSaga);
+  yield takeLatest(types.ACCEPT_PATIENT_REQ_REQUEST, acceptPatientRequestSaga);
 }

@@ -66,7 +66,7 @@ const Prescriptions = ({navigation}) => {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.text1}>{item.doctorName}</Text>
-          <Text>{item.contact}</Text>
+          <Text style={{color: 'grey'}}>{item.contact}</Text>
         </View>
       </TouchableOpacity>
     );

@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
     borderBottomEndRadius: 12,
     borderBottomStartRadius: 12,
   },
-  text1: {fontSize: 14, fontWeight: 'bold'},
+  text1: {fontSize: 14, fontWeight: 'bold', color: 'black'},
 
   //doctor Prescription
   container1: {
