@@ -64,69 +64,76 @@ const MedicinePanel = ({navigation}) => {
     return (
       <>
         <Animatable.View animation="zoomInUp" duration={400}>
-          <Card style={Styles.card}>
-            <View style={Styles.listView}>
-              <ListItem style={Styles.list}>
-                <ListItem.Content>
-                  <View style={Styles.avatarView}>
-                    <FontAwesomeIcon
-                      icon={faPills}
-                      size={36}
-                      color={colorPalette.mainColor}
-                    />
-                    <View style={Styles.medNameView}>
-                      <ListItem.Title style={Styles.medName}>
-                        {item.medicineName}
-                      </ListItem.Title>
-                      <ListItem.Subtitle>
-                        <Text style={{color: 'black'}}>Type: </Text>
-                        {item.dosageQuantity}
-                      </ListItem.Subtitle>
-                      <ListItem.Subtitle>
-                        <Text style={{color: 'black'}}>Dosage: </Text>
-                        {item.dosageUnit}
-                      </ListItem.Subtitle>
-                      <ListItem.Subtitle>
-                        <Text style={{color: 'black'}}>Stock: </Text>
-                        {item.stock}
-                      </ListItem.Subtitle>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              navigation.navigate('MedicineList', {data: medicines});
+            }}
+            >
+            <Card style={Styles.card}>
+              <View style={Styles.listView}>
+                <ListItem style={Styles.list}>
+                  <ListItem.Content>
+                    <View style={Styles.avatarView}>
+                      <FontAwesomeIcon
+                        icon={faPills}
+                        size={36}
+                        color={colorPalette.mainColor}
+                      />
+                      <View style={Styles.medNameView}>
+                        <ListItem.Title style={Styles.medName}>
+                          {item.medicineName}
+                        </ListItem.Title>
+                        <ListItem.Subtitle>
+                          <Text style={{color: 'black'}}>Type: </Text>
+                          {item.dosageQuantity}
+                        </ListItem.Subtitle>
+                        <ListItem.Subtitle>
+                          <Text style={{color: 'black'}}>Dosage: </Text>
+                          {item.dosageUnit}
+                        </ListItem.Subtitle>
+                        <ListItem.Subtitle>
+                          <Text style={{color: 'black'}}>Stock: </Text>
+                          {item.stock}
+                        </ListItem.Subtitle>
+                      </View>
                     </View>
+                  </ListItem.Content>
+                  <View style={Styles.icon}>
+                    <TouchableOpacity
+                      style={Styles.rem}
+                      onPress={() =>
+                        navigation.navigate('Add Reminder', {id: item.index})
+                      }>
+                      <FontAwesomeIcon
+                        icon={faClock}
+                        color={colorPalette.mainColor}
+                        size={24}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Alert.alert('Delete it!', 'Sure you want delete it', [
+                          {
+                            text: 'Delete',
+                            onPress: () => deleteMedicine(item.userMedicineId),
+                          },
+                          {
+                            text: 'Cancel',
+                          },
+                        ]);
+                      }}>
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        color={colorPalette.mainColor}
+                        size={24}
+                      />
+                    </TouchableOpacity>
                   </View>
-                </ListItem.Content>
-                <View style={Styles.icon}>
-                  <TouchableOpacity
-                    style={Styles.rem}
-                    onPress={() =>
-                      navigation.navigate('Add Reminder', {id: item.index})
-                    }>
-                    <FontAwesomeIcon
-                      icon={faClock}
-                      color={colorPalette.mainColor}
-                      size={24}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      Alert.alert('Delete it!', 'Sure you want delete it', [
-                        {
-                          text: 'Delete',
-                          onPress: () => deleteMedicine(item.userMedicineId),
-                        },
-                        {
-                          text: 'Cancel',
-                        },
-                      ]);
-                    }}>
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      color={colorPalette.mainColor}
-                      size={24}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </ListItem>
-            </View>
-          </Card>
+                </ListItem>
+              </View>
+            </Card>
+          </TouchableOpacity>
         </Animatable.View>
       </>
     );

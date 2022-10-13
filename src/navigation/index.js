@@ -26,6 +26,8 @@ import CareTakerProfile from '../screens/userScreens/careTaker/careTakerProfile'
 import AuthScreen from '../screens/authScreens/authScreen';
 import Logout from '../Logout';
 import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
+import MedicineList from '../screens/userScreens/medicines/medicineList';
+import MedicineDetailCard from '../screens/userScreens/medicines/medicineDetailCard';
 // import RenderModalView from '../screens/otherScreens/renderModalView';
 
 const Stack = createNativeStackNavigator();
@@ -54,6 +56,8 @@ const MainNavigation = () => {
         <Stack.Screen name="SavedDetails" component={SavedDetails} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="Prescriptions" component={Prescriptions} />
+        <Stack.Screen name="MedicineList" component={MedicineList} />
+        <Stack.Screen name="MedicineDetailCard" component={MedicineDetailCard} />
         <Stack.Screen
           name="AppointmentReminders"
           component={AppointmentReminders}
