@@ -27,6 +27,7 @@ import AddPrescription from '../screens/userScreens/medicines/addPrescription';
 import PatientProfile from '../screens/userScreens/patients/patientProfile';
 import CareTakerProfile from '../screens/userScreens/careTaker/careTakerProfile';
 import AuthScreen from '../screens/authScreens/authScreen';
+import AddPrescriptionPanel from '../screens/userScreens/medicines/addPrescriptionPanel';
 import Logout from '../Logout';
 import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
 
@@ -73,6 +74,7 @@ const MainNavigation = () => {
         />
         <Stack.Screen name="PatientProfile" component={PatientProfile} />
         <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
+        <Stack.Screen name ="addPrescriptionPanel" component={AddPrescriptionPanel}/>
         <Stack.Screen name="Logout" component={Logout} />
         <Stack.Screen name="ViewPrescription" component={DoctorPrescription} />
       </Stack.Navigator>

@@ -5,6 +5,10 @@ import {watchSignUpSaga} from './signUpSaga/signUpSaga';
 import {watchEditProfileSaga} from './profileSaga/editProfileSaga';
 import {watchPatientsRequestSaga} from './patients/patientsRequestSaga';
 import {watchAcceptPatientReqSaga} from './patients/acceptPatientReqSaga';
+import { addMedicineWatcherSaga } from './userMedicine/addMedicineWatcherSaga';
+import { getPrescriptionWatcherSaga } from './doctorPrescriptionSaga/getPrescriptionWatcherSaga';
+import { saveDoctorPrescriptionWatcherSaga } from './doctorPrescriptionSaga/saveDoctorPrescriptionWatcherSaga';
+import { saveUserMedicineWatcherSaga } from './userMedicine/saveUserMedicineWatcherSaga';
 import {watchSendSnapSaga} from './otherScreenSaga/sendSnapSaga';
 import {medicineListWatcherSaga} from './userMedicine/medicineListWatcherSaga';
 import {watchDeleteMedicineSaga} from './userMedicine/deleteMedicineSaga';
@@ -26,6 +30,10 @@ export default function* RootSaga() {
     watchEditProfileSaga(),
     watchPatientsRequestSaga(),
     watchAcceptPatientReqSaga(),
+    addMedicineWatcherSaga(),
+    getPrescriptionWatcherSaga(),
+    saveDoctorPrescriptionWatcherSaga(),
+    saveUserMedicineWatcherSaga(),
     watchSendSnapSaga(),
     medicineListWatcherSaga(),
     watchDeleteMedicineSaga(),

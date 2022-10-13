@@ -21,6 +21,9 @@ export const GET_DOCTOR_APPOINTMENT = `${apiUrl}/doctor-appointments`;
 
 export const MY_PRESCRIPTIONS = `${apiUrl}/doctor-prescriptions`;
 export const GET_USER = `${apiUrl}/id`;
+
+export const GET_ALL_PRESCRIPTION=`${apiUrl}/doctor-prescriptions`
+export const SAVE_USER_MEDICINE=`${apiUrl}/medicine/save`
 export const MY_CARETAKER = `${apiUrl}/my-caretakers`;
 export const CARETAKER_REQUEST = `${apiUrl}/caretaker-requests`;
 export const DELETE_REQUEST = `${apiUrl}/request-delete`;

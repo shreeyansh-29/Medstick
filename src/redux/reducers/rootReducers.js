@@ -7,6 +7,11 @@ import {myPatientsReducer} from './patients/myPatientsReducer';
 import {patientsRequestReducer} from './patients/patientsRequestReducer';
 import {signUpReducer} from './signUpReducer/signUpReducer';
 import {sendSnapReducer} from './otherScreenReducer/sendSnapReducer';
+import medicineListReducer from './userMedicine/medicineListReducer';
+import addMedicineReducer from './userMedicine/addMedicineReducer';
+import getPrescriptionReducer from './doctorPrescription/getPrescriptionReducer';
+import { saveDoctorPrescriptionReducer } from './doctorPrescription/saveDoctorPrescriptionReducer';
+import saveUserMedicineReducer from './userMedicine/saveUserMedicineReducer';
 import {deleteMedicineReducer} from './userMedicine/deleteMedicineReducer';
 import {appointmentReminderReducer} from './userMedicine/appointmentReminderReducer';
 import {saveAppointmentReminderReducer} from './appointmentReminderReducer/saveAppointmentReminderReducer';
@@ -28,6 +33,10 @@ const rootReducer = combineReducers({
   acceptPatientRequest: acceptPatientReqReducer,
   deletePatientRequest: deletePatientReqReducer,
   editProfile: editProfileReducer,
+  addMedicineReducer:addMedicineReducer,
+  getPrescriptionReducer:getPrescriptionReducer,
+  saveDoctorPrescriptionReducer:saveDoctorPrescriptionReducer,
+  saveUserMedicineReducer:saveUserMedicineReducer,
   sendSnap: sendSnapReducer,
   deleteMedicine: deleteMedicineReducer,
   appointmentReminder: appointmentReminderReducer,

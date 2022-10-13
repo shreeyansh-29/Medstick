@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import LottieView from 'lottie-react-native'
 import { Animated } from 'react-native'
@@ -15,7 +15,7 @@ const AddPrescriptionIcon = () => {
   return (
     <View >
       <LottieView
-        style={{width:'60%'}}
+        style={{width:'50%'}}
         speed={0.7}
         source={require('../../assets/animation/addPrescription.json')}
         progress={progress}

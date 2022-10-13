@@ -65,6 +65,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-navigation": "^4.4.4",
     "react-redux": "^8.0.2",
+    "realm": "^10.21.1",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "redux": "^4.2.0",
     "redux-saga": "^1.2.1",
