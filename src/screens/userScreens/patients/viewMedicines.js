@@ -1,4 +1,11 @@
-import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -21,6 +28,7 @@ const ViewMedicines = ({navigation, route}) => {
   // console.log(res1);
   const loading = useSelector(state => state.medicineList?.isLoading);
   const [medicines, setMedicines] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   let resp = route?.params?.item;
 
   useEffect(() => {
@@ -165,6 +173,15 @@ const ViewMedicines = ({navigation, route}) => {
                 keyExtractor={(item, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
                 renderItem={renderItem}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refresh}
+                    onRefresh={() => {
+                      setRefresh(false);
+                      dispatch(loadMedicineList(resp?.userId));
+                    }}
+                  />
+                }
               />
             </View>
           )}

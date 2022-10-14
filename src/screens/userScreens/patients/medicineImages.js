@@ -13,8 +13,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {medicineImagesRequest} from '../../../redux/action/patients/medicineImagesAction';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {Dimensions} from 'react-native';
-import {fetchImageRequest} from '../../../redux/action/patients/fetchImageAction';
 import {FETCH_IMAGE} from '../../../constants/apiUrl';
+import Loader from '../../../components/atoms/loader';
+import CustomImage from '../../../components/atoms/customImage';
+import {colorPalette} from '../../../components/atoms/colorPalette';
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.84);
@@ -44,7 +46,6 @@ const CarouselCardItem = ({item}) => {
 
 const SingleImageComponent = ({item}) => {
   const [index, setindex] = useState(0);
-  console.log(item);
 
   return (
     <>
@@ -77,14 +78,14 @@ const SingleImageComponent = ({item}) => {
 };
 
 const MedicineImages = ({navigation, route}) => {
-  const [imageData, setImageData] = useState();
+  const [imageData, setImageData] = useState([]);
   const medId = route?.params?.item;
   const dispatch = useDispatch();
   let res = useSelector(state => state.medicineImages);
+  let loading = useSelector(state => state.medicineImages?.isLoading);
 
   useEffect(() => {
     if (res?.data !== null) {
-      console.log(res);
       let response = res?.data?.imageList;
       let map = new Map();
       for (let re = 0; re < response.length; re++) {
@@ -116,10 +117,34 @@ const MedicineImages = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       <SubHeader navigation={navigation} />
-      <FlatList
-        data={imageData}
-        renderItem={({item}) => <SingleImageComponent item={item} />}
-      />
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {imageData.length === 0 ? (
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: colorPalette.backgroundColor,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <CustomImage
+                styles={{width: '70%'}}
+                resizeMode="center"
+                source={require('../../../assets/images/noPrescription.png')}
+              />
+            </View>
+          ) : (
+            <>
+              <FlatList
+                data={imageData}
+                renderItem={({item}) => <SingleImageComponent item={item} />}
+              />
+            </>
+          )}
+        </>
+      )}
     </View>
   );
 };
@@ -169,7 +194,7 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 5,
     marginHorizontal: 8,
-    backgroundColor: 'red',
+    backgroundColor: colorPalette.mainColor,
   },
   pageContainer: {
     position: 'relative',

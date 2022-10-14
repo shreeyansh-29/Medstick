@@ -1,4 +1,4 @@
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {View, Text, FlatList, StyleSheet, RefreshControl} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {useDispatch, useSelector} from 'react-redux';
@@ -19,6 +19,7 @@ const ViewPrescriptions = ({navigation, route}) => {
   const res = useSelector(state => state.myPrescriptions);
   const loading = useSelector(state => state.myPrescriptions?.isLoading);
   const Id = route?.params?.id;
+  const [refresh, setRefresh] = useState(false);
   let currentPage = 0;
 
   useEffect(() => {
@@ -100,6 +101,15 @@ const ViewPrescriptions = ({navigation, route}) => {
                 keyExtractor={(item, index) => index.toString()}
                 showsVerticalScrollIndicator={false}
                 renderItem={renderItem}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refresh}
+                    onRefresh={() => {
+                      setRefresh(false);
+                      dispatch(myPrescriptionsRequest({currentPage, Id}));
+                    }}
+                  />
+                }
               />
             </View>
           )}

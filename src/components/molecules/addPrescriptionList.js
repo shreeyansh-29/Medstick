@@ -5,27 +5,104 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import DatePicker from 'react-native-date-picker';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
-import {horizontalScale, verticalScale} from '../atoms/constant';
+import { horizontalScale, verticalScale } from '../atoms/constant';
+import { colorPalette } from '../atoms/colorPalette';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import SaveButton from './saveButton';
-import {colorPalette} from '../atoms/colorPalette';
-import {faCalendarDays, faClock, faD} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import { Alert } from 'react-native';
+import { showInvalidMessage } from '../atoms/invaliMessage';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadSaveDoctorPrescription } from '../../redux/action/doctorPrescription/saveDoctorPrescriptionAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const AddPrescriptionList = ({navigation}) => {
+const AddPrescriptionList = ({ navigation }) => {
+
   const [doctorName, setDoctorName] = useState('');
   const [specialization, setSpecialization] = useState('');
   const [number, setNumber] = useState('');
-  const [location, setLocation] = useState('');
-  const [open, setOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [image, setImage]= useState('')
+  const [locations, setLocation] = useState('');
+  const [id, setId] = useState('')
+  const [token, setToken] = useState('')
+  const [selectedImage, setSelectedImage] = useState('')
+  // const [prescriptionId,setPrescriptionId]=useState('')
+ 
+  const dispatch = useDispatch()
+  const saveDoctorPrescriptiondata = useSelector(state => state.saveDoctorPrescriptionReducer.data)
+  // const savePrescriptionId=useSelector(state=>state.saveDoctorPrescriptionReducer?.data?.result?.prescriptionId)
+  console.log(saveDoctorPrescriptiondata, "data")
+
+  // useEffect(() => {
+  //   if (saveDoctorPrescriptiondata?.status === 'Success') {
+  //     setTimeout(() => {
+  //       navigation.pop();
+  //     }, 2000);
+  //   }
+  // }, [saveDoctorPrescriptiondata])
+
+  const getTokenId = async () => {
+    const tokentemp = await AsyncStorage.getItem('accessToken')
+    setToken(tokentemp)
+    const tempId = await AsyncStorage.getItem('user_id')
+    setId(tempId)
+  }
+
+
+  const showAlertMessage = () => {
+    Alert.alert('Alert!!', 'image is already selected ', [{
+      text: 'OK'
+    }],
+      { cancelable: false }
+    )
+  }
+
+  const showSuccesMessage = () => {
+    Alert.alert('Success', 'Prescription Addded Succesfully ', [{
+      text: 'OK'
+    }],
+      { cancelable: false }
+    )
+  }
+
+  const successfullyPrescriptionAdded=()=>{
+    
+    
+    showSuccesMessage()
+    navigation.navigate('AddMedicine')
+    
+  }
+
+  const savePrescription = async () => {
+    if (doctorName === '' || specialization === '' || number === '' || locations === '' || selectedImage === '') {
+      showInvalidMessage()
+    }
+    else {
+      const formdata = new FormData()
+      formdata.append('image', {
+        uri: selectedImage.path,
+        type: 'image/jpg',
+        name: 'Prescription'
+      })
+      formdata.append('doctorName', doctorName)
+      formdata.append('specialization', specialization)
+      formdata.append('contact', number)
+      formdata.append('location', locations)
+      dispatch(loadSaveDoctorPrescription(token, id, formdata))
+      if(saveDoctorPrescriptiondata?.status === 'Success')
+      {
+      await AsyncStorage.setItem('prescription_id',saveDoctorPrescriptiondata.result.prescriptionId)
+      successfullyPrescriptionAdded()
+      }
+    }
+  }
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -36,6 +113,9 @@ const AddPrescriptionList = ({navigation}) => {
     }).start();
   }, []);
 
+  useEffect(() => {
+    getTokenId()
+  }, [id])
   return (
     <View>
       <ScrollView showsHorizontalScrollIndicator={false}>
@@ -87,26 +167,30 @@ const AddPrescriptionList = ({navigation}) => {
               marginBottom: verticalScale(6),
             }}
             label="Location"
-            value={location}
+            value={locations}
             mode="outlined"
             onChangeText={text => setLocation(text)}
             outlineColor="#02ABA6"
             activeOutlineColor="#02ABA6"
           />
           <View style={Styles.addingPrescription}>
-            <View style={Styles.textInput}>
+            {/* <View style={Styles.textInput}>
               <Text style={{fontSize: 17}}>Add Existing Prescription</Text>
-            </View>
+            </View> */}
+            {/*             
             <TouchableOpacity
               onPress={() => {
+                {selectedImage !== ""?showAlertMessage():
+                
                 ImagePicker.openPicker({
                   width: 300,
                   height: 400,
                   cropping: true,
                 }).then(image => {
-                  console.log(image);
+                setSelectedImage(image)
                 });
               }}
+              }
               style={Styles.addingPrescriptionTouchable}>
               <LottieView
                 style={Styles.addingPrescriptionIcon}
@@ -114,21 +198,26 @@ const AddPrescriptionList = ({navigation}) => {
                 progress={progress}
                 source={require('../../assets/animation/addPrescriptionButton.json')}
               />
-            </TouchableOpacity>
+              
+            </TouchableOpacity> */}
+
           </View>
           <View style={Styles.addingPrescription}>
             <View style={Styles.textInput}>
-              <Text style={{fontSize: 17}}>Add New Prescription</Text>
+              <Text style={Styles.text}>Add Prescription Image </Text>
             </View>
             <TouchableOpacity
               onPress={() => {
-                ImagePicker.openCamera({
-                  width: 300,
-                  height: 400,
-                  cropping: true,
-                }).then(image => {
-                  console.log(image);
-                });
+                {
+                  selectedImage !== "" ? showAlertMessage() :
+                    ImagePicker.openCamera({
+                      width: 300,
+                      height: 400,
+                      cropping: true,
+                    }).then(image => {
+                      setSelectedImage(image)
+                    });
+                }
               }}>
               <LottieView
                 style={Styles.addingPrescriptionIcon}
@@ -137,8 +226,19 @@ const AddPrescriptionList = ({navigation}) => {
                 source={require('../../assets/animation/addPrescriptionButton.json')}
               />
             </TouchableOpacity>
+
           </View>
-          <View style={Styles.box}>
+
+          {selectedImage !== "" ?
+            (<Image
+              source={{ uri: `${selectedImage.path}` }}
+              style={{ width: 150, height: 150, margin: 15 }}
+            />
+            ) : (
+              <View></View>
+            )
+          }
+          {/* <View style={Styles.box}>
             <Text style={{fontSize: 17, marginTop: '2%'}}>
               Add Appointment Remainder
             </Text>
@@ -176,7 +276,7 @@ const AddPrescriptionList = ({navigation}) => {
               {date == Date() ? (
                 <View style={Styles.box2} >
                   <Text>
-                    -----------------------
+                       --/ -- /----
                   </Text>
                 </View>
               ) : (
@@ -195,11 +295,16 @@ const AddPrescriptionList = ({navigation}) => {
                 </View>
               )}
             </View>
-          </View>
+          </View> */}
         </KeyboardAvoidingView>
+        <TouchableOpacity style={Styles.saveButtonArea} onPress={() => savePrescription()}>
+          <SaveButton />
+        </TouchableOpacity>
       </ScrollView>
+
+
     </View>
+
   );
 };
-
 export default AddPrescriptionList;

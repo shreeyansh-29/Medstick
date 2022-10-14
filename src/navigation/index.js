@@ -27,12 +27,14 @@ import AddPrescription from '../screens/userScreens/medicines/addPrescription';
 import PatientProfile from '../screens/userScreens/patients/patientProfile';
 import CareTakerProfile from '../screens/userScreens/careTaker/careTakerProfile';
 import AuthScreen from '../screens/authScreens/authScreen';
+import AddPrescriptionPanel from '../screens/userScreens/medicines/addPrescriptionPanel';
 import Logout from '../Logout';
 import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
 import ViewPrescriptions from '../screens/userScreens/patients/viewPrescriptions';
 import ViewMedicines from '../screens/userScreens/patients/viewMedicines';
 import MedicineReport from '../screens/userScreens/patients/medicineReport';
 import MedicineImages from '../screens/userScreens/patients/medicineImages';
+import NotificationScreen from '../screens/userScreens/notificationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,23 +62,21 @@ const MainNavigation = () => {
         <Stack.Screen name="SavedDetails" component={SavedDetails} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="Prescriptions" component={Prescriptions} />
-        <Stack.Screen name="AddRemainder" component={AddRemainder} />
         <Stack.Screen
           name="AppointmentReminders"
           component={AppointmentReminders}
         />
         <Stack.Screen name="Notifications" component={Notifications} />
         <Stack.Screen
-          name="edit"
-          component={edit}
-          options={{...headerStyles, title: 'Alarm'}}
-        />
-        <Stack.Screen
           name="SendSnapToCaretaker"
           component={SendSnapToCaretaker}
         />
         <Stack.Screen name="PatientProfile" component={PatientProfile} />
         <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
+        <Stack.Screen
+          name="addPrescriptionPanel"
+          component={AddPrescriptionPanel}
+        />
         <Stack.Screen name="Logout" component={Logout} />
         <Stack.Screen name="ViewPrescription" component={DoctorPrescription} />
         <Stack.Screen
@@ -86,6 +86,7 @@ const MainNavigation = () => {
         <Stack.Screen name="PatientMedicines" component={ViewMedicines} />
         <Stack.Screen name="MedicineReport" component={MedicineReport} />
         <Stack.Screen name="MedicineImages" component={MedicineImages} />
+        <Stack.Screen name="notification" component={NotificationScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

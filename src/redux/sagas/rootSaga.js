@@ -5,6 +5,10 @@ import {watchSignUpSaga} from './signUpSaga/signUpSaga';
 import {watchEditProfileSaga} from './profileSaga/editProfileSaga';
 import {watchPatientsRequestSaga} from './patients/patientsRequestSaga';
 import {watchAcceptPatientReqSaga} from './patients/acceptPatientReqSaga';
+import {addMedicineWatcherSaga} from './userMedicine/addMedicineWatcherSaga';
+import {getPrescriptionWatcherSaga} from './doctorPrescriptionSaga/getPrescriptionWatcherSaga';
+import {saveDoctorPrescriptionWatcherSaga} from './doctorPrescriptionSaga/saveDoctorPrescriptionWatcherSaga';
+import {saveUserMedicineWatcherSaga} from './userMedicine/saveUserMedicineWatcherSaga';
 import {watchSendSnapSaga} from './otherScreenSaga/sendSnapSaga';
 import {medicineListWatcherSaga} from './userMedicine/medicineListWatcherSaga';
 import {watchDeleteMedicineSaga} from './userMedicine/deleteMedicineSaga';
@@ -12,16 +16,19 @@ import {appointmentReminderWatcherSaga} from './userMedicine/appointmentReminder
 import {getAppointmentWatcherSaga} from './appointmentSaga/getAppointmentWatcherSaga';
 import {watchMyPrescriptionsSaga} from './otherScreenSaga/myPrescriptionsSaga';
 import {watchGetUserProfileSaga} from './profileSaga/getUserProfileSaga';
+import {getAllNotificationWatcherSaga} from './notification/getAllNotificationWatcherSaga';
+import {saveAppointmentWatcherSaga} from './appointmentSaga/saveAppointmentReminderWatcherSaga';
+import {deleteNotificationWatcherSaga} from './notification/deleteNotificationWatcherSaga';
 import {watchMyCaretakerSaga} from './caretaker/myCaretakerSaga';
 import {watchCaretakerRequestSaga} from './caretaker/caretakerRequestSaga';
 import {watchAcceptCaretakerReqSaga} from './caretaker/acceptCaretakerReqSaga';
 import {watchDeleteCaretakerReqSaga} from './caretaker/deleteCaretakerReqSaga';
-import {saveAppointmentWatcherSaga} from './appointmentSaga/saveAppointmentReminderWatcherSaga';
 import {watchGetMedsSaga} from './patients/getMedsSaga';
 import {watchGetUserSaga} from './getUserSaga/getUserSaga';
 import {watchSendReqSaga} from './getUserSaga/sendReqSaga';
 import {watchNotifyUserSaga} from './patients/notifyUserSaga';
 import {watchMedicineImagesSaga} from './patients/medicineImagesSaga';
+import {getUserMedicineWatcherSaga} from './userMedicine/getUserMedicineWatcherSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -31,6 +38,10 @@ export default function* RootSaga() {
     watchEditProfileSaga(),
     watchPatientsRequestSaga(),
     watchAcceptPatientReqSaga(),
+    addMedicineWatcherSaga(),
+    getPrescriptionWatcherSaga(),
+    saveDoctorPrescriptionWatcherSaga(),
+    saveUserMedicineWatcherSaga(),
     watchSendSnapSaga(),
     medicineListWatcherSaga(),
     watchDeleteMedicineSaga(),
@@ -38,6 +49,7 @@ export default function* RootSaga() {
     getAppointmentWatcherSaga(),
     watchMyPrescriptionsSaga(),
     watchGetUserProfileSaga(),
+    getAllNotificationWatcherSaga(),
     watchMyCaretakerSaga(),
     watchCaretakerRequestSaga(),
     watchAcceptCaretakerReqSaga(),
@@ -49,5 +61,7 @@ export default function* RootSaga() {
     watchSendReqSaga(),
     watchNotifyUserSaga(),
     watchMedicineImagesSaga(),
+    deleteNotificationWatcherSaga(),
+    getUserMedicineWatcherSaga(),
   ]);
 }

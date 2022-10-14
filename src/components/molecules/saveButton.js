@@ -1,8 +1,7 @@
-import {Animated, TouchableOpacity} from 'react-native';
+import {Animated, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import LottieView from 'lottie-react-native';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
-import { View } from 'react-native-animatable';
 
 const SaveButton = () => {
   const progress = useRef(new Animated.Value(0)).current;

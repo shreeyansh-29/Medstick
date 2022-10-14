@@ -136,4 +136,60 @@ export const styles = StyleSheet.create({
     width: horizontalScale(320),
     // paddingHorizontal: 10,
   },
+  modalHeader:{
+    justifyContent:'flex-end',
+    alignItems:'flex-end',
+    padding:10,
+    flex:1,
+  },
+  modalBox:{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  modalContainer:{
+    width:'98%',
+    height:'75%',
+    backgroundColor:colorPalette.basicColor,
+    
+    borderRadius:20,
+    borderWidth:1.5,
+    borderColor:colorPalette.appColor
+  },
+  progressBar:{
+    
+    flex:8,
+    padding:10,
+    // alignItems:'center',
+  },
+  modalHeaderText:{
+    fontSize:20,
+    color:colorPalette.appColor,
+    fontWeight:'500'
+  },
+  modalSubHeader:{
+    // justifyContent:'center',
+    alignItems:'center',
+    flex:2,
+    margin:15,
+  },
+  timeSlot:{
+    backgroundColor:colorPalette.appColor,
+    borderRadius:70,
+  width:'30%',
+  height:'15%',
+  justifyContent:'center',
+  alignItems:'center'
+  },
+  timeSlotText:{
+    color:colorPalette.basicColor,
+    fontSize:20,
+  },
+  picker:{
+    borderWidth:2,
+    borderColor:colorPalette.appColor,
+    backgroundColor:colorPalette.basicColor,
+    borderRadius:20,
+    paddingHorizontal:10,
+  }
 });

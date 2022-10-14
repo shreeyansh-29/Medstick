@@ -17,9 +17,9 @@ const BellIcon = ({navigation}) => {
   return (
     <View style={styles.bellIcon}>
       <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Notifications');
-        }}>
+        onPress={() => 
+          navigation?.navigate('notification')
+        }>
         <FontAwesomeIcon icon={faBell} color={'white'} size={24} />
       </TouchableOpacity>
     </View>

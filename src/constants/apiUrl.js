@@ -1,4 +1,4 @@
-let apiUrl = 'https://d6f5-106-51-81-179.in.ngrok.io/api/v1/user';
+let apiUrl = 'https://7a2f-106-51-81-179.in.ngrok.io/api/v1/user';
 
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
@@ -22,6 +22,11 @@ export const MY_PRESCRIPTIONS = `${apiUrl}/doctor-prescriptions`;
 export const GET_USER = `${apiUrl}/id`;
 export const GET_USER_EMAIL = `${apiUrl}/email`;
 export const SEND_REQUEST = `${apiUrl}/save-request`;
+export const GET_USER_MEDICINE = `${apiUrl}/medicines`;
+export const GET_ALL_NOTIFICATION = `${apiUrl}/notification/get-notifications`;
+export const DELETE_NOTIFICATION = `${apiUrl}/notification/delete`;
+export const GET_ALL_PRESCRIPTION = `${apiUrl}/doctor-prescriptions`;
+export const SAVE_USER_MEDICINE = `${apiUrl}/medicine/save`;
 export const MY_CARETAKER = `${apiUrl}/my-caretakers`;
 export const CARETAKER_REQUEST = `${apiUrl}/caretaker-requests`;
 export const DELETE_REQUEST = `${apiUrl}/request-delete`;
