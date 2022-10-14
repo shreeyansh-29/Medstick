@@ -107,7 +107,7 @@ const AccountTab = ({navigation}) => {
           icon1={faUserDoctor}
           icon2={faStopwatch}
           navigationTitle1="Prescriptions"
-          navigationTitle2="AppointmentReminders"
+          navigationTitle2="AppointmentReminderList"
           title1="Prescriptions"
           title2="Appointment Reminders"
           navigation={navigation}

@@ -9,7 +9,6 @@ import {getUserProfileRequest} from '../../redux/action/profileAction/getUserPro
 const SavedDetails = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.getUserProfile?.data);
-  console.log(res);
   const loading = useSelector(state => state.getUserProfile?.isLoading);
 
   useEffect(() => {

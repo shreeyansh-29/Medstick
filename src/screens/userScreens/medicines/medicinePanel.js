@@ -135,8 +135,7 @@ const MedicinePanel = ({navigation}) => {
   return (
     <>
       <View style={Styles.container}>
-        <View style={Styles.background} />
-        <MainHeader title={'Medicine'} />
+        <View style={Styles.backgroundgetdoctor} />
         {loading ? (
           <Loader />
         ) : (

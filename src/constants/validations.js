@@ -23,3 +23,14 @@ export const profileValidationSchema = yup.object().shape({
     .nullable(),
   state: yup.string().required('State is Required*').nullable(),
 });
+
+export const appointmentValidationSchema = yup.object().shape({
+  DoctorName: yup.string().required('Doctor name is required').nullable(),
+  Description: yup
+    .string()
+    .max(200, ({max}) => `Description can be only ${max} characters`)
+    .required('Description is Required*')
+    .nullable(),
+  Date: yup.string().required('Date is Required*').nullable(),
+  Time: yup.string().required('Time is Required*').nullable(),
+});

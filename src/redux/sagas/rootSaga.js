@@ -15,6 +15,8 @@ import { getAppointmentWatcherSaga } from './appointmentSaga/getAppointmentWatch
 import {watchMyPrescriptionsSaga} from './otherScreenSaga/myPrescriptionsSaga';
 import {watchGetUserProfileSaga} from './profileSaga/getUserProfileSaga';
 import { saveAppointmentWatcherSaga } from './appointmentSaga/saveAppointmentReminderWatcherSaga';
+import { updateAppointmentWatcherSaga } from './appointmentSaga/updateAppointmentWatcherSaga';
+import { deleteAppointmentWatcherSaga } from './appointmentSaga/deleteAppointmentWatcherSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -34,5 +36,7 @@ export default function* RootSaga() {
     watchMyPrescriptionsSaga(),
     watchGetUserProfileSaga(),
     saveAppointmentWatcherSaga(),
+    updateAppointmentWatcherSaga(),
+    deleteAppointmentWatcherSaga(),
   ]);
 }

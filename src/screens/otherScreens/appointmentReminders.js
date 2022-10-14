@@ -14,9 +14,11 @@ import {appointmentReminderRequest} from '../../redux/action/userMedicine/appoin
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCalendarDays, faD} from '@fortawesome/free-solid-svg-icons';
 import SaveButton from '../../components/molecules/saveButton';
+import {styles} from '../../styles/otherScreensStyles/prescriptionsStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {saveAppointmentRequest} from '../../redux/action/appointmentReminderAction/saveAppointmentAction';
 import {getAppointmentRequest} from '../../redux/action/appointmentReminderAction/getAppointmentAction';
+import DateTime from '../../components/organisms/dateTime';
 
 const AppointmentReminders = ({navigation}) => {
   let dn = [];
@@ -27,95 +29,36 @@ const AppointmentReminders = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(0);
-  const [text, setText] = useState('Empty');
 
   const doctor = useSelector(appointmentReminderSelector.appointmentReminder);
 
-  const getdoctor = useSelector(appointmentReminderSelector.getAppointment);
-  console.log(getdoctor, 'doctor list');
-
-  // const saveAppointmentdata = useSelector(
-  //   appointmentReminderSelector.saveAppointmentReminder,
-  // );
-  // console.log(saveAppointmentdata,"datatatatat")
-  const [isLoading, setIsLoading] = useState(false);
+  const saveAppointmentdata = useSelector(
+    appointmentReminderSelector.saveAppointmentReminder,
+  );
 
   let fDate =
     date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
   let time =
-    date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    date.getHours() + ':' + date.getMinutes() + ':' + '00';
 
   useEffect(() => {
     dispatch(appointmentReminderRequest(pageNo));
-    setIsLoading(true);
   }, [pageNo]);
-
-  const getAppointmentReminder= async ()=>{
-    setIsLoading(true);
-    dispatch(getAppointmentRequest(pageNo))
-      .then(data => {
-        data = data.object;
-        setDoctorAppointment(data);
-        setIsLoading(false);
-      })
-      .catch(_err => {
-        setIsLoading(false);
-        setErrorModal(true);
-      });
-  }
-
-  console.log(doctorAppointment,"dhfhhgf");
 
   useEffect(() => {
     if (doctor !== null) {
-      dn = doctor.result.map(item => item.doctorName);
+      dn = doctor.result.map(item => item);
+      console.log(dn);
       setNotes(dn);
     }
   }, [doctor]);
 
-  const savePrescriptionId = async () => {
-    try {
-      await AsyncStorage.setItem(
-        'prescriptionId',
-        doctor.result.prescriptionId,
-      );
-    } catch (error) {
-      console.log(error, 'error');
-    }
-  };
-
-  useEffect(() => {
-    getAppointmentReminder();
-    savePrescriptionId();
-  }, []);
-
   const saveAppointment = (fDate, time, notes1) => {
-    dispatch(saveAppointmentRequest(fDate, time, notes1));
+    dispatch(saveAppointmentRequest(fDate, time, notes1, notes));
+    setTimeout(() => {
+      navigation.pop();
+    }, 2000);
   };
-
-  // const renderItem = ({item}) => {
-  //   return (
-  //     <>
-  //       <Card style={Styles.card}>
-  //         <View style={Styles.listView}>
-  //           <ListItem style={Styles.list}>
-  //             <ListItem.Content>
-  //               <View style={Styles.avatarView}>
-  //                 <View style={Styles.medNameView}>
-  //                   <ListItem.Title style={Styles.medName}>
-  //                     {item.name}
-  //                   </ListItem.Title>
-  //                   <ListItem.Subtitle>{item.symptom}</ListItem.Subtitle>
-  //                   <ListItem.Subtitle>{item.time}</ListItem.Subtitle>
-  //                 </View>
-  //               </View>
-  //             </ListItem.Content>
-  //           </ListItem>
-  //         </View>
-  //       </Card>
-  //     </>
-  //   );
-  // };
 
   return (
     <>
@@ -123,25 +66,29 @@ const AppointmentReminders = ({navigation}) => {
         <SubHeader title={'Appointment Reminders'} navigation={navigation} />
       </View>
       <View style={{margin: '0.3%'}}>
-        <Text style={{fontSize: 18, marginTop: '5%'}}>Doctor name</Text>
+        <Text style={{fontSize: 18, marginTop: '5%', marginLeft: '7.5%'}}>
+          Doctor name
+        </Text>
         <View
           style={{
             borderWidth: 1.7,
             borderRadius: 4,
             marginTop: '5%',
-            marginLeft: '5%',
-            marginRight: '5%',
+            marginLeft: '8%',
+            marginRight: '10%',
             borderColor: colorPalette.mainColor,
           }}>
           <Picker
             id="picker"
             selectedValue={notes}
-            onValueChange={(itemValue, _itemIndex) => setNotes(itemValue)}>
-            {doctor?.result.map((item, ind) => {
+            onValueChange={(itemValue, _itemIndex) => {
+              setNotes(itemValue);
+            }}>
+            {doctor?.result?.map((item, ind) => {
               return (
                 <Picker.Item
                   label={item.doctorName}
-                  value={item.doctorName}
+                  value={item.prescriptionId}
                   key={ind.toString()}
                 />
               );
@@ -181,7 +128,6 @@ const AppointmentReminders = ({navigation}) => {
                 value={date}
                 mode="datetime"
                 onConfirm={date => {
-                  console.log(date, ' date');
                   setOpen(false);
                   setDate(date);
                 }}
@@ -218,36 +164,7 @@ const AppointmentReminders = ({navigation}) => {
           onPress={() => saveAppointment(fDate, time, notes1)}>
           <SaveButton />
         </TouchableOpacity>
-        <View>
-          {getdoctor?.data?.object.map((itm)=>(
-            <Text>
-              {itm.appointmentId}
-            </Text>
-          ))}
-          {/* {doctorAppointment?.length !== 0 &&
-            doctorAppointment?.map((item, ind) => {
-              return (
-                <View key={index.toString()}>
-                  <Text>
-                    {item.data.object}
-                  </Text>
-                </View>
-              );
-            })} */}
-        </View>
       </View>
-      {/* {appointment.length === 0 ? (
-        <View style={Styles.lottie}>
-          <LottieView
-            style={Styles.lottieView}
-            speed={0.8}
-            source={require('../../assets/animation/noMedicine2.json')}
-            progress={progress}
-          />
-        </View>
-      ) : (
-        <></>
-      )} */}
     </>
   );
 };

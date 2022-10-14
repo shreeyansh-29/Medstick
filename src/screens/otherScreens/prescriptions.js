@@ -96,9 +96,6 @@ const Prescriptions = ({navigation}) => {
                 showsVerticalScrollIndicator={false}
                 numColumns={2}
                 keyExtractor={(item, index) => index.toString()}
-                // onEndReached={onEnd}
-                // onEndReachedThreshold={0}
-                // ListFooterComponent={RenderLoader}
               />
             </View>
           )}

@@ -15,6 +15,8 @@ import { saveAppointmentReminderReducer } from './appointmentReminderReducer/sav
 import { getAppointmentReducer } from './appointmentReminderReducer/getAppointmentReducer';
 import {myPrescriptionsReducer} from './otherScreenReducer/myPrescriptionsReducer';
 import {getUserProfileReducer} from './profileReducer/getUserProfileReducer';
+import { updateAppointmentReducer } from './appointmentReminderReducer/updateAppointmentReducer';
+import { deleteAppointmentReducer } from './appointmentReminderReducer/deleteAppointmentReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -33,6 +35,8 @@ const rootReducer = combineReducers({
   getAppointment: getAppointmentReducer,
   myPrescriptions: myPrescriptionsReducer,
   getUserProfile: getUserProfileReducer,
+  updateAppointment: updateAppointmentReducer,
+  deleteAppointment: deleteAppointmentReducer,
 });
 
 export default rootReducer;

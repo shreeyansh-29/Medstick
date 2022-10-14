@@ -7,7 +7,7 @@ const AddButton = ({routeName, navigation, styles}) => {
     <>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate(routeName);
+          navigation.navigate(routeName,{});
         }}>
         <LottieView
           style={styles}

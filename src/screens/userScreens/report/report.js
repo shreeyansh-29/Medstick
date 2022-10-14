@@ -1,5 +1,5 @@
-import {View, Text, ScrollView, Pressable} from 'react-native';
-import React from 'react';
+import {View, Text, ScrollView, Pressable, Modal} from 'react-native';
+import React, { useState } from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
@@ -133,13 +133,6 @@ const Report = ({navigation}) => {
               markedDates={markedDay}
             />
           </View>
-          {data.date == '2022-09-22' ? (
-            <View></View>
-          ) : (
-            <View style={{margin: 15}}>
-              <Text style={{fontSize: 17, color: 'black'}}>No Remainders</Text>
-            </View>
-          )}
         </ScrollView>
       </View>
     </>

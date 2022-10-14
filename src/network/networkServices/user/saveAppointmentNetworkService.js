@@ -4,14 +4,13 @@ import RequestService from '../../requestService';
 
 class saveAppointmentNetworkService {
   async saveAppointmentReminder(payload) {
+    console.log(payload);
     const id = await AsyncStorage.getItem('user_id');
-    const prescriptionId = await AsyncStorage.getItem('prescriptionId');
     const token = await AsyncStorage.getItem('accessToken');
-    const {fDate, time, notes1} = payload;
-    console.log(prescriptionId,"p_id");
+    const {fDate, time, notes1, notes} = payload.payload;
 
     return RequestService.postRequest(
-      `${SAVE_DOCTOR_APPOINTMENT}?prescriptionId=${prescriptionId}&Id=${id}`,
+      `${SAVE_DOCTOR_APPOINTMENT}?prescriptionId=${notes}&Id=${id}`,
       {
         localDate: fDate,
         localTime: time,

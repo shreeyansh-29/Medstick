@@ -23,9 +23,10 @@ export const getAppointmentReducer = (state = initialState, action) => {
         error: {...state.error, error: null},
       };
     case GET_APPOINTMENT_SUCCESS:
+    
       return {
         ...state,
-        data: action.payload,
+        data: action.payload?.object,
         isLoading: {...state.isLoading, loader: false},
         error: {...state.error, error: null},
       };
@@ -39,3 +40,4 @@ export const getAppointmentReducer = (state = initialState, action) => {
       return state;
   }
 };
+
