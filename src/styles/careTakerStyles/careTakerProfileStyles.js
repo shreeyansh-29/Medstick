@@ -3,6 +3,29 @@ import {colorPalette} from '../../components/atoms/colorPalette';
 import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
+  card1: {
+    width: '90%',
+    borderRadius: 10,
+    shadowColor: 'black',
+    elevation: 3,
+    marginVertical: 16,
+  },
+  mainView: {width: '100%', marginVertical: 10},
+  subCont: {flexDirection: 'row', marginVertical: 12},
+  subView1: {flex: 2.4},
+  subView2: {flex: 3},
+  heading: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: '400',
+    paddingLeft: 18,
+  },
+  content: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: '300',
+  },
+  divider: {marginVertical: 6, height: 1.2, width: '100%'},
   sd: {
     flex: 1,
     backgroundColor: colorPalette.backgroundColor,
@@ -41,10 +64,13 @@ export const styles = StyleSheet.create({
     backgroundColor: 'lightgrey',
     marginHorizontal: horizontalScale(24),
   },
-  imgCont: {marginTop: verticalScale(50), marginBottom: verticalScale(8)},
+  imgCont: {
+    marginTop: verticalScale(40),
+    marginBottom: verticalScale(8),
+  },
   img: {
-    width: 120,
-    height: 120,
+    width: 140,
+    height: 140,
     borderRadius: 82,
     borderWidth: 4,
     borderColor: 'white',

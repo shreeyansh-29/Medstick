@@ -21,6 +21,15 @@ const Styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     marginTop: verticalScale(16),
   },
+  image: {
+    borderColor: 'white',
+    position: 'absolute',
+    bottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  lottieAnimation: {width: 240, height: 240},
   card: {
     borderRadius: 30,
     borderColor: 'lightgrey',
@@ -29,6 +38,7 @@ const Styles = StyleSheet.create({
     marginVertical: verticalScale(5),
     marginHorizontal: horizontalScale(14),
   },
+  camera: {height: '100%'},
   listView: {margin: moderateScale(5)},
   list: {marginHorizontal: moderateScale(16)},
   avatarView: {
@@ -69,7 +79,7 @@ const Styles = StyleSheet.create({
     marginBottom: 10,
   },
   constainer: {
-    padding: 15,
+    padding: 25,
     flex: 1,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
@@ -85,12 +95,13 @@ const Styles = StyleSheet.create({
     height: '80%',
     backgroundColor: colorPalette.appColor,
   },
-  saveButton: {
-    width: '100%',
-    height: '10%',
-  },
+  // saveButton: {
+  //   width: '100%',
+  //   height: '10%',
+  //   alignItems:"center"
+  // },
   addPrescriptionIcon: {
-    width: '15%',
+    width: '18%',
     marginLeft: 35,
   },
   savelogo: {
@@ -101,24 +112,22 @@ const Styles = StyleSheet.create({
     height: '100%',
   },
   addPrescriptionHeader: {
-    width: '100%',
-    height: '30%',
-    marginTop: 30,
-    backgroundColor: colorPalette.appColor,
-    justifyContent: 'center',
+    flex:1,
+    backgroundColor:'black'
   },
   addPrescriptionContainer: {
-    height: '100%',
-    width: '100%',
+    flex:1,
+    flexDirection:'column',
     paddingTop: 10,
-    backgroundColor: colorPalette.appColor,
+    backgroundColor: '#0789'
   },
   addPrescriptionLottie: {
     alignItems: 'center',
+    justifyContent:'center',
+    width:'100%'
   },
   addPrescriptionList: {
-    height: '70%',
-    width: '100%',
+  flex:0.7,
     padding: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -130,11 +139,14 @@ const Styles = StyleSheet.create({
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
     backgroundColor: colorPalette.basicColor,
+  
   },
   addingPrescription: {
+    marginLeft: '6%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    padding:15,
   },
   addingPrescriptionIcon: {
     width: '30%',
@@ -142,21 +154,165 @@ const Styles = StyleSheet.create({
   },
   addingPrescriptionTouchable: {
     justifyContent: 'flex-end',
+    marginTop: '8%',
   },
   textInput: {
     width: '70%',
+    marginTop: '9%',
   },
   saveButton: {
     width: '50%',
-    // backgroundColor:'#000'
+    alignItems: 'center',
   },
   saveTouchable: {
+width:'70%',
+justifyContent:'center',
+alignItems:'flex-end'
+  },
+  saveButtonArea:{
+justifyContent:'center',
+alignItems:'flex-end',
+padding:10,
+  },
+  medicineModal:{
+    flex:0.5,
+    padding:10,
+    
+
+  },
+  medicineNameBox:{
+    width:'100%',
+    borderColor:colorPalette.appColor,
+    borderWidth:1,
+    padding:10,
+    borderRadius:5,
+  },
+  text:{
+    color:colorPalette.appColor,
+
+  },
+  textView:{
+    flexDirection:'row',
+    width:'100%',
+    marginTop:10,
+    
+  },
+  textbox:{
+    width:'50%',
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  stockbox:{
+    width:'30%',
+  },
+  picker:{
+    borderColor:colorPalette.appColor,
+    borderWidth:1,
+    marginTop:10,
+    borderRadius:5,
+  },
+  addbutton:{
+    justifyContent:'center',
+    borderWidth:1,
+    borderColor:colorPalette.appColor,
+    margin:5,
+    height:40,
+  },
+  modallottie:{
+width:'80%'
+  },
+  modalHeader:{
+    
+    flex:0.5,
+    justifyContent:'center',
+    alignItems:'center',
+    
+  },
+  modalContainer:{
+  flex:0.5,
     position: 'absolute',
-    right: 0,
     bottom: 0,
     alignItems: 'flex-end',
     marginEnd: 20,
   },
+  box: {
+    margin: '3.6%',
+    marginBottom:"30%",
+    borderWidth: 1.2,
+    padding: '4%',
+    borderRadius: 5,
+    borderColor: colorPalette.mainColor,
+  },
+  box1: {
+    margin: '3.6%',
+    borderWidth: 1.2,
+    alignItems: 'center',
+    flexDirection:'row',
+    padding: '2%',
+    borderRadius: 5,
+    paddingBottom:"5%",
+    paddingHorizontal:"0.5%",
+    borderColor: colorPalette.mainColor,
+  },
+  text: {
+    fontSize: 17,
+    margin: '3%',
+    paddingHorizontal:3,
+  },
+  box2: {
+    margin: '1.6%',
+    borderWidth: 1.2,
+    alignItems: 'center',
+    marginLeft:'3%',
+    padding: '2.5%',
+    borderRadius: 5,
+    paddingHorizontal:2,
+    borderColor: colorPalette.mainColor,
+  },
+  box: {
+    margin: '3.6%',
+    marginBottom:"30%",
+    borderWidth: 1.2,
+    padding: '4%',
+    borderRadius: 5,
+    borderColor: colorPalette.mainColor,
+  },
+  addPrescriptionHeader:{
+    backgroundColor:colorPalette.appColor,
+    flexDirection:'row',
+    padding:10,
+  },
+  addPrescriptionHeaderText:{
+    color:colorPalette.basicColor,
+    paddingLeft:10,
+    fontSize:20,
+  },
+  uploadPrescriptionText:{
+    color:colorPalette.appColor,
+    fontSize:20,
+    paddingVertical:20,
+  },
+  uploadPrescriptionBox:{
+    borderWidth:2,
+    borderColor:colorPalette.appColor,
+    width:'90%',
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:10,
+    margin:20
+  },
+  nodata:{
+    width:'90%',
+    justifyContent:'center',
+    alignContent:'center',
+    padding:100,
+  },
+  prescriptionText:{
+    color:colorPalette.appColor,
+    fontSize:20,
+    padding:20,
+  }
+
 });
 
 export default Styles;

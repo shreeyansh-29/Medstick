@@ -9,7 +9,6 @@ import sendSnapService from '../../../network/networkServices/otherServices/send
 export function* sendSnapSaga(data) {
   try {
     let response = yield call(sendSnapService.sendSnap, data);
-    console.log(response);
     yield put(sendSnapSuccess(response));
   } catch (error) {
     yield put(sendSnapError(error));

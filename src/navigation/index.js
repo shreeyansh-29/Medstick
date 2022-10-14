@@ -16,6 +16,9 @@ import About from '../screens/otherScreens/aboutApp';
 import SavedDetails from '../screens/profile/savedDetails';
 import EditProfile from '../screens/profile/editProfile';
 import SendSnap from '../components/atoms/sendSnap';
+import AddRemainder from '../screens/userScreens/addRemainder';
+import edit from '../components/organisms/alarm/edit';
+import alarm from '../components/organisms/alarm/alarm';
 import Prescriptions from '../screens/otherScreens/prescriptions';
 import AppointmentReminders from '../screens/otherScreens/appointmentReminders';
 import Notifications from '../screens/otherScreens/notifications';
@@ -24,6 +27,7 @@ import AddPrescription from '../screens/userScreens/medicines/addPrescription';
 import PatientProfile from '../screens/userScreens/patients/patientProfile';
 import CareTakerProfile from '../screens/userScreens/careTaker/careTakerProfile';
 import AuthScreen from '../screens/authScreens/authScreen';
+import AddPrescriptionPanel from '../screens/userScreens/medicines/addPrescriptionPanel';
 import Logout from '../Logout';
 import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
 import MedicineList from '../screens/userScreens/medicines/medicineList';
@@ -58,22 +62,38 @@ const MainNavigation = () => {
         <Stack.Screen name="Prescriptions" component={Prescriptions} />
         <Stack.Screen name="MedicineList" component={MedicineList} />
         <Stack.Screen name="MedicineDetailCard" component={MedicineDetailCard} />
+        <Stack.Screen name="AddRemainder" component={AddRemainder} />
         <Stack.Screen
           name="AppointmentReminders"
           component={AppointmentReminders}
         />
         <Stack.Screen name="Notifications" component={Notifications} />
         <Stack.Screen
+          name="edit"
+          component={edit}
+          options={{...headerStyles, title: 'Alarm'}}
+        />
+        <Stack.Screen
           name="SendSnapToCaretaker"
           component={SendSnapToCaretaker}
         />
         <Stack.Screen name="PatientProfile" component={PatientProfile} />
         <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
+        <Stack.Screen name ="addPrescriptionPanel" component={AddPrescriptionPanel}/>
         <Stack.Screen name="Logout" component={Logout} />
         <Stack.Screen name="ViewPrescription" component={DoctorPrescription} />
       </Stack.Navigator>
     </NavigationContainer>
   );
+};
+export const headerStyles = {
+  headerStyle: {
+    elevation: 0,
+  },
+  headerTintColor: '#000',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
 };
 
 export default MainNavigation;

@@ -9,6 +9,7 @@ import myPatientsService from '../../../network/networkServices/patients/myPatie
 export function* myPatientsSaga(data) {
   try {
     let response = yield call(myPatientsService.getMyPatients, data);
+    console.log(response);
     yield put(myPatientsSuccess(response?.data));
   } catch (error) {
     yield put(myPatientsError(error));

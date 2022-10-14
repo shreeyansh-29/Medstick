@@ -2,7 +2,7 @@ import {call, put, takeLatest} from 'redux-saga/effects';
 import {
   signUpError,
   signUpSuccess,
-} from '../../action/signUpAction/signUpAction';
+} from '../../action/signUpAction/signUpAction.js';
 import * as types from '../../actionTypes';
 import signUpNetworkService from '../../../network/networkServices/authNetworkServices/signUpNetworkService';
 

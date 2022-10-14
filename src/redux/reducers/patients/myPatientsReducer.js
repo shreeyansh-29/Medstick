@@ -15,7 +15,7 @@ export const myPatientsReducer = (state = initialState, action) => {
     case MY_PATIENTS_REQUEST:
       return {...state, isLoading: true, error: null};
     case MY_PATIENTS_SUCCESS:
-      return {...state, data: action.payload, isLoading: false};
+      return {...state, data: action.payload.result, isLoading: false};
     case MY_PATIENTS_ERROR:
       return {...state, error: action.payload, isLoading: false};
     default:

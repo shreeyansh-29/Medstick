@@ -4,7 +4,7 @@ import {
   errorMedicineList,
   successMedicineList,
 } from '../../action/userMedicine/medicineListAction';
-import {medicineListConstant} from '../../constant/userMedicine/medicineListConstant';
+import * as types from '../../actionTypes';
 
 export function* medicineListWorkerSaga() {
   try {
@@ -15,8 +15,5 @@ export function* medicineListWorkerSaga() {
   }
 }
 export function* medicineListWatcherSaga() {
-  yield takeLatest(
-    medicineListConstant.medicineListLoad,
-    medicineListWorkerSaga,
-  );
+  yield takeLatest(types.MEDICINE_LIST_REQUEST, medicineListWorkerSaga);
 }

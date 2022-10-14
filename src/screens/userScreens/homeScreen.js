@@ -5,7 +5,6 @@ import Calender from '../../components/organisms/calender';
 import PerformanceCircle from '../../components/organisms/performanceCircle';
 import Reminders from './reminders';
 import {Styles} from '../../styles/homeScreenStyles/performanceCircleStyles';
-
 import {styles} from '../../styles/homeScreenStyles/homeScreenStyles';
 
 const HomeScreen = ({navigation}) => {

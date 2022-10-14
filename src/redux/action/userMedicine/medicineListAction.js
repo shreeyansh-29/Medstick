@@ -1,21 +1,22 @@
-import {medicineListConstant} from '../../constant/userMedicine/medicineListConstant';
+import * as types from '../../actionTypes';
 
 const loadMedicineList = () => {
   return {
-    type: medicineListConstant.medicineListLoad,
+    type: types.MEDICINE_LIST_REQUEST,
   };
 };
 const successMedicineList = payload => {
   return {
-    type: medicineListConstant.medicineListSuccess,
+    type: types.MEDICINE_LIST_SUCCESS,
     payload,
   };
 };
 const errorMedicineList = payload => {
   return {
-    type: medicineListConstant.medicineListError,
+    type: types.MEDICINE_LIST_ERROR,
     payload,
   };
 };
 
 export {loadMedicineList, successMedicineList, errorMedicineList};
+
