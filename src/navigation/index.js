@@ -30,6 +30,8 @@ import AuthScreen from '../screens/authScreens/authScreen';
 import AddPrescriptionPanel from '../screens/userScreens/medicines/addPrescriptionPanel';
 import Logout from '../Logout';
 import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
+import MedicineList from '../screens/userScreens/medicines/medicineList';
+import MedicineDetailCard from '../screens/userScreens/medicines/medicineDetailCard';
 import ViewPrescriptions from '../screens/userScreens/patients/viewPrescriptions';
 import ViewMedicines from '../screens/userScreens/patients/viewMedicines';
 import MedicineReport from '../screens/userScreens/patients/medicineReport';
@@ -62,15 +64,11 @@ const MainNavigation = () => {
         <Stack.Screen name="SavedDetails" component={SavedDetails} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="Prescriptions" component={Prescriptions} />
-        <Stack.Screen
-          name="AppointmentReminders"
-          component={AppointmentReminders}
-        />
+        <Stack.Screen name="MedicineList" component={MedicineList} />
+        <Stack.Screen name="MedicineDetailCard" component={MedicineDetailCard} />
+        <Stack.Screen name="AppointmentReminders" component={AppointmentReminders}/>
+        <Stack.Screen name="SendSnapToCaretaker" component={SendSnapToCaretaker}/>
         <Stack.Screen name="Notifications" component={Notifications} />
-        <Stack.Screen
-          name="SendSnapToCaretaker"
-          component={SendSnapToCaretaker}
-        />
         <Stack.Screen name="PatientProfile" component={PatientProfile} />
         <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
         <Stack.Screen
