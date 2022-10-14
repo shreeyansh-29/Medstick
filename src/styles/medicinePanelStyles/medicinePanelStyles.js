@@ -223,17 +223,19 @@ width:'80%'
   },
   modalHeader:{
     
-    flex:0.5,
-    justifyContent:'center',
-    alignItems:'center',
+    flex:1,
+    alignItems:'center'
     
   },
   modalContainer:{
-  flex:0.5,
-    position: 'absolute',
-    bottom: 0,
-    alignItems: 'flex-end',
-    marginEnd: 20,
+     flex:1,
+    // position: 'absolute',
+    // bottom: 0,
+    // alignItems: 'flex-end',
+    // marginEnd: 20,
+    // backgroundColor:"#000"
+    padding:10,
+    paddingBottom:30,
   },
   box: {
     margin: '3.6%',

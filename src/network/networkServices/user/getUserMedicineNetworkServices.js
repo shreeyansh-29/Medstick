@@ -7,7 +7,6 @@ class getUserMedicineNetworkService{
     {
     
         const Id = await AsyncStorage.getItem('user_id');
-        console.log(Id,"id")
         const token = await AsyncStorage.getItem('accessToken');
         return requestService.getRequest(`${GET_USER_MEDICINE}?userId=${Id}&Id=${Id}`,
         {
