@@ -103,6 +103,7 @@ const MyCareTaker = ({navigation}) => {
 
           <View style={styles.button}>
             <AddButton
+              text="Patient"
               routeName={'SearchScreen'}
               navigation={navigation}
               styles={styles.addBtn}

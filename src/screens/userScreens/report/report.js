@@ -1,5 +1,5 @@
 import {View, Text, ScrollView, Pressable} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
@@ -49,8 +49,6 @@ LocaleConfig.locales['en'] = {
 };
 LocaleConfig.defaultLocale = 'en';
 const Report = ({navigation}) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
   let startDate = new Date().toDateString();
   return (
     <>
@@ -67,7 +65,12 @@ const Report = ({navigation}) => {
                 </Text>
               </View>
               <View style={styles.progressView}>
-                <ProgressReport styles={styles} />
+                <ProgressReport
+                  styles={styles}
+                  radius={42}
+                  borderWidth={6}
+                  percent={3}
+                />
               </View>
             </View>
           </View>
@@ -75,27 +78,6 @@ const Report = ({navigation}) => {
             <Text style={styles.reportText}>Your Report</Text>
           </View>
           <View style={styles.calendarView}>
-            <View>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  Alert.alert('Modal has been closed.');
-                  setModalVisible(!modalVisible);
-                }}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Hello World!</Text>
-                    <Pressable
-                      style={[styles.button, styles.buttonClose]}
-                      onPress={() => setModalVisible(!modalVisible)}>
-                      <Text style={styles.textStyle}>Hide Modal</Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </Modal>
-            </View>
             <Calendar
               style={styles.calendar}
               theme={styles.theme}
@@ -133,13 +115,6 @@ const Report = ({navigation}) => {
               markedDates={markedDay}
             />
           </View>
-          {data.date == '2022-09-22' ? (
-            <View></View>
-          ) : (
-            <View style={{margin: 15}}>
-              <Text style={{fontSize: 17, color: 'black'}}>No Remainders</Text>
-            </View>
-          )}
         </ScrollView>
       </View>
     </>

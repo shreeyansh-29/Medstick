@@ -15,25 +15,40 @@ import Loader from '../../components/atoms/loader';
 import * as Animatable from 'react-native-animatable';
 import {styles} from '../../styles/otherScreensStyles/prescriptionsStyles';
 import CustomImage from '../../components/atoms/customImage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
+import {ListItem} from 'react-native-elements';
+import UserAvatar from 'react-native-user-avatar';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
 
 const Prescriptions = ({navigation}) => {
   const [myPrescriptions, setMyPrescriptions] = useState([]);
   const res = useSelector(state => state.myPrescriptions);
+  console.log(res);
   const loading = useSelector(state => state.myPrescriptions?.isLoading);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(myPrescriptionsRequest(currentPage));
-    setIsLoading(true);
-  }, [currentPage]);
+  useFocusEffect(
+    React.useCallback(() => {
+      const getPrescriptions = async () => {
+        const Id = await AsyncStorage.getItem('user_id');
+        dispatch(myPrescriptionsRequest({currentPage, Id}));
+      };
+
+      getPrescriptions();
+      return () => {
+        true;
+      };
+    }, []),
+  );
 
   useEffect(() => {
-    setIsLoading(false);
     if (res?.data !== null) {
-      setMyPrescriptions(res?.data.result);
+      setMyPrescriptions(res?.data);
     }
   }, [res]);
 
@@ -51,30 +66,42 @@ const Prescriptions = ({navigation}) => {
 
   const RenderItem = ({item, index}) => {
     return (
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('ViewPrescription', {item: item});
-        }}
-        activeOpacity={1}
-        style={styles.card}>
-        <View style={styles.imgCont}>
-          <Image
-            resizeMode="stretch"
-            styles={styles.img}
-            source={require('../../assets/images/pres.jpeg')}
-          />
+      <Animatable.View animation="zoomInUp" duration={400} delay={index * 400}>
+        <View style={styles.top}>
+          <ListItem
+            style={styles.list}
+            hasTVPreferredFocus={undefined}
+            tvParallaxProperties={undefined}>
+            <UserAvatar size={60} name={`${item.doctorName}`} />
+            <ListItem.Content>
+              <ListItem.Title style={styles.patientName}>
+                <Text style={{fontWeight: '600'}}>Doctor Name: </Text>
+                {`${item.doctorName}`}
+              </ListItem.Title>
+              <ListItem.Subtitle style={styles.subtitle}>
+                <Text style={{fontWeight: '600'}}>Contact No: </Text>
+                {item.contact}
+              </ListItem.Subtitle>
+            </ListItem.Content>
+            <TouchableOpacity
+              style={{marginRight: 12}}
+              onPress={() => {
+                navigation.navigate('ViewPrescription', {item: item});
+              }}>
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                size={16}
+                color={colorPalette.mainColor}
+              />
+            </TouchableOpacity>
+          </ListItem>
         </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.text1}>{item.doctorName}</Text>
-          <Text style={{color: 'grey'}}>{item.contact}</Text>
-        </View>
-      </TouchableOpacity>
+      </Animatable.View>
     );
   };
   return (
     <View style={styles.container}>
       <SubHeader title={'Prescriptions'} navigation={navigation} />
-
       {loading ? (
         <Loader />
       ) : (
@@ -94,7 +121,6 @@ const Prescriptions = ({navigation}) => {
                 data={myPrescriptions}
                 renderItem={RenderItem}
                 showsVerticalScrollIndicator={false}
-                numColumns={2}
                 keyExtractor={(item, index) => index.toString()}
                 // onEndReached={onEnd}
                 // onEndReachedThreshold={0}

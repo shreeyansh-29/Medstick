@@ -22,7 +22,13 @@ const HomeScreen = ({navigation}) => {
             }}> */}
         <View style={styles.card}>
           <Calender />
-          <PerformanceCircle styles={Styles} />
+          <PerformanceCircle
+            styles={Styles}
+            radius={42}
+            borderWidth={6}
+            percent={3}
+            text="Today's Performance"
+          />
         </View>
         <Reminders />
         {/* </ScrollView>

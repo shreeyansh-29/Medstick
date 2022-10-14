@@ -16,13 +16,13 @@ export const styles = StyleSheet.create({
   subView2: {flex: 3},
   heading: {
     color: 'black',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '400',
     paddingLeft: 18,
   },
   content: {
     color: 'black',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '300',
   },
   divider: {marginVertical: 6, height: 1.2, width: '100%'},

@@ -29,6 +29,10 @@ import CareTakerProfile from '../screens/userScreens/careTaker/careTakerProfile'
 import AuthScreen from '../screens/authScreens/authScreen';
 import Logout from '../Logout';
 import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
+import ViewPrescriptions from '../screens/userScreens/patients/viewPrescriptions';
+import ViewMedicines from '../screens/userScreens/patients/viewMedicines';
+import MedicineReport from '../screens/userScreens/patients/medicineReport';
+import MedicineImages from '../screens/userScreens/patients/medicineImages';
 
 const Stack = createNativeStackNavigator();
 
@@ -75,6 +79,13 @@ const MainNavigation = () => {
         <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
         <Stack.Screen name="Logout" component={Logout} />
         <Stack.Screen name="ViewPrescription" component={DoctorPrescription} />
+        <Stack.Screen
+          name="PatientPrescriptions"
+          component={ViewPrescriptions}
+        />
+        <Stack.Screen name="PatientMedicines" component={ViewMedicines} />
+        <Stack.Screen name="MedicineReport" component={MedicineReport} />
+        <Stack.Screen name="MedicineImages" component={MedicineImages} />
       </Stack.Navigator>
     </NavigationContainer>
   );

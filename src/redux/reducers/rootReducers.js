@@ -17,10 +17,18 @@ import {myCaretakerReducer} from './caretaker/myCaretakerReducer';
 import {caretakerRequestReducer} from './caretaker/caretakerRequestReducer';
 import {acceptCaretakerReqReducer} from './caretaker/acceptCaretakerReqReducer';
 import {deleteCaretakerReqReducer} from './caretaker/deleteCaretakerReqReducer';
+import {medicineListReducer} from './userMedicine/medicineListReducer';
+import {getMedsReducer} from './patients/getMedsReducer';
+import {sendRequestReducer} from './getUserReducer/sendReqReducer';
+import {getUserReducer} from './getUserReducer/getUserReducer';
+import {notifyUserReducer} from './patients/notifyUserReducer';
+import {medicineImagesReducer} from './patients/medicineImagesReducer';
+import {fetchImageReducer} from './patients/fetchImageReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
   signUp: signUpReducer,
+  medicineList: medicineListReducer,
   careTaker: myCaretakerReducer,
   listCaretaker: caretakerRequestReducer,
   myPatients: myPatientsReducer,
@@ -39,6 +47,12 @@ const rootReducer = combineReducers({
   caretakerRequest: caretakerRequestReducer,
   acceptCaretakerRequest: acceptCaretakerReqReducer,
   deleteCaretakerRequest: deleteCaretakerReqReducer,
+  getMedicines: getMedsReducer,
+  getUser: getUserReducer,
+  sendRequest: sendRequestReducer,
+  notifyUser: notifyUserReducer,
+  medicineImages: medicineImagesReducer,
+  fetchImage: fetchImageReducer,
 });
 
 export default rootReducer;

@@ -17,6 +17,11 @@ import {watchCaretakerRequestSaga} from './caretaker/caretakerRequestSaga';
 import {watchAcceptCaretakerReqSaga} from './caretaker/acceptCaretakerReqSaga';
 import {watchDeleteCaretakerReqSaga} from './caretaker/deleteCaretakerReqSaga';
 import {saveAppointmentWatcherSaga} from './appointmentSaga/saveAppointmentReminderWatcherSaga';
+import {watchGetMedsSaga} from './patients/getMedsSaga';
+import {watchGetUserSaga} from './getUserSaga/getUserSaga';
+import {watchSendReqSaga} from './getUserSaga/sendReqSaga';
+import {watchNotifyUserSaga} from './patients/notifyUserSaga';
+import {watchMedicineImagesSaga} from './patients/medicineImagesSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -38,5 +43,11 @@ export default function* RootSaga() {
     watchAcceptCaretakerReqSaga(),
     watchDeleteCaretakerReqSaga(),
     saveAppointmentWatcherSaga(),
+    medicineListWatcherSaga(),
+    watchGetMedsSaga(),
+    watchGetUserSaga(),
+    watchSendReqSaga(),
+    watchNotifyUserSaga(),
+    watchMedicineImagesSaga(),
   ]);
 }
