@@ -10,4 +10,6 @@ export const colorPalette = {
   redPercentageColor: '#EE534F',
   restPercentageColor: '#EFEFEF',
   backgroundColor: '#FAFAFA',
+  redColor:'#ff0000',
+  greyColor:'#f0f0f0'
 };

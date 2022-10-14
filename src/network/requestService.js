@@ -1,6 +1,7 @@
 import axios from 'axios';
 class RequestService {
   getRequest(url, headers) {
+    
     return axios.get(url, headers);
   }
   postRequest(url, object, headers) {

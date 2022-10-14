@@ -21,7 +21,7 @@ import {watchCaretakerRequestSaga} from './caretaker/caretakerRequestSaga';
 import {watchAcceptCaretakerReqSaga} from './caretaker/acceptCaretakerReqSaga';
 import {watchDeleteCaretakerReqSaga} from './caretaker/deleteCaretakerReqSaga';
 import {saveAppointmentWatcherSaga} from './appointmentSaga/saveAppointmentReminderWatcherSaga';
-
+import { getUserMedicineWatcherSaga } from './userMedicine/getUserMedicineWatcherSaga';
 export default function* RootSaga() {
   yield all([
     watchLoginSaga(),
@@ -46,5 +46,6 @@ export default function* RootSaga() {
     watchAcceptCaretakerReqSaga(),
     watchDeleteCaretakerReqSaga(),
     saveAppointmentWatcherSaga(),
+    getUserMedicineWatcherSaga(),
   ]);
 }

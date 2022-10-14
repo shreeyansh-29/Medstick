@@ -1,4 +1,4 @@
-let apiUrl = 'https://ea9a-106-51-81-179.in.ngrok.io/api/v1/user';
+let apiUrl = 'https://71e2-106-51-81-179.in.ngrok.io/api/v1/user';
 
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
@@ -18,7 +18,7 @@ export const DELETE_MEDICINE = `${apiUrl}/medicine/delete`;
 export const APPOINTMENT_REMINDER=`${apiUrl}/doctor-prescriptions-name`;
 export const SAVE_DOCTOR_APPOINTMENT = `${apiUrl}/create-doctor-appointment`;
 export const GET_DOCTOR_APPOINTMENT = `${apiUrl}/doctor-appointments`;
-
+export const GET_USER_MEDICINE=`${apiUrl}/medicines`
 export const MY_PRESCRIPTIONS = `${apiUrl}/doctor-prescriptions`;
 export const GET_USER = `${apiUrl}/id`;
 

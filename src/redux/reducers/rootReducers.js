@@ -7,7 +7,7 @@ import {myPatientsReducer} from './patients/myPatientsReducer';
 import {patientsRequestReducer} from './patients/patientsRequestReducer';
 import {signUpReducer} from './signUpReducer/signUpReducer';
 import {sendSnapReducer} from './otherScreenReducer/sendSnapReducer';
-import medicineListReducer from './userMedicine/medicineListReducer';
+// import medicineListReducer from './userMedicine/medicineListReducer';
 import addMedicineReducer from './userMedicine/addMedicineReducer';
 import getPrescriptionReducer from './doctorPrescription/getPrescriptionReducer';
 import { saveDoctorPrescriptionReducer } from './doctorPrescription/saveDoctorPrescriptionReducer';
@@ -22,7 +22,9 @@ import {myCaretakerReducer} from './caretaker/myCaretakerReducer';
 import {caretakerRequestReducer} from './caretaker/caretakerRequestReducer';
 import {acceptCaretakerReqReducer} from './caretaker/acceptCaretakerReqReducer';
 import {deleteCaretakerReqReducer} from './caretaker/deleteCaretakerReqReducer';
-
+import { getMedicineHistoryReducer } from './userMedicine/getMedicineHistoryReducer';
+import {userMedicineByIdReducer} from './userMedicine/userMedicineByIdReducer'
+import { getUserMedicineReducer } from './userMedicine/getUserMedicineReducer';
 const rootReducer = combineReducers({
   signIn: signInReducer,
   signUp: signUpReducer,
@@ -48,6 +50,9 @@ const rootReducer = combineReducers({
   caretakerRequest: caretakerRequestReducer,
   acceptCaretakerRequest: acceptCaretakerReqReducer,
   deleteCaretakerRequest: deleteCaretakerReqReducer,
+  getMedicineHistoryReducer:getMedicineHistoryReducer,
+  userMedicineByIdReducer:userMedicineByIdReducer,
+  getUserMedicineReducer:getUserMedicineReducer,
 });
 
 export default rootReducer;
