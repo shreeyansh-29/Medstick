@@ -21,6 +21,7 @@ import {loadMedicineList} from '../../../redux/action/userMedicine/medicineListA
 import {useIsFocused} from '@react-navigation/native';
 import {deleteMedicineRequest} from '../../../redux/action/userMedicine/deleteMedicine';
 import Loader from '../../../components/atoms/loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MedicinePanel = ({navigation}) => {
   const dispatch = useDispatch();
@@ -28,11 +29,11 @@ const MedicinePanel = ({navigation}) => {
   const [medicines, setMedicines] = useState([]);
   const res = useSelector(state => state.medicineList);
   console.log(res);
-  const loading = useSelector(
-    state => state.medicineList?.loading?.medicineListLoader,
-  );
+  const loading = useSelector(state => state.medicineList?.isLoading);
   const res1 = useSelector(state => state.deleteMedicine);
 
+  // const Id = await AsyncStorage.getItem('user_id');
+  // console.log(Id);
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     Animated.timing(progress, {
@@ -44,31 +45,40 @@ const MedicinePanel = ({navigation}) => {
 
   useEffect(() => {
     if (res?.data !== null) {
-      setMedicines(res?.data?.result);
+      setMedicines(res?.data);
+    } else {
+      setMedicines([]);
     }
   }, [res]);
 
+  const userMeds = async () => {
+    dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
+  };
+
   useEffect(() => {
     if (isFocused) {
-      dispatch(loadMedicineList());
+      userMeds();
     }
   }, [isFocused]);
 
   const deleteMedicine = userMedicineId => {
     dispatch(deleteMedicineRequest(userMedicineId));
-    setTimeout(() => {
-      dispatch(loadMedicineList());
+    setTimeout(async () => {
+      dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
     }, 300);
   };
 
-  const renderItem = ({item}) => {
+  const renderItem = ({item, index}) => {
     return (
       <>
         <Animatable.View animation="zoomInUp" duration={400}>
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('MedicineList', {data: medicines});
+              navigation.navigate('MedicineList', {
+                data: medicines,
+                index: index,
+              });
             }}>
             <Card style={Styles.card}>
               <View style={Styles.listView}>
@@ -148,23 +158,23 @@ const MedicinePanel = ({navigation}) => {
           <Loader />
         ) : (
           <>
-            {medicines === null ? (
+            {medicines.length === 0 ? (
               <View style={Styles.lottie}>
                 <LottieView
-                  style={Styles.lottieView}
+                  style={{width: 100, height: 100}}
                   speed={0.8}
                   source={require('../../../assets/animation/noMed1.json')}
                   progress={progress}
                 />
               </View>
             ) : (
-              <>
+              <View style={{flex: 1}}>
                 <FlatList
                   data={medicines}
                   renderItem={renderItem}
                   showsVerticalScrollIndicator={false}
                 />
-              </>
+              </View>
             )}
           </>
         )}

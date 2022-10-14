@@ -8,16 +8,16 @@ import {deviceWidth, verticalScale} from '../../../components/atoms/constant';
 
 const MedicineList = ({route, navigation}) => {
   const data = route.params.data;
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(route.params.index);
   const isCarousel = useRef(null);
-
   return (
     <View style={styles.container}>
-        <SubHeader title={'Medicine Description'} navigation={navigation} />
-        <View style={styles.carouselContainer}>
+      <SubHeader title={'Medicine Description'} navigation={navigation} />
+      <View style={styles.carouselContainer}>
+        {console.log('Outster', index)}
         <Carousel
           layout="default"
-          layoutCardOffset={19}
+          layoutCardOffset={9}
           ref={isCarousel}
           data={data}
           centerContent={true}
@@ -27,16 +27,17 @@ const MedicineList = ({route, navigation}) => {
           itemWidth={deviceWidth / 1.1}
           onSnapToItem={index => {
             setIndex(index);
+            console.log('jcsachchadvfkd', index);
           }}
           useScrollView={true}
           scrollEnabled={true}
           activeSlideAlignment="center"
-          swipeThreshold={0.0003}
           enableSnap={true}
           activeSlideOffset={20}
           snapToInterval={3}
           enableMomentum={true}
           scrollEndDragDebounceValue={9000}
+          inactiveSlideShift={0}
         />
         <Pagination
           dotsLength={data.length}
@@ -47,19 +48,19 @@ const MedicineList = ({route, navigation}) => {
             height: 15,
             borderRadius: 8,
             backgroundColor: 'black',
-            marginTop:-60
+            marginTop: -60,
           }}
           dotContainerStyle={{
             borderWidth: 2,
             borderColor: '#f0f0f0',
-            backgroundColor:'white'
+            backgroundColor: 'white',
           }}
           inactiveDotOpacity={1}
           inactiveDotScale={0.6}
           dotColor={colorPalette.appColor}
           inactiveDotColor={'grey'}
         />
-        </View>
+      </View>
     </View>
   );
 };
@@ -69,7 +70,7 @@ const HEIGHT = Dimensions.get('screen').height;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colorPalette.lightgrey,
+    backgroundColor: colorPalette.backgroundColor,
     alignItems: 'center',
     flex: 1,
   },
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     width: '100%',
-    marginTop:20,
-    backgroundColor:colorPalette.backgroundColor,
+    marginTop: 20,
+    backgroundColor: colorPalette.backgroundColor,
   },
 });

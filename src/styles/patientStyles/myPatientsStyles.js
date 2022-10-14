@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
   },
   touch: {paddingVertical: 15},
   icon: {alignItems: 'center'},
+  subtitle: {marginLeft: 3},
 
   //main
   container: {backgroundColor: 'white', height: '100%'},

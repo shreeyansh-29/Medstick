@@ -29,12 +29,12 @@ export const styles = StyleSheet.create({
   },
   highlightedDateNumber: {
     color: colorPalette.basicColor,
-    fontSize: 12.5,
+    fontSize: 12,
     fontWeight: '900',
   },
   highlightedDateName: {
     color: colorPalette.basicColor,
-    fontSize: 12.5,
+    fontSize: 12,
     fontWeight: '900',
   },
 });

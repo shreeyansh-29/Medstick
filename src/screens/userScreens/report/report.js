@@ -1,18 +1,25 @@
-import { View, Text, ScrollView, Pressable, Modal, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
-import { styles } from '../../../styles/reportScreenStyles/reportScreenStyles';
+import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
-import { colorPalette } from '../../../components/atoms/colorPalette';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
-import { horizontalScale } from '../../../components/atoms/constant';
-import { icon } from '@fortawesome/fontawesome-svg-core';
+import {colorPalette} from '../../../components/atoms/colorPalette';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
+import {horizontalScale} from '../../../components/atoms/constant';
+import {icon} from '@fortawesome/fontawesome-svg-core';
 import CrossButton from '../../../components/atoms/crossButton';
 import Line from '../../../components/atoms/line';
 import Dot from '../../../components/atoms/dot';
 import ProgressBar from '../../../components/molecules/progressBar';
 import TimeSlot from '../../../components/atoms/timeSlot';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
 import MedicinePicker from '../../../components/atoms/medicinePicker';
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -55,26 +62,23 @@ LocaleConfig.locales['en'] = {
   dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
 };
 LocaleConfig.defaultLocale = 'en';
-const Report = ({ navigation }) => {
+const Report = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState('')
-  const [medicineName,setMedicineName]=useState('')
-  console.log(selectedDate,"date")
-  const year = selectedDate?.year
-  const month = selectedDate?.month
-  const date = selectedDate?.day
-
+  const [selectedDate, setSelectedDate] = useState('');
+  const [medicineName, setMedicineName] = useState('');
+  console.log(selectedDate, 'date');
+  const year = selectedDate?.year;
+  const month = selectedDate?.month;
+  const date = selectedDate?.day;
 
   let startDate = new Date().toDateString();
   return (
-
     <>
       <View style={styles.container} />
       <View style={styles.report}>
         <MainHeader title={'Reports'} navigation={navigation} />
-        <MedicinePicker/>
-        
         <ScrollView>
+          <MedicinePicker />
           <View style={styles.reportContainer}>
             <View style={styles.analytics}>
               <View style={styles.container1Text}>
@@ -84,7 +88,12 @@ const Report = ({ navigation }) => {
                 </Text>
               </View>
               <View style={styles.progressView}>
-                <ProgressReport styles={styles} />
+                <ProgressReport
+                  styles={styles}
+                  radius={42}
+                  borderWidth={6}
+                  percent={3}
+                />
               </View>
             </View>
           </View>
@@ -92,7 +101,7 @@ const Report = ({ navigation }) => {
             <Text style={styles.reportText}>Your Report</Text>
           </View>
           <View style={styles.calendarView}>
-            <View >
+            <View>
               <Modal
                 animationType="slide"
                 transparent={true}
@@ -108,13 +117,14 @@ const Report = ({ navigation }) => {
                         <CrossButton />
                       </TouchableOpacity>
                     </View>
-                    <View style={styles.modalSubHeader}><Text style={styles.modalHeaderText}>DATE:  {date} -{month} -{year}</Text></View>
+                    <View style={styles.modalSubHeader}>
+                      <Text style={styles.modalHeaderText}>
+                        DATE: {date} -{month} -{year}
+                      </Text>
+                    </View>
 
                     <View style={styles.progressBar}>
-                    
-                    <TimeSlot
-                      time={'time'}
-                    />
+                      <TimeSlot time={'time'} />
                       {/* <ProgressBar /> */}
                     </View>
                   </View>
@@ -127,9 +137,9 @@ const Report = ({ navigation }) => {
               initialDate={startDate}
               minDate={'2012-05-10'}
               maxDate={'2222-12-30'}
-              onDayPress={day=>{
-                setSelectedDate(day)
-                setModalVisible(true)
+              onDayPress={day => {
+                setSelectedDate(day);
+                setModalVisible(true);
               }}
               onDayLongPress={day => {
                 // console.log('selected day', day);
@@ -149,7 +159,7 @@ const Report = ({ navigation }) => {
               renderHeader={date => {
                 return (
                   <Text
-                    style={{ fontSize: 20, fontWeight: '600', color: 'grey' }}>
+                    style={{fontSize: 20, fontWeight: '600', color: 'grey'}}>
                     {date.toDateString()}
                   </Text>
                 );
@@ -159,13 +169,6 @@ const Report = ({ navigation }) => {
               markedDates={markedDay}
             />
           </View>
-          {data.date == '2022-09-22' ? (
-            <View></View>
-          ) : (
-            <View style={{ margin: 15 }}>
-              <Text style={{ fontSize: 17, color: 'black' }}>No Remainders</Text>
-            </View>
-          )}
         </ScrollView>
       </View>
     </>
@@ -183,18 +186,18 @@ function ColorCode(percentage) {
 }
 
 const data = [
-  { id: 1, date: '2022-09-22', percentage: 100 },
-  { id: 2, date: '2022-09-23', percentage: 70 },
-  { id: 3, date: '2022-09-24', percentage: 30 },
-  { id: 4, date: '2022-09-25', percentage: 93 },
-  { id: 1, date: '2022-10-02', percentage: 100 },
-  { id: 2, date: '2022-10-03', percentage: 70 },
-  { id: 3, date: '2022-10-04', percentage: 30 },
-  { id: 4, date: '2022-10-15', percentage: 93 },
-  { id: 1, date: '2022-10-12', percentage: 100 },
-  { id: 2, date: '2022-10-23', percentage: 70 },
-  { id: 3, date: '2022-10-24', percentage: 30 },
-  { id: 4, date: '2022-10-25', percentage: 93 },
+  {id: 1, date: '2022-09-22', percentage: 100},
+  {id: 2, date: '2022-09-23', percentage: 70},
+  {id: 3, date: '2022-09-24', percentage: 30},
+  {id: 4, date: '2022-09-25', percentage: 93},
+  {id: 1, date: '2022-10-02', percentage: 100},
+  {id: 2, date: '2022-10-03', percentage: 70},
+  {id: 3, date: '2022-10-04', percentage: 30},
+  {id: 4, date: '2022-10-15', percentage: 93},
+  {id: 1, date: '2022-10-12', percentage: 100},
+  {id: 2, date: '2022-10-23', percentage: 70},
+  {id: 3, date: '2022-10-24', percentage: 30},
+  {id: 4, date: '2022-10-25', percentage: 93},
 ];
 let markedDay = {};
 

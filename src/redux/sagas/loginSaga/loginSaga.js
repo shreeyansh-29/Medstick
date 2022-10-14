@@ -5,7 +5,7 @@ import loginNetworkService from '../../../network/networkServices/authNetworkSer
 
 export function* loginSaga(payload) {
   try {
-    let response = yield call(loginNetworkService.login, payload);    
+    let response = yield call(loginNetworkService.login, payload);
     yield put(loginSuccess(response));
   } catch (error) {
     yield put(loginError(error));
