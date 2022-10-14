@@ -8,6 +8,8 @@ import { styles } from '../../styles/reportScreenStyles/reportScreenStyles'
 const MedicinePicker = () => {
     const [medicineName,setMedicineName]=useState('')
     const dispatch=useDispatch()
+    const getUserMedicinedata=useSelector(state=>state.getUserMedicineReducer)
+    console.log(getUserMedicinedata,"initial state")
     const getUserMedicine=useSelector(state=>state.getUserMedicineReducer?.data?.result)
     console.log(getUserMedicine,"medicine")
    const getmedicine=()=>{
@@ -28,6 +30,7 @@ const MedicinePicker = () => {
             return(
                 <Picker.Item
                     label={item.medicineName}
+                    value={item.medicineName}
                     key={index}
                 />
             )

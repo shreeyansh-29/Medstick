@@ -200,7 +200,7 @@ const AddMedicines = ({ navigation }) => {
     <View style={Styles.addMedicinePage}>
       <Toast visibilityTime={3000} />
       <Modal visible={modal} >
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1}}>
           <TouchableOpacity onPress={() => setModal(false)}>
             <Ionicons name='close' size={30} />
           </TouchableOpacity>

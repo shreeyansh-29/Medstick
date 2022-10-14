@@ -16,11 +16,13 @@ import {appointmentReminderWatcherSaga} from './userMedicine/appointmentReminder
 import {getAppointmentWatcherSaga} from './appointmentSaga/getAppointmentWatcherSaga';
 import {watchMyPrescriptionsSaga} from './otherScreenSaga/myPrescriptionsSaga';
 import {watchGetUserProfileSaga} from './profileSaga/getUserProfileSaga';
+import { getAllNotificationWatcherSaga } from './notification/getAllNotificationWatcherSaga';
+import { saveAppointmentWatcherSaga } from './appointmentSaga/saveAppointmentReminderWatcherSaga';
+import { deleteNotificationWatcherSaga } from './notification/deleteNotificationWatcherSaga';
 import {watchMyCaretakerSaga} from './caretaker/myCaretakerSaga';
 import {watchCaretakerRequestSaga} from './caretaker/caretakerRequestSaga';
 import {watchAcceptCaretakerReqSaga} from './caretaker/acceptCaretakerReqSaga';
 import {watchDeleteCaretakerReqSaga} from './caretaker/deleteCaretakerReqSaga';
-import {saveAppointmentWatcherSaga} from './appointmentSaga/saveAppointmentReminderWatcherSaga';
 import { getUserMedicineWatcherSaga } from './userMedicine/getUserMedicineWatcherSaga';
 export default function* RootSaga() {
   yield all([
@@ -41,11 +43,13 @@ export default function* RootSaga() {
     getAppointmentWatcherSaga(),
     watchMyPrescriptionsSaga(),
     watchGetUserProfileSaga(),
+    getAllNotificationWatcherSaga(),
     watchMyCaretakerSaga(),
     watchCaretakerRequestSaga(),
     watchAcceptCaretakerReqSaga(),
     watchDeleteCaretakerReqSaga(),
     saveAppointmentWatcherSaga(),
+    deleteNotificationWatcherSaga(),
     getUserMedicineWatcherSaga(),
   ]);
 }

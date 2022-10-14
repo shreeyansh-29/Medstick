@@ -18,6 +18,8 @@ import {saveAppointmentReminderReducer} from './appointmentReminderReducer/saveA
 import {getAppointmentReducer} from './appointmentReminderReducer/getAppointmentReducer';
 import {myPrescriptionsReducer} from './otherScreenReducer/myPrescriptionsReducer';
 import {getUserProfileReducer} from './profileReducer/getUserProfileReducer';
+import getAllNotificationReducer from './notification/getAllNotificationReducer';
+import deleteNotificationReducer from './notification/deleteNotificationReducer';
 import {myCaretakerReducer} from './caretaker/myCaretakerReducer';
 import {caretakerRequestReducer} from './caretaker/caretakerRequestReducer';
 import {acceptCaretakerReqReducer} from './caretaker/acceptCaretakerReqReducer';
@@ -46,6 +48,8 @@ const rootReducer = combineReducers({
   getAppointment: getAppointmentReducer,
   myPrescriptions: myPrescriptionsReducer,
   getUserProfile: getUserProfileReducer,
+  getAllNotificationReducer:getAllNotificationReducer,
+  deleteNotificationReducer:deleteNotificationReducer,
   myCaretaker: myCaretakerReducer,
   caretakerRequest: caretakerRequestReducer,
   acceptCaretakerRequest: acceptCaretakerReqReducer,

@@ -27,6 +27,7 @@ const MedicinePanel = ({navigation}) => {
   const isFocused = useIsFocused();
   const [medicines, setMedicines] = useState([]);
   const res = useSelector(state => state.medicineList);
+  console.log(res);
   const loading = useSelector(
     state => state.medicineList?.loading?.medicineListLoader,
   );
@@ -68,8 +69,7 @@ const MedicinePanel = ({navigation}) => {
             activeOpacity={1}
             onPress={() => {
               navigation.navigate('MedicineList', {data: medicines});
-            }}
-            >
+            }}>
             <Card style={Styles.card}>
               <View style={Styles.listView}>
                 <ListItem style={Styles.list}>
