@@ -1,16 +1,23 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import React from 'react';
 import {verticalScale} from '../../../components/atoms/constant';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPencil, faTrash} from '@fortawesome/free-solid-svg-icons';
+import { faNoteSticky } from '@fortawesome/free-regular-svg-icons';
 
 const MedicineDetailCard = ({item, index, navigation}) => {
   return (
     <View style={styles.container} key={index}>
       <View style={styles.top}>
-        <View
-          style={styles.medNameContainer}>
+        <View style={styles.medNameContainer}>
           <View style={styles.medNameView}>
             <Text style={styles.medName}>{item.medicineName}</Text>
           </View>
@@ -27,86 +34,89 @@ const MedicineDetailCard = ({item, index, navigation}) => {
             </TouchableOpacity>
             <TouchableOpacity>
               <FontAwesomeIcon
-                icon={faTrash}
+                icon={faNoteSticky}
                 size={20}
                 color={colorPalette.basicColor}
               />
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{paddingHorizontal: 15}}>
-          <View style={styles.itemView}>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemHeading}>Description : </Text>
+        <ScrollView>
+          <View style={{paddingHorizontal: 15}}>
+            <View style={styles.itemView}>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemHeading}>Description : </Text>
+              </View>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemData}>{item.description}</Text>
+              </View>
             </View>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemData}>{item.description}</Text>
+            <View style={styles.itemView}>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemHeading}>Dosage Type : </Text>
+              </View>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemData}>{item.dosageQuantity}</Text>
+              </View>
+            </View>
+            <View style={styles.itemView}>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemHeading}>Dosage Unit : </Text>
+              </View>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemData}>{item.dosageUnit}</Text>
+              </View>
+            </View>
+            <View style={styles.itemView}>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemHeading}>Total Stock : </Text>
+              </View>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemData}>{item.stock}</Text>
+              </View>
+            </View>
+            <View style={styles.prescriptionContainer}>
+              <View style={styles.prescriptionView}>
+                <Text style={styles.prescriptionText}>
+                  Prescription Details
+                </Text>
+              </View>
+              <View style={styles.line}></View>
+            </View>
+            <View style={styles.itemView}>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemHeading}>Doctor Name : </Text>
+              </View>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemData}>{item.doctorName}</Text>
+              </View>
+            </View>
+            <View style={styles.itemView}>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemHeading}>Contact : </Text>
+              </View>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemData}>{item.contact}</Text>
+              </View>
+            </View>
+            <View style={styles.itemView}>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemHeading}>Specialization : </Text>
+              </View>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemData}>{item.specialization}</Text>
+              </View>
+            </View>
+            <View style={styles.itemView}>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemHeading}>Loaction : </Text>
+              </View>
+              <View style={styles.itemWidth}>
+                <Text style={styles.itemData}>{item.location}</Text>
+              </View>
             </View>
           </View>
-          <View style={styles.itemView}>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemHeading}>Dosage Type : </Text>
-            </View>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemData}>{item.dosageQuantity}</Text>
-            </View>
-          </View>
-          <View style={styles.itemView}>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemHeading}>Dosage Unit : </Text>
-            </View>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemData}>{item.dosageUnit}</Text>
-            </View>
-          </View>
-          <View style={styles.itemView}>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemHeading}>Total Stock : </Text>
-            </View>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemData}>{item.stock}</Text>
-            </View>
-          </View>
-          <View style={{flexDirection:'column',justifyContent:'space-between', marginVertical:5}}>
-            <View style={{width:'100%'}}>
-              <Text style={{fontSize:21}}>Prescription Details </Text>
-            </View>
-            <View style={{height:1, width:'90%',backgroundColor:'grey',marginTop:4}}>
-            </View>
-          </View>
-          <View style={styles.itemView}>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemHeading}>Doctor Name : </Text>
-            </View>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemData}>{item.doctorName}</Text>
-            </View>
-          </View>
-          <View style={styles.itemView}>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemHeading}>Contact : </Text>
-            </View>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemData}>{item.contact}</Text>
-            </View>
-          </View>
-          <View style={styles.itemView}>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemHeading}>Specialization : </Text>
-            </View>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemData}>{item.specialization}</Text>
-            </View>
-          </View>
-          <View style={styles.itemView}>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemHeading}>Loaction : </Text>
-            </View>
-            <View style={styles.itemWidth}>
-              <Text style={styles.itemData}>{item.location}</Text>
-            </View>
-          </View>
-        </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -118,17 +128,18 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colorPalette.backgroundColor,
   },
   top: {
-    height: verticalScale(575),
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPalette.backgroundColor,
     width: '100%',
-    bottom: 20,
     borderRadius: 10,
+    height: '92%',
+    elevation: 2,
+    opacity: 1,
   },
-  medNameContainer:{
+  medNameContainer: {
     backgroundColor: colorPalette.appColor,
     padding: 10,
     alignItems: 'center',
@@ -154,4 +165,14 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'left',
   },
+  line: {height: 1, width: '90%', backgroundColor: 'grey', marginTop: 4},
+  prescriptionContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+  },
+  prescriptionView: {
+    width: '100%',
+  },
+  prescriptionText: {fontSize: 21},
 });
