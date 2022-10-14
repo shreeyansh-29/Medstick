@@ -1,6 +1,6 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/userScreens/homeScreen';
 import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
 import Report from '../screens/userScreens/report/report';
@@ -30,6 +30,8 @@ import AuthScreen from '../screens/authScreens/authScreen';
 import AddPrescriptionPanel from '../screens/userScreens/medicines/addPrescriptionPanel';
 import Logout from '../Logout';
 import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
+import NotificationScreen from '../screens/userScreens/notificationScreen';
+// import RenderModalView from '../screens/otherScreens/renderModalView';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,7 +39,7 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{headerShown: false}}
+        screenOptions={{ headerShown: false }}
         initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={OnboardingScreen} />
         <Stack.Screen name="Bottom" component={BottomNavigator} />
@@ -57,26 +59,15 @@ const MainNavigation = () => {
         <Stack.Screen name="SavedDetails" component={SavedDetails} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="Prescriptions" component={Prescriptions} />
-        <Stack.Screen name="AddRemainder" component={AddRemainder} />
-        <Stack.Screen
-          name="AppointmentReminders"
-          component={AppointmentReminders}
-        />
+        <Stack.Screen name="AppointmentReminders" component={AppointmentReminders}/>
         <Stack.Screen name="Notifications" component={Notifications} />
-        <Stack.Screen
-          name="edit"
-          component={edit}
-          options={{...headerStyles, title: 'Alarm'}}
-        />
-        <Stack.Screen
-          name="SendSnapToCaretaker"
-          component={SendSnapToCaretaker}
-        />
+        <Stack.Screen name="SendSnapToCaretaker" component={SendSnapToCaretaker}/>
         <Stack.Screen name="PatientProfile" component={PatientProfile} />
         <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
         <Stack.Screen name ="addPrescriptionPanel" component={AddPrescriptionPanel}/>
         <Stack.Screen name="Logout" component={Logout} />
         <Stack.Screen name="ViewPrescription" component={DoctorPrescription} />
+        <Stack.Screen name='notification' component={NotificationScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

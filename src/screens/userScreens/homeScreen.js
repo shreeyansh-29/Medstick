@@ -12,7 +12,7 @@ const HomeScreen = ({navigation}) => {
     <>
       <View style={styles.background} />
       <View style={styles.container}>
-        <MainHeader title={'Medstick'} />
+        <MainHeader title={'Medstick'} navigation={navigation} />
         {/* <View style={{flex: 1, width: '100%'}}>
           <ScrollView
             showsVerticalScrollIndicator={false}
