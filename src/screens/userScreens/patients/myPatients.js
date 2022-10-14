@@ -23,7 +23,7 @@ const MyPatients = ({navigation}) => {
   const [myPatients, setMyPatients] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.myPatients);
-  console.log(res);
+  // console.log(res);
   const loading = useSelector(state => state.myPatients.isLoading);
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const MyPatients = ({navigation}) => {
           )}
           <View style={{position: 'absolute', bottom: 20, right: 16}}>
             <AddButton
-              text={''}
+              text="Caretaker"
               routeName={'SearchScreen'}
               navigation={navigation}
               styles={{height: 84, width: 84}}

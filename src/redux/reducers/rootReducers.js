@@ -7,10 +7,9 @@ import {myPatientsReducer} from './patients/myPatientsReducer';
 import {patientsRequestReducer} from './patients/patientsRequestReducer';
 import {signUpReducer} from './signUpReducer/signUpReducer';
 import {sendSnapReducer} from './otherScreenReducer/sendSnapReducer';
-// import medicineListReducer from './userMedicine/medicineListReducer';
 import addMedicineReducer from './userMedicine/addMedicineReducer';
 import getPrescriptionReducer from './doctorPrescription/getPrescriptionReducer';
-import { saveDoctorPrescriptionReducer } from './doctorPrescription/saveDoctorPrescriptionReducer';
+import {saveDoctorPrescriptionReducer} from './doctorPrescription/saveDoctorPrescriptionReducer';
 import saveUserMedicineReducer from './userMedicine/saveUserMedicineReducer';
 import {deleteMedicineReducer} from './userMedicine/deleteMedicineReducer';
 import {appointmentReminderReducer} from './userMedicine/appointmentReminderReducer';
@@ -24,12 +23,20 @@ import {myCaretakerReducer} from './caretaker/myCaretakerReducer';
 import {caretakerRequestReducer} from './caretaker/caretakerRequestReducer';
 import {acceptCaretakerReqReducer} from './caretaker/acceptCaretakerReqReducer';
 import {deleteCaretakerReqReducer} from './caretaker/deleteCaretakerReqReducer';
-import { getMedicineHistoryReducer } from './userMedicine/getMedicineHistoryReducer';
-import {userMedicineByIdReducer} from './userMedicine/userMedicineByIdReducer'
-import { getUserMedicineReducer } from './userMedicine/getUserMedicineReducer';
+import {medicineListReducer} from './userMedicine/medicineListReducer';
+import {getMedsReducer} from './patients/getMedsReducer';
+import {sendRequestReducer} from './getUserReducer/sendReqReducer';
+import {getUserReducer} from './getUserReducer/getUserReducer';
+import {notifyUserReducer} from './patients/notifyUserReducer';
+import {medicineImagesReducer} from './patients/medicineImagesReducer';
+import {fetchImageReducer} from './patients/fetchImageReducer';
+import {getMedicineHistoryReducer} from './userMedicine/getMedicineHistoryReducer';
+import {getUserMedicineReducer} from './userMedicine/getUserMedicineReducer';
+
 const rootReducer = combineReducers({
   signIn: signInReducer,
   signUp: signUpReducer,
+  medicineList: medicineListReducer,
   careTaker: myCaretakerReducer,
   listCaretaker: caretakerRequestReducer,
   myPatients: myPatientsReducer,
@@ -37,10 +44,10 @@ const rootReducer = combineReducers({
   acceptPatientRequest: acceptPatientReqReducer,
   deletePatientRequest: deletePatientReqReducer,
   editProfile: editProfileReducer,
-  addMedicineReducer:addMedicineReducer,
-  getPrescriptionReducer:getPrescriptionReducer,
-  saveDoctorPrescriptionReducer:saveDoctorPrescriptionReducer,
-  saveUserMedicineReducer:saveUserMedicineReducer,
+  addMedicineReducer: addMedicineReducer,
+  getPrescriptionReducer: getPrescriptionReducer,
+  saveDoctorPrescriptionReducer: saveDoctorPrescriptionReducer,
+  saveUserMedicineReducer: saveUserMedicineReducer,
   sendSnap: sendSnapReducer,
   deleteMedicine: deleteMedicineReducer,
   appointmentReminder: appointmentReminderReducer,
@@ -48,15 +55,20 @@ const rootReducer = combineReducers({
   getAppointment: getAppointmentReducer,
   myPrescriptions: myPrescriptionsReducer,
   getUserProfile: getUserProfileReducer,
-  getAllNotificationReducer:getAllNotificationReducer,
-  deleteNotificationReducer:deleteNotificationReducer,
+  getAllNotificationReducer: getAllNotificationReducer,
+  deleteNotificationReducer: deleteNotificationReducer,
   myCaretaker: myCaretakerReducer,
   caretakerRequest: caretakerRequestReducer,
   acceptCaretakerRequest: acceptCaretakerReqReducer,
   deleteCaretakerRequest: deleteCaretakerReqReducer,
-  getMedicineHistoryReducer:getMedicineHistoryReducer,
-  userMedicineByIdReducer:userMedicineByIdReducer,
-  getUserMedicineReducer:getUserMedicineReducer,
+  getMedicines: getMedsReducer,
+  getUser: getUserReducer,
+  sendRequest: sendRequestReducer,
+  notifyUser: notifyUserReducer,
+  medicineImages: medicineImagesReducer,
+  fetchImage: fetchImageReducer,
+  getMedicineHistoryReducer: getMedicineHistoryReducer,
+  getUserMedicineReducer: getUserMedicineReducer,
 });
 
 export default rootReducer;

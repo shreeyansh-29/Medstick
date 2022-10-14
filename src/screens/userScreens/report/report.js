@@ -84,7 +84,12 @@ const Report = ({ navigation }) => {
                 </Text>
               </View>
               <View style={styles.progressView}>
-                <ProgressReport styles={styles} />
+                <ProgressReport
+                  styles={styles}
+                  radius={42}
+                  borderWidth={6}
+                  percent={3}
+                />
               </View>
             </View>
           </View>
