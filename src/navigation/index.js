@@ -38,7 +38,7 @@ import ViewMedicines from '../screens/userScreens/patients/viewMedicines';
 import MedicineReport from '../screens/userScreens/patients/medicineReport';
 import MedicineImages from '../screens/userScreens/patients/medicineImages';
 import NotificationScreen from '../screens/userScreens/notificationScreen';
-import Reminder from '../screens/userScreens/reminder/remnder';
+import Reminder from '../screens/userScreens/reminder/reminder';
 import ReminderDuration from '../screens/userScreens/reminder/reminderDuration';
 
 const Stack = createNativeStackNavigator();
