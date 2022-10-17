@@ -36,6 +36,7 @@ const AppointmentReminderList = ({navigation}) => {
   const [time1, setTime1] = useState('');
   const [date, setDate] = useState(new Date());
   const getdoctor = useSelector(appointmentReminderSelector.getAppointment);
+  console.log(getdoctor,"getdoctor");
   const [modalVisible, setModalVisible] = useState(false);
   const getDoctorLoading = useSelector(
     appointmentReminderSelector.getAppointmentLoading,
@@ -48,6 +49,8 @@ const AppointmentReminderList = ({navigation}) => {
   const updateAppointment1 = useSelector(
     appointmentReminderSelector.updateAppointment,
   );
+
+  const getAppointmentLoader= useSelector(appointmentReminderSelector.getAppointmentLoading);
 
   useEffect(() => {
     if (getdoctor?.data !== null) {
@@ -80,13 +83,13 @@ const AppointmentReminderList = ({navigation}) => {
           <ListItem.Content>
             <View>
               <ListItem.Subtitle style={styles.patientName}>
-                {`${item.localDate}`}
+                Date: {`${item.localDate}`}
               </ListItem.Subtitle>
-              <ListItem.Subtitle style={{marginLeft: 3}}>
-                {`${item.localTime}`}
+              <ListItem.Subtitle style={{marginLeft: 3, fontSize:15, color: colorPalette.mainColor}}>
+                Time: {`${item.localTime}`}
               </ListItem.Subtitle>
-              <ListItem.Subtitle style={{marginLeft: 3}}>
-                {`${item.notes}`}
+              <ListItem.Subtitle style={{marginLeft: 3, fontSize:15, color: colorPalette.mainColor}}>
+                Notes: {`${item.notes}`}
               </ListItem.Subtitle>
             </View>
           </ListItem.Content>
@@ -123,10 +126,13 @@ const AppointmentReminderList = ({navigation}) => {
   };
 
   return (
+    
     <View style={{flex: 1}}>
+   
       <SubHeader title={'Appointment Reminders'} navigation={navigation} />
 
       {/* Modal */}
+      
       <Modal visible={modalVisible}>
         <View style={{flex: 1}}>
           <View style={{backgroundColor: colorPalette.mainColor}}>
@@ -238,6 +244,7 @@ const AppointmentReminderList = ({navigation}) => {
           </View>
         </View>
       </Modal>
+     
 
       {appointments.length === 0 ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -264,6 +271,7 @@ const AppointmentReminderList = ({navigation}) => {
         />
       </View>
     </View>
+    
   );
 };
 
