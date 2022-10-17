@@ -1,5 +1,5 @@
-export const saveDoctorPrescription={
-    saveDoctorPrescriptionLoad:"saveDoctorPrescriptionLoad",
-    saveDoctorPrescriptionSuccess:"saveDoctorPrescriptionSuccess",
-    saveDoctorPrescriptionError:'saveDoctorPrescriptionError'
-}
+export const saveDoctorPrescription = {
+  saveDoctorPrescriptionLoad: 'saveDoctorPrescriptionLoad',
+  saveDoctorPrescriptionSuccess: 'saveDoctorPrescriptionSuccess',
+  saveDoctorPrescriptionError: 'saveDoctorPrescriptionError',
+};
