@@ -12,7 +12,7 @@ const HomeScreen = ({navigation}) => {
     <>
       <View style={styles.background} />
       <View style={styles.container}>
-        <MainHeader title={'Medstick'} />
+        <MainHeader title={'Medstick'} navigation={navigation} />
         {/* <View style={{flex: 1, width: '100%'}}>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -22,7 +22,13 @@ const HomeScreen = ({navigation}) => {
             }}> */}
         <View style={styles.card}>
           <Calender />
-          <PerformanceCircle styles={Styles} />
+          <PerformanceCircle
+            styles={Styles}
+            radius={42}
+            borderWidth={6}
+            percent={30}
+            text="Today's Performance"
+          />
         </View>
         <Reminders />
         {/* </ScrollView>

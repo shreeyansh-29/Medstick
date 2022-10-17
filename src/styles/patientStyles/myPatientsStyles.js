@@ -18,9 +18,19 @@ export const styles = StyleSheet.create({
   },
   touch: {paddingVertical: 15},
   icon: {alignItems: 'center'},
+  subtitle: {marginLeft: 3},
 
   //main
   container: {backgroundColor: 'white', height: '100%'},
-  img: {width: 250},
-  imgView: {position: 'absolute', alignSelf: 'center', top: 90},
+
+  mainCont: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  imgCont: {
+    flex: 1,
+    backgroundColor: colorPalette.basicColor,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  img: {width: '70%'},
+  bottomView: {position: 'absolute', bottom: 20, right: 16},
+  addBtn: {height: 84, width: 84},
 });

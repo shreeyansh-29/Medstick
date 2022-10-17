@@ -18,6 +18,7 @@ const InputField = props => {
       multiline={props.multiline}
       selectTextOnFocus={props.selectTextOnFocus}
       autoComplete="off"
+      keyboardType={props.keyboardType}
     />
   );
 };

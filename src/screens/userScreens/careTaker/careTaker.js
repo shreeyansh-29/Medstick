@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable react-native/no-inline-styles */
 import MyCareTaker from './myCareTaker';
 import React, {useState} from 'react';
 import CareTakerRequest from './careTakerRequest';
@@ -15,7 +12,7 @@ const CareTaker = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-      <SubHeader title={'My CareTaker'} navigation={navigation} />
+      <SubHeader title={'My Caretaker'} navigation={navigation} />
       <Tab
         value={index}
         onChange={e => setIndex(e)}

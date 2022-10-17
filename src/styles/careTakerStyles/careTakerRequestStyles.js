@@ -2,9 +2,14 @@ import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
 
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: 'white'},
-  imgView: {position: 'absolute', alignSelf: 'center', top: 90},
-  img: {width: 250},
+  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  imgView: {
+    flex: 1,
+    backgroundColor: colorPalette.basicColor,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  img: {width: '70%'},
   card: {
     elevation: 3,
     marginTop: 8,

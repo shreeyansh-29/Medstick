@@ -1,63 +1,62 @@
-import {View, FlatList, ActivityIndicator} from 'react-native';
+import {View, FlatList, ActivityIndicator, RefreshControl} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
 import {patientsReqRequest} from '../../../redux/action/patients/patientsRequestAction';
 import {acceptPatientReqRequest} from '../../../redux/action/patients/acceptPatientReqAction';
 import CustomImage from '../../../components/atoms/customImage';
+import Loader from '../../../components/atoms/loader';
 
 const PatientRequest = () => {
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
   const [patients, setPatients] = useState([]);
   const [pageNo, setPageNo] = useState(0);
-  // const [isLoading, setIsLoading] = useState(false);
-  const res = useSelector(state => state.patientsRequest?.data);
-  console.log(res);
+  const [refresh, setRefresh] = useState(false);
+  const res = useSelector(state => state.patientsRequest);
+  const loading = useSelector(state => state.patientsRequest.isLoading);
+  // console.log(res);
 
   useEffect(() => {
-    if (res !== null) {
-      let list = res?.content?.map(item => {
-        return {
-          name: item.patient.userName,
-          contact: item.patient.contact,
-          requestId: item.requestId,
-        };
-      });
-      setPatients([...patients, ...list]);
+    if (res?.data !== null) {
+      setPatients([...res.data]);
+    } else {
+      setPatients([]);
     }
   }, [res]);
 
   useEffect(() => {
-    if (isFocused) {
-      dispatch(patientsReqRequest(pageNo));
-    }
-  }, [pageNo, isFocused]);
+    dispatch(patientsReqRequest(pageNo));
+  }, []);
 
-  const onEnd = () => {
-    setPageNo(pageNo + 1);
-  };
+  // const loadMoreItem = () => {
+  //   let a = pageNo + 1;
+  //   dispatch(patientsReqRequest(a));
+  //   setPageNo(a);
+  // };
 
-  const renderLoader = () => {
-    return res?.content?.length === 7 ? (
-      <View style={{marginVertical: 26, alignItems: 'center'}}>
-        <ActivityIndicator size="large" color={colorPalette.mainColor} />
-      </View>
-    ) : null;
-  };
+  // const renderLoader = () => {
+  //   return res?.content?.length === 7 ? (
+  //     <View style={{marginVertical: 26, alignItems: 'center'}}>
+  //       <ActivityIndicator size="large" color={colorPalette.mainColor} />
+  //     </View>
+  //   ) : null;
+  // };
 
   const acceptRequest = requestId => {
     dispatch(acceptPatientReqRequest(requestId));
-    dispatch(patientsReqRequest(pageNo));
+    setTimeout(() => {
+      dispatch(patientsReqRequest(pageNo));
+    }, 1000);
   };
 
   const deleteRequest = requestId => {
     dispatch(acceptPatientReqRequest(requestId));
-    dispatch(patientsReqRequest(pageNo));
+    setTimeout(() => {
+      dispatch(patientsReqRequest(pageNo));
+    }, 1000);
   };
 
   const renderItem = ({item}) => {
@@ -65,11 +64,7 @@ const PatientRequest = () => {
       <Card style={styles.card}>
         <View style={styles.cardInner}>
           <View style={styles.avatar}>
-            <Avatar
-              size={80}
-              rounded
-              source={require('../../../assets/images/shreeyansh.jpg')}
-            />
+            <Avatar size={80} rounded source={{uri: item.user.picPath}} />
           </View>
           <View style={styles.container1}>
             <ListItem
@@ -78,10 +73,10 @@ const PatientRequest = () => {
               tvParallaxProperties={undefined}>
               <ListItem.Content>
                 <ListItem.Title style={styles.listTitle}>
-                  {item.name}
+                  {item.user.userName}
                 </ListItem.Title>
                 <ListItem.Subtitle style={styles.listSubTitle}>
-                  {item.contact}
+                  {item.user.contact}
                 </ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
@@ -92,7 +87,8 @@ const PatientRequest = () => {
                 }}
                 title="Confirm"
                 buttonStyle={styles.confirmButton}
-                color="#4267B2"></Button>
+                color="#4267B2"
+              />
               <View style={styles.space} />
               <Button
                 onPress={() => {
@@ -100,7 +96,8 @@ const PatientRequest = () => {
                 }}
                 title="Delete"
                 buttonStyle={styles.deleteButton}
-                color="#e53935"></Button>
+                color="#e53935"
+              />
             </View>
           </View>
         </View>
@@ -108,32 +105,41 @@ const PatientRequest = () => {
     );
   };
   return (
-    <View style={{flex: 1}}>
-      {patients.length === 0 ? (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: colorPalette.basicColor,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <CustomImage
-            resizeMode="contain"
-            styles={{width: '70%'}}
-            source={require('../../../assets/images/nopatientreq.png')}
-          />
-        </View>
+    <View style={styles.container}>
+      {loading ? (
+        <Loader />
       ) : (
-        <FlatList
-          data={patients}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-          // keyExtractor={item => item.contact}
-          numColumns={1}
-          onEndReached={onEnd}
-          ListFooterComponent={renderLoader}
-          onEndReachedThreshold={0}
-        />
+        <>
+          {patients.length === 0 ? (
+            <View style={styles.imgView}>
+              <CustomImage
+                resizeMode="contain"
+                styles={styles.img}
+                source={require('../../../assets/images/nopatientreq.png')}
+              />
+            </View>
+          ) : (
+            <FlatList
+              data={patients}
+              renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    dispatch(patientsReqRequest(pageNo));
+                    setRefresh(false);
+                  }}
+                />
+              }
+              // numColumns={1}
+              // onEndReached={onEnd}
+              // ListFooterComponent={renderLoader}
+              // onEndReachedThreshold={0}
+            />
+          )}
+        </>
       )}
     </View>
   );

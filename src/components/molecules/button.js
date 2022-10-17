@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { colorPalette } from '../atoms/colorPalette';
 
-export default function ({ onPress, title, fill = false }) {
+export default function CustomButton({ onPress, title, fill = false }) {
   return (
     <TouchableOpacity
       style={[styles.container, fill ? styles.fillContainer : styles.normalContainer]}

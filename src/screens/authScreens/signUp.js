@@ -5,7 +5,6 @@ import {styles} from '../../styles/authScreensStyles/loginScreenStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {signUpRequest} from '../../redux/action/signUpAction/signUpAction';
 import CheckConnection from '../../connectivity/checkConnection';
-import * as Progress from 'react-native-progress';
 import Toast from 'react-native-toast-message';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';

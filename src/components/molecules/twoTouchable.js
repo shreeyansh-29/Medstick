@@ -20,6 +20,7 @@ const TwoTouchable = ({
         paddingTop: 15,
       }}>
       <TouchableOpacity
+        activeOpacity={1}
         style={Styles.box1}
         onPress={() => {
           navigation.navigate(navigationTitle1);
@@ -31,12 +32,13 @@ const TwoTouchable = ({
         />
         <Text
           style={{
-            fontSize: 18,
+            fontSize: 17,
             color: 'black',
             marginTop: 8,
           }}>{`${title1}`}</Text>
       </TouchableOpacity>
       <TouchableOpacity
+        activeOpacity={1}
         style={Styles.box2}
         onPress={() => {
           navigation.navigate(navigationTitle2);
@@ -49,7 +51,7 @@ const TwoTouchable = ({
         <Text
           style={{
             marginTop: 8,
-            fontSize: 18,
+            fontSize: 17,
             color: 'black',
           }}>{`${title2}`}</Text>
       </TouchableOpacity>

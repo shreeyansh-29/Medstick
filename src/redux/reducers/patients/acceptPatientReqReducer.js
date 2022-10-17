@@ -15,9 +15,9 @@ export const acceptPatientReqReducer = (state = initialState, action) => {
     case ACCEPT_PATIENT_REQ_REQUEST:
       return {...state, isLoading: true};
     case ACCEPT_PATIENT_REQ_SUCCESS:
-      return {...state, data: action.payload};
+      return {...state, data: action.payload, isLoading: false};
     case ACCEPT_PATIENT_REQ_ERROR:
-      return {...state, error: action};
+      return {...state, error: action.payload, isLoading: false};
     default:
       return state;
   }

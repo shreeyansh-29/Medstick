@@ -1,12 +1,26 @@
-import {View, Text, ScrollView, Pressable, Modal} from 'react-native';
-import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {horizontalScale} from '../../../components/atoms/constant';
-
+import {icon} from '@fortawesome/fontawesome-svg-core';
+import CrossButton from '../../../components/atoms/crossButton';
+import Line from '../../../components/atoms/line';
+import Dot from '../../../components/atoms/dot';
+import ProgressBar from '../../../components/molecules/progressBar';
+import TimeSlot from '../../../components/atoms/timeSlot';
+import {Picker} from '@react-native-picker/picker';
+import MedicinePicker from '../../../components/atoms/medicinePicker';
 LocaleConfig.locales['en'] = {
   monthNames: [
     'January',
@@ -50,6 +64,12 @@ LocaleConfig.locales['en'] = {
 LocaleConfig.defaultLocale = 'en';
 const Report = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [medicineName, setMedicineName] = useState('');
+  console.log(selectedDate, 'date');
+  const year = selectedDate?.year;
+  const month = selectedDate?.month;
+  const date = selectedDate?.day;
 
   let startDate = new Date().toDateString();
   return (
@@ -58,6 +78,7 @@ const Report = ({navigation}) => {
       <View style={styles.report}>
         <MainHeader title={'Reports'} navigation={navigation} />
         <ScrollView>
+          <MedicinePicker />
           <View style={styles.reportContainer}>
             <View style={styles.analytics}>
               <View style={styles.container1Text}>
@@ -67,7 +88,12 @@ const Report = ({navigation}) => {
                 </Text>
               </View>
               <View style={styles.progressView}>
-                <ProgressReport styles={styles} />
+                <ProgressReport
+                  styles={styles}
+                  radius={42}
+                  borderWidth={6}
+                  percent={3}
+                />
               </View>
             </View>
           </View>
@@ -84,14 +110,23 @@ const Report = ({navigation}) => {
                   Alert.alert('Modal has been closed.');
                   setModalVisible(!modalVisible);
                 }}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Hello World!</Text>
-                    <Pressable
-                      style={[styles.button, styles.buttonClose]}
-                      onPress={() => setModalVisible(!modalVisible)}>
-                      <Text style={styles.textStyle}>Hide Modal</Text>
-                    </Pressable>
+                <View style={styles.modalBox}>
+                  <View style={styles.modalContainer}>
+                    <View style={styles.modalHeader}>
+                      <TouchableOpacity onPress={() => setModalVisible(false)}>
+                        <CrossButton />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.modalSubHeader}>
+                      <Text style={styles.modalHeaderText}>
+                        DATE: {date} -{month} -{year}
+                      </Text>
+                    </View>
+
+                    <View style={styles.progressBar}>
+                      <TimeSlot time={'time'} />
+                      {/* <ProgressBar /> */}
+                    </View>
                   </View>
                 </View>
               </Modal>
@@ -103,7 +138,8 @@ const Report = ({navigation}) => {
               minDate={'2012-05-10'}
               maxDate={'2222-12-30'}
               onDayPress={day => {
-                <Pressable onPress={() => setModalVisible(true)} />;
+                setSelectedDate(day);
+                setModalVisible(true);
               }}
               onDayLongPress={day => {
                 // console.log('selected day', day);

@@ -8,7 +8,7 @@ class MyPatientsService {
     const id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
     return await RequestService.getRequest(
-      `${MY_PATIENTS}?caretakerId=${id}&pageNo=${pageNo}&pageSize=7&Id=${id}`,
+      `${MY_PATIENTS}?caretakerId=${id}&pageNo=${pageNo}&pageSize=9&Id=${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

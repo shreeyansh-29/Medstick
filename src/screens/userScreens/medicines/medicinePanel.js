@@ -21,15 +21,14 @@ import {loadMedicineList} from '../../../redux/action/userMedicine/medicineListA
 import {useIsFocused} from '@react-navigation/native';
 import {deleteMedicineRequest} from '../../../redux/action/userMedicine/deleteMedicine';
 import Loader from '../../../components/atoms/loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MedicinePanel = ({navigation}) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [medicines, setMedicines] = useState([]);
   const res = useSelector(state => state.medicineList);
-  const loading = useSelector(
-    state => state.medicineList?.loading?.medicineListLoader,
-  );
+  const loading = useSelector(state => state.medicineList?.isLoading);
   const res1 = useSelector(state => state.deleteMedicine);
 
   const progress = useRef(new Animated.Value(0)).current;
@@ -43,90 +42,107 @@ const MedicinePanel = ({navigation}) => {
 
   useEffect(() => {
     if (res?.data !== null) {
-      setMedicines(res?.data?.result);
+      setMedicines(res?.data);
+    } else {
+      setMedicines([]);
     }
   }, [res]);
 
+  const userMeds = async () => {
+    dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
+  };
+
   useEffect(() => {
     if (isFocused) {
-      dispatch(loadMedicineList());
+      userMeds();
     }
   }, [isFocused]);
 
   const deleteMedicine = userMedicineId => {
     dispatch(deleteMedicineRequest(userMedicineId));
-    setTimeout(() => {
-      dispatch(loadMedicineList());
+    setTimeout(async () => {
+      dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
     }, 300);
   };
 
-  const renderItem = ({item}) => {
+  const renderItem = ({item, index}) => {
     return (
       <>
         <Animatable.View animation="zoomInUp" duration={400}>
-          <Card style={Styles.card}>
-            <View style={Styles.listView}>
-              <ListItem style={Styles.list}>
-                <ListItem.Content>
-                  <View style={Styles.avatarView}>
-                    <FontAwesomeIcon
-                      icon={faPills}
-                      size={36}
-                      color={colorPalette.mainColor}
-                    />
-                    <View style={Styles.medNameView}>
-                      <ListItem.Title style={Styles.medName}>
-                        {item.medicineName}
-                      </ListItem.Title>
-                      <ListItem.Subtitle>
-                        <Text style={{color: 'black'}}>Type: </Text>
-                        {item.dosageQuantity}
-                      </ListItem.Subtitle>
-                      <ListItem.Subtitle>
-                        <Text style={{color: 'black'}}>Dosage: </Text>
-                        {item.dosageUnit}
-                      </ListItem.Subtitle>
-                      <ListItem.Subtitle>
-                        <Text style={{color: 'black'}}>Stock: </Text>
-                        {item.stock}
-                      </ListItem.Subtitle>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              navigation.navigate('MedicineList', {
+                data: medicines,
+                index: index,
+              });
+            }}>
+            <Card style={Styles.card}>
+              <View style={Styles.listView}>
+                <ListItem style={Styles.list}>
+                  <ListItem.Content>
+                    <View style={Styles.avatarView}>
+                      <FontAwesomeIcon
+                        icon={faPills}
+                        size={36}
+                        color={colorPalette.mainColor}
+                      />
+                      <View style={Styles.medNameView}>
+                        <ListItem.Title style={Styles.medName}>
+                          {item.medicineName}
+                        </ListItem.Title>
+                        <ListItem.Subtitle>
+                          <Text style={{color: 'black'}}>Type: </Text>
+                          {item.dosageQuantity}
+                        </ListItem.Subtitle>
+                        <ListItem.Subtitle>
+                          <Text style={{color: 'black'}}>Dosage: </Text>
+                          {item.dosageUnit}
+                        </ListItem.Subtitle>
+                        <ListItem.Subtitle>
+                          <Text style={{color: 'black'}}>Stock: </Text>
+                          {item.stock}
+                        </ListItem.Subtitle>
+                      </View>
                     </View>
+                  </ListItem.Content>
+                  <View style={Styles.icon}>
+                    <TouchableOpacity
+                      style={Styles.rem}
+                      onPress={() => {
+                        navigation.navigate('Reminder', {
+                          id: item.userMedicineId,
+                        });
+                      }}>
+                      <FontAwesomeIcon
+                        icon={faClock}
+                        color={colorPalette.mainColor}
+                        size={24}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Alert.alert('Delete it!', 'Sure you want delete it', [
+                          {
+                            text: 'Delete',
+                            onPress: () => deleteMedicine(item.userMedicineId),
+                          },
+                          {
+                            text: 'Cancel',
+                          },
+                        ]);
+                      }}>
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        color={colorPalette.mainColor}
+                        size={24}
+                      />
+                    </TouchableOpacity>
                   </View>
-                </ListItem.Content>
-                <View style={Styles.icon}>
-                  <TouchableOpacity
-                    style={Styles.rem}
-                    onPress={() =>
-                      navigation.navigate('AddRemainder', {id: item.index})
-                    }>
-                    <FontAwesomeIcon
-                      icon={faClock}
-                      color={colorPalette.mainColor}
-                      size={24}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      Alert.alert('Delete it!', 'Sure you want delete it', [
-                        {
-                          text: 'Delete',
-                          onPress: () => deleteMedicine(item.userMedicineId),
-                        },
-                        {
-                          text: 'Cancel',
-                        },
-                      ]);
-                    }}>
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      color={colorPalette.mainColor}
-                      size={24}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </ListItem>
-            </View>
-          </Card>
+                </ListItem>
+              </View>
+            </Card>
+          </TouchableOpacity>
         </Animatable.View>
       </>
     );
@@ -140,23 +156,23 @@ const MedicinePanel = ({navigation}) => {
           <Loader />
         ) : (
           <>
-            {medicines === null ? (
+            {medicines.length === 0 ? (
               <View style={Styles.lottie}>
                 <LottieView
-                  style={Styles.lottieView}
+                  style={{width: 100, height: 100}}
                   speed={0.8}
                   source={require('../../../assets/animation/noMed1.json')}
                   progress={progress}
                 />
               </View>
             ) : (
-              <>
+              <View style={{flex: 1}}>
                 <FlatList
                   data={medicines}
                   renderItem={renderItem}
                   showsVerticalScrollIndicator={false}
                 />
-              </>
+              </View>
             )}
           </>
         )}

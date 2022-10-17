@@ -18,23 +18,27 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   flatList: {
-    paddingTop: 12,
+    paddingTop: 4,
+    backgroundColor: colorPalette.backgroundColor,
   },
-  modalView: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    paddingHorizontal: 20,
+  top: {flexDirection: 'row'},
+  list: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    height: '100%',
+    margin: 2,
   },
+  patientName: {
+    fontSize: 16,
+    // marginLeft: 3,
+    fontWeight: 'normal',
+  },
+  touch: {paddingVertical: 15},
+  icon: {alignItems: 'center'},
+  subtitle: {
+    color: 'black',
+  },
+
   card: {
     width: 172,
     maxHeight: 300,
@@ -63,7 +67,7 @@ export const styles = StyleSheet.create({
     borderBottomEndRadius: 12,
     borderBottomStartRadius: 12,
   },
-  text1: {fontSize: 14, fontWeight: 'bold'},
+  text1: {fontSize: 14, fontWeight: 'bold', color: 'black'},
 
   //doctor Prescription
   container1: {
@@ -107,7 +111,8 @@ export const styles = StyleSheet.create({
     marginVertical: 12,
   },
   btn: {
-    color: '#576F72',
+    // color: '#576F72',
+    color: 'black',
     fontSize: 18,
     padding: 8,
     fontWeight: '400',

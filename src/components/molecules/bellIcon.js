@@ -5,21 +5,9 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBell} from '@fortawesome/free-solid-svg-icons';
 
 const BellIcon = ({navigation}) => {
-  const progress = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
   return (
     <View style={styles.bellIcon}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Notifications');
-        }}>
+      <TouchableOpacity onPress={() => navigation?.navigate('notification')}>
         <FontAwesomeIcon icon={faBell} color={'white'} size={24} />
       </TouchableOpacity>
     </View>

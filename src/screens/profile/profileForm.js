@@ -40,6 +40,7 @@ const ProfileForm = props => {
           activeOutlineColor={colorPalette.mainColor}
           {...props}
           value={props.values.contact}
+          keyboardType="numeric"
         />
         {props.errors.contact && props.touched.contact && (
           <Text style={styles.errorText}>{props.errors.contact}</Text>
@@ -57,6 +58,7 @@ const ProfileForm = props => {
           activeOutlineColor={colorPalette.mainColor}
           {...props}
           value={props.values.dateofBirth}
+          keyboardType="numeric"
         />
         {props.errors.dateofBirth && props.touched.dateofBirth && (
           <Text style={styles.errorText}>{props.errors.dateofBirth}</Text>
