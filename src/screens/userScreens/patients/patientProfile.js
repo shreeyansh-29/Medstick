@@ -13,15 +13,17 @@ import {Card, Divider} from 'react-native-paper';
 import Loader from '../../../components/atoms/loader';
 
 const PatientProfile = ({navigation, route}) => {
+  const dateHandler = date => {
+    let dob = date.split('-');
+    return dob[2] + '-' + dob[1] + '-' + dob[0];
+  };
   const item = route.params.profile;
+
   return (
     <ImageBackground
       source={require('../../../assets/images/background5.png')}
-      style={{
-        flex: 1,
-        alignItems: 'center',
-      }}>
-      <SubHeader navigation={navigation} />
+      style={styles.mainCont}>
+      <SubHeader navigation={navigation} title={'Patient Profile'} />
       {item === null ? (
         <Loader />
       ) : (
@@ -32,31 +34,9 @@ const PatientProfile = ({navigation, route}) => {
           <View style={styles.imgCont}>
             <Image source={{uri: item.picPath}} style={styles.img} />
           </View>
-          <View
-            style={{
-              marginVertical: 4,
-              alignItems: 'center',
-              width: '60%',
-            }}>
-            <Text
-              style={{
-                fontSize: 22,
-                textAlign: 'center',
-                color: 'black',
-                fontWeight: '500',
-              }}>
-              {item.userName}
-            </Text>
-            <Text
-              style={{
-                fontSize: 16,
-                marginTop: 6,
-                textAlign: 'center',
-                color: 'grey',
-                fontWeight: '400',
-              }}>
-              {item.email}
-            </Text>
+          <View style={styles.userDetialsCont}>
+            <Text style={styles.userName}>{item.userName}</Text>
+            <Text style={styles.userEmail}>{item.email}</Text>
           </View>
           <Card style={styles.card1}>
             <View style={styles.mainView}>
@@ -94,7 +74,9 @@ const PatientProfile = ({navigation, route}) => {
                   <Text style={styles.heading}>DOB</Text>
                 </View>
                 <View style={styles.subView2}>
-                  <Text style={styles.content}>{item.dateOfBirth}</Text>
+                  <Text style={styles.content}>
+                    {dateHandler(item.dateOfBirth)}
+                  </Text>
                 </View>
               </View>
               <Divider style={styles.divider} />
@@ -118,22 +100,14 @@ const PatientProfile = ({navigation, route}) => {
             </View>
           </Card>
           <View
-            style={{
-              marginVertical: 6,
-            }}>
+            style={styles.bottomCont}>
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
                 navigation.navigate('PatientMedicines', {item: item});
               }}>
               <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 18,
-                  fontWeight: '400',
-                  marginVertical: 8,
-                  color: 'black',
-                }}>
+                style={styles.viewMed}>
                 View Medicines
               </Text>
             </TouchableOpacity>
@@ -145,13 +119,7 @@ const PatientProfile = ({navigation, route}) => {
                 });
               }}>
               <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 18,
-                  fontWeight: '400',
-                  marginVertical: 10,
-                  color: 'black',
-                }}>
+                style={styles.viewPres}>
                 View Prescriptions
               </Text>
             </TouchableOpacity>

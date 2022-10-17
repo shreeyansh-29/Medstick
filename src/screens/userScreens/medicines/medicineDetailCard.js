@@ -11,114 +11,116 @@ import {verticalScale} from '../../../components/atoms/constant';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPencil, faTrash} from '@fortawesome/free-solid-svg-icons';
-import { faNoteSticky } from '@fortawesome/free-regular-svg-icons';
+import {faNoteSticky} from '@fortawesome/free-regular-svg-icons';
 
 const MedicineDetailCard = ({item, index, navigation}) => {
   return (
-    <View style={styles.container} key={index}>
-      <View style={styles.top}>
-        <View style={styles.medNameContainer}>
-          <View style={styles.medNameView}>
-            <Text style={styles.medName}>{item.medicineName}</Text>
+    <TouchableOpacity activeOpacity={1}>
+      <View style={styles.container} key={index}>
+        <View style={styles.top}>
+          <View style={styles.medNameContainer}>
+            <View style={styles.medNameView}>
+              <Text style={styles.medName}>{item.medicineName}</Text>
+            </View>
+            <View style={styles.iconView}>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('abcd');
+                }}>
+                <FontAwesomeIcon
+                  icon={faPencil}
+                  size={20}
+                  color={colorPalette.basicColor}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <FontAwesomeIcon
+                  icon={faNoteSticky}
+                  size={20}
+                  color={colorPalette.basicColor}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.iconView}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('abcd');
-              }}>
-              <FontAwesomeIcon
-                icon={faPencil}
-                size={20}
-                color={colorPalette.basicColor}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <FontAwesomeIcon
-                icon={faNoteSticky}
-                size={20}
-                color={colorPalette.basicColor}
-              />
-            </TouchableOpacity>
-          </View>
+          <ScrollView>
+            <View style={{paddingHorizontal: 15}}>
+              <View style={styles.itemView}>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemHeading}>Description : </Text>
+                </View>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemData}>{item.description}</Text>
+                </View>
+              </View>
+              <View style={styles.itemView}>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemHeading}>Dosage Type : </Text>
+                </View>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemData}>{item.dosageQuantity}</Text>
+                </View>
+              </View>
+              <View style={styles.itemView}>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemHeading}>Dosage Unit : </Text>
+                </View>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemData}>{item.dosageUnit}</Text>
+                </View>
+              </View>
+              <View style={styles.itemView}>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemHeading}>Total Stock : </Text>
+                </View>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemData}>{item.stock}</Text>
+                </View>
+              </View>
+              <View style={styles.prescriptionContainer}>
+                <View style={styles.prescriptionView}>
+                  <Text style={styles.prescriptionText}>
+                    Prescription Details
+                  </Text>
+                </View>
+                <View style={styles.line}></View>
+              </View>
+              <View style={styles.itemView}>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemHeading}>Doctor Name : </Text>
+                </View>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemData}>{item.doctorName}</Text>
+                </View>
+              </View>
+              <View style={styles.itemView}>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemHeading}>Contact : </Text>
+                </View>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemData}>{item.contact}</Text>
+                </View>
+              </View>
+              <View style={styles.itemView}>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemHeading}>Specialization : </Text>
+                </View>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemData}>{item.specialization}</Text>
+                </View>
+              </View>
+              <View style={styles.itemView}>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemHeading}>Loaction : </Text>
+                </View>
+                <View style={styles.itemWidth}>
+                  <Text style={styles.itemData}>{item.location}</Text>
+                </View>
+              </View>
+            </View>
+          </ScrollView>
         </View>
-        <ScrollView>
-          <View style={{paddingHorizontal: 15}}>
-            <View style={styles.itemView}>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemHeading}>Description : </Text>
-              </View>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemData}>{item.description}</Text>
-              </View>
-            </View>
-            <View style={styles.itemView}>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemHeading}>Dosage Type : </Text>
-              </View>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemData}>{item.dosageQuantity}</Text>
-              </View>
-            </View>
-            <View style={styles.itemView}>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemHeading}>Dosage Unit : </Text>
-              </View>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemData}>{item.dosageUnit}</Text>
-              </View>
-            </View>
-            <View style={styles.itemView}>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemHeading}>Total Stock : </Text>
-              </View>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemData}>{item.stock}</Text>
-              </View>
-            </View>
-            <View style={styles.prescriptionContainer}>
-              <View style={styles.prescriptionView}>
-                <Text style={styles.prescriptionText}>
-                  Prescription Details
-                </Text>
-              </View>
-              <View style={styles.line}></View>
-            </View>
-            <View style={styles.itemView}>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemHeading}>Doctor Name : </Text>
-              </View>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemData}>{item.doctorName}</Text>
-              </View>
-            </View>
-            <View style={styles.itemView}>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemHeading}>Contact : </Text>
-              </View>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemData}>{item.contact}</Text>
-              </View>
-            </View>
-            <View style={styles.itemView}>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemHeading}>Specialization : </Text>
-              </View>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemData}>{item.specialization}</Text>
-              </View>
-            </View>
-            <View style={styles.itemView}>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemHeading}>Loaction : </Text>
-              </View>
-              <View style={styles.itemWidth}>
-                <Text style={styles.itemData}>{item.location}</Text>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -146,7 +148,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     flexDirection: 'row',
-    borderRadius: 10,
+    borderTopStartRadius: 10,
+    borderTopEndRadius: 10,
     justifyContent: 'space-evenly',
   },
   medNameView: {width: '70%', left: 10},

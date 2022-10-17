@@ -28,12 +28,9 @@ const MedicinePanel = ({navigation}) => {
   const isFocused = useIsFocused();
   const [medicines, setMedicines] = useState([]);
   const res = useSelector(state => state.medicineList);
-  // console.log(res);
   const loading = useSelector(state => state.medicineList?.isLoading);
   const res1 = useSelector(state => state.deleteMedicine);
 
-  // const Id = await AsyncStorage.getItem('user_id');
-  // console.log(Id);
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     Animated.timing(progress, {

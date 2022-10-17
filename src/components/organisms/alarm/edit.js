@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Alarm, { removeAlarm, scheduleAlarm, updateAlarm } from './alarmService';
-import { alarmStyles } from '../../../styles/alarmStyles';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import Alarm, {removeAlarm, scheduleAlarm, updateAlarm} from './alarmService';
+import {alarmStyles} from '../../../styles/alarmStyles';
 import SwitcherInput from '../../molecules/switcherInput';
 import TextInput from '../../molecules/textInput';
 import DayPicker from '../../molecules/dayPicker';
@@ -9,7 +9,7 @@ import TimePicker from '../../molecules/timePicker';
 import Button from '../../molecules/button';
 import TimePicker1 from './timePicker1';
 
-export default function ({ route, navigation }) {
+export default function Edit({route, navigation}) {
   const [alarm, setAlarm] = useState(null);
   const [mode, setMode] = useState(null);
 
@@ -23,7 +23,7 @@ export default function ({ route, navigation }) {
     }
   }, []);
 
-  function update (updates) {
+  function update(updates) {
     const a = Object.assign({}, alarm);
     for (let u of updates) {
       a[u[0]] = u[1];
@@ -31,7 +31,7 @@ export default function ({ route, navigation }) {
     setAlarm(a);
   }
 
-  async function onSave () {
+  async function onSave() {
     if (mode === 'EDIT') {
       alarm.active = true;
       await updateAlarm(alarm);
@@ -42,22 +42,27 @@ export default function ({ route, navigation }) {
     navigation.goBack();
   }
 
-  async function onDelete () {
+  async function onDelete() {
     await removeAlarm(alarm.uid);
     navigation.goBack();
   }
 
   if (!alarm) {
-    return <View/>;
+    return <View />;
   }
 
   return (
     <View style={alarmStyles.container}>
       <View style={[alarmStyles.innerContainer, styles.container]}>
         <View styles={styles.inputsContainer}>
-        <TimePicker1 />
+          <TimePicker1 />
           <TimePicker
-            onChange={(h, m) => update([['hour', h], ['minutes', m]])}
+            onChange={(h, m) =>
+              update([
+                ['hour', h],
+                ['minutes', m],
+              ])
+            }
             hour={alarm.hour}
             minutes={alarm.minutes}
           />
@@ -86,17 +91,8 @@ export default function ({ route, navigation }) {
           )}
         </View>
         <View style={styles.buttonContainer}>
-          {mode === 'EDIT' && (
-            <Button
-              onPress={onDelete}
-              title={'Delete'}
-            />
-          )}
-          <Button
-            fill={true}
-            onPress={onSave}
-            title={'Save'}
-          />
+          {mode === 'EDIT' && <Button onPress={onDelete} title={'Delete'} />}
+          <Button fill={true} onPress={onSave} title={'Save'} />
         </View>
       </View>
     </View>
@@ -118,4 +114,3 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
 });
-

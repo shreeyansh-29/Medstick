@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
   subHeaderFont: {
     fontSize: 20,
     fontFamily: '',
-    paddingLeft: horizontalScale(4),
+    paddingLeft: horizontalScale(8),
     color: colorPalette.basicColor,
   },
   backIcon: {

@@ -7,15 +7,16 @@ import Loader from '../../../components/atoms/loader';
 
 const CareTakerProfile = ({navigation, route}) => {
   const item = route.params.profile;
+  const dateHandler = date => {
+    let dob = date.split('-');
+    return dob[2] + '-' + dob[1] + '-' + dob[0];
+  };
   return (
     <>
       <ImageBackground
         source={require('../../../assets/images/background5.png')}
-        style={{
-          flex: 1,
-          alignItems: 'center',
-        }}>
-        <SubHeader navigation={navigation} />
+        style={styles.mainCont}>
+        <SubHeader navigation={navigation} title={'Caretaker Profile'} />
         {item === null ? (
           <Loader />
         ) : (
@@ -23,31 +24,9 @@ const CareTakerProfile = ({navigation, route}) => {
             <View style={styles.imgCont}>
               <Image source={{uri: item.picPath}} style={styles.img} />
             </View>
-            <View
-              style={{
-                marginVertical: 4,
-                alignItems: 'center',
-                width: '60%',
-              }}>
-              <Text
-                style={{
-                  fontSize: 22,
-                  textAlign: 'center',
-                  color: 'black',
-                  fontWeight: '500',
-                }}>
-                {item.userName}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 16,
-                  marginTop: 6,
-                  textAlign: 'center',
-                  color: 'grey',
-                  fontWeight: '400',
-                }}>
-                {item.email}
-              </Text>
+            <View style={styles.userDetialsCont}>
+              <Text style={styles.userName}>{item.userName}</Text>
+              <Text style={styles.userEmail}>{item.email}</Text>
             </View>
             <Card style={styles.card1}>
               <View style={styles.mainView}>
@@ -76,7 +55,9 @@ const CareTakerProfile = ({navigation, route}) => {
                     <Text style={styles.heading}>DOB</Text>
                   </View>
                   <View style={styles.subView2}>
-                    <Text style={styles.content}>{item.dateOfBirth}</Text>
+                    <Text style={styles.content}>
+                      {dateHandler(item.dateOfBirth)}
+                    </Text>
                   </View>
                 </View>
                 <Divider style={styles.divider} />

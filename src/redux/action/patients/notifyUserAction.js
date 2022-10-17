@@ -18,3 +18,8 @@ export const notifyUserError = payload => {
     payload,
   };
 };
+export const notifyUserClear = () => {
+  return {
+    type: types.NOTIFY_USER_CLEAR,
+  };
+};

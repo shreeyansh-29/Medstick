@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import {
+  NOTIFY_USER_CLEAR,
   NOTIFY_USER_ERROR,
   NOTIFY_USER_REQUEST,
   NOTIFY_USER_SUCCESS,
@@ -18,6 +19,8 @@ export const notifyUserReducer = (state = initialState, action) => {
       return {...state, data: action.payload, isLoading: false};
     case NOTIFY_USER_ERROR:
       return {...state, error: action.payload, isLoading: false};
+    case NOTIFY_USER_CLEAR:
+      return {date: null, error: null, isLoading: false};
     default:
       return state;
   }

@@ -1,8 +1,8 @@
 /* eslint-disable indent */
 import {
-  FETCH_IMAGE_ERROR,
-  FETCH_IMAGE_REQUEST,
-  FETCH_IMAGE_SUCCESS,
+  DOWNLOAD_PDF_ERROR,
+  DOWNLOAD_PDF_REQUEST,
+  DOWNLOAD_PDF_SUCCESS,
 } from '../../actionTypes';
 
 const initialState = {
@@ -10,13 +10,13 @@ const initialState = {
   isLoading: false,
   error: null,
 };
-export const fetchImageReducer = (state = initialState, action) => {
+export const downloadPdfReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_IMAGE_REQUEST:
+    case DOWNLOAD_PDF_REQUEST:
       return {...state, isLoading: true};
-    case FETCH_IMAGE_SUCCESS:
+    case DOWNLOAD_PDF_SUCCESS:
       return {...state, data: action.payload, isLoading: false};
-    case FETCH_IMAGE_ERROR:
+    case DOWNLOAD_PDF_ERROR:
       return {...state, error: action.payload, isLoading: false};
     default:
       return state;

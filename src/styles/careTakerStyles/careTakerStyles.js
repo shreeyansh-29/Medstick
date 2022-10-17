@@ -6,8 +6,6 @@ export const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'white', height: '100%'},
   img: {width: 250},
   imgView: {position: 'absolute', alignSelf: 'center', top: 90},
-  sdContainer: {bottom: 0, alignItems: 'center'},
-  sd: {backgroundColor: 'white'},
   sdIcon: {name: 'add', color: 'white'},
   sdIconOpen: {name: 'close', color: 'white'},
   sdButton: {backgroundColor: colorPalette.mainColor},

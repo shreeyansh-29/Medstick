@@ -1,5 +1,4 @@
-let apiUrl = 'https://8787-106-51-81-179.in.ngrok.io/api/v1/user';
-
+let apiUrl = 'https://0d82-106-51-81-179.in.ngrok.io/api/v1/user';
 
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
@@ -8,10 +7,8 @@ export const PATIENTS_REQUEST = `${apiUrl}/patient-requests`;
 export const USER_MEDICINE = `${apiUrl}/medicines`;
 export const GET_MY_CARETAKER = `${apiUrl}/my-caretakers`;
 export const MY_CARETAKER_REQUEST = `${apiUrl}/caretaker-requests`;
-export const GET_MY_REMINDERS = `${apiUrl}/medicine-reminder`;
 export const SAVE_MEDICINE = `${apiUrl}/save-medicine`;
 export const SAVE_DOCTOR_PRESCRIPTION = `${apiUrl}/save-doctor-prescription`;
-export const USER_MEDICINE_BY_ID = `${apiUrl}/medicineById`;
 export const EDIT_PROFILE = `${apiUrl}/user-details`;
 export const ACCEPT_REQUEST = `${apiUrl}/accepted`;
 export const SEND_SNAP = `${apiUrl}/image`;
@@ -23,7 +20,6 @@ export const MY_PRESCRIPTIONS = `${apiUrl}/doctor-prescriptions`;
 export const GET_USER = `${apiUrl}/id`;
 export const GET_USER_EMAIL = `${apiUrl}/email`;
 export const SEND_REQUEST = `${apiUrl}/save-request`;
-export const GET_USER_MEDICINE = `${apiUrl}/medicines`;
 export const GET_ALL_NOTIFICATION = `${apiUrl}/notification/get-notifications`;
 export const DELETE_NOTIFICATION = `${apiUrl}/notification/delete`;
 export const GET_ALL_PRESCRIPTION = `${apiUrl}/doctor-prescriptions`;
@@ -33,8 +29,9 @@ export const CARETAKER_REQUEST = `${apiUrl}/caretaker-requests`;
 export const DELETE_REQUEST = `${apiUrl}/request-delete`;
 export const SEARCH_MEDICINE = `${apiUrl}/search-medicine`;
 export const USER_PRESCRIPTIONS = `${apiUrl}/doctor-prescription`;
-export const PATIENT_REMINDERS = `${apiUrl}/medicine-reminder`;
-export const PATIENT_MEDICINES = `${apiUrl}/medicine-history`;
+export const SAVED_MEDICINE_REMINDER = `${apiUrl}/medicine-reminder`;
+export const GET_MEDICINE_HISTORY = `${apiUrl}/medicine-history`;
 export const NOTIFY_USER = `${apiUrl}/notify-user`;
 export const MEDICINE_IMAGES = `${apiUrl}/medicine-images`;
 export const FETCH_IMAGE = `${apiUrl}`;
+export const DOWNLOAD_PDF = `${apiUrl}/pdf`;

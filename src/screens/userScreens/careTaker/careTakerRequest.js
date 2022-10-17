@@ -1,6 +1,5 @@
 import {FlatList, RefreshControl, View} from 'react-native';
 import React, {useState} from 'react';
-import {colorPalette} from '../../../components/atoms/colorPalette';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
@@ -11,6 +10,7 @@ import {acceptCaretakerReqRequest} from '../../../redux/action/caretaker/acceptC
 import {deleteCaretakerReqRequest} from '../../../redux/action/caretaker/deleteCaretakerReqAction';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
+import { colorPalette } from '../../../components/atoms/colorPalette';
 
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
@@ -95,7 +95,7 @@ const CareTakerRequest = () => {
                 }}
                 title="Confirm"
                 buttonStyle={styles.confirmButton}
-                color="#4267B2"
+                color={colorPalette.green1}
               />
               <View style={styles.space} />
               <Button
@@ -104,7 +104,7 @@ const CareTakerRequest = () => {
                 }}
                 title="Delete"
                 buttonStyle={styles.deleteButton}
-                color="#e53935"
+                color={colorPalette.red1}
               />
             </View>
           </View>
@@ -114,22 +114,16 @@ const CareTakerRequest = () => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fafafa'}}>
+    <View style={styles.container}>
       {res?.isLoading ? (
         <Loader />
       ) : (
         <>
           {caretakers.length === 0 ? (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: colorPalette.basicColor,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            <View style={styles.imgView}>
               <CustomImage
                 resizeMode="contain"
-                styles={{height: 320, width: 240}}
+                styles={styles.img}
                 source={require('../../../assets/images/nocaretakers.jpg')}
               />
             </View>

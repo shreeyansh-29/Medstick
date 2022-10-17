@@ -7,9 +7,6 @@ class RequestService {
     return axios.post(url, object, headers);
   }
   putRequest(url, object, headers) {
-    console.log("axiossUrl",url);
-    console.log("axiossHeaders",headers);
-    console.log("axiossObject",object);
     return axios.put(url, object, headers);
   }
   deleteRequest(url) {

@@ -26,7 +26,7 @@ const HomeScreen = ({navigation}) => {
             styles={Styles}
             radius={42}
             borderWidth={6}
-            percent={3}
+            percent={30}
             text="Today's Performance"
           />
         </View>

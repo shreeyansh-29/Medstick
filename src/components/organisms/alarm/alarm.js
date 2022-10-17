@@ -1,11 +1,16 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import { getAlarmState, getAllAlarms, disableAlarm, enableAlarm } from './alarmService';
+import {
+  getAlarmState,
+  getAllAlarms,
+  disableAlarm,
+  enableAlarm,
+} from './alarmService';
 import {alarmStyles} from '../../../styles/alarmStyles';
 import {useState} from 'react';
 import alarmView from './alarmView';
 
-export default function ({ navigation }) {
+export default function Alarm({navigation}) {
   const [alarms, setAlarms] = useState(null);
   const [scheduler, setScheduler] = useState(null);
 
@@ -50,4 +55,3 @@ export default function ({ navigation }) {
     </View>
   );
 }
-

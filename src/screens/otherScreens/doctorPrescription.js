@@ -18,7 +18,6 @@ const DoctorPrescription = ({navigation, route}) => {
   }, []);
 
   const item = route.params.item;
-  // console.log(item);
   const [visible, setVisible] = useState(false);
   const images = [
     {
@@ -27,10 +26,7 @@ const DoctorPrescription = ({navigation, route}) => {
   ];
   return (
     <View style={styles.container1}>
-      <SubHeader
-        navigation={navigation}
-        //  title={'Doctor Prescription'}
-      />
+      <SubHeader navigation={navigation} title={'Doctor Prescription'} />
       <ScrollView>
         <View style={styles.lottieCont}>
           <LottieView

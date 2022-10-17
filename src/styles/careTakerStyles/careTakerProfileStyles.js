@@ -3,6 +3,10 @@ import {colorPalette} from '../../components/atoms/colorPalette';
 import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
+  mainCont: {
+    flex: 1,
+    alignItems: 'center',
+  },
   card1: {
     width: '90%',
     borderRadius: 10,
@@ -26,44 +30,6 @@ export const styles = StyleSheet.create({
     fontWeight: '300',
   },
   divider: {marginVertical: 6, height: 1.2, width: '100%'},
-  sd: {
-    flex: 1,
-    backgroundColor: colorPalette.backgroundColor,
-    alignItems: 'center',
-  },
-  background: {
-    position: 'absolute',
-    backgroundColor: colorPalette.mainColor,
-    height: '60%',
-    width: '120%',
-    borderRadius: 300,
-    top: -290,
-    right: -38,
-  },
-  sdContainer: {
-    flex: 1,
-    marginTop: verticalScale(8),
-    alignItems: 'center',
-  },
-  sdSubContainer: {
-    flexDirection: 'row',
-    marginTop: verticalScale(18),
-    paddingLeft: horizontalScale(28),
-    marginHorizontal: horizontalScale(10),
-  },
-  sdText: {marginLeft: horizontalScale(24), width: '80%'},
-  sdText1: {fontSize: 20, color: 'grey'},
-  lineCont: {
-    flexDirection: 'row',
-    marginTop: verticalScale(16),
-    width: '94%',
-  },
-  line: {
-    flex: 1,
-    height: 1.2,
-    backgroundColor: 'lightgrey',
-    marginHorizontal: horizontalScale(24),
-  },
   imgCont: {
     marginTop: verticalScale(40),
     marginBottom: verticalScale(8),
@@ -75,7 +41,39 @@ export const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: 'white',
   },
-  icon: {
-    justifyContent: 'center',
+  userDetialsCont: {
+    marginVertical: 4,
+    alignItems: 'center',
+    width: '60%',
+  },
+  userName: {
+    fontSize: 22,
+    textAlign: 'center',
+    color: 'black',
+    fontWeight: '500',
+  },
+  userEmail: {
+    fontSize: 16,
+    marginTop: 6,
+    textAlign: 'center',
+    color: 'grey',
+    fontWeight: '400',
+  },
+  bottomCont: {
+    marginVertical: 6,
+  },
+  viewMed: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '400',
+    marginVertical: 8,
+    color: 'black',
+  },
+  viewPres: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '400',
+    marginVertical: 10,
+    color: 'black',
   },
 });

@@ -32,11 +32,11 @@ const Login = ({navigation, text}) => {
       if (text === 'logout') {
         setTimeout(() => {
           navigation.pop(2);
-        }, 2000);
+        }, 1000);
       } else {
         setTimeout(() => {
           navigation.pop(1);
-        }, 2000);
+        }, 1000);
       }
     } else {
       Toast.show({
@@ -65,7 +65,6 @@ const Login = ({navigation, text}) => {
       const userInfo = await GoogleSignin.signIn();
       const token = await messaging().getToken();
       const {email, photo} = userInfo.user;
-      console.log(userInfo);
       await AsyncStorage.setItem('user_photo', photo);
 
       dispatch(loginRequest({email, token}));

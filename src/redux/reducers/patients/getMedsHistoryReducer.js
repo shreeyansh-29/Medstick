@@ -10,7 +10,7 @@ const initialState = {
   isLoading: false,
   error: null,
 };
-export const getMedsReducer = (state = initialState, action) => {
+export const getMedsHistoryReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_MED_HISTORY_REQUEST:
       return {...state, isLoading: true};

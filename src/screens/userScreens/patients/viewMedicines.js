@@ -2,9 +2,9 @@ import {
   View,
   Text,
   FlatList,
-  StyleSheet,
   TouchableOpacity,
   RefreshControl,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
@@ -18,27 +18,23 @@ import {ListItem} from 'react-native-elements';
 import {faBell, faPills} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {notifyUserRequest} from '../../../redux/action/patients/notifyUserAction';
-import Toast from 'react-native-toast-message';
+import Ripple from 'react-native-material-ripple';
+import {style} from '../../../styles/patientStyles/viewMedicineStyles';
 
 const ViewMedicines = ({navigation, route}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.medicineList);
-  // console.log(res);
-  const res1 = useSelector(state => state.notifyUser);
-  // console.log(res1);
+  const res1 = useSelector(state => state.notifyUser?.data);
   const loading = useSelector(state => state.medicineList?.isLoading);
   const [medicines, setMedicines] = useState([]);
   const [refresh, setRefresh] = useState(false);
   let resp = route?.params?.item;
 
   useEffect(() => {
-    if (res1?.data?.status === 'Success') {
-      console.log('hello');
-      Toast.show({
-        type: 'success',
-        text1: 'Notification Send Successfully',
-        position: 'bottom',
-      });
+    if (res1?.status === 'Success') {
+      ToastAndroid.show('Send successfully', ToastAndroid.LONG);
+    } else if (res1?.status === 'Failed') {
+      ToastAndroid.show('Error', ToastAndroid.LONG);
     }
   }, [res1]);
 
@@ -58,24 +54,17 @@ const ViewMedicines = ({navigation, route}) => {
 
   const renderItem = ({item, index}) => {
     return (
-      <Animatable.View animation="zoomInUp" duration={400} delay={index * 400}>
+      <Animatable.View animation="zoomIn" duration={400} delay={index * 300}>
         <TouchableOpacity
           activeOpacity={1}
-          style={{
-            flexDirection: 'row',
-            margin: 2,
-          }}
+          style={style.card}
           onPress={() => {
             navigation.navigate('MedicineReport', {
               item: item,
             });
           }}>
           <ListItem
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
+            style={style.listView}
             hasTVPreferredFocus={undefined}
             tvParallaxProperties={undefined}>
             <FontAwesomeIcon
@@ -85,52 +74,44 @@ const ViewMedicines = ({navigation, route}) => {
             />
             <ListItem.Content style={{}}>
               <ListItem.Title
-                style={{
-                  fontWeight: '800',
-                }}>{`${item.medicineName}`}</ListItem.Title>
-              <ListItem.Subtitle
-                style={{marginVertical: 3, fontSize: 16, fontWeight: '400'}}>
-                {item.days}
+                style={style.title}>{`${item.medicineName}`}</ListItem.Title>
+              <ListItem.Subtitle style={style.subtitle1}>
+                {item?.days}
               </ListItem.Subtitle>
-              <ListItem.Subtitle style={{fontSize: 14, fontWeight: '400'}}>
-                {item.reminderTime}
+              <ListItem.Subtitle style={style.subtitle2}>
+                {item?.reminderTime}
               </ListItem.Subtitle>
             </ListItem.Content>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginRight: 4,
-              }}>
+            <View style={style.options}>
               <TouchableOpacity
-                style={{
-                  marginRight: 12,
-                  borderRadius: 4,
-                  backgroundColor: colorPalette.mainColor,
-                }}
+                style={style.imagesbtn}
                 onPress={() =>
                   navigation.navigate('MedicineImages', {
                     item: item?.userMedicineId,
                   })
                 }>
-                <Text style={{padding: 8, fontSize: 16, color: 'white'}}>
-                  Images
-                </Text>
+                <Text style={style.imagesText}>Images</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <Ripple
                 onPress={() => {
                   sendNotificationToUser(
                     resp?.fcmToken,
                     item?.medicineName,
                     resp?.userId,
                   );
-                }}>
+                }}
+                style={style.ripple}
+                rippleCentered={true}
+                rippleColor={'#413F42'}
+                rippleDuration={700}
+                rippleOpacity={0.87}
+                rippleContainerBorderRadius={100}>
                 <FontAwesomeIcon
                   icon={faBell}
                   color={colorPalette.mainColor}
                   size={24}
                 />
-              </TouchableOpacity>
+              </Ripple>
             </View>
           </ListItem>
         </TouchableOpacity>
@@ -139,21 +120,14 @@ const ViewMedicines = ({navigation, route}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colorPalette.basicColor}}>
-      <SubHeader navigation={navigation} />
-      <Toast visibilityTime={3000} />
+    <View style={style.mainCont}>
+      <SubHeader navigation={navigation} title={'Patient Medicine'} />
       {loading ? (
         <Loader />
       ) : (
         <>
           {medicines.length === 0 ? (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: colorPalette.backgroundColor,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={style.imgCont}>
               <CustomImage
                 resizeMode="contain"
                 source={require('../../../assets/images/nopatients.png')}
@@ -161,13 +135,7 @@ const ViewMedicines = ({navigation, route}) => {
               />
             </View>
           ) : (
-            <View
-              style={{
-                flex: 1,
-                // alignItems: 'center',
-                backgroundColor: colorPalette.backgroundColor,
-                paddingTop: 2,
-              }}>
+            <View style={style.flatList}>
               <FlatList
                 data={medicines}
                 keyExtractor={(item, index) => index.toString()}

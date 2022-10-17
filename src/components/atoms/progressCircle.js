@@ -12,7 +12,7 @@ const ProgressReport = ({styles, radius, borderWidth, percent}) => {
       shadowColor={styles.shadowColor}
       outerCircleStyle={styles.outerCircle}
       bgColor={styles.bgColor}>
-      <Text style={styles.percentage}>{percent + '0%'}</Text>
+      <Text style={styles.percentage}>{percent + '%'}</Text>
     </ProgressCircle>
   );
 };

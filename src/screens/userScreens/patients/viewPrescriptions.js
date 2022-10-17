@@ -1,4 +1,4 @@
-import {View, Text, FlatList, StyleSheet, RefreshControl} from 'react-native';
+import {View, Text, FlatList, RefreshControl} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {useDispatch, useSelector} from 'react-redux';
@@ -12,6 +12,7 @@ import UserAvatar from 'react-native-user-avatar';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
 import {TouchableOpacity} from 'react-native';
+import {style} from '../../../styles/patientStyles/viewPrescriptionStyles';
 
 const ViewPrescriptions = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -35,24 +36,24 @@ const ViewPrescriptions = ({navigation, route}) => {
   const renderItem = ({item, index}) => {
     return (
       <Animatable.View animation="zoomInUp" duration={400} delay={index * 400}>
-        <View style={styles.top}>
+        <View style={style.top}>
           <ListItem
-            style={styles.list}
+            style={style.list}
             hasTVPreferredFocus={undefined}
             tvParallaxProperties={undefined}>
             <UserAvatar size={60} name={`${item.doctorName}`} />
             <ListItem.Content>
-              <ListItem.Title style={styles.patientName}>
-                <Text style={{fontWeight: '600'}}>Doctor Name: </Text>
+              <ListItem.Title style={style.patientName}>
+                <Text style={style.font}>Doctor Name: </Text>
                 {`${item.doctorName}`}
               </ListItem.Title>
-              <ListItem.Subtitle style={styles.subtitle}>
-                <Text style={{fontWeight: '600'}}>Contact No: </Text>
+              <ListItem.Subtitle style={style.subtitle}>
+                <Text style={style.font}>Contact No: </Text>
                 {item.contact}
               </ListItem.Subtitle>
             </ListItem.Content>
             <TouchableOpacity
-              style={{marginRight: 12}}
+              style={style.btn}
               onPress={() => {
                 navigation.navigate('ViewPrescription', {item: item});
               }}>
@@ -69,20 +70,14 @@ const ViewPrescriptions = ({navigation, route}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colorPalette.basicColor}}>
-      <SubHeader navigation={navigation} />
+    <View style={style.mainCont}>
+      <SubHeader navigation={navigation} title={'Patient Precription'} />
       {loading ? (
         <Loader />
       ) : (
         <>
           {precriptions?.length === 0 ? (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: colorPalette.backgroundColor,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={style.imgCont}>
               <CustomImage
                 resizeMode="contain"
                 source={require('../../../assets/images/nopatients.png')}
@@ -90,12 +85,7 @@ const ViewPrescriptions = ({navigation, route}) => {
               />
             </View>
           ) : (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                backgroundColor: colorPalette.backgroundColor,
-              }}>
+            <View style={style.flatList}>
               <FlatList
                 data={precriptions}
                 keyExtractor={(item, index) => index.toString()}
@@ -118,24 +108,5 @@ const ViewPrescriptions = ({navigation, route}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  list: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    margin: 2,
-  },
-  patientName: {
-    fontSize: 16,
-    // marginLeft: 3,
-    fontWeight: 'normal',
-  },
-  touch: {paddingVertical: 15},
-  icon: {alignItems: 'center'},
-  subtitle: {
-    color: 'black',
-  },
-});
 
 export default ViewPrescriptions;

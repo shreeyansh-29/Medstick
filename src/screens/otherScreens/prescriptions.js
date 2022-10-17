@@ -25,7 +25,7 @@ import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
 const Prescriptions = ({navigation}) => {
   const [myPrescriptions, setMyPrescriptions] = useState([]);
   const res = useSelector(state => state.myPrescriptions);
-  console.log(res);
+  // console.log(res);
   const loading = useSelector(state => state.myPrescriptions?.isLoading);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -66,7 +66,7 @@ const Prescriptions = ({navigation}) => {
 
   const RenderItem = ({item, index}) => {
     return (
-      <Animatable.View animation="zoomInUp" duration={400} delay={index * 400}>
+      <Animatable.View animation="zoomIn" duration={400} delay={index * 200}>
         <View style={styles.top}>
           <ListItem
             style={styles.list}
@@ -90,7 +90,7 @@ const Prescriptions = ({navigation}) => {
               }}>
               <FontAwesomeIcon
                 icon={faChevronRight}
-                size={16}
+                size={18}
                 color={colorPalette.mainColor}
               />
             </TouchableOpacity>

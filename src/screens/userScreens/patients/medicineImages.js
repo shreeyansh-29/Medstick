@@ -116,7 +116,7 @@ const MedicineImages = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1}}>
-      <SubHeader navigation={navigation} />
+      <SubHeader navigation={navigation} title={'Medicine Images'} />
       {loading ? (
         <Loader />
       ) : (

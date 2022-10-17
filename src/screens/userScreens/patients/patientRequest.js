@@ -105,22 +105,16 @@ const PatientRequest = () => {
     );
   };
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       {loading ? (
         <Loader />
       ) : (
         <>
           {patients.length === 0 ? (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: colorPalette.basicColor,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            <View style={styles.imgView}>
               <CustomImage
                 resizeMode="contain"
-                styles={{width: '70%'}}
+                styles={styles.img}
                 source={require('../../../assets/images/nopatientreq.png')}
               />
             </View>

@@ -16,9 +16,9 @@ import About from '../screens/otherScreens/aboutApp';
 import SavedDetails from '../screens/profile/savedDetails';
 import EditProfile from '../screens/profile/editProfile';
 import SendSnap from '../components/atoms/sendSnap';
-import AddRemainder from '../screens/userScreens/addRemainder';
-import edit from '../components/organisms/alarm/edit';
-import alarm from '../components/organisms/alarm/alarm';
+import AddRemainder from '../screens/userScreens/medicines/addRemainder';
+import Edit from '../components/organisms/alarm/edit';
+import Alarm from '../components/organisms/alarm/alarm';
 import Prescriptions from '../screens/otherScreens/prescriptions';
 import AppointmentReminders from '../screens/otherScreens/appointmentReminders';
 import Notifications from '../screens/otherScreens/notifications';
@@ -38,7 +38,6 @@ import MedicineReport from '../screens/userScreens/patients/medicineReport';
 import MedicineImages from '../screens/userScreens/patients/medicineImages';
 import NotificationScreen from '../screens/userScreens/notificationScreen';
 import Reminder from '../screens/userScreens/reminder/remnder';
-import reminderDuration from '../screens/userScreens/reminder/reminderDuration';
 import ReminderDuration from '../screens/userScreens/reminder/reminderDuration';
 
 const Stack = createNativeStackNavigator();
@@ -68,34 +67,43 @@ const MainNavigation = () => {
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="Prescriptions" component={Prescriptions} />
         <Stack.Screen name="MedicineList" component={MedicineList} />
-        <Stack.Screen name="MedicineDetailCard" component={MedicineDetailCard} />
-        <Stack.Screen name="AppointmentReminders" component={AppointmentReminders} />
-        <Stack.Screen name="SendSnapToCaretaker" component={SendSnapToCaretaker} />
+        <Stack.Screen
+          name="MedicineDetailCard"
+          component={MedicineDetailCard}
+        />
+        <Stack.Screen
+          name="AppointmentReminders"
+          component={AppointmentReminders}
+        />
+        <Stack.Screen
+          name="SendSnapToCaretaker"
+          component={SendSnapToCaretaker}
+        />
         <Stack.Screen name="Notifications" component={Notifications} />
         <Stack.Screen name="PatientProfile" component={PatientProfile} />
         <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
-        <Stack.Screen name="addPrescriptionPanel" component={AddPrescriptionPanel} />
+        <Stack.Screen
+          name="addPrescriptionPanel"
+          component={AddPrescriptionPanel}
+        />
         <Stack.Screen name="Logout" component={Logout} />
         <Stack.Screen name="ViewPrescription" component={DoctorPrescription} />
-        <Stack.Screen name="PatientPrescriptions" component={ViewPrescriptions}/>
+        <Stack.Screen
+          name="PatientPrescriptions"
+          component={ViewPrescriptions}
+        />
         <Stack.Screen name="PatientMedicines" component={ViewMedicines} />
         <Stack.Screen name="MedicineReport" component={MedicineReport} />
         <Stack.Screen name="MedicineImages" component={MedicineImages} />
         <Stack.Screen name="notification" component={NotificationScreen} />
+        <Stack.Screen name="AddReminder" component={AddRemainder} />
+        <Stack.Screen name="Edit" component={Edit} />
+        <Stack.Screen name="Alarm" component={Alarm} />
         <Stack.Screen name="Reminder" component={Reminder} />
         <Stack.Screen name="ReminderDuration" component={ReminderDuration} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
-export const headerStyles = {
-  headerStyle: {
-    elevation: 0,
-  },
-  headerTintColor: '#000',
-  headerTitleStyle: {
-    fontWeight: 'bold',
-  },
 };
 
 export default MainNavigation;

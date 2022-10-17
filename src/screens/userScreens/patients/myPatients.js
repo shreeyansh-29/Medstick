@@ -78,22 +78,17 @@ const MyPatients = ({navigation}) => {
     );
   };
   return (
-    <View style={{flex: 1, backgroundColor: '#fafafa'}}>
+    <View style={styles.mainCont}>
       {loading ? (
         <Loader />
       ) : (
         <>
           {myPatients.length === 0 ? (
             <View
-              style={{
-                flex: 1,
-                backgroundColor: colorPalette.basicColor,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+              style={styles.imgCont}>
               <CustomImage
                 resizeMode="contain"
-                styles={{width: '70%'}}
+                styles={styles.img}
                 source={require('../../../assets/images/nopatients.png')}
               />
             </View>
@@ -118,12 +113,12 @@ const MyPatients = ({navigation}) => {
               // onEndReachedThreshold={0.5}
             />
           )}
-          <View style={{position: 'absolute', bottom: 20, right: 16}}>
+          <View style={styles.bottomView}>
             <AddButton
               text="Caretaker"
               routeName={'SearchScreen'}
               navigation={navigation}
-              styles={{height: 84, width: 84}}
+              styles={styles.addBtn}
             />
           </View>
         </>

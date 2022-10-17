@@ -1,16 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RequestService from '../../requestService';
-import {PATIENT_MEDICINES} from '../../../constants/apiUrl';
+import {DOWNLOAD_PDF} from '../../../constants/apiUrl';
 
-class GetMedicinesService {
-  async getGetMedicines(payload) {
+class DownloadPdfService {
+  async downloadPdf(payload) {
     const medicineId = payload.payload;
-  
-    const id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
+    const id = await AsyncStorage.getItem('user_id');
 
     return await RequestService.getRequest(
-      `${PATIENT_MEDICINES}?userMedicineId=${medicineId}&Id=${id}&pageNo=0&pageSize=9`,
+      `${DOWNLOAD_PDF}?userMedicineId=${medicineId}&Id=${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -19,4 +18,4 @@ class GetMedicinesService {
     );
   }
 }
-export default new GetMedicinesService();
+export default new DownloadPdfService();

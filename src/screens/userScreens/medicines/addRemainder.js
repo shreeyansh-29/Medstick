@@ -15,16 +15,16 @@ import {useState} from 'react';
 import {Button, TextInput} from 'react-native-paper';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import DatePicker from 'react-native-date-picker';
-import {styles} from '../../styles/addRemainderStyles';
-import alarmView from '../../components/organisms/alarm/alarmView';
+import {styles} from '../../../styles/addRemainderStyles';
+import alarmView from '../../../components/organisms/alarm/alarmView';
 import {
   enableAlarm,
   disableAlarm,
   getAlarmState,
   getAllAlarms,
-} from '../../components/organisms/alarm/alarmService';
-import TimePicker from '../../components/molecules/timePicker';
-import {colorPalette} from '../../components/atoms/colorPalette';
+} from '../../../components/organisms/alarm/alarmService';
+import TimePicker from '../../../components/molecules/timePicker';
+import {colorPalette} from '../../../components/atoms/colorPalette';
 
 const AddRemainder = props => {
   const [pill, setPill] = useState();
@@ -139,12 +139,11 @@ const AddRemainder = props => {
         <View>
           <View style={{marginLeft: 25}}>
             <Text style={{fontSize: 30}}>09:26</Text>
-        
           </View>
         </View>
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate('edit');
+            props.navigation.navigate('Edit');
           }}
           style={{position: 'absolute', bottom: 10, marginLeft: '41%'}}>
           <LottieView
@@ -152,7 +151,7 @@ const AddRemainder = props => {
             speed={0.7}
             autoPlay
             loop
-            source={require('../../assets/animation/addButton.json')}
+            source={require('../../../assets/animation/addButton.json')}
             progress={progress}
           />
         </TouchableOpacity>

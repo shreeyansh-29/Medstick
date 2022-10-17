@@ -1,5 +1,5 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
-import getUserMedicineNetworkServices from '../../../network/networkServices/user/getUserMedicineNetworkServices';
+import UserMedicineNetworkService from '../../../network/networkServices/user/userMedicineNetworkServices';
 import {
   errorGetUserMedicine,
   successGetUserMedicine,
@@ -10,7 +10,7 @@ export function* getUserMedicineWorkerSaga(data) {
   const {payload} = data;
   try {
     const response = yield call(
-      getUserMedicineNetworkServices.getUserMedicine,
+      UserMedicineNetworkService.getUserMedicine,
       payload,
     );
     console.log(response, 'response');
