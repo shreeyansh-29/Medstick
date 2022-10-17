@@ -23,6 +23,10 @@ import {myCaretakerReducer} from './caretaker/myCaretakerReducer';
 import {caretakerRequestReducer} from './caretaker/caretakerRequestReducer';
 import {acceptCaretakerReqReducer} from './caretaker/acceptCaretakerReqReducer';
 import {deleteCaretakerReqReducer} from './caretaker/deleteCaretakerReqReducer';
+import { getMedicineHistoryReducer } from './userMedicine/getMedicineHistoryReducer';
+import {userMedicineByIdReducer} from './userMedicine/userMedicineByIdReducer'
+import { getUserMedicineReducer } from './userMedicine/getUserMedicineReducer';
+import { searchMedicineReducer } from './userMedicine/searchMedicineReducer';
 import {medicineListReducer} from './userMedicine/medicineListReducer';
 import {getMedsReducer} from './patients/getMedsReducer';
 import {sendRequestReducer} from './getUserReducer/sendReqReducer';
@@ -30,8 +34,6 @@ import {getUserReducer} from './getUserReducer/getUserReducer';
 import {notifyUserReducer} from './patients/notifyUserReducer';
 import {medicineImagesReducer} from './patients/medicineImagesReducer';
 import {fetchImageReducer} from './patients/fetchImageReducer';
-import {getMedicineHistoryReducer} from './userMedicine/getMedicineHistoryReducer';
-import {getUserMedicineReducer} from './userMedicine/getUserMedicineReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -61,14 +63,15 @@ const rootReducer = combineReducers({
   caretakerRequest: caretakerRequestReducer,
   acceptCaretakerRequest: acceptCaretakerReqReducer,
   deleteCaretakerRequest: deleteCaretakerReqReducer,
+  getMedicineHistoryReducer:getMedicineHistoryReducer,
+  getUserMedicineReducer:getUserMedicineReducer,
+  searchMedicine:searchMedicineReducer,
   getMedicines: getMedsReducer,
   getUser: getUserReducer,
   sendRequest: sendRequestReducer,
   notifyUser: notifyUserReducer,
   medicineImages: medicineImagesReducer,
   fetchImage: fetchImageReducer,
-  getMedicineHistoryReducer: getMedicineHistoryReducer,
-  getUserMedicineReducer: getUserMedicineReducer,
 });
 
 export default rootReducer;

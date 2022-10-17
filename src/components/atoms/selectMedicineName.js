@@ -1,16 +1,17 @@
-import React from 'react'
-import { View,Text } from 'react-native'
-import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles'
+import React from 'react';
+import {View, Text} from 'react-native';
+import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
 
-const SelectMedicineName = (medicineName) => {
+const SelectMedicineName = medicineName => {
   return (
     <View style={Styles.medicineNameBox}>
-      {Object.values(medicineName)[0]===""?
-      <Text style={Styles.text}>Select the Medicine....</Text>
-      :
-      <Text>{Object.values(medicineName)[0]}</Text>}
+      {Object.values(medicineName)[0] === '' ? (
+        <Text style={Styles.text}>Select the Medicine....</Text>
+      ) : (
+        <Text>{Object.values(medicineName)[0]}</Text>
+      )}
     </View>
-  )
-}
+  );
+};
 
-export default SelectMedicineName
+export default SelectMedicineName;

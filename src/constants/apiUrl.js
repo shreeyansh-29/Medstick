@@ -1,5 +1,6 @@
 let apiUrl = 'https://8787-106-51-81-179.in.ngrok.io/api/v1/user';
 
+
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
 export const MY_PATIENTS = `${apiUrl}/my-patients`;
@@ -30,6 +31,7 @@ export const SAVE_USER_MEDICINE = `${apiUrl}/medicine/save`;
 export const MY_CARETAKER = `${apiUrl}/my-caretakers`;
 export const CARETAKER_REQUEST = `${apiUrl}/caretaker-requests`;
 export const DELETE_REQUEST = `${apiUrl}/request-delete`;
+export const SEARCH_MEDICINE = `${apiUrl}/search-medicine`;
 export const USER_PRESCRIPTIONS = `${apiUrl}/doctor-prescription`;
 export const PATIENT_REMINDERS = `${apiUrl}/medicine-reminder`;
 export const PATIENT_MEDICINES = `${apiUrl}/medicine-history`;

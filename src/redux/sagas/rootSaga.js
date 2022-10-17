@@ -29,6 +29,7 @@ import {watchSendReqSaga} from './getUserSaga/sendReqSaga';
 import {watchNotifyUserSaga} from './patients/notifyUserSaga';
 import {watchMedicineImagesSaga} from './patients/medicineImagesSaga';
 import {getUserMedicineWatcherSaga} from './userMedicine/getUserMedicineWatcherSaga';
+import { searchMedicineWatcherSaga } from './userMedicine/searchMedicineWatcherSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -63,5 +64,7 @@ export default function* RootSaga() {
     watchMedicineImagesSaga(),
     deleteNotificationWatcherSaga(),
     getUserMedicineWatcherSaga(),
+    saveUserMedicineWatcherSaga(),
+    searchMedicineWatcherSaga(),
   ]);
 }
