@@ -14,7 +14,6 @@ const MedicineList = ({route, navigation}) => {
     <View style={styles.container}>
       <SubHeader title={'Medicine Description'} navigation={navigation} />
       <View style={styles.carouselContainer}>
-        {console.log('Outster', index)}
         <Carousel
           layout="default"
           layoutCardOffset={9}
@@ -27,7 +26,6 @@ const MedicineList = ({route, navigation}) => {
           itemWidth={deviceWidth / 1.1}
           onSnapToItem={index => {
             setIndex(index);
-            console.log('jcsachchadvfkd', index);
           }}
           useScrollView={true}
           scrollEnabled={true}

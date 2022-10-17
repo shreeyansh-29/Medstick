@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInput, View, StyleSheet, Text } from 'react-native';
 import { colorPalette } from '../atoms/colorPalette';
 
-export default function ({onChangeText, value, description}) {
+export default function CustomTextInput ({onChangeText, value, description}) {
 
   return (
     <View style={styles.container}>

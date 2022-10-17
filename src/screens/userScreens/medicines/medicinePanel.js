@@ -28,7 +28,7 @@ const MedicinePanel = ({navigation}) => {
   const isFocused = useIsFocused();
   const [medicines, setMedicines] = useState([]);
   const res = useSelector(state => state.medicineList);
-  console.log(res);
+  // console.log(res);
   const loading = useSelector(state => state.medicineList?.isLoading);
   const res1 = useSelector(state => state.deleteMedicine);
 
@@ -112,9 +112,11 @@ const MedicinePanel = ({navigation}) => {
                   <View style={Styles.icon}>
                     <TouchableOpacity
                       style={Styles.rem}
-                      onPress={() =>
-                        navigation.navigate('Add Reminder', {id: item.index})
-                      }>
+                      onPress={() => {
+                        navigation.navigate('Reminder', {
+                          id: item.userMedicineId,
+                        });
+                      }}>
                       <FontAwesomeIcon
                         icon={faClock}
                         color={colorPalette.mainColor}
