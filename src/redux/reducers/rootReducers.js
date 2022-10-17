@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {myCaretakerReducer} from './caretakerReducer/myCaretakerReducer';
+import {myCaretakerReducer} from '../../redux/reducers/caretakerReducer/myCaretakerReducer'
 import {editProfileReducer} from './profileReducer/editProfileReducer';
 import {signInReducer} from './loginReducer/loginReducer';
 import {acceptPatientReqReducer} from './patients/acceptPatientReqReducer';

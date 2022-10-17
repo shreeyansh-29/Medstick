@@ -29,6 +29,7 @@ const AppointmentReminders = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(0);
+  console.log(notes,"notesss");
 
   const doctor = useSelector(appointmentReminderSelector.appointmentReminder);
 
@@ -38,8 +39,7 @@ const AppointmentReminders = ({navigation}) => {
 
   let fDate =
     date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-  let time =
-    date.getHours() + ':' + date.getMinutes() + ':' + '00';
+  let time = date.getHours() + ':' + date.getMinutes() + ':' + '00';
 
   useEffect(() => {
     dispatch(appointmentReminderRequest(pageNo));
@@ -48,7 +48,6 @@ const AppointmentReminders = ({navigation}) => {
   useEffect(() => {
     if (doctor !== null) {
       dn = doctor.result.map(item => item);
-      console.log(dn);
       setNotes(dn);
     }
   }, [doctor]);
@@ -82,6 +81,7 @@ const AppointmentReminders = ({navigation}) => {
             id="picker"
             selectedValue={notes}
             onValueChange={(itemValue, _itemIndex) => {
+              console.log(itemValue,"itemValue")
               setNotes(itemValue);
             }}>
             {doctor?.result?.map((item, ind) => {
@@ -159,11 +159,23 @@ const AppointmentReminders = ({navigation}) => {
             </View>
           )}
         </View>
-        <TouchableOpacity
-          style={{marginTop: '22%'}}
-          onPress={() => saveAppointment(fDate, time, notes1)}>
-          <SaveButton />
-        </TouchableOpacity>
+        <View style={{margin: '1%'}}>
+          <TouchableOpacity
+            style={{
+              borderWidth: 1.5,
+              borderRadius: 4,
+              marginTop: '5%',
+              alignItems:"center",
+              backgroundColor:colorPalette.mainColor,
+              marginLeft: '7%',
+              marginRight: '9%',
+              padding:"1%",
+              borderColor: colorPalette.mainColor,
+            }}
+            onPress={() => saveAppointment(fDate, time, notes1)}>
+            <Text style={{fontSize:19, color:"white", fontWeight:"400" }} >Save</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );

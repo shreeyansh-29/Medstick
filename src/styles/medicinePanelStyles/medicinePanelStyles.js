@@ -179,14 +179,13 @@ const Styles = StyleSheet.create({
     borderColor: colorPalette.mainColor,
   },
   box1: {
-    margin: '3.6%',
+    margin: '2.6%',
     borderWidth: 1.2,
     alignItems: 'center',
     flexDirection:'row',
-    padding: '2%',
+    padding: '1%',
     borderRadius: 5,
-    paddingBottom:"5%",
-    paddingHorizontal:"0.5%",
+    paddingBottom:"4%",
     borderColor: colorPalette.mainColor,
   },
   text: {

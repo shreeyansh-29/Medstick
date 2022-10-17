@@ -69,8 +69,8 @@ const AppointmentReminderList = ({navigation}) => {
   const updateAppointment = (fDate, time, notes1, appointmentId) => {
     dispatch(updateAppointmentRequest(fDate, time, notes1, appointmentId));
     setTimeout(() => {
-      setModalVisible(false)
-    },1000);r
+      setModalVisible(false);
+    }, 1000);
   };
 
   const renderItem = ({item}) => {
@@ -151,59 +151,59 @@ const AppointmentReminderList = ({navigation}) => {
           <View style={{margin: '2%'}}>
             {/* <DateTime temp={temp} time1={time1} /> */}
             <View
-          style={{
-            flexDirection: 'row',
-            paddingTop: 5,
-            marginTop: '3%',
-            marginRight: '20%',
-            marginLeft: '7%',
-          }}>
-          <TouchableOpacity onPress={() => setOpen(true)}>
-            <View style={Styles.box1}>
-              <Text style={Styles.text}>DateTime</Text>
-              <FontAwesomeIcon
-                icon={faCalendarDays}
-                size={28}
-                color={colorPalette.mainColor}
-              />
-              <DatePicker
-                modal
-                open={open}
-                date={date}
-                value={date}
-                mode="datetime"
-                onConfirm={date => {
-                  setOpen(false);
-                  setDate(date);
-                }}
-                onCancel={() => {
-                  setOpen(false);
-                }}
-              />
+              style={{
+                flexDirection: 'row',
+                paddingTop: 5,
+                marginTop: '3%',
+                marginRight: '20%',
+                marginLeft: '7%',
+              }}>
+              <TouchableOpacity onPress={() => setOpen(true)}>
+                <View style={Styles.box1}>
+                  <Text style={Styles.text}>DateTime</Text>
+                  <FontAwesomeIcon
+                    icon={faCalendarDays}
+                    size={28}
+                    color={colorPalette.mainColor}
+                  />
+                  <DatePicker
+                    modal
+                    open={open}
+                    date={date}
+                    value={date}
+                    mode="datetime"
+                    onConfirm={date => {
+                      setOpen(false);
+                      setDate(date);
+                    }}
+                    onCancel={() => {
+                      setOpen(false);
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
+              {date == Date() ? (
+                <View style={Styles.box2}>
+                  <Text>-----------------------</Text>
+                </View>
+              ) : (
+                <View style={Styles.box2}>
+                  <Text style={{fontSize: 18}}>
+                    {date?.getFullYear() +
+                      '/' +
+                      (date.getMonth() + 1) +
+                      '/' +
+                      date.getDate() +
+                      '  ' +
+                      date.getHours() +
+                      ':' +
+                      date.getMinutes() +
+                      ':' +
+                      date.getSeconds()}
+                  </Text>
+                </View>
+              )}
             </View>
-          </TouchableOpacity>
-          {date == Date() ? (
-            <View style={Styles.box2}>
-              <Text>-----------------------</Text>
-            </View>
-          ) : (
-            <View style={Styles.box2}>
-              <Text style={{fontSize: 18}}>
-                {date?.getFullYear() +
-                  '/' +
-                  (date.getMonth() + 1) +
-                  '/' +
-                  date.getDate() +
-                  '  ' +
-                  date.getHours() +
-                  ':' +
-                  date.getMinutes() +
-                  ':' +
-                  date.getSeconds()}
-              </Text>
-            </View>
-          )}
-        </View>
             <TextInput
               id="Notes"
               style={{width: '82%', marginLeft: '8%', marginTop: '4%'}}
@@ -214,24 +214,27 @@ const AppointmentReminderList = ({navigation}) => {
               outlineColor="#02ABA6"
               activeOutlineColor="#02ABA6"
             />
-            <TouchableOpacity
-              onPress={() => updateAppointment(fDate, time, notes1, appointmentId)}
-              style={{
-                margin: '8%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
+            <View style={{borderWidth:1.5, marginTop:"5%", marginLeft:"7%", marginRight:"7%", borderRadius:7, borderColor:colorPalette.mainColor }} >
+              <TouchableOpacity
+                onPress={() =>
+                  updateAppointment(fDate, time, notes1, appointmentId)
+                }
                 style={{
-                  fontSize: 20,
-                  borderWidth: 1.3,
-                  padding: '2%',
-                  borderColor: colorPalette.mainColor,
-                  borderRadius: 7,
+                  margin: '1%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                Update
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    padding: '1%',
+                    borderColor: colorPalette.mainColor,
+                    borderRadius: 7,
+                  }}>
+                  Update
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
