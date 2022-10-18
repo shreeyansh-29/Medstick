@@ -109,7 +109,7 @@ const AccountTab = ({navigation}) => {
           navigationTitle1="Prescriptions"
           navigationTitle2="AppointmentReminderList"
           title1="Prescriptions"
-          title2="Appointments"
+          title2="Appointment Reminders"
           navigation={navigation}
         />
         <TwoTouchable

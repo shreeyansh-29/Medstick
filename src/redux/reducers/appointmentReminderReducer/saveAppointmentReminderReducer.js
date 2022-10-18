@@ -20,14 +20,12 @@ export const saveAppointmentReminderReducer = (
 ) => {
   switch (action.type) {
     case SAVE_APPOINTMENT_REQUEST:
-      console.log(action.payload,"request");
       return {
         ...state,
         isLoading: {...state.isLoading, loader: true},
         error: {...state.error, error: null},
       };
     case SAVE_APPOINTMENT_SUCCESS:
-      console.log(action.payload,"success");
       return {
         ...state,
         data: action.payload,
@@ -35,7 +33,6 @@ export const saveAppointmentReminderReducer = (
         error: {...state.error, error: null},
       };
     case SAVE_APPOINTMENT_ERROR:
-      console.log(action.payload,"error");
       return {
         ...state,
         isLoading: {...state.isLoading, loader: false},

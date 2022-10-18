@@ -151,12 +151,13 @@ const MedicinePanel = ({navigation}) => {
   return (
     <>
       <View style={Styles.container}>
-        <View style={Styles.backgroundgetdoctor} />
+        <View style={Styles.background} />
+        <MainHeader title={'Medicine'} navigation={navigation} />
         {loading ? (
           <Loader />
         ) : (
           <>
-            {medicines.length === 0 ? (
+            {medicines?.length === 0 ? (
               <View style={Styles.lottie}>
                 <LottieView
                   style={{width: 100, height: 100}}

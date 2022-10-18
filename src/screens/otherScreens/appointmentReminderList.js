@@ -36,7 +36,6 @@ const AppointmentReminderList = ({navigation}) => {
   const [time1, setTime1] = useState('');
   const [date, setDate] = useState(new Date());
   const getdoctor = useSelector(appointmentReminderSelector.getAppointment);
-  console.log(getdoctor,"getdoctor");
   const [modalVisible, setModalVisible] = useState(false);
   const getDoctorLoading = useSelector(
     appointmentReminderSelector.getAppointmentLoading,
@@ -46,11 +45,18 @@ const AppointmentReminderList = ({navigation}) => {
     date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
   let time = date.getHours() + ':' + date.getMinutes() + ':' + '00';
 
+  console.log(fDate,"fDateee");
+
   const updateAppointment1 = useSelector(
-    appointmentReminderSelector.updateAppointment,
-  );
+    appointmentReminderSelector.updateAppointment);
+
+console.log(updateAppointment1,"update....")
 
   const getAppointmentLoader= useSelector(appointmentReminderSelector.getAppointmentLoading);
+
+  const deleteAppointment = useSelector(appointmentReminderSelector.deleteAppointment);
+  console.log(deleteAppointment,"delete appointment");
+
 
   useEffect(() => {
     if (getdoctor?.data !== null) {
@@ -74,6 +80,8 @@ const AppointmentReminderList = ({navigation}) => {
     setTimeout(() => {
       setModalVisible(false);
     }, 1000);
+
+    dispatch(getAppointmentRequest(pageNo));
   };
 
   const renderItem = ({item}) => {
@@ -93,7 +101,7 @@ const AppointmentReminderList = ({navigation}) => {
               </ListItem.Subtitle>
             </View>
           </ListItem.Content>
-          <View style={{flexDirection: 'row', left: 55}}>
+          <View style={{flexDirection: 'row', left: 55, padding:"6%"}}>
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(true);
@@ -104,7 +112,7 @@ const AppointmentReminderList = ({navigation}) => {
               }}>
               <FontAwesomeIcon
                 icon={faPenToSquare}
-                size={28}
+                size={17}
                 color={colorPalette.mainColor}
               />
             </TouchableOpacity>
@@ -115,7 +123,7 @@ const AppointmentReminderList = ({navigation}) => {
               }}>
               <FontAwesomeIcon
                 icon={faTrash}
-                size={28}
+                size={17}
                 color={colorPalette.mainColor}
               />
             </TouchableOpacity>
@@ -132,7 +140,7 @@ const AppointmentReminderList = ({navigation}) => {
       <SubHeader title={'Appointment Reminders'} navigation={navigation} />
 
       {/* Modal */}
-      
+      {getdoctor.isLoading?.loader && <Loader/>}
       <Modal visible={modalVisible}>
         <View style={{flex: 1}}>
           <View style={{backgroundColor: colorPalette.mainColor}}>
@@ -220,7 +228,7 @@ const AppointmentReminderList = ({navigation}) => {
               outlineColor="#02ABA6"
               activeOutlineColor="#02ABA6"
             />
-            <View style={{borderWidth:1.5, marginTop:"5%", marginLeft:"7%", marginRight:"7%", borderRadius:7, borderColor:colorPalette.mainColor }} >
+            <View style={{borderWidth:1.5, marginTop:"5%", marginLeft:"8%", marginRight:"9.6%", borderRadius:7, borderColor:colorPalette.mainColor }} >
               <TouchableOpacity
                 onPress={() =>
                   updateAppointment(fDate, time, notes1, appointmentId)
@@ -259,6 +267,7 @@ const AppointmentReminderList = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           data={appointments[0]}
           renderItem={renderItem}
+          extraData={appointments[0]}
           numColumns={1}
         />
       )}

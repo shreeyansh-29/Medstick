@@ -20,7 +20,6 @@ import AddRemainder from '../screens/userScreens/medicines/addRemainder';
 import Edit from '../components/organisms/alarm/edit';
 import Alarm from '../components/organisms/alarm/alarm';
 import Prescriptions from '../screens/otherScreens/prescriptions';
-import AppointmentReminders from '../screens/otherScreens/appointmentReminders';
 import Notifications from '../screens/otherScreens/notifications';
 import SendSnapToCaretaker from '../screens/otherScreens/sendSnapToCaretaker';
 import AddPrescription from '../screens/userScreens/medicines/addPrescription';
@@ -40,6 +39,7 @@ import MedicineImages from '../screens/userScreens/patients/medicineImages';
 import NotificationScreen from '../screens/userScreens/notificationScreen';
 import Reminder from '../screens/userScreens/reminder/reminder';
 import ReminderDuration from '../screens/userScreens/reminder/reminderDuration';
+import AppointmentReminders from '../screens/otherScreens/appointmentReminders';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,10 +73,6 @@ const MainNavigation = () => {
           component={MedicineDetailCard}
         />
         <Stack.Screen
-          name="AppointmentReminders"
-          component={AppointmentReminders}
-        />
-        <Stack.Screen
           name="SendSnapToCaretaker"
           component={SendSnapToCaretaker}
         />
@@ -102,6 +98,8 @@ const MainNavigation = () => {
         <Stack.Screen name="Alarm" component={Alarm} />
         <Stack.Screen name="Reminder" component={Reminder} />
         <Stack.Screen name="ReminderDuration" component={ReminderDuration} />
+        <Stack.Screen name="AppointmentReminders" component={AppointmentReminders} />
+        <Stack.Screen name="AppointmentReminderList" component={AppointmentReminderList} />
       </Stack.Navigator>
     </NavigationContainer>
   );

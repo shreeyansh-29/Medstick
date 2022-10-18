@@ -39,26 +39,18 @@ const ReminderDuration = ({route, navigation}) => {
   const multiSliderValuesChange = values => {
     var curr_date = new Date();
     // console.log(curr_date);
-    console.log(curr_date.setDate(curr_date.getDate() + values[0]));
-
-    console.log(curr_date.getDate(), values);
     setDays(values);
     endDateState(curr_date);
     setMultiSliderValue(values);
   };
 
-  useEffect(()=>{
-    dateFormatting()
-  },[check1,endDate,check3]);
 
-  const dateFormatting = ()=>{
-    if(check1){
-      setFinalEnddate("No End Date");
-    }else if(check2 || check3){
-      setFinalEnddate(day_data[0].children[endDate.getDay()].id+" "+endDate.getDate()+" "+ months[endDate.getMonth()]+", "+endDate.getFullYear());
-    }
+  
+  let previousDate = new Date();
+
+  const handleEndDate = ()=>{
+      endDateState(startDate);
   }
-console.log(route.params,'para')
   return (
     <View style={styles.container}>
       <SubHeader navigation={navigation} title={'Duration'} />
@@ -87,6 +79,7 @@ console.log(route.params,'para')
                   setCheck1(!check1);
                   setCheck2(false);
                   setCheck3(false);
+                  handleEndDate()
                 }}
                 isChecked={check1}
                 checkBoxColor={colorPalette.appColor}
@@ -166,10 +159,10 @@ console.log(route.params,'para')
             <Text style={styles.dateText}>End Date </Text>
           </View>
           <Text style={styles.dateText1}>
-            {finalEndDate}
+            { check1 ? "No End Date" : (day_data[0].children[endDate.getDay()].id+" "+endDate.getDate()+" "+ months[endDate.getMonth()]+", "+endDate.getFullYear())}
           </Text>
         </View>
-        <TouchableOpacity onPress={()=>{route.params.endDate(endDate);navigation.pop()}} style={{marginTop:40}}>
+        <TouchableOpacity onPress={()=>{ route.params.endDate(endDate);navigation.pop()}} style={{marginTop:40}}>
         <SaveButton/>
         </TouchableOpacity>
       </View>

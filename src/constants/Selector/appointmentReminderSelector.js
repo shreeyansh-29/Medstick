@@ -10,6 +10,9 @@ const getAppointmentError = state => state.getAppointment.error;
 const updateAppointment = state => state.updateAppointment;
 const updateAppointmentLoading = state => state.updateAppointment.isLoading;
 const updateAppointmentError = state => state.updateAppointment.error;
+const deleteAppointment = state => state.deleteAppointment;
+const deleteAppointmentLoading = state =>state.deleteAppointment.isLoading;
+const deleteAppointmentError = state => state.deleteAppointment.error
 
 export const appointmentReminderSelector = {
   appointmentReminder,
@@ -24,4 +27,7 @@ export const appointmentReminderSelector = {
   updateAppointment,
   updateAppointmentLoading,
   updateAppointmentError,
+  deleteAppointment,
+  deleteAppointmentError,
+  deleteAppointmentLoading,
 };
