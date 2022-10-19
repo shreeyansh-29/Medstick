@@ -23,7 +23,8 @@ import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAc
 
 var counter = 0;
 
-const Reminder = ({route, navigation}) => {
+const Reminder = ({route, navigation, props}) => {
+  console.log(route, 'route abcgdss');
   const multiSliderValuesChange = values => {
     var curr_date = new Date();
     // console.log(curr_date, 'sjjf');
@@ -65,11 +66,15 @@ const Reminder = ({route, navigation}) => {
   const [totalReminders, setTotalReminders] = useState(10);
   const [currentCount, setCurrentCount] = useState(0);
   const [time, setTime] = useState('');
+  const [color, setColor] = useState('');
+  const [foodBefore, setFoodBefore] = useState(false);
+  const [foodAfter, setFoodAfter] = useState(false);
   console.log(time, 'timeeeee');
   const dispatch = useDispatch();
 
   const saveReminderData = useSelector(saveReminderSelector.saveReminder);
-  console.log(saveReminderData,"save reminder");
+  const saveReminderResponse = saveReminderData?.data?.data?.status;
+  console.log(saveReminderResponse, 'save reminder');
 
   const userMedicineId = route.params.id;
   console.log(userMedicineId, 'id');
@@ -156,8 +161,11 @@ const Reminder = ({route, navigation}) => {
   };
 
   const onclickBreakfast = () => {
-    setBreakfastTouchable(true);
-
+    if (breakfastTouchable === false) {
+      setBreakfastTouchable(true);
+    } else {
+      setBreakfastTouchable(false);
+    }
     setFrequency([...frequency, 'Breakfast']);
   };
 
@@ -201,21 +209,6 @@ const Reminder = ({route, navigation}) => {
     }
     hideDatePickerfortime();
   };
-
-  const timing = [
-    {
-      item: 'Breakfast',
-      id: 'BK',
-    },
-    {
-      item: 'Lunch',
-      id: 'LN',
-    },
-    {
-      item: 'Dinner',
-      id: 'DN',
-    },
-  ];
 
   console.log(timearray, 'fdhghfhgf');
 
@@ -277,13 +270,13 @@ const Reminder = ({route, navigation}) => {
     }
     const frequencyTemp = frequency.toString();
     console.log(fDatePrimary, 'startDate');
-    
+
     console.log(days, 'days');
     console.log(title, 'reminderTitle');
     console.log(time, 'reminderTime');
     console.log(check1, 'everyday');
     console.log(noEndDate, ' no end date');
-    if(endDate==="No End Date"){
+    if (endDate === 'No End Date') {
       setfDate('null');
     }
     console.log(reminderStatus, 'reminderStatus');
@@ -292,7 +285,7 @@ const Reminder = ({route, navigation}) => {
     console.log(food, 'beforeAfter');
     console.log(totalReminders, 'totalReminders');
     console.log(currentCount, 'currentCount');
-    console.log(userMedicineId,"iddddd");
+    console.log(userMedicineId, 'iddddd');
 
     dispatch(
       saveReminderRequest(
@@ -311,9 +304,9 @@ const Reminder = ({route, navigation}) => {
         userMedicineId,
       ),
     );
-    // setTimeout(() => {
-    //   navigation.pop();
-    // }, 2000);
+    setTimeout(() => {
+      navigation.navigate('MedicinePanel');
+    }, 2000);
   };
 
   // console.log(endDate);
@@ -444,116 +437,159 @@ const Reminder = ({route, navigation}) => {
                 marginTop: '3%',
                 justifyContent: 'center',
               }}>
-              <TouchableOpacity
-                style={styles.touchable1}
-                onPress={() => onclickBreakfast()}>
-                <Text style={styles.touchableText}>Breakfast</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.touchable2}
-                onPress={() => {
-                  setLunchTouchable(true);
-                  setFrequency([...frequency, 'Lunch']);
-                }}>
-                <Text style={styles.touchableText}>Lunch</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.touchable3}
-                onPress={() => {
-                  setDinnerTouchable(true);
-                  setFrequency([...frequency, 'Dinner']);
-                }}>
-                <Text style={styles.touchableText}>Dinner</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection: 'column'}}>
+                <TouchableOpacity
+                  style={styles.touchable1}
+                  onPress={() => onclickBreakfast()}>
+                  <Text style={styles.touchableText}>Breakfast</Text>
+                </TouchableOpacity>
+                {breakfastTouchable ? (
+                  <TouchableOpacity
+                    style={{
+                      marginTop: '5%',
+                      borderWidth: 1.5,
+                      borderRadius: 3,
+                      paddingRight: '2%',
+                      alignItems: 'center',
+                      paddingLeft: '2%',
+                      marginRight: '10%',
+                      borderColor: colorPalette.mainColor,
+                    }}
+                    onPress={() => {
+                      time_picker_mode_state(true);
+                    }}>
+                    <Text style={styles.touchableText}>{timearray[0]}</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <></>
+                )}
+              </View>
+
+              <View style={{flexDirection: 'column', marginRight: '3%'}}>
+                <TouchableOpacity
+                  style={styles.touchable2}
+                  onPress={() => {
+                    if (lunchTouchable === false) {
+                      setLunchTouchable(true);
+                    } else {
+                      setLunchTouchable(false);
+                    }
+                    setFrequency([...frequency, 'Lunch']);
+                  }}>
+                  <Text style={styles.touchableText}>Lunch</Text>
+                </TouchableOpacity>
+                {lunchTouchable ? (
+                  <TouchableOpacity
+                    style={{
+                      marginTop: '5%',
+                      borderWidth: 1.5,
+                      paddingRight: '2%',
+                      paddingLeft: '2%',
+                      alignItems: 'center',
+                      borderRadius: 3,
+                      marginRight: '11%',
+                      borderColor: colorPalette.mainColor,
+                    }}
+                    onPress={() => {
+                      time_picker_mode_state(true);
+                    }}>
+                    <Text style={styles.touchableText}>{timearray[1]}</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <></>
+                )}
+              </View>
+
+              <View style={{flexDirection: 'column'}}>
+                <TouchableOpacity
+                  style={styles.touchable3}
+                  onPress={() => {
+                    if (dinnerTouchable == false) {
+                      setDinnerTouchable(true);
+                    } else {
+                      setDinnerTouchable(false);
+                    }
+                    setFrequency([...frequency, 'Dinner']);
+                  }}>
+                  <Text style={styles.touchableText}>Dinner</Text>
+                </TouchableOpacity>
+                {dinnerTouchable ? (
+                  <TouchableOpacity
+                    style={{
+                      marginTop: '6%',
+                      borderWidth: 1.5,
+                      paddingRight: '2%',
+                      paddingLeft: '8%',
+                      right: '10%',
+                      alignItems: 'center',
+                      borderRadius: 3,
+                      borderColor: colorPalette.mainColor,
+                    }}
+                    onPress={() => {
+                      time_picker_mode_state(true);
+                    }}>
+                    <Text style={styles.touchableText}>{timearray[2]}</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <></>
+                )}
+              </View>
             </View>
           </View>
-          <View style={{flexDirection: 'row', margin: 7, marginBottom: '5%'}}>
-            {breakfastTouchable ? (
-              <TouchableOpacity
-                style={styles.touchable1}
-                onPress={() => {
-                  time_picker_mode_state(true);
-                }}>
-                <Text style={styles.touchableText}>{timearray[0]}</Text>
-              </TouchableOpacity>
-            ) : (
-              <></>
-            )}
 
-            {lunchTouchable ? (
-              <TouchableOpacity
-                style={styles.touchable2}
-                onPress={() => {
-                  time_picker_mode_state(true);
-                }}>
-                <Text style={styles.touchableText}>{timearray[1]}</Text>
-              </TouchableOpacity>
-            ) : (
-              <></>
-            )}
+          <View
+            style={{
+              flexDirection: 'row',
+              margin: 7,
+              marginBottom: '5%',
+            }}></View>
 
-            {dinnerTouchable ? (
-              <TouchableOpacity
-                style={styles.touchable3}
-                onPress={() => {
-                  time_picker_mode_state(true);
-                }}>
-                <Text style={styles.touchableText}>{timearray[2]}</Text>
-              </TouchableOpacity>
-            ) : (
-              <></>
-            )}
-          </View>
-
-          {/* <View style={{margin: '5%'}}>
-            {timearray.map((item, index) => {
-              return (
-                <View key={index} style={styles.timeTextConatiner}>
-                  <View style={{width: '50%', justifyContent: 'flex-start'}}>
-                    <Text key={item} style={styles.timeText}>
-                      {item}
-                    </Text>
-                  </View>
-                  <TouchableOpacity
-                    key={item + '' + index}
-                    onPress={() => {
-                      console.log(
-                        timearray.splice(timearray.indexOf(item), 1),
-                        'clock',
-                      );
-                      timearraystate(
-                        timearray.splice(timearray.indexOf(item), 1),
-                      );
-                    }}
-                    style={{
-                      alignItems: 'flex-end',
-                      width: '50%',
-                      justifyContent: 'center',
-                    }}>
-                    <FontAwesomeIcon
-                      color="red"
-                      icon={faRemove}></FontAwesomeIcon>
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </View> */}
           <Divider></Divider>
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.title}>Take Medicine:</Text>
             <TouchableOpacity
-              style={{margin: '3%', borderWidth: 1, padding: '1%'}}
+              style={{
+                margin: '3%',
+                borderWidth: 1,
+                padding: '1%',
+                borderColor: colorPalette.mainColor,
+                borderRadius: 6,
+                backgroundColor: foodBefore ? colorPalette.mainColor : 'white',
+              }}
               onPress={() => {
                 setFood('Before');
+                if (foodBefore === false) {
+                  setFoodBefore(true);
+                } else {
+                  setFoodBefore(false);
+                }
               }}>
-              <Text>Before food</Text>
+              <Text
+                style={{fontSize: 16, color: foodBefore ? 'white' : 'black'}}>
+                Before food
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{margin: '3%', borderWidth: 1, padding: '1%'}}
+              style={{
+                margin: '3%',
+                borderWidth: 1,
+                padding: '1%',
+                borderColor: colorPalette.mainColor,
+                backgroundColor: foodAfter ? colorPalette.mainColor : 'white',
+                borderRadius: 6,
+              }}
               onPress={() => {
                 setFood('After');
+                if (foodAfter === false) {
+                  setFoodAfter(true);
+                } else {
+                  setFoodAfter(false);
+                }
               }}>
-              <Text>After food</Text>
+              <Text
+                style={{fontSize: 16, color: foodAfter ? 'white' : 'black'}}>
+                After food
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.days}>
@@ -606,22 +642,7 @@ const Reminder = ({route, navigation}) => {
           <Button
             loading={load}
             title="Save reminder"
-            onPress={() =>
-              // saveData(
-              //   fDatePrimary,
-              //   fDateSecondary,
-              //   selecteddaysItems,
-              //   title,
-              //   timearray,
-              //   check1,
-              //   noEndDate,
-              //   reminderStatus,
-              //   frequency,
-              //   food,
-              //   totalReminders,
-              //   currentCount,
-              //   userMedicineId,
-              // )
+            onPress={() => {
               savereminder(
                 fDatePrimary,
                 fDateSecondary,
@@ -634,8 +655,11 @@ const Reminder = ({route, navigation}) => {
                 totalReminders,
                 currentCount,
                 userMedicineId,
-              )
-            }
+              );
+              if(saveReminderResponse === "Success"){
+                route.params.fetchStatus();
+              }
+            }}
             buttonStyle={styles.buttonStyle}
             containerStyle={styles.buttonContainer}></Button>
         </View>

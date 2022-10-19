@@ -14,7 +14,6 @@ export function* getUserProfileSaga() {
     yield put(getUserProfileError(error));
   }
 }
-
 export function* watchGetUserProfileSaga() {
   yield takeLatest(types.USER_PROFILE_REQUEST, getUserProfileSaga);
 }

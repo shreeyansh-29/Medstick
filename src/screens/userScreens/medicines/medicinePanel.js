@@ -22,6 +22,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {deleteMedicineRequest} from '../../../redux/action/userMedicine/deleteMedicine';
 import Loader from '../../../components/atoms/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 
 const MedicinePanel = ({navigation}) => {
   const dispatch = useDispatch();
@@ -30,6 +31,29 @@ const MedicinePanel = ({navigation}) => {
   const res = useSelector(state => state.medicineList);
   const loading = useSelector(state => state.medicineList?.isLoading);
   const res1 = useSelector(state => state.deleteMedicine);
+  const [isActive, setIsActive] = useState(false);
+  const [color,setColor]=useState(false);
+  const [clockActive, setClockActive] = useState(false);
+  console.log(color,'color')
+  console.log(clockActive,"colorActive");
+  // const saveReminderData = useSelector(saveReminderSelector.saveReminder);
+  // console.log(saveReminderData.data.data,"dataaaaaa");
+
+  const onClickTouchable = (saveReminder) => {
+    if (saveReminderData.data.data.status === 'Success') {
+      setIsActive(true);
+    }
+  };
+
+  const clockColorChange = (item) => {
+    if(item.userMedicineId && color){
+      setClockActive(true);
+    }
+  }
+
+  const getStatus=()=>{
+      setColor(true);
+  }
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -108,17 +132,22 @@ const MedicinePanel = ({navigation}) => {
                   </ListItem.Content>
                   <View style={Styles.icon}>
                     <TouchableOpacity
+                      id="touch1"
                       style={Styles.rem}
                       onPress={() => {
                         navigation.navigate('Reminder', {
                           id: item.userMedicineId,
+                          fetchStatus:getStatus(),
                         });
+                        clockColorChange(item);
                       }}>
                       <FontAwesomeIcon
                         icon={faClock}
-                        color={colorPalette.mainColor}
+                        color={clockActive && item.userMedicineId ?"red":"black"}
                         size={24}
                       />
+
+                      {console.log(color,"colorrrrrrrrrr")}
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {

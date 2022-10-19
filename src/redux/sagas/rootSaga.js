@@ -34,6 +34,7 @@ import {watchDownloadPdf} from './otherScreenSaga/downloadPdfSaga';
 import {getUserMedicineWatcherSaga} from './userMedicine/getUserMedicineWatcherSaga';
 import {searchMedicineWatcherSaga} from './userMedicine/searchMedicineWatcherSaga';
 import { saveReminderWatcherSaga } from './saveReminder/saveReminderWatcherSaga';
+import { getReminderWatcherSaga } from './saveReminder/getReminderWatcherSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -73,5 +74,6 @@ export default function* RootSaga() {
     saveUserMedicineWatcherSaga(),
     searchMedicineWatcherSaga(),
     saveReminderWatcherSaga(),
+    getReminderWatcherSaga(),
   ]);
 }
