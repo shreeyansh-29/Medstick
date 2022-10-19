@@ -110,6 +110,7 @@ const Styles = StyleSheet.create({
   touchableOpacity: {
     width: '100%',
     height: '100%',
+    marginTop:30,
   },
   addPrescriptionHeader: {
     flex:1,
@@ -311,10 +312,21 @@ width:'80%'
   },
   prescriptionText:{
     color:colorPalette.appColor,
-    fontSize:20,
+    fontSize:26,
     padding:20,
+  },
+  prescriptionBox:{
+    width:'100%',
+    padding:10,
+    borderColor:colorPalette.appColor,
+    elevation:2,
+    borderStartWidth:4,
+  },
+  prescriptionText1:{
+    fontSize:18,
+    color:'#000',
+    paddingLeft:20
   }
-
 });
 
 export default Styles;

@@ -1489,9 +1489,8 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@ptomasroos/react-native-multi-slider@^2.2.2":
-  "integrity" "sha512-HWyCnRD3Z3SbHK2FLWYmBBqd1B4iXipeKv1+AK0FoY/CElEDTEixHE8hN60TsqxalPrznn798LE2Q4tHuCiyaA=="
-  "resolved" "https://registry.npmjs.org/@ptomasroos/react-native-multi-slider/-/react-native-multi-slider-2.2.2.tgz"
+"@ptomasroos/react-native-multi-slider@github:ptomasroos/react-native-multi-slider":
+  "resolved" "git+ssh://git@github.com/ptomasroos/react-native-multi-slider.git#7919a26fbda0a7aed00f25409b6dac81e8cac457"
   "version" "2.2.2"
 
 "@react-native-async-storage/async-storage@^1.17.10":
@@ -7412,6 +7411,11 @@
   "resolved" "https://registry.npmjs.org/react-native-multi-selectbox/-/react-native-multi-selectbox-1.5.0.tgz"
   "version" "1.5.0"
 
+"react-native-multi-slider@^0.3.6":
+  "integrity" "sha512-EoTMv2hKjBfJWMRZYp4A0LXg9pBPaMk+rgTXsvBjvI0owFqq8rIrnijO453oLqfbrXD72mBIHLRww0TUMZufdg=="
+  "resolved" "https://registry.npmjs.org/react-native-multi-slider/-/react-native-multi-slider-0.3.6.tgz"
+  "version" "0.3.6"
+
 "react-native-paper@^4.12.4":
   "integrity" "sha512-NMfLSIN0Ql/KCTSimhgzbEOgz371dqDAgChnp2VE4H7n1B0Pwy0bzPKmY/T8trVvEdmJRXrbXAusaFq8elDXNg=="
   "resolved" "https://registry.npmjs.org/react-native-paper/-/react-native-paper-4.12.4.tgz"
@@ -7488,6 +7492,11 @@
     "lodash.isequal" "^4.5.0"
     "memoize-one" "^6.0.0"
 
+"react-native-sensitive-info@^5.5.8":
+  "integrity" "sha512-p99oaEW4QG1RdUNrkvd/c6Qdm856dQw/Rk81f9fA6Y3DlPs6ADNdU+jbPuTz3CcOUJwuKBDNenX6LR9KfmGFEg=="
+  "resolved" "https://registry.npmjs.org/react-native-sensitive-info/-/react-native-sensitive-info-5.5.8.tgz"
+  "version" "5.5.8"
+
 "react-native-settings-list@^1.8.0":
   "integrity" "sha512-aNDpsGRlWcdW/pEpb6KsIiYeKCeQxVSi6T1sLbDEiv1BMl76+k7u66diRhkdamjaCH9vsVoD5/rC+WRDt/ZN5Q=="
   "resolved" "https://registry.npmjs.org/react-native-settings-list/-/react-native-settings-list-1.8.0.tgz"
@@ -7513,6 +7522,11 @@
   dependencies:
     "prop-types" "^15.6.1"
     "react-addons-shallow-compare" "15.6.2"
+
+"react-native-sqlite-storage@^6.0.1":
+  "integrity" "sha512-1tDFjrint6X6qSYKf3gDyz+XB+X79jfiL6xTugKHPRtF0WvqMtVgdLuNqZunIXjNEvNtNVEbXaeZ6MsguFu00A=="
+  "resolved" "https://registry.npmjs.org/react-native-sqlite-storage/-/react-native-sqlite-storage-6.0.1.tgz"
+  "version" "6.0.1"
 
 "react-native-svg@*", "react-native-svg@^12.1.0", "react-native-svg@^12.3.0", "react-native-svg@>= 11.x":
   "integrity" "sha512-ESG1g1j7/WLD7X3XRFTQHVv0r6DpbHNNcdusngAODIxG88wpTWUZkhcM3A2HJTb+BbXTFDamHv7FwtRKWQ/ALg=="
@@ -7559,7 +7573,7 @@
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
 
-"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.70 || 1000.0.0", "react-native@>= 0.30.0", "react-native@>= 0.55.x", "react-native@>= 0.58.2", "react-native@>= 0.67", "react-native@>=0.20.0", "react-native@>=0.40.0", "react-native@>=0.42.0", "react-native@>=0.46", "react-native@>=0.50.0", "react-native@>=0.57", "react-native@>=0.59", "react-native@>=0.65.0", "react-native@0.68.2":
+"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.70 || 1000.0.0", "react-native@>= 0.30.0", "react-native@>= 0.55.x", "react-native@>= 0.58.2", "react-native@>= 0.67", "react-native@>=0.14.0", "react-native@>=0.20.0", "react-native@>=0.40.0", "react-native@>=0.42.0", "react-native@>=0.46", "react-native@>=0.50.0", "react-native@>=0.57", "react-native@>=0.59", "react-native@>=0.65.0", "react-native@0.68.2":
   "integrity" "sha512-qNMz+mdIirCEmlrhapAtAG+SWVx6MAiSfCbFNhfHqiqu1xw1OKXdzIrjaBEPihRC2pcORCoCHduHGQe/Pz9Yuw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.68.2.tgz"
   "version" "0.68.2"

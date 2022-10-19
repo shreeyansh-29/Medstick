@@ -9,16 +9,16 @@ import {
   Alert,
   FlatList,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AddMedicinesHeader from '../../../components/molecules/headers/addMedicinesHeader';
-import {styles} from '../../../styles/homeScreenStyles/headerStyles';
+import { styles } from '../../../styles/homeScreenStyles/headerStyles';
 
-import {colorPalette} from '../../../components/atoms/colorPalette';
-import {faArrowLeft, faSearch} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import { colorPalette } from '../../../components/atoms/colorPalette';
+import { faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
-import {TextInput} from 'react-native-paper';
-import {Picker} from '@react-native-picker/picker';
+import { TextInput } from 'react-native-paper';
+import { Picker } from '@react-native-picker/picker';
 import LottieView from 'lottie-react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SelectMedicineName from '../../../components/atoms/selectMedicineName';
@@ -26,24 +26,33 @@ import TotalStock from '../../../components/molecules/totalStock';
 import LeftStock from '../../../components/molecules/leftStock';
 import ModalHeader from '../../../components/molecules/headers/modalHeader';
 import SaveButton from '../../../components/molecules/saveButton';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {loadAddMedicine} from '../../../redux/action/userMedicine/addMedicineAction';
-import {showSuccessMessage} from '../../../components/atoms/successMessage';
+import { loadAddMedicine } from '../../../redux/action/userMedicine/addMedicineAction';
+import { showSuccessMessage } from '../../../components/atoms/successMessage';
 import Toast from 'react-native-toast-message';
 import AddMedicineButton from '../../../components/atoms/addMedicineButton';
-import {loadSaveUserMedicine} from '../../../redux/action/userMedicine/saveUserMedicineAction';
-import {searchMedicineRequest} from '../../../redux/action/userMedicine/searchMedicineAction';
-import {ListItem} from 'react-native-elements';
-const AddMedicines = ({navigation}) => {
+import { loadSaveUserMedicine } from '../../../redux/action/userMedicine/saveUserMedicineAction';
+import { searchMedicineRequest } from '../../../redux/action/userMedicine/searchMedicineAction';
+import { ListItem } from 'react-native-elements';
+import { AddMedicine, getMedicine } from '../../../utils/storage';
+import { openDatabase } from 'react-native-sqlite-storage';
+   
+var db =openDatabase({name:'MedicineDatabase.db'})
+
+
+
+const AddMedicines = ( {navigation} ) => {
   const [medicineName, setMedicineName] = useState('');
+  const [userMedicineName,setUserMedicineName]=useState('');
+  const [userMedicineDescription,setUserMedicineDescription]=useState('')
   const [searchMedicineByName, setSearchMedicineByName] = useState('');
   const [tempSearch, setTempSearch] = useState('');
   const [details, setDeatils] = useState('');
   const [modal, setModal] = useState(false);
   const [searchModal, setSearchModal] = useState(false);
   const [dose, setDose] = useState('');
-  const [pill, setPill] = useState('');
+  const [pill, setPill] = useState('tablet');
   const [stock, setStock] = useState('');
   const [remainingStock, setRemainingStock] = useState('');
   const [token, setToken] = useState('');
@@ -54,10 +63,42 @@ const AddMedicines = ({navigation}) => {
   const saveMedicineData = useSelector(state => state.addMedicineReducer?.data);
   const saveMedicine = useSelector(state => state.addMedicineReducer);
   const dispatch = useDispatch();
+
+  const [arr, setArr] = useState('')
+
+useEffect(()=>{
+  getMedicine().then(data=>setArr(data))
+},[])
+
+console.log('array',arr)
+  useEffect(()=>{
+    db.transaction(function(txn){
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND  name='table_medicine'",[],
+        function(tx,res)
+        {
+          console.log('item',res.rows.length)
+          if(res.rows.length==0)
+          {
+            txn.executeSql('DROP TABLE IF EXISTS table_medicine',[])
+            txn.executeSql(
+              'CREATE TABLE IF NOT EXISTS table_medicine(medicine_idINTEGER PRIMARY KEY AUTOINCREMENT,medicine_name VARCHAR(20),dosage_Type VARCHAR(20),dosage_Quantity VARCHAR(20),dosage_Unit INT(1000),stock INT(100),left_Stock INT(100))',
+              []
+            );
+
+          }
+        }
+      );
+    }
+    
+    );
+  },[]);
+  
+
   const saveUserMedicineData = useSelector(
     state => state.saveUserMedicineReducer,
   );
-
+  console.log(saveUserMedicineData,"RESPONSE")
   const searchMedicine = useSelector(state => state.searchMedicine);
   console.log(tempSearch, 'search');
 
@@ -67,7 +108,7 @@ const AddMedicines = ({navigation}) => {
     }
   }, [searchMedicine]);
 
-  const payload = {pill, dose, doseType, stock, remainingStock};
+  const payload = { pill, dose, doseType, stock, remainingStock };
   // console.log(payload, 'all');
   const getTokenId = async () => {
     try {
@@ -114,8 +155,10 @@ const AddMedicines = ({navigation}) => {
           text: 'OK',
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
+
+    navigation.pop()
   };
   const showPrescriptionAlert = () => {
     Alert.alert(
@@ -126,12 +169,12 @@ const AddMedicines = ({navigation}) => {
           text: 'OK',
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
   const showMedicineAlert = () => {
-    Alert.alert('Warning', 'select the medicine name', [{text: 'OK'}], {
+    Alert.alert('Warning', 'select the medicine name', [{ text: 'OK' }], {
       cancelable: false,
     });
   };
@@ -145,7 +188,7 @@ const AddMedicines = ({navigation}) => {
           text: 'OK',
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
@@ -201,6 +244,9 @@ const AddMedicines = ({navigation}) => {
     setMedicineId(tempMedicineId);
     setPrescriptionId(tempPrescriptionId);
   };
+
+
+
   useEffect(() => {
     fetchPrescriptionAndMedicineId();
   }, []);
@@ -213,7 +259,7 @@ const AddMedicines = ({navigation}) => {
     setRemainingStock(data);
   };
 
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     return (
       <View>
         <ListItem style={styles.list}>
@@ -223,7 +269,7 @@ const AddMedicines = ({navigation}) => {
                 <ListItem.Subtitle style={styles.patientName}>
                   {`${item.medicineName}`}
                 </ListItem.Subtitle>
-                <ListItem.Subtitle style={{marginLeft: 3}}>
+                <ListItem.Subtitle style={{ marginLeft: 3 }}>
                   {`${item.description}`}
                 </ListItem.Subtitle>
               </TouchableOpacity>
@@ -233,6 +279,96 @@ const AddMedicines = ({navigation}) => {
       </View>
     );
   };
+
+
+
+
+  const addMedicineInLocalStorage = async () => {
+    if (
+      pill === '' ||
+      stock === '' ||
+      remainingStock === '' ||
+      dose === '' ||
+      doseType === ''
+    ) {
+      showAlert();
+    }
+    else if (medicineId === '') {
+      showMedicineAlert();
+    }
+    else if (prescriptionId === '') {
+      showPrescriptionAlert();
+    }
+    else {
+
+      let obj = {
+        
+        MedicineName:userMedicineName,
+        MedicineDescription:userMedicineDescription,
+        dosageType: pill,
+        dosageQuantity: doseType,
+        dosageUnit: dose,
+        stock: stock,
+        leftStock: remainingStock,
+      }
+      setArr([...arr, obj])
+      if(id !== null || token!==null){
+      dispatch(loadSaveUserMedicine(id,token,prescriptionId,medicineId,pill,dose,doseType,stock,remainingStock,))
+
+      if(id === null){
+        
+        console.log(arr,'savedddd')
+        navigation?.navigate('MedicinePanel')
+      }
+      if (saveUserMedicineData?.status === 'Success') {
+        showSuccessMessage();
+        navigation.navigate('Home');
+      }
+    }}
+
+  }
+
+  useEffect(() => {
+    if(pill !== null && medicineName!==null && doseType !==null &&dose !==null&&stock!==null&&remainingStock!==null)
+    {
+    AddMedicine(arr)
+    }
+    else{
+      console.log('else')
+    }
+  }, [arr])
+
+  let save_Medicine=()=>{
+    console.log(pill,'pills')
+    if (
+      userMedicineName=== ''||
+      pill === '' ||
+      stock === '' ||
+      remainingStock === '' ||
+      dose === '' ||
+      doseType === ''
+    ) {
+      
+      showAlert();
+      return
+    }
+    
+    console.log('else')
+    db.transaction(function(tx)
+    {
+      tx.executeSql(
+        'INSERT INTO table_medicine (medicine_name,dosage_Type,dosage_Quantity,dosage_Unit,stock,left_Stock) VALUES(?,?,?,?,?)',[userMedicineName,pill,doseType,dose,stock,remainingStock],
+        (tx,results)=>{
+          console.log('Results',results.rowsAffected)
+          if(results.rowsAffected >0)
+          {
+           showSuccessMessage() 
+          }
+        }
+      )
+    })
+  }
+  
 
   const addMedicine = async () => {
     if (
@@ -250,23 +386,8 @@ const AddMedicines = ({navigation}) => {
     if (prescriptionId === '') {
       showPrescriptionAlert();
     } else {
-      dispatch(
-        loadSaveUserMedicine(
-          id,
-          token,
-          prescriptionId,
-          medicineId,
-          pill,
-          dose,
-          doseType,
-          stock,
-          remainingStock,
-        ),
-      );
-      if (saveUserMedicineData?.status === 'Success') {
-        showSuccessMessage();
-        navigation.navigate('Home');
-      }
+      ;
+      
     }
   };
 
@@ -274,7 +395,7 @@ const AddMedicines = ({navigation}) => {
     <View style={Styles.addMedicinePage}>
       <Toast visibilityTime={3000} />
       <Modal visible={modal}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <TouchableOpacity onPress={() => setModal(false)}>
             <Ionicons name="close" size={30} />
           </TouchableOpacity>
@@ -283,8 +404,8 @@ const AddMedicines = ({navigation}) => {
           </View>
           <View style={Styles.modalContainer}>
             <ScrollView style={Styles.medicineModal}>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{width: '85%'}}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ width: '85%' }}>
                   <TextInput
                     id="name"
                     label="Medicine Name"
@@ -333,7 +454,7 @@ const AddMedicines = ({navigation}) => {
         </View>
       </Modal>
       <Modal visible={searchModal}>
-        <View style={{margin: '5%'}}>
+        <View style={{ margin: '5%' }}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => {
@@ -369,7 +490,7 @@ const AddMedicines = ({navigation}) => {
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => {
-            navigation.pop();
+            navigation?.pop();
           }}>
           <FontAwesomeIcon
             icon={faArrowLeft}
@@ -382,9 +503,37 @@ const AddMedicines = ({navigation}) => {
       <View style={Styles.constainer}>
         <ScrollView>
           <KeyboardAvoidingView>
+          {id !== null ?
             <TouchableOpacity onPress={() => setModal(true)}>
               <SelectMedicineName medicineName={medicineName} />
             </TouchableOpacity>
+          :(
+            <View>
+            <TextInput
+                  style={{ width: '100%' }}
+                  id="name"
+                  label="Medicine Name"
+                  value={userMedicineName}
+                  mode="outlined"
+                  onChangeText={text => setUserMedicineName(text)}
+                  outlineColor="#02aba6"
+                  activeOutlineColor="#02aba6"
+                />
+                 <TextInput
+                  style={{ width: '100%' }}
+                  id="name"
+                  label="Medicine description"
+                  value={userMedicineDescription}
+                  mode="outlined"
+                  onChangeText={text => setUserMedicineDescription(text)}
+                  outlineColor="#02aba6"
+                  activeOutlineColor="#02aba6"
+                  multiline={true}
+                numberOfLines={6}
+                />
+          </View>
+          )
+          }
 
             <View style={Styles.picker}>
               <Picker
@@ -399,9 +548,9 @@ const AddMedicines = ({navigation}) => {
               </Picker>
             </View>
             <View style={Styles.textView}>
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 <TextInput
-                  style={{width: '97%'}}
+                  style={{ width: '97%' }}
                   id="name"
                   label="Dose"
                   value={dose}
@@ -411,10 +560,10 @@ const AddMedicines = ({navigation}) => {
                   activeOutlineColor="#02aba6"
                 />
               </View>
-              <View style={{width: '50%'}}>
+              <View style={{ width: '50%' }}>
                 <TextInput
                   id="name"
-                  style={{width: '97%'}}
+                  style={{ width: '97%' }}
                   label="Dose Type"
                   value={doseType}
                   disabled="true"
@@ -441,10 +590,12 @@ const AddMedicines = ({navigation}) => {
                 <LeftStock onChange={getRemainingStock} />
               </View>
             </View>
+            {id !==null ?
             <View style={Styles.textView}>
               <View style={Styles.textbox}>
                 <Text style={Styles.text}>Add Prescription Here </Text>
               </View>
+              
               <TouchableOpacity
                 style={Styles.touchableOpacity}
                 onPress={() => {
@@ -457,11 +608,16 @@ const AddMedicines = ({navigation}) => {
                   source={require('../../../assets/animation/addPrescriptionButton.json')}
                 />
               </TouchableOpacity>
+              
+
             </View>
+            :(
+              <View></View>
+            )}
             <TouchableOpacity
               style={Styles.touchableOpacity}
               onPress={() =>
-                addMedicine(
+                addMedicineInLocalStorage(
                   id,
                   token,
                   prescriptionId,
@@ -471,7 +627,9 @@ const AddMedicines = ({navigation}) => {
                   doseType,
                   stock,
                   remainingStock,
+                  
                 )
+                // {save_Medicine()}
               }>
               <SaveButton />
             </TouchableOpacity>

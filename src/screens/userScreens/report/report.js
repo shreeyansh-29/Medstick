@@ -21,6 +21,11 @@ import ProgressBar from '../../../components/molecules/progressBar';
 import TimeSlot from '../../../components/atoms/timeSlot';
 import {Picker} from '@react-native-picker/picker';
 import MedicinePicker from '../../../components/atoms/medicinePicker';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadGetMedicineHistory } from '../../../redux/action/userMedicine/getMedicineHistoryAction';
+import TimeText from '../../../components/atoms/Text';
+import MedicineTime from '../../../components/molecules/medicineTime';
+import { loadGetMedicineHistoryByDate } from '../../../redux/action/userMedicine/getMedicineHistoryByDateAction';
 LocaleConfig.locales['en'] = {
   monthNames: [
     'January',
@@ -62,14 +67,47 @@ LocaleConfig.locales['en'] = {
   dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
 };
 LocaleConfig.defaultLocale = 'en';
-const Report = ({navigation}) => {
+const Report = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const [medicineId, setMedicineId] = useState('')
+  console.log(medicineId, "mid")
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [medicineName, setMedicineName] = useState('');
-  console.log(selectedDate, 'date');
-  const year = selectedDate?.year;
-  const month = selectedDate?.month;
-  const date = selectedDate?.day;
+  const [selectedDate, setSelectedDate] = useState('')
+  const [selectDate,setSelectDate]=useState('')
+  console.log(selectedDate,'sdate')
+  const [medicineName, setMedicineName] = useState('')
+  
+  const year = selectedDate?.year
+  const month = selectedDate?.month
+  const date = selectedDate?.day
+
+  const medicineHistory = useSelector(state => state.getMedicineHistoryByDateReducer)
+  console.log(medicineHistory, "medicine History")
+  // useEffect(()=>{
+  //   dispatch(loadGetMedicineHistory(medicineId))
+  // },[])
+
+  const fetchMedicineHistory=()=>{
+    setSelectDate(year+'-'+month+'-'+date)
+    dispatch(loadGetMedicineHistoryByDate(medicineId,selectDate))
+  }
+ 
+
+  console.log(selectedDate, "date")
+  const modalOpen=(day)=>{
+    console.log(day)
+    setSelectedDate(day)
+    setModalVisible(true)
+    fetchMedicineHistory()
+    
+  }
+
+  const fetchMedicineId = (data) => {
+    setMedicineId(data)
+    if (medicineId !== null) {
+      // dispatch(loadGetMedicineHistory(medicineId))
+    }
+  }
 
   let startDate = new Date().toDateString();
   return (
@@ -77,8 +115,13 @@ const Report = ({navigation}) => {
       <View style={styles.container} />
       <View style={styles.report}>
         <MainHeader title={'Reports'} navigation={navigation} />
+        <View style={{padding:15}}>
+        <MedicinePicker
+          onChange={fetchMedicineId}
+        /></View>
+        
+
         <ScrollView>
-          <MedicinePicker />
           <View style={styles.reportContainer}>
             <View style={styles.analytics}>
               <View style={styles.container1Text}>
@@ -124,8 +167,12 @@ const Report = ({navigation}) => {
                     </View>
 
                     <View style={styles.progressBar}>
-                      <TimeSlot time={'time'} />
-                      {/* <ProgressBar /> */}
+                      <TimeSlot
+                        time={'Time'}
+                      />
+                      <ProgressBar />
+                      <MedicineTime />
+
                     </View>
                   </View>
                 </View>
@@ -138,8 +185,7 @@ const Report = ({navigation}) => {
               minDate={'2012-05-10'}
               maxDate={'2222-12-30'}
               onDayPress={day => {
-                setSelectedDate(day);
-                setModalVisible(true);
+                modalOpen(day,year,month,date)
               }}
               onDayLongPress={day => {
                 // console.log('selected day', day);
@@ -169,6 +215,14 @@ const Report = ({navigation}) => {
               markedDates={markedDay}
             />
           </View>
+          {data.date == '2022-09-22' ? (
+            <View></View>
+          ) : (
+            <View style={{ margin: 15 }}>
+              <Text style={{ fontSize: 17, color: 'black' }}>No Remainders</Text>
+
+            </View>
+          )}
         </ScrollView>
       </View>
     </>
