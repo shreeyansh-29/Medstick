@@ -69,8 +69,10 @@ const Reminder = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const saveReminderData = useSelector(saveReminderSelector.saveReminder);
+  console.log(saveReminderData,"save reminder");
 
   const userMedicineId = route.params.id;
+  console.log(userMedicineId, 'id');
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -102,38 +104,42 @@ const Reminder = ({route, navigation}) => {
     return item => setSelectedTimings(xorBy(selectedTimings, [item], 'id'));
   };
 
-  const saveData = (
-    fDatePrimary,
-    fDateSecondary,
-    title,
-    check1,
-    noEndDate,
-    reminderStatus,
-    frequency,
-    food,
-    totalReminders,
-    currentCount,
-    userMedicineId,
-  ) => {
-    dispatch(
-      saveReminderRequest(
-        fDatePrimary,
-        fDateSecondary,
-        title,
-        check1,
-        noEndDate,
-        reminderStatus,
-        frequency,
-        food,
-        totalReminders,
-        currentCount,
-        userMedicineId,
-      ),
-    );
-    setTimeout(() => {
-      navigation.pop();
-    }, 2000);
-  };
+  // const saveData = (
+  //   fDatePrimary,
+  //   fDateSecondary,
+  //   days,
+  //   title,
+  //   time,
+  //   check1,
+  //   noEndDate,
+  //   reminderStatus,
+  //   frequencyTemp,
+  //   food,
+  //   totalReminders,
+  //   currentCount,
+  //   userMedicineId,
+  // ) => {
+  //   dispatch(
+  //     saveReminderRequest(
+  //       fDatePrimary,
+  //       fDateSecondary,
+  //       days,
+  //       title,
+  //       time,
+  //       check1,
+  //       noEndDate,
+  //       reminderStatus,
+  //       frequencyTemp,
+  //       food,
+  //       totalReminders,
+  //       currentCount,
+  //       userMedicineId,
+  //     ),
+  //   );
+  //   setTimeout(() => {
+  //     navigation.pop();
+  //   }, 2000);
+  // };
 
   const onSelecteddaysItemsChange = selectedi => {
     slecteddaysstate(selectedi);
@@ -269,21 +275,45 @@ const Reminder = ({route, navigation}) => {
 
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
-    saveData(
-      time,
-      days,
-      fDatePrimary,
-      fDateSecondary,
-      title,
-      check1,
-      noEndDate,
-      reminderStatus,
-      frequency,
-      food,
-      totalReminders,
-      currentCount,
-      userMedicineId,
+    const frequencyTemp = frequency.toString();
+    console.log(fDatePrimary, 'startDate');
+    
+    console.log(days, 'days');
+    console.log(title, 'reminderTitle');
+    console.log(time, 'reminderTime');
+    console.log(check1, 'everyday');
+    console.log(noEndDate, ' no end date');
+    if(endDate==="No End Date"){
+      setfDate('null');
+    }
+    console.log(reminderStatus, 'reminderStatus');
+    console.log(frequencyTemp, 'frequency');
+    console.log(fDateSecondary, 'endDate');
+    console.log(food, 'beforeAfter');
+    console.log(totalReminders, 'totalReminders');
+    console.log(currentCount, 'currentCount');
+    console.log(userMedicineId,"iddddd");
+
+    dispatch(
+      saveReminderRequest(
+        fDatePrimary,
+        fDateSecondary,
+        days,
+        title,
+        time,
+        check1,
+        noEndDate,
+        reminderStatus,
+        frequencyTemp,
+        food,
+        totalReminders,
+        currentCount,
+        userMedicineId,
+      ),
     );
+    // setTimeout(() => {
+    //   navigation.pop();
+    // }, 2000);
   };
 
   // console.log(endDate);

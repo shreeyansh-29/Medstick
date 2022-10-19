@@ -1,4 +1,4 @@
-const saveReminder = state => state.saveReminder.data;
+const saveReminder = state => state.saveReminder;
 const saveReminderLoading = state => state.saveReminder.isLoading;
 const saveReminderRequest = state => state.saveReminder.error;
 
