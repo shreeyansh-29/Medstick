@@ -41,22 +41,27 @@ const AppointmentReminderList = ({navigation}) => {
     appointmentReminderSelector.getAppointmentLoading,
   );
 
+  const updateAppointmentData = useSelector(appointmentReminderSelector.updateAppointment);
+  console.log(updateAppointmentData,"updateAppointmentData");
+
   let fDate =
     date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
   let time = date.getHours() + ':' + date.getMinutes() + ':' + '00';
 
-  console.log(fDate,"fDateee");
-
   const updateAppointment1 = useSelector(
-    appointmentReminderSelector.updateAppointment);
+    appointmentReminderSelector.updateAppointmentLoading,
+  );
 
-console.log(updateAppointment1,"update....")
+  console.log(updateAppointment1, 'update....');
 
-  const getAppointmentLoader= useSelector(appointmentReminderSelector.getAppointmentLoading);
+  const getAppointmentLoader = useSelector(
+    appointmentReminderSelector.getAppointmentLoading,
+  );
 
-  const deleteAppointment = useSelector(appointmentReminderSelector.deleteAppointment);
-  console.log(deleteAppointment,"delete appointment");
-
+  const deleteAppointment = useSelector(
+    appointmentReminderSelector.deleteAppointment,
+  );
+  console.log(deleteAppointment, 'delete appointment');
 
   useEffect(() => {
     if (getdoctor?.data !== null) {
@@ -77,11 +82,13 @@ console.log(updateAppointment1,"update....")
 
   const updateAppointment = (fDate, time, notes1, appointmentId) => {
     dispatch(updateAppointmentRequest(fDate, time, notes1, appointmentId));
-    setTimeout(() => {
-      setModalVisible(false);
-    }, 1000);
-
+  
+    if(updateAppointmentData?.data?.status === 'Success')
+    {
+      setModalVisible(false)
+    }
     dispatch(getAppointmentRequest(pageNo));
+    
   };
 
   const renderItem = ({item}) => {
@@ -93,15 +100,25 @@ console.log(updateAppointment1,"update....")
               <ListItem.Subtitle style={styles.patientName}>
                 Date: {`${item.localDate}`}
               </ListItem.Subtitle>
-              <ListItem.Subtitle style={{marginLeft: 3, fontSize:15, color: colorPalette.mainColor}}>
+              <ListItem.Subtitle
+                style={{
+                  marginLeft: 3,
+                  fontSize: 15,
+                  color: colorPalette.mainColor,
+                }}>
                 Time: {`${item.localTime}`}
               </ListItem.Subtitle>
-              <ListItem.Subtitle style={{marginLeft: 3, fontSize:15, color: colorPalette.mainColor}}>
+              <ListItem.Subtitle
+                style={{
+                  marginLeft: 3,
+                  fontSize: 15,
+                  color: colorPalette.mainColor,
+                }}>
                 Notes: {`${item.notes}`}
               </ListItem.Subtitle>
             </View>
           </ListItem.Content>
-          <View style={{flexDirection: 'row', left: 55, padding:"6%"}}>
+          <View style={{flexDirection: 'row', left: 55, padding: '6%'}}>
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(true);
@@ -134,13 +151,8 @@ console.log(updateAppointment1,"update....")
   };
 
   return (
-    
     <View style={{flex: 1}}>
-   
       <SubHeader title={'Appointment Reminders'} navigation={navigation} />
-
-      {/* Modal */}
-      {getdoctor.isLoading?.loader && <Loader/>}
       <Modal visible={modalVisible}>
         <View style={{flex: 1}}>
           <View style={{backgroundColor: colorPalette.mainColor}}>
@@ -228,7 +240,15 @@ console.log(updateAppointment1,"update....")
               outlineColor="#02ABA6"
               activeOutlineColor="#02ABA6"
             />
-            <View style={{borderWidth:1.5, marginTop:"5%", marginLeft:"8%", marginRight:"9.6%", borderRadius:7, borderColor:colorPalette.mainColor }} >
+            <View
+              style={{
+                borderWidth: 1.5,
+                marginTop: '5%',
+                marginLeft: '8%',
+                marginRight: '9.6%',
+                borderRadius: 7,
+                borderColor: colorPalette.mainColor,
+              }}>
               <TouchableOpacity
                 onPress={() =>
                   updateAppointment(fDate, time, notes1, appointmentId)
@@ -252,17 +272,9 @@ console.log(updateAppointment1,"update....")
           </View>
         </View>
       </Modal>
-     
+      {/* {updateAppointment1?(<></>):(<Loader/>)} */}
 
-      {appointments.length === 0 ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <CustomImage
-            resizeMode="contain"
-            styles={{width: '70%'}}
-            source={require('../../assets/images/noappointment.png')}
-          />
-        </View>
-      ) : (
+      {getDoctorLoading ? (
         <FlatList
           showsVerticalScrollIndicator={false}
           data={appointments[0]}
@@ -270,6 +282,10 @@ console.log(updateAppointment1,"update....")
           extraData={appointments[0]}
           numColumns={1}
         />
+      ) : (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <Loader />
+        </View>
       )}
       <View style={{position: 'absolute', bottom: 20, right: 16}}>
         <AddButton
@@ -280,7 +296,6 @@ console.log(updateAppointment1,"update....")
         />
       </View>
     </View>
-    
   );
 };
 
