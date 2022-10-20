@@ -5,43 +5,56 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadGetUserMedicine} from '../../redux/action/userMedicine/getUserMedicineAction';
 import {styles} from '../../styles/reportScreenStyles/reportScreenStyles';
 
-const MedicinePicker = () => {
-  const [medicineName, setMedicineName] = useState('');
-  const dispatch = useDispatch();
-  const getUserMedicinedata = useSelector(
-    state => state.getUserMedicineReducer,
-  );
-  console.log(getUserMedicinedata, 'initial state');
-  const getUserMedicine = useSelector(
-    state => state.getUserMedicineReducer?.data?.result,
-  );
-  console.log(getUserMedicine, 'medicine');
-  const getmedicine = () => {
-    dispatch(loadGetUserMedicine());
-  };
-  useEffect(() => {
-    getmedicine();
-  }, []);
+const MedicinePicker = (props) => {
+    const [medicineName, setMedicineName] = useState('')
+    const dispatch = useDispatch()
 
-  return (
-    <View style={styles.picker}>
-      <Picker
-        id="picker1"
-        selectedValue={medicineName}
-        onValueChange={data => setMedicineName(data)}>
-        {getUserMedicine?.map((item, index) => {
-          return (
-            <Picker.Item
-              label={item.medicineName}
-              value={item.medicineName}
-              key={index}
-              style={{fontSize:18}}
-            />
-          );
-        })}
-      </Picker>
-    </View>
-  );
-};
+    const getUserMedicinedata = useSelector(state => state.getUserMedicineReducer?.data)
+    const getUserMedicine = useSelector(state => state.getUserMedicineReducer?.data?.result)
+    const getmedicine = () => {
+        dispatch(loadGetUserMedicine())
+    }
+
+    useEffect(() => {
+        getmedicine()
+    }, [medicineName])
+
+    const onchangeFnc = (data) => {
+        setMedicineName(data)
+        props.onChange(medicineName)
+    }
+
+
+    return (
+
+        <View style={styles.picker} >
+
+            <Picker
+                id='picker1'
+                selectedValue={medicineName}
+                onValueChange={(data) => onchangeFnc(data)}
+
+            >
+
+                {getUserMedicine?.map((item, index) => {
+
+                    return (
+
+                        <Picker.Item
+                            label={item.medicineName}
+                            value={item.userMedicineId}
+                            key={index}
+                        />
+
+
+                    )
+                })}
+
+
+            </Picker>
+        </View >
+
+    )
+}
 
 export default MedicinePicker;

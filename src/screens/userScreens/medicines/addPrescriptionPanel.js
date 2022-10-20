@@ -8,6 +8,7 @@ import { loadGetPrescription } from '../../../redux/action/doctorPrescription/ge
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NoData from '../../../components/atoms/noData'
 import { colorPalette } from '../../../components/atoms/colorPalette'
+import PrescriptionBox from '../../../components/atoms/prescriptionBox'
 
 
 const AddPrescriptionPanel = ({ navigation }) => {
@@ -16,7 +17,7 @@ const AddPrescriptionPanel = ({ navigation }) => {
     const [pageNo, setPageNo] = useState(0)
     const pageSize = 2
     const dispatch = useDispatch()
-    const getAllPrescription = useSelector(state => state.getPrescriptionReducer)
+    const getAllPrescription = useSelector(state => state.getPrescriptionReducer?.data?.result)
     console.log(getAllPrescription, "getallPrescription")
 
     const getTokenId = async () => {
@@ -51,7 +52,19 @@ const AddPrescriptionPanel = ({ navigation }) => {
                     <Image source={require('../../../assets/images/noPrescription.png')} resizeMode='contain' style={{ width: '80%' }} />
                 </View>
                 :
-                <Text>addPrescriptionPanel</Text>
+                
+                getAllPrescription?.map((item)=>(
+                    <PrescriptionBox
+                        
+                        doctorName={item.doctorName}
+                        locations={item.location}
+                        contact={item.contact}
+                        specialization={item.specialization}
+                    />
+                ))
+                
+                
+
             }
 
         </View>

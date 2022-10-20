@@ -1,5 +1,6 @@
 let apiUrl = 'https://063a-106-51-81-179.in.ngrok.io/api/v1/user';
 
+
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
 export const MY_PATIENTS = `${apiUrl}/my-patients`;
@@ -22,8 +23,9 @@ export const UPDATE_APPOINTMENT = `${apiUrl}/update-doctor-appointment`;
 export const DELETE_APPOINTMENT = `${apiUrl}/delete-appointment`;
 export const GET_USER_EMAIL = `${apiUrl}/email`;
 export const SEND_REQUEST = `${apiUrl}/save-request`;
-export const GET_ALL_NOTIFICATION = `${apiUrl}/notification/get-notifications`;
-export const DELETE_NOTIFICATION = `${apiUrl}/notification/delete`;
+export const GET_USER_MEDICINE = `${apiUrl}/medicines`;
+export const GET_ALL_NOTIFICATION = `${apiUrl}/get-notifications`;
+export const DELETE_NOTIFICATION = `${apiUrl}/delete`;
 export const GET_ALL_PRESCRIPTION = `${apiUrl}/doctor-prescriptions`;
 export const SAVE_USER_MEDICINE = `${apiUrl}/medicine/save`;
 export const MY_CARETAKER = `${apiUrl}/my-caretakers`;
@@ -32,10 +34,11 @@ export const DELETE_REQUEST = `${apiUrl}/request-delete`;
 export const SEARCH_MEDICINE = `${apiUrl}/search-medicine`;
 export const USER_PRESCRIPTIONS = `${apiUrl}/doctor-prescription`;
 export const SAVED_MEDICINE_REMINDER = `${apiUrl}/medicine-reminder`;
-export const GET_MEDICINE_HISTORY = `${apiUrl}/medicine-history`;
 export const NOTIFY_USER = `${apiUrl}/notify-user`;
 export const MEDICINE_IMAGES = `${apiUrl}/medicine-images`;
 export const FETCH_IMAGE = `${apiUrl}`;
+export const GET_MEDICINE_HISTORY=`${apiUrl}/medicine-history`
+export const GET_MEDICINE_HISTORY_BY_DATE=`${apiUrl}/medicine-by-date`
 export const DOWNLOAD_PDF = `${apiUrl}/pdf`;
 export const SAVE_REMINDER = `${apiUrl}/medicine-reminder`;
 

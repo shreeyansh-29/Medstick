@@ -32,6 +32,8 @@ import {watchMedicineImagesSaga} from './patients/medicineImagesSaga';
 import {watchGetMedicinesHistorySaga} from './patients/getMedsHistorySaga';
 import {watchDownloadPdf} from './otherScreenSaga/downloadPdfSaga';
 import {getUserMedicineWatcherSaga} from './userMedicine/getUserMedicineWatcherSaga';
+import { getMedicineHistoryWatcherSaga } from './userMedicine/getMedicineHistoryWatcherSaga';
+import { getMedicineHistoryByDateWatcherSaga } from './userMedicine/getMedicineHistoryByDateWatcherSaga';
 import {searchMedicineWatcherSaga} from './userMedicine/searchMedicineWatcherSaga';
 import { saveReminderWatcherSaga } from './saveReminder/saveReminderWatcherSaga';
 import { getReminderWatcherSaga } from './saveReminder/getReminderWatcherSaga';
@@ -71,6 +73,8 @@ export default function* RootSaga() {
     watchGetMedicinesHistorySaga(),
     watchDownloadPdf(),
     getUserMedicineWatcherSaga(),
+    getMedicineHistoryWatcherSaga(),
+    getMedicineHistoryByDateWatcherSaga(),
     saveUserMedicineWatcherSaga(),
     searchMedicineWatcherSaga(),
     saveReminderWatcherSaga(),

@@ -6,15 +6,10 @@ import TimeSlot from '../atoms/timeSlot'
 
 const ProgressBar = () => {
   return (
-   <View style={{alignItems:'center',justifyContent:'space-around'}}>
+   <View style={{alignItems:'center',}}>
    
    <Dot/>
     <Line/>
-   
-  
-    <Dot/>
-    <Line/>
-    <Dot/>
    </View>
   )
 }

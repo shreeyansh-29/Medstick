@@ -1,9 +1,9 @@
 import { getUserMedicine } from "../../constant/userMedicine/getUserMedicineConstant";
 
-const loadGetUserMedicine=()=>{
+const loadGetUserMedicine=(medicineId)=>{
 return {
     type:getUserMedicine.getUserMedicineLoad,
-   
+   payload:medicineId
 }
 }
 

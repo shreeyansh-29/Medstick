@@ -1,10 +1,11 @@
 import React from 'react'
-import Icon from 'react-native-vector-icons/Entypo'
+import Icon from 'react-native-vector-icons/Octicons'
 import { colorPalette } from './colorPalette'
+
 
 const Dot = () => {
   return (
-    <Icon name={'dot-single'} size={100} color={colorPalette.appColor}/>
+    <Icon name={'dot'} size={40} color={colorPalette.appColor}/>
   )
 }
 
