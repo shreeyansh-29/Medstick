@@ -26,7 +26,7 @@ const CloseButton = ({ notificationId, navigation }) => {
   return (
     <View>
       <TouchableOpacity onPress={() => deleteNotification(notificationId)}>
-        <AntIcon name='closecircleo' color={colorPalette.redColor} size={30} />
+        <AntIcon name='close' color={colorPalette.redPercentageColor} size={20} />
       </TouchableOpacity>
     </View>
   )

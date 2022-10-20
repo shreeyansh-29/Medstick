@@ -4,11 +4,11 @@ import { colorPalette } from './colorPalette'
 
 const Line = () => {
   return (
-    <View>
-        <View style={{height:'70%',width:5,backgroundColor:colorPalette.appColor}}>
+    
+        <View style={{width:5,backgroundColor:colorPalette.appColor,height:'30%',}}>
 
         </View>
-        </View>
+        
    
   )
 }

@@ -158,9 +158,11 @@ export const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: colorPalette.appColor,
   },
-  progressBar: {
-    flex: 8,
-    padding: 10,
+  progressBar:{
+   justifyContent:'center',
+    flex:8,
+    padding:10,
+    flexDirection:'row'
     // alignItems:'center',
   },
   modalHeaderText: {
@@ -174,13 +176,15 @@ export const styles = StyleSheet.create({
     flex: 2,
     margin: 15,
   },
-  timeSlot: {
-    backgroundColor: colorPalette.appColor,
-    borderRadius: 70,
-    width: '30%',
-    height: '15%',
-    justifyContent: 'center',
-    alignItems: 'center',
+  timeSlot:{
+    backgroundColor:colorPalette.appColor,
+    borderRadius:70,
+  width:'30%',
+  height:'15%',
+  justifyContent:'center',
+  alignItems:'center',
+  marginEnd:10,
+
   },
   timeSlotText: {
     color: colorPalette.basicColor,
@@ -194,4 +198,22 @@ export const styles = StyleSheet.create({
     marginHorizontal: 13,
     marginTop:8
   },
+  picker:{
+    borderWidth:2,
+    borderColor:colorPalette.appColor,
+    backgroundColor:colorPalette.basicColor,
+    borderRadius:10,
+    paddingHorizontal:20,
+  },
+  timeText:{
+    fontSize:20,
+    paddingLeft:20,
+    color:'#000'
+  },
+  takenText:{
+    color:colorPalette.redColor,
+    fontSize:20,
+    paddingLeft:20,
+    paddingTop:10,
+  }
 });

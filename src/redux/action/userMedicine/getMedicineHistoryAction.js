@@ -1,13 +1,13 @@
 import {getMedicineHistory} from '../../constant/userMedicine/getMedicineHistory';
 
-const loadGetMedicineHistory = date => {
-  return {
-    type: getMedicineHistory.getMedicineHistoryLoad,
-    payload: {
-      date,
-    },
-  };
-};
+const loadGetMedicineHistory=(medicineId)=>{
+    return {
+        type:getMedicineHistory.getMedicineHistoryLoad,
+        payload:{
+        medicineId
+        }
+    }
+}
 
 const successGetMedicineHistory = data => {
   return {
