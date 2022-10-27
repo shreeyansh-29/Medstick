@@ -1,4 +1,4 @@
-import {View, Text, Modal, StyleSheet, Pressable} from 'react-native';
+import {View, Modal, StyleSheet,} from 'react-native';
 import React from 'react';
 
 const CustomModal = ({modalVisible, modalView, customStyles, type}) => {

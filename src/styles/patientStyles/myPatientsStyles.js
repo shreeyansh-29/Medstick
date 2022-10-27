@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     // padding: 4,
   },
   patientName: {
+    color:"black",
     fontSize: 16,
     marginLeft: 3,
     fontWeight: 'bold',

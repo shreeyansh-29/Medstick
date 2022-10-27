@@ -265,12 +265,12 @@ console.log('array',arr)
         <ListItem style={styles.list}>
           <ListItem.Content>
             <View>
-              <TouchableOpacity >
+              <TouchableOpacity>
                 <ListItem.Subtitle style={styles.patientName}>
-                  {`${item.medicineName}`}
+                  Medicine Name: {`${item.medicineName}`}
                 </ListItem.Subtitle>
-                <ListItem.Subtitle style={{ marginLeft: 3 }}>
-                  {`${item.description}`}
+                <ListItem.Subtitle style={{marginLeft: 3, fontSize: 15}}>
+                  Description: {`${item.description}`}
                 </ListItem.Subtitle>
               </TouchableOpacity>
             </View>
@@ -466,14 +466,16 @@ console.log('array',arr)
               color={colorPalette.mainColor}
             />
           </TouchableOpacity>
-          <TextInput
-            label="Search Medicine"
-            mode="outlined"
-            multiline={true}
-            onChangeText={text => search(text)}
-            outlineColor={colorPalette.mainColor}
-            activeOutlineColor={colorPalette.mainColor}
-          />
+          <View style={{marginTop:"4%"}} >
+            <TextInput
+              label="Search Medicine"
+              mode="outlined"
+              multiline={true}
+              onChangeText={text => search(text)}
+              outlineColor={colorPalette.mainColor}
+              activeOutlineColor={colorPalette.mainColor}
+            />
+          </View>
           {tempSearch[0]?.length === 0 ? (
             <></>
           ) : (

@@ -17,6 +17,8 @@ import {saveAppointmentReminderReducer} from './appointmentReminderReducer/saveA
 import {getAppointmentReducer} from './appointmentReminderReducer/getAppointmentReducer';
 import {myPrescriptionsReducer} from './otherScreenReducer/myPrescriptionsReducer';
 import {getUserProfileReducer} from './profileReducer/getUserProfileReducer';
+import {updateAppointmentReducer} from './appointmentReminderReducer/updateAppointmentReducer';
+import {deleteAppointmentReducer} from './appointmentReminderReducer/deleteAppointmentReducer';
 import getAllNotificationReducer from './notification/getAllNotificationReducer';
 import deleteNotificationReducer from './notification/deleteNotificationReducer';
 import {myCaretakerReducer} from './caretaker/myCaretakerReducer';
@@ -34,6 +36,8 @@ import {medicineImagesReducer} from './patients/medicineImagesReducer';
 import {fetchImageReducer} from './patients/fetchImageReducer';
 import getMedicineHistoryByDateReducer from './userMedicine/getMedicineHistoryByDateReducer';
 import {downloadPdfReducer} from './otherScreenReducer/downloadPdfReducer';
+import { saveReminderReducer } from './Reminder/saveReminderReducer';
+import { getReminderReducer } from './Reminder/getReminderReducer';
 import getUserMedicineReducer from './userMedicine/getUserMedicineReducer';
 
 const rootReducer = combineReducers({
@@ -58,6 +62,8 @@ const rootReducer = combineReducers({
   getAppointment: getAppointmentReducer,
   myPrescriptions: myPrescriptionsReducer,
   getUserProfile: getUserProfileReducer,
+  updateAppointment: updateAppointmentReducer,
+  deleteAppointment: deleteAppointmentReducer,
   getAllNotificationReducer: getAllNotificationReducer,
   deleteNotificationReducer: deleteNotificationReducer,
   myCaretaker: myCaretakerReducer,
@@ -74,6 +80,8 @@ const rootReducer = combineReducers({
   getMedicineHistoryReducer: getMedicineHistoryReducer,
   getMedicineHistoryByDateReducer:getMedicineHistoryByDateReducer,
   downloadPdf: downloadPdfReducer,
+  saveReminder: saveReminderReducer,
+  getReminder: getReminderReducer,
   getUserMedicineReducer:getUserMedicineReducer
 });
 

@@ -16,8 +16,10 @@ import {appointmentReminderWatcherSaga} from './userMedicine/appointmentReminder
 import {getAppointmentWatcherSaga} from './appointmentSaga/getAppointmentWatcherSaga';
 import {watchMyPrescriptionsSaga} from './otherScreenSaga/myPrescriptionsSaga';
 import {watchGetUserProfileSaga} from './profileSaga/getUserProfileSaga';
-import {getAllNotificationWatcherSaga} from './notification/getAllNotificationWatcherSaga';
 import {saveAppointmentWatcherSaga} from './appointmentSaga/saveAppointmentReminderWatcherSaga';
+import {updateAppointmentWatcherSaga} from './appointmentSaga/updateAppointmentWatcherSaga';
+import {deleteAppointmentWatcherSaga} from './appointmentSaga/deleteAppointmentWatcherSaga';
+import {getAllNotificationWatcherSaga} from './notification/getAllNotificationWatcherSaga';
 import {deleteNotificationWatcherSaga} from './notification/deleteNotificationWatcherSaga';
 import {watchMyCaretakerSaga} from './caretaker/myCaretakerSaga';
 import {watchCaretakerRequestSaga} from './caretaker/caretakerRequestSaga';
@@ -33,6 +35,8 @@ import {getUserMedicineWatcherSaga} from './userMedicine/getUserMedicineWatcherS
 import { getMedicineHistoryWatcherSaga } from './userMedicine/getMedicineHistoryWatcherSaga';
 import { getMedicineHistoryByDateWatcherSaga } from './userMedicine/getMedicineHistoryByDateWatcherSaga';
 import {searchMedicineWatcherSaga} from './userMedicine/searchMedicineWatcherSaga';
+import { saveReminderWatcherSaga } from './saveReminder/saveReminderWatcherSaga';
+import { getReminderWatcherSaga } from './saveReminder/getReminderWatcherSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -59,6 +63,8 @@ export default function* RootSaga() {
     watchAcceptCaretakerReqSaga(),
     watchDeleteCaretakerReqSaga(),
     saveAppointmentWatcherSaga(),
+    updateAppointmentWatcherSaga(),
+    deleteAppointmentWatcherSaga(),
     watchGetUserSaga(),
     watchSendReqSaga(),
     watchNotifyUserSaga(),
@@ -71,5 +77,7 @@ export default function* RootSaga() {
     getMedicineHistoryByDateWatcherSaga(),
     saveUserMedicineWatcherSaga(),
     searchMedicineWatcherSaga(),
+    saveReminderWatcherSaga(),
+    getReminderWatcherSaga(),
   ]);
 }

@@ -1,8 +1,8 @@
 /* eslint-disable indent */
 import {
-  SAVE_APPOINTMENT_REQUEST,
-  SAVE_APPOINTMENT_ERROR,
-  SAVE_APPOINTMENT_SUCCESS,
+  DELETE_APPOINTMENT_REQUEST,
+  DELETE_APPOINTMENT_SUCCESS,
+  DELETE_APPOINTMENT_ERROR,
 } from '../../actionTypes';
 
 const initialState = {
@@ -14,25 +14,22 @@ const initialState = {
     error: null,
   },
 };
-export const saveAppointmentReminderReducer = (
-  state = initialState,
-  action,
-) => {
+export const deleteAppointmentReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SAVE_APPOINTMENT_REQUEST:
+    case DELETE_APPOINTMENT_REQUEST:
       return {
         ...state,
         isLoading: {...state.isLoading, loader: true},
         error: {...state.error, error: null},
       };
-    case SAVE_APPOINTMENT_SUCCESS:
+    case DELETE_APPOINTMENT_SUCCESS:
       return {
         ...state,
         data: action.payload,
         isLoading: {...state.isLoading, loader: false},
         error: {...state.error, error: null},
       };
-    case SAVE_APPOINTMENT_ERROR:
+    case DELETE_APPOINTMENT_ERROR:
       return {
         ...state,
         isLoading: {...state.isLoading, loader: false},

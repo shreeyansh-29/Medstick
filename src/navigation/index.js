@@ -20,7 +20,6 @@ import AddRemainder from '../screens/userScreens/medicines/addRemainder';
 import Edit from '../components/organisms/alarm/edit';
 import Alarm from '../components/organisms/alarm/alarm';
 import Prescriptions from '../screens/otherScreens/prescriptions';
-import AppointmentReminders from '../screens/otherScreens/appointmentReminders';
 import Notifications from '../screens/otherScreens/notifications';
 import SendSnapToCaretaker from '../screens/otherScreens/sendSnapToCaretaker';
 import AddPrescription from '../screens/userScreens/medicines/addPrescription';
@@ -30,6 +29,7 @@ import AuthScreen from '../screens/authScreens/authScreen';
 import AddPrescriptionPanel from '../screens/userScreens/medicines/addPrescriptionPanel';
 import Logout from '../Logout';
 import DoctorPrescription from '../screens/otherScreens/doctorPrescription';
+import AppointmentReminderList from '../screens/otherScreens/appointmentReminderList';
 import MedicineList from '../screens/userScreens/medicines/medicineList';
 import MedicineDetailCard from '../screens/userScreens/medicines/medicineDetailCard';
 import ViewPrescriptions from '../screens/userScreens/patients/viewPrescriptions';
@@ -39,6 +39,7 @@ import MedicineImages from '../screens/userScreens/patients/medicineImages';
 import NotificationScreen from '../screens/userScreens/notificationScreen';
 import Reminder from '../screens/userScreens/reminder/reminder';
 import ReminderDuration from '../screens/userScreens/reminder/reminderDuration';
+import AppointmentReminders from '../screens/otherScreens/appointmentReminders';
 
 const Stack = createNativeStackNavigator();
 
@@ -72,10 +73,6 @@ const MainNavigation = () => {
           component={MedicineDetailCard}
         />
         <Stack.Screen
-          name="AppointmentReminders"
-          component={AppointmentReminders}
-        />
-        <Stack.Screen
           name="SendSnapToCaretaker"
           component={SendSnapToCaretaker}
         />
@@ -101,6 +98,8 @@ const MainNavigation = () => {
         <Stack.Screen name="Alarm" component={Alarm} />
         <Stack.Screen name="Reminder" component={Reminder} />
         <Stack.Screen name="ReminderDuration" component={ReminderDuration} />
+        <Stack.Screen name="AppointmentReminders" component={AppointmentReminders} />
+        <Stack.Screen name="AppointmentReminderList" component={AppointmentReminderList} />
       </Stack.Navigator>
     </NavigationContainer>
   );
