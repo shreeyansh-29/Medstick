@@ -20,7 +20,9 @@ const SavedDetails = () => {
       {loading ? (
         <Loader />
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingTop: 2}}>
           <Card style={styles.card}>
             <View style={styles.mainView}>
               <View style={styles.subCont}>
