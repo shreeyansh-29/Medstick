@@ -1,108 +1,78 @@
-import {Image, TouchableOpacity, View} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import Toast from 'react-native-toast-message';
-import {Button, Text} from 'react-native-elements';
-import {styles} from '../../styles/otherScreensStyles/sendSnapToCaretakerStyles';
-import Share from 'react-native-share';
-import {useIsFocused, useRoute} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
-import {sendSnapRequest} from '../../redux/action/otherScreenAction/sendSnapAction';
+import {
+  View,
+  Text,
+  Modal,
+  Animated,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faShare, faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import LottieView from 'lottie-react-native';
+import BottomSheet from 'reanimated-bottom-sheet';
+import Share from 'react-native-share';
+import {Divider} from 'react-native-paper';
+import {Button} from 'react-native-elements';
+import {styles} from '../../styles/otherScreensStyles/sendSnapToCaretakerStyles';
 import SelectBox from 'react-native-multi-selectbox';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
+import {useDispatch, useSelector} from 'react-redux';
+import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction';
 
-const SendSnapToCaretaker = ({navigation}) => {
-  let medName = '';
-  let medId = 0;
-  const dispatch = useDispatch();
-  const route = useRoute();
-  const {image_uri} = route.params;
-  const isFocused = useIsFocused();
+const height = Dimensions.get('window').height;
+
+const SendSnapToCaretaker = ({navigation, route}) => {
+  const progress = useRef(new Animated.Value(0)).current;
+  const sheetRef = useRef(null);
   const [mycaretakers, mycaretakerstate] = useState([]);
   const [medsArray, medsArrayState] = useState([]);
   const [selectedMed, setSelectedMed] = useState({});
   const [selectedCareTaker, setSelectedCareTaker] = useState({});
 
-  const SendImage = async () => {
-    setModalVisible(true);
-    if (medName === '') {
-      setModalVisible(false);
-      showToast('Select medicine');
-      return;
-    }
-    let todayDate = new Date();
-    let setDate =
-      todayDate.getDate() +
-      '-' +
-      (todayDate.getMonth() + 1) +
-      '-' +
-      todayDate.getFullYear();
-    let imagesData = await AsyncStorage.getItem(setDate + ' ' + medName);
-    if (imagesData !== null) {
-      let parsedData = JSON.parse(imagesData);
-      parsedData.push(image_uri);
-      await AsyncStorage.setItem(
-        setDate + ' ' + medName,
-        JSON.stringify(parsedData),
-      );
-    } else {
-      let parsedData = [];
-      parsedData.push(image_uri);
-
-      await AsyncStorage.setItem(
-        setDate + ' ' + medName,
-        JSON.stringify(parsedData),
-      );
-    }
-    const formdata = new FormData();
-    var dt = new Date().getTime();
-
-    var file_name = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        var r = (dt + Math.random() * 16) % 16 | 0;
-        dt = Math.floor(dt / 16);
-        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-      },
-    );
-    formdata.append('image', {
-      name: 'care',
-      uri: image_uri,
-      type: 'image/jpg',
-    });
-    formdata.append('name', file_name);
-    formdata.append('id', send_to);
-    formdata.append('medicineName', medName);
-    formdata.append('medicineId', medId);
-
-    dispatch(sendSnapRequest(formdata));
-  };
+  // const dispatch = useDispatch();
+  // let res = useSelector(state => state.myCaretaker);
+  // console.log(res);
 
   useEffect(() => {
-    if (isFocused) {
-      medsArrayState([
-        {item: 'Cofsils', user_id: 123},
-        {item: 'Metaformin', user_id: 121},
-        {item: 'Losartan', user_id: 124},
-        {item: 'Paracetamol', user_id: 120},
-        {item: 'Antibiotoics', user_id: 123},
-        {item: 'Gabapentin', user_id: 125},
-        {item: 'PCM', user_id: 126},
-        {item: 'PCM', user_id: 12},
-      ]);
-      let value = [
-        {item: 'Anmol', caretakerId: 1},
-        {item: 'Anurag', caretakerId: 2},
-        {item: 'Shreeyansh', caretakerId: 3},
-        {item: 'Anmol', caretakerId: 4},
-        {item: 'Anurag', caretakerId: 5},
-        {item: 'Shreeyansh', caretakerId: 6},
-      ];
-      mycaretakerstate(value);
-    }
-  }, [isFocused]);
+    Animated.timing(progress, {
+      toValue: 1,
+      duration: 3000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  const {image_uri} = route.params;
+  const [visible, setVisible] = useState(false);
+  const images = [
+    {
+      url: image_uri,
+    },
+  ];
+
+  useEffect(() => {
+    medsArrayState([
+      {item: 'Cofsils', user_id: 123},
+      {item: 'Metaformin', user_id: 121},
+      {item: 'Losartan', user_id: 124},
+      {item: 'Paracetamol', user_id: 120},
+      {item: 'Antibiotoics', user_id: 123},
+      {item: 'Gabapentin', user_id: 125},
+      {item: 'PCM', user_id: 126},
+      {item: 'PCM', user_id: 12},
+    ]);
+    let value = [
+      {item: 'Anmol', caretakerId: 1},
+      {item: 'Anurag', caretakerId: 2},
+      {item: 'Shreeyansh', caretakerId: 3},
+      {item: 'Anmol', caretakerId: 4},
+      {item: 'Anurag', caretakerId: 5},
+      {item: 'Shreeyansh', caretakerId: 6},
+    ];
+    mycaretakerstate(value);
+  }, []);
 
   const Renderitem = ({mycaretakers}) => {
     function onChange() {
@@ -153,53 +123,112 @@ const SendSnapToCaretaker = ({navigation}) => {
     );
   };
 
-  return (
-    <View style={styles.container}>
-      <SubHeader navigation={navigation} title={'Send Snap'} />
-      <Toast visibilityTime={1500}></Toast>
-      <View style={styles.parentCont}>
-        <View style={styles.container1}>
-          <Text style={styles.container1Text}>Image</Text>
-          <TouchableOpacity
-            onPress={async () => {
-              const shareOptions = {
-                title: 'Share file',
-                email: 'email@example.com',
-                social: Share.Social.EMAIL,
-                failOnCancel: false,
-                urls: [image_uri],
-              };
-              await Share.open(shareOptions);
-            }}
-            style={styles.shareCont}>
-            <FontAwesomeIcon
-              icon={faShare}
-              color={colorPalette.basicColor}
-              style={styles.shareIcon}
-            />
-            <Text style={styles.share}>Share</Text>
-          </TouchableOpacity>
-        </View>
+  const options = async () => {
+    const shareOptions = {
+      title: 'Share file',
+      email: 'email@example.com',
+      social: Share.Social.EMAIL,
+      failOnCancel: false,
+      // urls: [image_uri],
+    };
+    await Share.open(shareOptions);
+  };
 
-        <View style={styles.imgContainer}>
-          <Image source={{uri: image_uri}} style={styles.image} />
-        </View>
-        <View style={styles.mnView}>
-          <Text style={styles.mnText}>Select Medicine</Text>
-          <RenderMeds medsArray={medsArray} />
-        </View>
-        <View style={styles.cnView}>
-          <Text style={styles.mnText}>Select Caretaker</Text>
-          <Renderitem mycaretakers={mycaretakers} />
-        </View>
+  const SendImage = () => {
+    navigation.pop(2);
+  };
 
-        <Button
-          onPress={SendImage}
-          title="Send"
-          buttonStyle={styles.button}
-          containerStyle={styles.buttonContainer}
+  const renderContent = () => (
+    <View
+      style={{
+        height: height / 1.2,
+        backgroundColor: 'white',
+        alignItems: 'center',
+      }}>
+      <Text
+        style={{
+          marginVertical: 20,
+          fontSize: 20,
+          fontWeight: '700',
+          color: 'black',
+        }}>
+        Send Image To CareTaker
+      </Text>
+      <View style={styles.mnView}>
+        <Text style={styles.mnText}>Select Medicine</Text>
+        <RenderMeds medsArray={medsArray} />
+      </View>
+      <View style={styles.cnView}>
+        <Text style={styles.mnText}>Select Caretaker</Text>
+        <Renderitem mycaretakers={mycaretakers} />
+      </View>
+
+      <TouchableOpacity activeOpacity={1} onPress={() => setVisible(true)}>
+        <Text style={{color: 'black', fontSize: 18}}>View Image</Text>
+      </TouchableOpacity>
+      <View
+        style={{marginVertical: 8, flexDirection: 'row', alignItems: 'center'}}>
+        <Divider
+          style={{
+            height: 1,
+            color: 'grey',
+            width: '6%',
+          }}
+        />
+        <Text style={{paddingHorizontal: 6, marginVertical: 6}}>Or</Text>
+        <Divider
+          style={{
+            height: 1,
+            color: 'grey',
+            width: '6%',
+          }}
         />
       </View>
+      <TouchableOpacity activeOpacity={1} onPress={() => navigation.pop()}>
+        <Text style={{color: 'black', fontSize: 18}}>Re-Take</Text>
+      </TouchableOpacity>
+      <Button
+        onPress={SendImage}
+        title="Send"
+        buttonStyle={{
+          backgroundColor: colorPalette.mainColor,
+          borderRadius: 6,
+          paddingHorizontal: 40,
+          paddingVertical: 10,
+        }}
+        containerStyle={{marginVertical: 40}}
+      />
+    </View>
+  );
+
+  return (
+    <View style={{flex: 1, backgroundColor: colorPalette.mainColor}}>
+      <SubHeader
+        navigation={navigation}
+        title={'Send Snap'}
+        options={options}
+      />
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <LottieView
+          style={{width: '42%'}}
+          progress={progress}
+          speed={0.6}
+          source={require('../../assets/animation/share.json')}
+        />
+      </View>
+      <Modal
+        visible={visible}
+        transparent={true}
+        onRequestClose={() => setVisible(!visible)}>
+        <ImageViewer imageUrls={images} />
+      </Modal>
+      <BottomSheet
+        ref={sheetRef}
+        enabledInnerScrolling={true}
+        snapPoints={[500, 440, 50]}
+        borderRadius={40}
+        renderContent={renderContent}
+      />
     </View>
   );
 };

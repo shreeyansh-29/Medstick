@@ -74,7 +74,7 @@ const RenderModalVisible = ({
       <View style={{alignItems: 'flex-end', paddingVertical: 10}}>
         {isCancel ? (
           <>
-            <TouchableOpacity onPress={onPress}>
+            <TouchableOpacity onPress={onPress} activeOpacity={1}>
               <FontAwesomeIcon
                 icon={faCircleXmark}
                 size={26}

@@ -54,6 +54,7 @@ const EditProfile = ({navigation}) => {
 
         {edit ? null : (
           <TouchableOpacity
+            activeOpacity={1}
             onPress={() => {
               setEdit(true);
               setIsCancel(true);
