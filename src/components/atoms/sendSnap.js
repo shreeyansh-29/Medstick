@@ -26,7 +26,7 @@ const SendSnap = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <SubHeader title={'Camera'} navigation={navigation} />
+      {/* <SubHeader title={'Camera'} navigation={navigation} /> */}
       <View style={styles.innerView}>
         <RNCamera
           ref={cameraRef}

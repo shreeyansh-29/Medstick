@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
     width: '80%',
   },
   mnText: {
-    marginLeft: horizontalScale(6),
     fontSize: 18,
     fontWeight: '700',
     color: '#858383',
@@ -80,5 +79,28 @@ export const styles = StyleSheet.create({
   renderCT: {
     marginHorizontal: horizontalScale(7),
     marginTop: verticalScale(-14),
+  },
+
+  //dropdown
+  dropdown: {
+    borderBottomColor: 'gray',
+    borderBottomWidth: 0.5,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });

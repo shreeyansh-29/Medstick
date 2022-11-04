@@ -1,6 +1,7 @@
 import * as types from '../../actionTypes';
 
 export const sendSnapRequest = payload => {
+  console.log(payload);
   return {
     type: types.SEND_SNAP_REQUEST,
     payload,

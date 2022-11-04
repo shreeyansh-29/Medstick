@@ -34,6 +34,7 @@ const MedicinePanel = ({navigation}) => {
   console.log('id', id);
   const [medicines, setMedicines] = useState([]);
   const res = useSelector(state => state.medicineList);
+  console.log(res);
   const loading = useSelector(state => state.medicineList?.isLoading);
   const res1 = useSelector(state => state.deleteMedicine);
   const [isActive, setIsActive] = useState(false);
