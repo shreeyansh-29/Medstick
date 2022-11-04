@@ -86,21 +86,19 @@ export const styles = StyleSheet.create({
     borderBottomColor: 'gray',
     borderBottomWidth: 0.5,
   },
-  icon: {
-    marginRight: 5,
-  },
   placeholderStyle: {
     fontSize: 16,
+    color: 'grey',
   },
   selectedTextStyle: {
     fontSize: 16,
+    color: 'black',
   },
   iconStyle: {
     width: 20,
     height: 20,
   },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
+  textStyle: {
+    color: 'black',
   },
 });

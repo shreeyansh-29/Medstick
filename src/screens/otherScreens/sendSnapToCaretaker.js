@@ -78,7 +78,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   }, []);
 
   const {image_uri} = route.params;
-  console.log(image_uri);
+  // console.log(image_uri);
   const [modalVisible, setModalVisible] = useState(false);
   const images = [
     {
@@ -225,7 +225,6 @@ const SendSnapToCaretaker = ({navigation, route}) => {
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
                 data={medsArray}
                 maxHeight={300}
@@ -236,6 +235,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
                   setSelectMedicine(item.value);
                   setSelectedMedId(item.medId);
                 }}
+                itemTextStyle={{color: 'black'}}
               />
             </View>
 
@@ -245,7 +245,6 @@ const SendSnapToCaretaker = ({navigation, route}) => {
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
                 data={mycaretakers}
                 maxHeight={300}
@@ -256,6 +255,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
                   setSelectCaretaker(item.value);
                   setSelectedCaketakerId(item.id);
                 }}
+                itemTextStyle={styles.textStyle}
               />
             </View>
 
