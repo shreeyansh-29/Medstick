@@ -656,7 +656,7 @@ const Reminder = ({route, navigation, props}) => {
                 currentCount,
                 userMedicineId,
               );
-              if(saveReminderResponse === "Success"){
+              if (saveReminderResponse === 'Success') {
                 route.params.fetchStatus();
               }
             }}

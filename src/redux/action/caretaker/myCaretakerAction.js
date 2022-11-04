@@ -1,7 +1,6 @@
 import * as types from '../../actionTypes';
 
 export const myCaretakerRequest = payload => {
-  console.log('caretaker', payload);
   return {
     type: types.MY_CARETAKER_REQUEST,
     payload,
