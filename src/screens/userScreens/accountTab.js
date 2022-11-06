@@ -56,17 +56,14 @@ const AccountTab = ({navigation}) => {
         setIsLoggedIn(true);
       }
     }
-
     checkforlog();
   });
-
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
         '380266789888-bupnp07eamd8bo5aoacs6vv7fv4mhkah.apps.googleusercontent.com',
     });
   });
-
   return (
     <View style={styles.container}>
       <MainHeader title={'Account'} />
@@ -95,31 +92,38 @@ const AccountTab = ({navigation}) => {
       <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
       <View style={styles.card}>
         <TwoTouchable
-          icon1={faUserNurse}
-          icon2={faHospitalUser}
-          title1="My Caretaker"
-          title2="My Patients"
-          navigationTitle1="CareTaker"
-          navigationTitle2="Patients"
+          icon={faUserNurse}
+          title="My Caretaker"
+          navigationTitle="CareTaker"
           navigation={navigation}
         />
+        <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
         <TwoTouchable
-          icon1={faUserDoctor}
-          icon2={faStopwatch}
-          navigationTitle1="Prescriptions"
-          navigationTitle2="AppointmentReminderList"
-          title1="Prescriptions"
-          title2="Appointment Reminders"
+          icon={faHospitalUser}
+          title="My Patients"
+          navigation={navigation}
+          navigationTitle="Patients"
+        />
+        <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
+        <TwoTouchable
+          icon={faUserDoctor}
+          title="Prescriptions"
+          navigationTitle="Prescriptions"
           navigation={navigation}
         />
+        <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
         <TwoTouchable
-          icon1={faCameraRetro}
-          icon2={faGear}
-          title1="Send Snap"
-          title2="Settings"
-          navigationTitle1="SendSnap"
-          navigationTitle2="Settings"
+          icon={faStopwatch}
+          title="Appointment Reminders"
           navigation={navigation}
+          navigationTitle="AppointmentReminderList"
+        />
+        <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
+        <TwoTouchable
+          icon={faGear}
+          title="Settings"
+          navigation={navigation}
+          navigationTitle="Settings"
         />
       </View>
       <Divider contStyle={styles.lineCont} lineStyle={styles.line} />

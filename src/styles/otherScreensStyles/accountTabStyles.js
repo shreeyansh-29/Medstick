@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
   profile: {
     flexDirection: 'row',
     padding: moderateScale(20),
+    marginVertical: 1,
   },
   img: {
     width: 50,
@@ -41,7 +42,7 @@ export const styles = StyleSheet.create({
   lineCont: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: verticalScale(16),
+    marginVertical: verticalScale(5),
   },
   line: {
     flex: 1,
