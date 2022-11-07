@@ -3,57 +3,36 @@ import React from 'react';
 import {Styles} from '../../styles/twoTouchableStyles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../atoms/colorPalette';
-const TwoTouchable = ({
-  icon1,
-  icon2,
-  title1,
-  title2,
-  navigation,
-  navigationTitle1,
-  navigationTitle2,
-}) => {
+const TwoTouchable = ({icon, title, navigation, navigationTitle}) => {
   return (
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'center',
-        paddingTop: 15,
+        alignItems: 'center',
+        paddingVertical: 14,
       }}>
       <TouchableOpacity
         activeOpacity={1}
-        style={Styles.box1}
+        style={Styles.box}
         onPress={() => {
-          navigation.navigate(navigationTitle1);
+          navigation.navigate(navigationTitle);
         }}>
-        <FontAwesomeIcon
-          icon={icon1}
-          size={20}
-          color={colorPalette.mainColor}
-        />
-        <Text
-          style={{
-            fontSize: 17,
-            color: 'black',
-            marginTop: 8,
-          }}>{`${title1}`}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        activeOpacity={1}
-        style={Styles.box2}
-        onPress={() => {
-          navigation.navigate(navigationTitle2);
-        }}>
-        <FontAwesomeIcon
-          icon={icon2}
-          size={20}
-          color={colorPalette.mainColor}
-        />
-        <Text
-          style={{
-            marginTop: 8,
-            fontSize: 17,
-            color: 'black',
-          }}>{`${title2}`}</Text>
+        <View style={Styles.icon}>
+          <FontAwesomeIcon
+            icon={icon}
+            size={21}
+            color={colorPalette.mainColor}
+          />
+        </View>
+        <View style={Styles.name}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: 'black',
+              marginLeft: 6,
+              fontWeight: '400',
+            }}>{`${title}`}</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );

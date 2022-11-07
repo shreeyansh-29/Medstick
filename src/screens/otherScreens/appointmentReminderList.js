@@ -20,7 +20,6 @@ import {
 import {colorPalette} from '../../components/atoms/colorPalette';
 import Loader from '../../components/atoms/loader';
 import {deleteAppointmentRequest} from '../../redux/action/appointmentReminderAction/deleteAppointmentAction';
-import SubTitle from '../../components/atoms/subTitle';
 import DateTime from '../../components/organisms/dateTime';
 import {updateAppointmentRequest} from '../../redux/action/appointmentReminderAction/updateAppointmentAction';
 import DatePicker from 'react-native-date-picker';
@@ -41,8 +40,10 @@ const AppointmentReminderList = ({navigation}) => {
     appointmentReminderSelector.getAppointmentLoading,
   );
 
-  const updateAppointmentData = useSelector(appointmentReminderSelector.updateAppointment);
-  console.log(updateAppointmentData,"updateAppointmentData");
+  const updateAppointmentData = useSelector(
+    appointmentReminderSelector.updateAppointment,
+  );
+  console.log(updateAppointmentData, 'updateAppointmentData');
 
   let fDate =
     date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
@@ -82,13 +83,11 @@ const AppointmentReminderList = ({navigation}) => {
 
   const updateAppointment = (fDate, time, notes1, appointmentId) => {
     dispatch(updateAppointmentRequest(fDate, time, notes1, appointmentId));
-  
-    if(updateAppointmentData?.data?.status === 'Success')
-    {
-      setModalVisible(false)
+
+    if (updateAppointmentData?.data?.status === 'Success') {
+      setModalVisible(false);
     }
     dispatch(getAppointmentRequest(pageNo));
-    
   };
 
   const renderItem = ({item}) => {

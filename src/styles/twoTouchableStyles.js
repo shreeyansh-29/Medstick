@@ -1,24 +1,19 @@
 import {StyleSheet} from 'react-native';
+import {horizontalScale, verticalScale} from '../components/atoms/constant';
 export const Styles = StyleSheet.create({
-  box1: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 9,
-    height: 95,
+  box: {
+    height: 35,
     shadowColor: 'black',
-    width: 150,
-    elevation: 4,
-    marginRight: 10,
+    width: '85%',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  box2: {
-    backgroundColor: '#fff',
-    padding: 20,
-    alignContent: 'center',
-    marginLeft: 10,
-    height: 95,
-    width: 150,
-    borderRadius: 9,
-    shadowColor: 'black',
-    elevation: 4,
+  icon: {
+    width: '10%',
+    justifyContent: 'center',
+  },
+  name: {
+    width: '90%',
+    justifyContent: 'center',
   },
 });
