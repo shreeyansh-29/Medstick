@@ -4,7 +4,6 @@ import {
   FlatList,
   TouchableOpacity,
   Modal,
-  ScrollView,
   Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -28,7 +27,6 @@ import {
 import {colorPalette} from '../../components/atoms/colorPalette';
 import Loader from '../../components/atoms/loader';
 import {deleteAppointmentRequest} from '../../redux/action/appointmentReminderAction/deleteAppointmentAction';
-import SubTitle from '../../components/atoms/subTitle';
 import DateTime from '../../components/organisms/dateTime';
 import {updateAppointmentRequest} from '../../redux/action/appointmentReminderAction/updateAppointmentAction';
 import DatePicker from 'react-native-date-picker';

@@ -1,4 +1,11 @@
-import {View, Text, Image, Alert, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Alert,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import TwoTouchable from '../../components/molecules/twoTouchable';
@@ -13,12 +20,12 @@ import {
   faGear,
   faHospitalUser,
 } from '@fortawesome/free-solid-svg-icons';
-import Divider from '../../components/atoms/divider';
 import {styles} from '../../styles/otherScreensStyles/accountTabStyles';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import {useDispatch} from 'react-redux';
 import {resetLogin} from '../../redux/action/loginAction/loginAction';
 import {resetSignUp} from '../../redux/action/signUpAction/signUpAction';
+import {Divider} from 'react-native-paper';
 
 const AccountTab = ({navigation}) => {
   const dispatch = useDispatch();
@@ -56,107 +63,151 @@ const AccountTab = ({navigation}) => {
         setIsLoggedIn(true);
       }
     }
-
     checkforlog();
   });
-
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
         '380266789888-bupnp07eamd8bo5aoacs6vv7fv4mhkah.apps.googleusercontent.com',
     });
   });
-
   return (
     <View style={styles.container}>
       <MainHeader title={'Account'} />
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('EditProfile');
-        }}>
-        {isLoggedIn ? (
-          <View style={styles.profile}>
-            <Image source={{uri: img}} style={styles.img} />
-            <View style={styles.heading}>
-              <Text style={styles.title}>{name}</Text>
-              <Text style={styles.subTitle}>See your profile</Text>
+      <ScrollView>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => {
+            navigation.navigate('EditProfile');
+          }}>
+          {isLoggedIn ? (
+            <View style={styles.profile}>
+              <Image source={{uri: img}} style={styles.img} />
+              <View style={styles.heading}>
+                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.subTitle}>See your profile</Text>
+              </View>
             </View>
-          </View>
-        ) : (
-          <View style={styles.profile}>
-            <Image source={{uri: img}} style={styles.img}></Image>
-            <View style={styles.heading}>
-              <Text style={styles.title}>{name}</Text>
-              <Text style={styles.subTitle}>See your profile</Text>
+          ) : (
+            <View style={styles.profile}>
+              <Image source={{uri: img}} style={styles.img}></Image>
+              <View style={styles.heading}>
+                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.subTitle}>See your profile</Text>
+              </View>
             </View>
-          </View>
-        )}
-      </TouchableOpacity>
-      <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
-      <View style={styles.card}>
-        <TwoTouchable
-          icon1={faUserNurse}
-          icon2={faHospitalUser}
-          title1="My Caretaker"
-          title2="My Patients"
-          navigationTitle1="CareTaker"
-          navigationTitle2="Patients"
-          navigation={navigation}
-        />
-        <TwoTouchable
-          icon1={faUserDoctor}
-          icon2={faStopwatch}
-          navigationTitle1="Prescriptions"
-          navigationTitle2="AppointmentReminderList"
-          title1="Prescriptions"
-          title2="Appointment Reminders"
-          navigation={navigation}
-        />
-        <TwoTouchable
-          icon1={faCameraRetro}
-          icon2={faGear}
-          title1="Send Snap"
-          title2="Settings"
-          navigationTitle1="SendSnap"
-          navigationTitle2="Settings"
-          navigation={navigation}
-        />
-      </View>
-      <Divider contStyle={styles.lineCont} lineStyle={styles.line} />
-      {isLoggedIn ? (
-        <View style={styles.logout}>
-          <TouchableOpacity
+          )}
+        </TouchableOpacity>
+        <Divider style={{height: 1}} />
+        <View style={{alignItems: 'center'}}>
+          <TwoTouchable
+            icon={faUserNurse}
+            title="My Caretaker"
+            navigationTitle="CareTaker"
+            navigation={navigation}
+          />
+          <Divider
             style={{
-              borderRadius: 8,
-              padding: 12,
-              backgroundColor: colorPalette.mainColor,
-              width: '40%',
-              alignItems: 'center',
+              height: 1,
+              width: '100%',
             }}
-            onPress={async () => {
-              await GoogleSignin.signOut();
-              await AsyncStorage.setItem('user_id', '');
-              await AsyncStorage.setItem('user_name', '');
-              await AsyncStorage.setItem('user_photo', '');
-              await AsyncStorage.setItem('user_email', '');
-              await AsyncStorage.setItem('accessToken', '');
-              imgstate('https://i.stack.imgur.com/l60Hf.png');
-              setName('Please Login First');
-              setIsLoggedIn(false);
-              dispatch(resetLogin());
-              dispatch(resetSignUp());
-              // navigation.navigate('Logout');
-            }}>
-            <Text
-              style={{
-                fontSize: 18,
-                color: colorPalette.basicColor,
-              }}>
-              Logout
-            </Text>
-          </TouchableOpacity>
+          />
+          <TwoTouchable
+            icon={faHospitalUser}
+            title="My Patients"
+            navigation={navigation}
+            navigationTitle="Patients"
+          />
+          <Divider
+            style={{
+              height: 1,
+              width: '100%',
+            }}
+          />
+          <TwoTouchable
+            icon={faUserDoctor}
+            title="Prescriptions"
+            navigationTitle="Prescriptions"
+            navigation={navigation}
+          />
+          <Divider
+            style={{
+              height: 1,
+              width: '100%',
+            }}
+          />
+
+          <TwoTouchable
+            icon={faStopwatch}
+            title="Appointment Reminders"
+            navigation={navigation}
+            navigationTitle="AppointmentReminderList"
+          />
+          <Divider
+            style={{
+              height: 1,
+              width: '100%',
+            }}
+          />
+
+          <TwoTouchable
+            icon={faGear}
+            title="Settings"
+            navigation={navigation}
+            navigationTitle="Settings"
+          />
+          <Divider
+            style={{
+              height: 1,
+              width: '100%',
+            }}
+          />
+
+          {/* <TwoTouchable
+            icon={faCameraRetro}
+            title="Send Snap"
+            navigation={navigation}
+            navigationTitle="SendSnap"
+          /> */}
         </View>
-      ) : null}
+
+        {isLoggedIn ? (
+          <View style={styles.logout}>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{
+                borderRadius: 8,
+                padding: 12,
+                backgroundColor: colorPalette.mainColor,
+                width: '40%',
+                alignItems: 'center',
+                marginVertical: 40,
+              }}
+              onPress={async () => {
+                await GoogleSignin.signOut();
+                await AsyncStorage.setItem('user_id', '');
+                await AsyncStorage.setItem('user_name', '');
+                await AsyncStorage.setItem('user_photo', '');
+                await AsyncStorage.setItem('user_email', '');
+                await AsyncStorage.setItem('accessToken', '');
+                imgstate('https://i.stack.imgur.com/l60Hf.png');
+                setName('Please Login First');
+                setIsLoggedIn(false);
+                dispatch(resetLogin());
+                dispatch(resetSignUp());
+                // navigation.navigate('Logout');
+              }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: colorPalette.basicColor,
+                }}>
+                Logout
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
+      </ScrollView>
     </View>
   );
 };

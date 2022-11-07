@@ -29,25 +29,6 @@ export const styles = StyleSheet.create({
     flex: 0.5,
     alignItems: 'center',
   },
-  subHeader: {
-    height: verticalScale(50),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: colorPalette.mainColor,
-  },
-  subHeaderFont: {
-    fontSize: 20,
-    fontFamily: '',
-    paddingLeft: horizontalScale(8),
-    color: colorPalette.basicColor,
-  },
-  backIcon: {
-    flex: 0.2,
-    paddingLeft: horizontalScale(20),
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
   background: {
     position: 'absolute',
     backgroundColor: colorPalette.mainColor,
