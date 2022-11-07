@@ -17,7 +17,7 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {faArrowLeft, faSearch} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
-import {TextInput} from 'react-native-paper';
+import {Divider, TextInput} from 'react-native-paper';
 import {Picker} from '@react-native-picker/picker';
 import LottieView from 'lottie-react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -41,7 +41,18 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 
 var db = openDatabase({name: 'MedicineDatabase.db'});
 
-const AddMedicines = ({navigation}) => {
+const AddMedicines = ({navigation, route}) => {
+  const {
+    itemDescription,
+    itemDosageType,
+    itemDosageUnit,
+    Stock,
+    doctorName,
+    contact,
+    specialization,
+    loaction,
+  } = route.params;
+
   const [medicineName, setMedicineName] = useState('');
   const [userMedicineName, setUserMedicineName] = useState('');
   const [userMedicineDescription, setUserMedicineDescription] = useState('');
@@ -50,9 +61,9 @@ const AddMedicines = ({navigation}) => {
   const [details, setDeatils] = useState('');
   const [modal, setModal] = useState(false);
   const [searchModal, setSearchModal] = useState(false);
-  const [dose, setDose] = useState('');
+  const [dosageQuantity, setDosageQuantity] = useState('');
   const [pill, setPill] = useState('tablet');
-  const [stock, setStock] = useState('');
+  const [stock, setStock] = useState({Stock});
   const [remainingStock, setRemainingStock] = useState('');
   const [token, setToken] = useState('');
   const [medicineId, setMedicineId] = useState('');
@@ -98,11 +109,11 @@ const AddMedicines = ({navigation}) => {
 
   useEffect(() => {
     if (searchMedicine.data !== null) {
-      setTempSearch([searchMedicine.data]);
+      setTempSearch(searchMedicine.data);
     }
   }, [searchMedicine]);
 
-  const payload = {pill, dose, doseType, stock, remainingStock};
+  const payload = {pill, dosageQuantity, doseType, stock, remainingStock};
   // console.log(payload, 'all');
   const getTokenId = async () => {
     try {
@@ -216,7 +227,7 @@ const AddMedicines = ({navigation}) => {
         break;
       }
       case 'injection': {
-        setDoseType('dose');
+        setDoseType('ml');
         break;
       }
       case 'syrup': {
@@ -243,7 +254,7 @@ const AddMedicines = ({navigation}) => {
     fetchPrescriptionAndMedicineId();
   }, []);
 
-  const getStock = data => {
+  const getStock = ({data}) => {
     setStock(data);
   };
 
@@ -251,23 +262,42 @@ const AddMedicines = ({navigation}) => {
     setRemainingStock(data);
   };
 
+  const setdata = item => {
+    setSearchModal(false);
+    setMedicineName(item.medicineName);
+    setDeatils(item.description);
+  };
+
   const renderItem = ({item}) => {
     return (
       <View>
         <ListItem style={styles.list}>
           <ListItem.Content>
-            <View>
-              <TouchableOpacity>
-                <ListItem.Subtitle style={styles.patientName}>
-                  Medicine Name: {`${item.medicineName}`}
-                </ListItem.Subtitle>
-                <ListItem.Subtitle style={{marginLeft: 3, fontSize: 15}}>
-                  Description: {`${item.description}`}
+            <View style={{padding: 2}}>
+              <TouchableOpacity onPress={() => setdata(item)}>
+                <View style={{flexDirection: 'row'}}>
+                  <ListItem.Subtitle>
+                    <Text
+                      style={{fontSize: 15, fontWeight: '700', color: '#000'}}>
+                      {'Medicine Name: '}
+                    </Text>
+                    {`${item.medicineName}`}
+                    {','}
+                  </ListItem.Subtitle>
+                </View>
+
+                <ListItem.Subtitle>
+                  <Text
+                    style={{fontSize: 15, fontWeight: '700', color: '#000'}}>
+                    {'Description: '}
+                  </Text>
+                  {`${item.description}`}
                 </ListItem.Subtitle>
               </TouchableOpacity>
             </View>
           </ListItem.Content>
         </ListItem>
+        <Divider />
       </View>
     );
   };
@@ -277,7 +307,7 @@ const AddMedicines = ({navigation}) => {
       pill === '' ||
       stock === '' ||
       remainingStock === '' ||
-      dose === '' ||
+      dosageQuantity === '' ||
       doseType === ''
     ) {
       showAlert();
@@ -290,8 +320,8 @@ const AddMedicines = ({navigation}) => {
         MedicineName: userMedicineName,
         MedicineDescription: userMedicineDescription,
         dosageType: pill,
-        dosageQuantity: doseType,
-        dosageUnit: dose,
+        dosageQuantity: dosageQuantity,
+        dosageUnit: doseType,
         stock: stock,
         leftStock: remainingStock,
       };
@@ -304,7 +334,8 @@ const AddMedicines = ({navigation}) => {
             prescriptionId,
             medicineId,
             pill,
-            dose,
+            dosageQuantity,
+            // dose,
             doseType,
             stock,
             remainingStock,
@@ -328,7 +359,8 @@ const AddMedicines = ({navigation}) => {
       pill !== null &&
       medicineName !== null &&
       doseType !== null &&
-      dose !== null &&
+      dosageQuantity !== null &&
+      // dose !== null &&
       stock !== null &&
       remainingStock !== null
     ) {
@@ -345,7 +377,7 @@ const AddMedicines = ({navigation}) => {
       pill === '' ||
       stock === '' ||
       remainingStock === '' ||
-      dose === '' ||
+      dosageQuantity === '' ||
       doseType === ''
     ) {
       showAlert();
@@ -356,7 +388,7 @@ const AddMedicines = ({navigation}) => {
     db.transaction(function (tx) {
       tx.executeSql(
         'INSERT INTO table_medicine (medicine_name,dosage_Type,dosage_Quantity,dosage_Unit,stock,left_Stock) VALUES(?,?,?,?,?)',
-        [userMedicineName, pill, doseType, dose, stock, remainingStock],
+        [userMedicineName, pill, doseType, stock, remainingStock],
         (tx, results) => {
           console.log('Results', results.rowsAffected);
           if (results.rowsAffected > 0) {
@@ -372,7 +404,7 @@ const AddMedicines = ({navigation}) => {
       pill === '' ||
       stock === '' ||
       remainingStock === '' ||
-      dose === '' ||
+      dosageQuantity === '' ||
       doseType === ''
     ) {
       showAlert();
@@ -389,16 +421,31 @@ const AddMedicines = ({navigation}) => {
   return (
     <View style={Styles.addMedicinePage}>
       <Toast visibilityTime={3000} />
-      <Modal visible={modal}>
-        <View style={{flex: 1}}>
+      <Modal
+        animationType="slide"
+        visible={modal}
+        onRequestClose={() => setModal(false)}
+        transparent={true}>
+        <View style={{flex: 1, backgroundColor: colorPalette.mainColor}}>
           <TouchableOpacity onPress={() => setModal(false)}>
-            <Ionicons name="close" size={30} />
+            <Ionicons name="close" size={30} color={'white'} />
           </TouchableOpacity>
-          <View style={Styles.modalHeader}>
-            <ModalHeader />
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 20,
+            }}>
+            <LottieView
+              style={{width: '60%'}}
+              autoPlay
+              loop
+              speed={0.6}
+              source={require('../../../assets/animation/modal.json')}
+            />
           </View>
           <View style={Styles.modalContainer}>
-            <ScrollView style={Styles.medicineModal}>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{flexDirection: 'row'}}>
                 <View style={{width: '85%'}}>
                   <TextInput
@@ -413,12 +460,14 @@ const AddMedicines = ({navigation}) => {
                 </View>
                 <View
                   style={{
-                    right: 10,
-                    flex: 1,
-                    position: 'absolute',
-                    marginTop: '7%',
+                    alignSelf: 'center',
+                    marginLeft: 12,
                   }}>
-                  <TouchableOpacity onPress={() => setSearchModal(true)}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSearchModal(true);
+                      setDeatils('');
+                    }}>
                     <FontAwesomeIcon
                       size={25}
                       icon={faSearch}
@@ -438,17 +487,23 @@ const AddMedicines = ({navigation}) => {
                 outlineColor="#02aba6"
                 activeOutlineColor="#02aba6"
               />
+              <TouchableOpacity
+                style={{marginVertical: 40}}
+                onPress={() =>
+                  saveMedicineModal(token, id, medicineName, details)
+                }>
+                <SaveButton />
+              </TouchableOpacity>
             </ScrollView>
-            <TouchableOpacity
-              onPress={() =>
-                saveMedicineModal(token, id, medicineName, details)
-              }>
-              <SaveButton />
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
-      <Modal visible={searchModal}>
+      <Modal
+        visible={searchModal}
+        animationType="fade"
+        onRequestClose={() => {
+          setSearchModal(false);
+        }}>
         <View style={{margin: '5%'}}>
           <TouchableOpacity
             style={styles.backButton}
@@ -457,7 +512,7 @@ const AddMedicines = ({navigation}) => {
             }}>
             <FontAwesomeIcon
               icon={faArrowLeft}
-              size={30}
+              size={22}
               color={colorPalette.mainColor}
             />
           </TouchableOpacity>
@@ -471,19 +526,20 @@ const AddMedicines = ({navigation}) => {
               activeOutlineColor={colorPalette.mainColor}
             />
           </View>
-          {tempSearch[0]?.length === 0 ? (
+          {tempSearch?.result?.content?.length === 0 ? (
             <></>
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={tempSearch[0]?.result}
+              data={tempSearch?.result?.content}
               renderItem={renderItem}
               numColumns={1}
             />
           )}
         </View>
       </Modal>
-      <View style={Styles.addMedicinesHeader}>
+
+      {/* <View style={Styles.addMedicinesHeader}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => {
@@ -496,10 +552,22 @@ const AddMedicines = ({navigation}) => {
           />
         </TouchableOpacity>
         <AddMedicinesHeader navigation={navigation} />
+      </View> */}
+      <SubHeader navigation={navigation} title={'Add Medicine'} />
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <LottieView
+          style={{width: '48%'}}
+          progress={progress}
+          speed={0.6}
+          source={require('../../../assets/animation/addMedicinesHeader.json')}
+        />
       </View>
-      {/* <SubHeader navigation={navigation} title={'Add Medicine'} /> */}
       <View style={Styles.constainer}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <KeyboardAvoidingView>
             {id !== null ? (
               <TouchableOpacity onPress={() => setModal(true)}>
@@ -549,12 +617,13 @@ const AddMedicines = ({navigation}) => {
                 <TextInput
                   style={{width: '97%'}}
                   id="name"
-                  label="Dose"
-                  value={dose}
+                  label="Dose Quantity"
+                  value={dosageQuantity}
                   mode="outlined"
-                  onChangeText={text => setDose(text)}
+                  onChangeText={text => setDosageQuantity(text)}
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
+                  keyboardType="numeric"
                 />
               </View>
               <View style={{width: '50%'}}>
@@ -563,7 +632,6 @@ const AddMedicines = ({navigation}) => {
                   style={{width: '97%'}}
                   label="Dose Type"
                   value={doseType}
-                  disabled="true"
                   mode="outlined"
                   onChangeText={setDoseType}
                   outlineColor="#02aba6"
@@ -619,7 +687,7 @@ const AddMedicines = ({navigation}) => {
                     prescriptionId,
                     medicineId,
                     pill,
-                    dose,
+                    // dose,
                     doseType,
                     stock,
                     remainingStock,

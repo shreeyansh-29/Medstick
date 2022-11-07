@@ -25,6 +25,8 @@ import {sendSnapRequest} from '../../redux/action/otherScreenAction/sendSnapActi
 import {SEND_SNAP} from '../../constants/apiUrl';
 import {apiUrl} from '../../constants/apiUrl';
 
+const height = Dimensions.get("window").height;
+
 const SendSnapToCaretaker = ({navigation, route}) => {
   const progress = useRef(new Animated.Value(0)).current;
   const [mycaretakers, mycaretakerstate] = useState([]);

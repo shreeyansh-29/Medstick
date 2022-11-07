@@ -29,7 +29,6 @@ const AppointmentReminders = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(0);
-  console.log(notes, 'notesss');
 
   const doctor = useSelector(appointmentReminderSelector.appointmentReminder);
 
@@ -62,7 +61,7 @@ const AppointmentReminders = ({navigation}) => {
   return (
     <>
       <View>
-        <SubHeader title={'Appointment Reminders'} navigation={navigation} />
+        <SubHeader title={'Save Appointment'} navigation={navigation} />
       </View>
       <View style={{margin: '0.3%'}}>
         <Text style={{fontSize: 18, marginTop: '5%', marginLeft: '7.5%'}}>

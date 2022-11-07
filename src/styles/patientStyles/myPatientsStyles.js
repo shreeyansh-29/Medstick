@@ -11,11 +11,18 @@ export const styles = StyleSheet.create({
     // padding: 4,
   },
   patientName: {
-    color:"black",
+    color: 'black',
     fontSize: 16,
     marginLeft: 3,
     fontWeight: 'bold',
   },
+  reminderKey: {
+    fontSize: 16,
+    marginLeft: 3,
+    fontWeight: '900',
+    color: '#000',
+  },
+
   touch: {paddingVertical: 15},
   icon: {alignItems: 'center'},
   subtitle: {marginLeft: 3},

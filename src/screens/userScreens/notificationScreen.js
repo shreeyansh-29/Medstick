@@ -26,9 +26,7 @@ const NotificationScreen = ({navigation}) => {
 
   return (
     <ScrollView style={notificationStyles.screen}>
-      <View style={{flex: 1}}>
-        <SubHeader title={'Notifications'} navigation={navigation} />
-      </View>
+      <SubHeader title={'Notifications'} navigation={navigation} />
       <View style={notificationStyles.container}>
         {getAllNotification?.status === 'Success' ? (
           getNotificationMessage.map(item => (

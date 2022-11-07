@@ -4,13 +4,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
 } from 'react-native';
 import React from 'react';
-import {verticalScale} from '../../../components/atoms/constant';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faPencil, faTrash} from '@fortawesome/free-solid-svg-icons';
+import {faPencil} from '@fortawesome/free-solid-svg-icons';
 import {faNoteSticky} from '@fortawesome/free-regular-svg-icons';
 
 const MedicineDetailCard = ({item, index, navigation}) => {
@@ -25,7 +23,16 @@ const MedicineDetailCard = ({item, index, navigation}) => {
             <View style={styles.iconView}>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('abcd');
+                  navigation?.navigate('AddMedicine', {
+                    itemDescription: item.description,
+                    itemDosageType: item.dosageQuantity,
+                    itemDosageUnit: item.dosageUnit,
+                    Stock: item.stock,
+                    doctorName: item.doctorName,
+                    contact: item.contact,
+                    specialization: item.specialization,
+                    loaction: item.location,
+                  });
                 }}>
                 <FontAwesomeIcon
                   icon={faPencil}
@@ -145,7 +152,6 @@ const styles = StyleSheet.create({
     backgroundColor: colorPalette.appColor,
     padding: 10,
     alignItems: 'center',
-    justifyContent: 'center',
     width: '100%',
     flexDirection: 'row',
     borderTopStartRadius: 10,

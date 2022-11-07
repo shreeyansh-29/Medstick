@@ -266,23 +266,10 @@ const Reminder = ({route, navigation, props}) => {
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
     const frequencyTemp = frequency.toString();
-    console.log(fDatePrimary, 'startDate');
-
-    console.log(days, 'days');
-    console.log(title, 'reminderTitle');
-    console.log(time, 'reminderTime');
-    console.log(check1, 'everyday');
-    console.log(noEndDate, ' no end date');
+    
     if (endDate === 'No End Date') {
       setfDate('null');
     }
-    console.log(reminderStatus, 'reminderStatus');
-    console.log(frequencyTemp, 'frequency');
-    console.log(fDateSecondary, 'endDate');
-    console.log(food, 'beforeAfter');
-    console.log(totalReminders, 'totalReminders');
-    console.log(currentCount, 'currentCount');
-    console.log(userMedicineId, 'iddddd');
 
     dispatch(
       saveReminderRequest(
@@ -642,10 +629,10 @@ const Reminder = ({route, navigation, props}) => {
 
             {check2 && (
               <SectionedMultiSelect
+                hideSearch={false}
                 IconRenderer={Icon}
                 items={day_data}
                 uniqueKey="id"
-                hideSearch={true}
                 subKey="children"
                 selectText="Choose days"
                 showDropDowns={true}
