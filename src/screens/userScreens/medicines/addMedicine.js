@@ -37,6 +37,7 @@ import {searchMedicineRequest} from '../../../redux/action/userMedicine/searchMe
 import {ListItem} from 'react-native-elements';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {openDatabase} from 'react-native-sqlite-storage';
+import SubHeader from '../../../components/molecules/headers/subHeader';
 
 var db = openDatabase({name: 'MedicineDatabase.db'});
 
@@ -108,7 +109,7 @@ const AddMedicines = ({navigation, route}) => {
 
   useEffect(() => {
     if (searchMedicine.data !== null) {
-      setTempSearch([searchMedicine.data]);
+      setTempSearch(searchMedicine.data);
     }
   }, [searchMedicine]);
 
@@ -272,18 +273,31 @@ const AddMedicines = ({navigation, route}) => {
       <View>
         <ListItem style={styles.list}>
           <ListItem.Content>
-            <View>
+            <View style={{padding: 2}}>
               <TouchableOpacity onPress={() => setdata(item)}>
-                <ListItem.Subtitle style={styles.patientName}>
-                  Medicine Name: {`${item.medicineName}`}
-                </ListItem.Subtitle>
-                <ListItem.Subtitle style={{marginLeft: 3, fontSize: 15}}>
-                  Description: {`${item.description}`}
+                <View style={{flexDirection: 'row'}}>
+                  <ListItem.Subtitle>
+                    <Text
+                      style={{fontSize: 15, fontWeight: '700', color: '#000'}}>
+                      {'Medicine Name: '}
+                    </Text>
+                    {`${item.medicineName}`}
+                    {','}
+                  </ListItem.Subtitle>
+                </View>
+
+                <ListItem.Subtitle>
+                  <Text
+                    style={{fontSize: 15, fontWeight: '700', color: '#000'}}>
+                    {'Description: '}
+                  </Text>
+                  {`${item.description}`}
                 </ListItem.Subtitle>
               </TouchableOpacity>
             </View>
           </ListItem.Content>
         </ListItem>
+        <Divider />
       </View>
     );
   };
@@ -321,6 +335,7 @@ const AddMedicines = ({navigation, route}) => {
             medicineId,
             pill,
             dosageQuantity,
+            // dose,
             doseType,
             stock,
             remainingStock,
@@ -345,6 +360,7 @@ const AddMedicines = ({navigation, route}) => {
       medicineName !== null &&
       doseType !== null &&
       dosageQuantity !== null &&
+      // dose !== null &&
       stock !== null &&
       remainingStock !== null
     ) {
@@ -372,14 +388,7 @@ const AddMedicines = ({navigation, route}) => {
     db.transaction(function (tx) {
       tx.executeSql(
         'INSERT INTO table_medicine (medicine_name,dosage_Type,dosage_Quantity,dosage_Unit,stock,left_Stock) VALUES(?,?,?,?,?)',
-        [
-          userMedicineName,
-          pill,
-          doseType,
-          dosageQuantity,
-          stock,
-          remainingStock,
-        ],
+        [userMedicineName, pill, doseType, stock, remainingStock],
         (tx, results) => {
           console.log('Results', results.rowsAffected);
           if (results.rowsAffected > 0) {
@@ -412,16 +421,31 @@ const AddMedicines = ({navigation, route}) => {
   return (
     <View style={Styles.addMedicinePage}>
       <Toast visibilityTime={3000} />
-      <Modal visible={modal}>
-        <View style={{flex: 1}}>
+      <Modal
+        animationType="slide"
+        visible={modal}
+        onRequestClose={() => setModal(false)}
+        transparent={true}>
+        <View style={{flex: 1, backgroundColor: colorPalette.mainColor}}>
           <TouchableOpacity onPress={() => setModal(false)}>
-            <Ionicons name="close" size={30} />
+            <Ionicons name="close" size={30} color={'white'} />
           </TouchableOpacity>
-          <View style={Styles.modalHeader}>
-            <ModalHeader />
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingBottom: 20,
+            }}>
+            <LottieView
+              style={{width: '60%'}}
+              autoPlay
+              loop
+              speed={0.6}
+              source={require('../../../assets/animation/modal.json')}
+            />
           </View>
           <View style={Styles.modalContainer}>
-            <ScrollView style={Styles.medicineModal}>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View style={{flexDirection: 'row'}}>
                 <View style={{width: '85%'}}>
                   <TextInput
@@ -436,12 +460,14 @@ const AddMedicines = ({navigation, route}) => {
                 </View>
                 <View
                   style={{
-                    right: 10,
-                    flex: 1,
-                    position: 'absolute',
-                    marginTop: '7%',
+                    alignSelf: 'center',
+                    marginLeft: 12,
                   }}>
-                  <TouchableOpacity onPress={() => setSearchModal(true)}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSearchModal(true);
+                      setDeatils('');
+                    }}>
                     <FontAwesomeIcon
                       size={25}
                       icon={faSearch}
@@ -461,17 +487,23 @@ const AddMedicines = ({navigation, route}) => {
                 outlineColor="#02aba6"
                 activeOutlineColor="#02aba6"
               />
+              <TouchableOpacity
+                style={{marginVertical: 40}}
+                onPress={() =>
+                  saveMedicineModal(token, id, medicineName, details)
+                }>
+                <SaveButton />
+              </TouchableOpacity>
             </ScrollView>
-            <TouchableOpacity
-              onPress={() =>
-                saveMedicineModal(token, id, medicineName, details)
-              }>
-              <SaveButton />
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
-      <Modal visible={searchModal}>
+      <Modal
+        visible={searchModal}
+        animationType="fade"
+        onRequestClose={() => {
+          setSearchModal(false);
+        }}>
         <View style={{margin: '5%'}}>
           <TouchableOpacity
             style={styles.backButton}
@@ -480,7 +512,7 @@ const AddMedicines = ({navigation, route}) => {
             }}>
             <FontAwesomeIcon
               icon={faArrowLeft}
-              size={30}
+              size={22}
               color={colorPalette.mainColor}
             />
           </TouchableOpacity>
@@ -494,19 +526,20 @@ const AddMedicines = ({navigation, route}) => {
               activeOutlineColor={colorPalette.mainColor}
             />
           </View>
-          {tempSearch[0]?.length === 0 ? (
+          {tempSearch?.result?.content?.length === 0 ? (
             <></>
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={tempSearch[0]?.result}
+              data={tempSearch?.result?.content}
               renderItem={renderItem}
               numColumns={1}
             />
           )}
         </View>
       </Modal>
-      <View style={Styles.addMedicinesHeader}>
+
+      {/* <View style={Styles.addMedicinesHeader}>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => {
@@ -519,9 +552,22 @@ const AddMedicines = ({navigation, route}) => {
           />
         </TouchableOpacity>
         <AddMedicinesHeader navigation={navigation} />
+      </View> */}
+      <SubHeader navigation={navigation} title={'Add Medicine'} />
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <LottieView
+          style={{width: '48%'}}
+          progress={progress}
+          speed={0.6}
+          source={require('../../../assets/animation/addMedicinesHeader.json')}
+        />
       </View>
       <View style={Styles.constainer}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <KeyboardAvoidingView>
             {id !== null ? (
               <TouchableOpacity onPress={() => setModal(true)}>
@@ -577,13 +623,14 @@ const AddMedicines = ({navigation, route}) => {
                   onChangeText={text => setDosageQuantity(text)}
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
+                  keyboardType="numeric"
                 />
               </View>
               <View style={{width: '50%'}}>
                 <TextInput
                   id="name"
                   style={{width: '97%'}}
-                  label="Dose Unit"
+                  label="Dose Type"
                   value={doseType}
                   mode="outlined"
                   onChangeText={setDoseType}
@@ -622,7 +669,6 @@ const AddMedicines = ({navigation, route}) => {
                   <LottieView
                     style={Styles.addPrescriptionIcon}
                     speed={0.7}
-                    RemainingStock
                     progress={progress}
                     source={require('../../../assets/animation/addPrescriptionButton.json')}
                   />
@@ -641,7 +687,7 @@ const AddMedicines = ({navigation, route}) => {
                     prescriptionId,
                     medicineId,
                     pill,
-                    dosageQuantity,
+                    // dose,
                     doseType,
                     stock,
                     remainingStock,

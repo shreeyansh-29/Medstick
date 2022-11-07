@@ -11,6 +11,7 @@ const ProfileForm = props => {
   return (
     <View style={styles.inputForm}>
       <View style={styles.inputField}>
+        <Text style={styles.fieldHeading}>Bio :</Text>
         <InputField
           dense={true}
           styles={styles.bio}
@@ -30,6 +31,7 @@ const ProfileForm = props => {
       </View>
 
       <View style={styles.inputField}>
+        <Text style={styles.fieldHeading}>Contact :</Text>
         <InputField
           styles={styles.field}
           dense={true}
@@ -41,6 +43,7 @@ const ProfileForm = props => {
           {...props}
           value={props.values.contact}
           keyboardType="numeric"
+          selectTextOnFocus={true}
         />
         {props.errors.contact && props.touched.contact && (
           <Text style={styles.errorText}>{props.errors.contact}</Text>
@@ -48,6 +51,7 @@ const ProfileForm = props => {
       </View>
 
       <View style={styles.inputField}>
+        <Text style={styles.fieldHeading}>Date Of Birth :</Text>
         <InputField
           styles={styles.field}
           dense={true}
@@ -59,6 +63,7 @@ const ProfileForm = props => {
           {...props}
           value={props.values.dateofBirth}
           keyboardType="numeric"
+          selectTextOnFocus={true}
         />
         {props.errors.dateofBirth && props.touched.dateofBirth && (
           <Text style={styles.errorText}>{props.errors.dateofBirth}</Text>
@@ -66,6 +71,7 @@ const ProfileForm = props => {
       </View>
 
       <View style={styles.inputField}>
+        <Text style={styles.fieldHeading}>Address :</Text>
         <InputField
           styles={styles.field}
           dense={true}
@@ -76,6 +82,7 @@ const ProfileForm = props => {
           activeOutlineColor={colorPalette.mainColor}
           {...props}
           value={props.values.address}
+          selectTextOnFocus={true}
         />
         {props.errors.address && props.touched.address && (
           <Text style={styles.errorText}>{props.errors.address}</Text>
@@ -83,6 +90,7 @@ const ProfileForm = props => {
       </View>
       <View style={styles.inputGroup}>
         <View style={styles.subInputGroup}>
+          <Text style={styles.fieldHeading}>State :</Text>
           <InputField
             styles={{backgroundColor: 'white', height: 50}}
             dense={true}
@@ -93,12 +101,14 @@ const ProfileForm = props => {
             activeOutlineColor={colorPalette.mainColor}
             {...props}
             value={props.values.state}
+            selectTextOnFocus={true}
           />
           {props.errors.state && props.touched.state && (
             <Text style={styles.errorText1}>{props.errors.state}</Text>
           )}
         </View>
         <View style={styles.subInputGroup}>
+          <Text style={styles.fieldHeading}>Country :</Text>
           <InputField
             styles={{backgroundColor: 'white', height: 50}}
             placeholder="Country"
@@ -108,6 +118,7 @@ const ProfileForm = props => {
             activeOutlineColor={colorPalette.mainColor}
             {...props}
             value={props.values.country}
+            selectTextOnFocus={true}
           />
           {props.errors.country && props.touched.country && (
             <Text style={styles.errorText1}>{props.errors.country}</Text>
@@ -117,8 +128,12 @@ const ProfileForm = props => {
 
       <View style={styles.inputGroup}>
         <View style={styles.subInputGroup}>
+          <Text style={styles.pickerHeading}>Blood Group :</Text>
           <View style={styles.picker}>
             <PickerField
+              styles={{
+                color: 'black',
+              }}
               pickerItem={bloodGroup}
               mode="dialog"
               selectedValue={props.values.bloodGroup}
@@ -131,8 +146,12 @@ const ProfileForm = props => {
           )}
         </View>
         <View style={styles.subInputGroup}>
+          <Text style={styles.pickerHeading}>Gender :</Text>
           <View style={styles.picker}>
             <PickerField
+              styles={{
+                color: 'black',
+              }}
               pickerItem={gender}
               mode="dialog"
               selectedValue={props.values.gender}

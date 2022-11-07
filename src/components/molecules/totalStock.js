@@ -36,7 +36,12 @@ const TotalStock = props => {
     setStock(subValue.toString());
   };
   return (
-    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
       <TouchableOpacity
         onPress={() => valueChangeMinus()}
         style={Styles.addbutton}>
@@ -58,6 +63,7 @@ const TotalStock = props => {
         onChangeText={stock => setStock(Number(stock))}
         outlineColor="#02aba6"
         activeOutlineColor="#02aba6"
+        
       />
       <TouchableOpacity
         onPress={() => valueChangePlus()}

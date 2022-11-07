@@ -8,9 +8,9 @@ import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import AddAppointment from '../../atoms/addAppointment';
 import {useDispatch} from 'react-redux';
 import {notifyUserClear} from '../../../redux/action/patients/notifyUserAction';
+import ShareButton from '../../atoms/shareButton';
 
-
-const SubHeader = ({title, navigation, download,routeName}) => {
+const SubHeader = ({title, navigation, download, options, routeName}) => {
   const dispatch = useDispatch();
   return (
     <View style={styles.subHeader}>
@@ -39,7 +39,12 @@ const SubHeader = ({title, navigation, download,routeName}) => {
       {title !== 'Appointment Reminders' ? (
         <View style={styles.appIcon}></View>
       ) : (
-        <AddAppointment navigation={navigation} routeName={routeName}/>
+        <AddAppointment navigation={navigation} routeName={routeName} />
+      )}
+      {title !== 'Send Snap' ? (
+        <View style={styles.appIcon}></View>
+      ) : (
+        <ShareButton options={options} />
       )}
     </View>
   );

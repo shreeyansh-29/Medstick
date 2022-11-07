@@ -31,13 +31,17 @@ const MedicinePanel = ({navigation}) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [id, setId] = useState('');
+  console.log('id', id);
   const [medicines, setMedicines] = useState([]);
   const res = useSelector(state => state.medicineList);
+  console.log(res);
   const loading = useSelector(state => state.medicineList?.isLoading);
   const res1 = useSelector(state => state.deleteMedicine);
   const [isActive, setIsActive] = useState(false);
   const [color, setColor] = useState(false);
   const [clockActive, setClockActive] = useState(false);
+  console.log(color, 'color');
+  console.log(clockActive, 'colorActive');
   // const saveReminderData = useSelector(saveReminderSelector.saveReminder);
   // console.log(saveReminderData.data.data,"dataaaaaa");
 
@@ -68,6 +72,7 @@ const MedicinePanel = ({navigation}) => {
 
   useEffect(() => {
     if (res?.data !== null) {
+      console.log(res);
       setMedicines(res?.data);
     } else {
       setMedicines([]);
@@ -135,7 +140,7 @@ const MedicinePanel = ({navigation}) => {
                       />
                       <View style={Styles.medNameView}>
                         <ListItem.Title style={Styles.medName}>
-                          {item.medicineName}
+                          {item.MedicineName}
                         </ListItem.Title>
                         <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Type: </Text>
@@ -225,11 +230,17 @@ const MedicinePanel = ({navigation}) => {
                           {item.dosageType}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Dosage: </Text>
-                          {item.dosageUnit + item.dosageQuantity}
+                          <Text style={{color: 'black'}}>
+                            Dosage Quantity:{' '}
+                          </Text>
+                          {item.dosageQuantity}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Stock: </Text>
+                          <Text style={{color: 'black'}}>Dosage Unit: </Text>
+                          {item.dosageUnit}
+                        </ListItem.Subtitle>
+                        <ListItem.Subtitle>
+                          <Text style={{color: 'black'}}>Total Stock: </Text>
                           {item.stock}
                         </ListItem.Subtitle>
                       </View>
@@ -237,6 +248,7 @@ const MedicinePanel = ({navigation}) => {
                   </ListItem.Content>
                   <View style={Styles.icon}>
                     <TouchableOpacity
+                      activeOpacity={1}
                       id="touch1"
                       style={Styles.rem}
                       onPress={() => {
@@ -249,13 +261,17 @@ const MedicinePanel = ({navigation}) => {
                       <FontAwesomeIcon
                         icon={faClock}
                         color={
-                          clockActive && item.userMedicineId ? 'red' : 'black'
+                          clockActive && item.userMedicineId
+                            ? colorPalette.mainColor
+                            : 'grey'
                         }
                         size={24}
                       />
 
+                      {console.log(color, 'colorrrrrrrrrr')}
                     </TouchableOpacity>
                     <TouchableOpacity
+                      activeOpacity={1}
                       onPress={() => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
@@ -296,7 +312,7 @@ const MedicinePanel = ({navigation}) => {
               {medicines?.length === 0 ? (
                 <View style={Styles.lottie}>
                   <LottieView
-                    style={{width: 100, height: 100}}
+                    style={{width: '60%'}}
                     speed={0.8}
                     source={require('../../../assets/animation/noMed1.json')}
                     progress={progress}
@@ -319,16 +335,39 @@ const MedicinePanel = ({navigation}) => {
         <View style={Styles.container}>
           <View style={Styles.background} />
           <MainHeader title={'Medicine'} />
-          <View style={{flex: 1}}>
-            <FlatList
-              data={medicineResponse}
-              renderItem={renderItemLocal}
-              showsVerticalScrollIndicator={false}
+          {medicineResponse?.length === 0 ? (
+            <View style={Styles.lottie}>
+              <LottieView
+                style={{width: '60%'}}
+                speed={0.8}
+                source={require('../../../assets/animation/noMed1.json')}
+                progress={progress}
+              />
+            </View>
+          ) : (
+            <View style={{flex: 1}}>
+              <FlatList
+                data={medicineResponse}
+                renderItem={renderItemLocal}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+          )}
+        </View>
+      )}
+      {id === null && flag === 1 && (
+        <View style={Styles.container}>
+          <MainHeader title={'Medicine'} />
+          <View style={Styles.lottie}>
+            <LottieView
+              style={{width: '60%'}}
+              speed={0.8}
+              source={require('../../../assets/animation/noMed1.json')}
+              progress={progress}
             />
           </View>
         </View>
       )}
-      {id === null && flag === null && <Loader />}
     </>
   );
 };

@@ -110,25 +110,25 @@ const Styles = StyleSheet.create({
   touchableOpacity: {
     width: '100%',
     height: '100%',
-    marginTop:30,
+    marginTop: 30,
   },
   addPrescriptionHeader: {
-    flex:1,
-    backgroundColor:'black'
+    flex: 1,
+    backgroundColor: 'black',
   },
   addPrescriptionContainer: {
-    flex:1,
-    flexDirection:'column',
+    flex: 1,
+    flexDirection: 'column',
     paddingTop: 10,
-    backgroundColor: '#0789'
+    backgroundColor: '#0789',
   },
   addPrescriptionLottie: {
     alignItems: 'center',
-    justifyContent:'center',
-    width:'100%'
+    justifyContent: 'center',
+    width: '100%',
   },
   addPrescriptionList: {
-  flex:0.7,
+    flex: 0.7,
     padding: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -139,15 +139,13 @@ const Styles = StyleSheet.create({
     flex: 1,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
-    backgroundColor: colorPalette.basicColor,
-  
   },
   addingPrescription: {
     marginLeft: '6%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding:15,
+    padding: 15,
   },
   addingPrescriptionIcon: {
     width: '30%',
@@ -162,80 +160,71 @@ const Styles = StyleSheet.create({
     marginTop: '9%',
   },
   saveButton: {
-    width: '50%',
-    alignItems: 'center',
+    width: '32%',
   },
   saveTouchable: {
-width:'70%',
-justifyContent:'center',
-alignItems:'flex-end'
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  saveButtonArea:{
-justifyContent:'center',
-alignItems:'flex-end',
-padding:10,
+  saveButtonArea: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    padding: 10,
   },
-  medicineModal:{
-    flex:0.5,
-    padding:10,
-    
-
+  medicineModal: {
+    flex: 1,
+    padding: 10,
   },
-  medicineNameBox:{
-    width:'100%',
-    borderColor:colorPalette.appColor,
-    borderWidth:1,
-    padding:10,
-    borderRadius:5,
+  medicineNameBox: {
+    width: '100%',
+    borderColor: colorPalette.appColor,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5,
   },
-  text:{
-    color:colorPalette.appColor,
+  text: {
+    color: colorPalette.appColor,
   },
-  textView:{
-    flexDirection:'row',
-    width:'100%',
-    marginTop:10,
-    
+  textView: {
+    flexDirection: 'row',
+    width: '100%',
+    marginTop: 10,
   },
-  textbox:{
-    width:'50%',
-    justifyContent:'center',
-    alignItems:'center',
+  textbox: {
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  stockbox:{
-    width:'30%',
+  stockbox: {
+    width: '30%',
   },
-  picker:{
-    borderColor:colorPalette.appColor,
-    borderWidth:1,
-    marginTop:10,
-    borderRadius:5,
+  picker: {
+    borderColor: colorPalette.appColor,
+    borderWidth: 1,
+    marginTop: 10,
+    borderRadius: 5,
   },
-  addbutton:{
-    justifyContent:'center',
-    borderWidth:1,
-    borderColor:colorPalette.appColor,
-    margin:5,
-    height:40,
+  addbutton: {
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colorPalette.appColor,
+    margin: 5,
+    height: 40,
   },
-  modallottie:{
-width:'80%'
+  modallottie: {
+    width: '80%',
   },
-  modalHeader:{
-    
-    flex:1,
-    alignItems:'center'
-    
+  modalHeader: {
+    flex: 1,
+    alignItems: 'center',
   },
-  modalContainer:{
-     flex:1,
-    // position: 'absolute',
-    // bottom: 0,
-    // alignItems: 'flex-end',
-    // marginEnd: 20,
-    // backgroundColor:"#000"
-    padding:10,
-    paddingBottom:30,
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    paddingHorizontal: 12,
+    paddingTop: 12,
   },
   box: {
     margin: '3.6%',
@@ -265,69 +254,69 @@ width:'80%'
     margin: '1.6%',
     borderWidth: 1.2,
     alignItems: 'center',
-    marginLeft:'3%',
+    marginLeft: '3%',
     padding: '1.5%',
-    paddingLeft:'3.5%',
-    paddingRight:'3.5%',
+    paddingLeft: '3.5%',
+    paddingRight: '3.5%',
     borderRadius: 5,
     paddingHorizontal: 2,
     borderColor: colorPalette.mainColor,
   },
   box: {
     margin: '3.6%',
-    marginBottom:"30%",
+    marginBottom: '30%',
     borderWidth: 1.2,
     padding: '4%',
     borderRadius: 5,
     borderColor: colorPalette.mainColor,
   },
-  addPrescriptionHeader:{
-    backgroundColor:colorPalette.appColor,
-    flexDirection:'row',
-    padding:10,
+  addPrescriptionHeader: {
+    backgroundColor: colorPalette.appColor,
+    flexDirection: 'row',
+    padding: 10,
   },
-  addPrescriptionHeaderText:{
-    color:colorPalette.basicColor,
-    paddingLeft:10,
-    fontSize:20,
+  addPrescriptionHeaderText: {
+    color: colorPalette.basicColor,
+    paddingLeft: 10,
+    fontSize: 20,
   },
-  uploadPrescriptionText:{
-    color:colorPalette.appColor,
-    fontSize:20,
-    paddingVertical:20,
+  uploadPrescriptionText: {
+    color: colorPalette.appColor,
+    fontSize: 20,
+    paddingVertical: 20,
   },
-  uploadPrescriptionBox:{
-    borderWidth:2,
-    borderColor:colorPalette.appColor,
-    width:'90%',
-    justifyContent:'center',
-    alignItems:'center',
-    borderRadius:10,
-    margin:20
+  uploadPrescriptionBox: {
+    borderWidth: 2,
+    borderColor: colorPalette.appColor,
+    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    margin: 20,
   },
-  nodata:{
-    width:'90%',
-    justifyContent:'center',
-    alignContent:'center',
-    padding:100,
+  nodata: {
+    width: '90%',
+    justifyContent: 'center',
+    alignContent: 'center',
+    padding: 100,
   },
-  prescriptionText:{
-    color:colorPalette.appColor,
-    fontSize:26,
-    padding:20,
+  prescriptionText: {
+    color: colorPalette.appColor,
+    fontSize: 26,
+    padding: 20,
   },
-  prescriptionBox:{
-    width:'100%',
-    padding:10,
-    borderColor:colorPalette.appColor,
-    elevation:2,
-    borderStartWidth:4,
+  prescriptionBox: {
+    width: '100%',
+    padding: 10,
+    borderColor: colorPalette.appColor,
+    elevation: 2,
+    borderStartWidth: 4,
   },
-  prescriptionText1:{
-    fontSize:18,
-    color:'#000',
-    paddingLeft:20
-  }
+  prescriptionText1: {
+    fontSize: 18,
+    color: '#000',
+    paddingLeft: 20,
+  },
 });
 
 export default Styles;

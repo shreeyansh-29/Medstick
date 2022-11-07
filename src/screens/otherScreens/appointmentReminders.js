@@ -29,7 +29,6 @@ const AppointmentReminders = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const dispatch = useDispatch();
   const [pageNo, setPageNo] = useState(0);
-  console.log(notes,"notesss");
 
   const doctor = useSelector(appointmentReminderSelector.appointmentReminder);
 
@@ -81,7 +80,7 @@ const AppointmentReminders = ({navigation}) => {
             id="picker"
             selectedValue={notes}
             onValueChange={(itemValue, _itemIndex) => {
-              console.log(itemValue,"itemValue")
+              console.log(itemValue, 'itemValue');
               setNotes(itemValue);
             }}>
             {doctor?.result?.map((item, ind) => {
@@ -165,15 +164,17 @@ const AppointmentReminders = ({navigation}) => {
               borderWidth: 1.5,
               borderRadius: 4,
               marginTop: '5%',
-              alignItems:"center",
-              backgroundColor:colorPalette.mainColor,
+              alignItems: 'center',
+              backgroundColor: colorPalette.mainColor,
               marginLeft: '7%',
               marginRight: '9%',
-              padding:"1%",
+              padding: '1%',
               borderColor: colorPalette.mainColor,
             }}
             onPress={() => saveAppointment(fDate, time, notes1)}>
-            <Text style={{fontSize:19, color:"white", fontWeight:"400" }} >Save</Text>
+            <Text style={{fontSize: 19, color: 'white', fontWeight: '400'}}>
+              Save
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

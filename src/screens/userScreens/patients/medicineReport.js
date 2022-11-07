@@ -175,20 +175,21 @@ const MedicineReport = ({navigation, route}) => {
                     }}>
                     <View
                       style={{
-                        flexDirection: 'column',
-                        marginRight: 10,
-                        marginLeft: 10,
-                        padding: 13,
+                        marginHorizontal: 10,
+                        padding: 12,
                         width: 70,
                         alignItems: 'center',
-                        borderRadius: 60,
-                        justifyContent: 'center',
+                        borderRadius: 35,
                         backgroundColor: mCurrentDate.color,
                       }}>
-                      <Text style={styles.scrollViewDate}>
-                        {mCurrentDate.date}
+                      <View style={styles.scrollViewDate}>
+                        <Text style={{color: 'black'}}>
+                          {mCurrentDate.date}
+                        </Text>
+                      </View>
+                      <Text style={{color: 'white', paddingVertical: 2}}>
+                        {mCurrentDate.month}
                       </Text>
-                      <Text style={{color: 'white'}}>{mCurrentDate.month}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>

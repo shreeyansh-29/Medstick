@@ -1,5 +1,4 @@
 export const bloodGroup = [
-  {label: 'Blood Group', value: 'Blood Group', color: 'grey'},
   {label: 'A+', value: 'A+'},
   {label: 'A-', value: 'A-'},
   {label: 'B+', value: 'B+'},
@@ -11,7 +10,6 @@ export const bloodGroup = [
 ];
 
 export const gender = [
-  {label: 'Gender', value: 'Gender', color: 'grey'},
   {label: 'Male', value: 'Male'},
   {label: 'Female', value: 'Female'},
   {label: 'Other', value: 'Other'},

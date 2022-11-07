@@ -17,12 +17,15 @@ export const styles = StyleSheet.create({
   },
   cnText: {fontWeight: '600', fontSize: 18},
   cnText1: {fontWeight: '600', fontSize: 16},
-  // cnView: {marginTop: 5},
+  cnView: {width: '80%', marginBottom: 40},
 
   //mn --- medicineNAme
-  mnView: {marginTop: verticalScale(14), marginBottom: verticalScale(5)},
+  mnView: {
+    marginTop: verticalScale(14),
+    marginBottom: verticalScale(5),
+    width: '80%',
+  },
   mnText: {
-    marginLeft: horizontalScale(6),
     fontSize: 18,
     fontWeight: '700',
     color: '#858383',
@@ -76,5 +79,26 @@ export const styles = StyleSheet.create({
   renderCT: {
     marginHorizontal: horizontalScale(7),
     marginTop: verticalScale(-14),
+  },
+
+  //dropdown
+  dropdown: {
+    borderBottomColor: 'gray',
+    borderBottomWidth: 0.5,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: 'grey',
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: 'black',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  textStyle: {
+    color: 'black',
   },
 });

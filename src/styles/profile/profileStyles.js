@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     fontSize: 17,
   },
-  content: {color: 'grey'},
+  content: {color: 'grey', fontSize: 15},
   modalView: {
     backgroundColor: 'white',
     borderTopStartRadius: 20,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 50,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 14,
+    marginBottom: 12,
   },
   image: {
     width: 100,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
 
   //inputField
   field: {height: 50, backgroundColor: 'white'},
-  bio: {height: 120, backgroundColor: 'white'},
+  bio: {height: 120, backgroundColor: 'white', color: 'green'},
   inputForm: {
     marginHorizontal: 20,
     // backgroundColor: 'red',
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   inputField: {
     marginBottom: 10,
   },
-  editButtonContainer: {alignItems: 'center', marginVertical: 20},
+  editButtonContainer: {alignItems: 'center', marginVertical: 40},
   editButton: {
     backgroundColor: colorPalette.mainColor,
     width: '50%',
@@ -141,6 +141,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'lightgrey',
     borderRadius: 4,
+  },
+  fieldHeading: {fontSize: 17, color: 'grey', fontWeight: '500'},
+  pickerHeading: {
+    fontSize: 17,
+    color: 'grey',
+    marginBottom: 4,
+    fontWeight: '500',
   },
 });
 
