@@ -23,7 +23,6 @@ export const getAppointmentReducer = (state = initialState, action) => {
         error: {...state.error, error: null},
       };
     case GET_APPOINTMENT_SUCCESS:
-    
       return {
         ...state,
         data: action.payload?.object,
@@ -40,4 +39,3 @@ export const getAppointmentReducer = (state = initialState, action) => {
       return state;
   }
 };
-

@@ -190,7 +190,6 @@ padding:10,
   },
   text:{
     color:colorPalette.appColor,
-
   },
   textView:{
     flexDirection:'row',

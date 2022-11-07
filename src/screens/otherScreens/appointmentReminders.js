@@ -62,7 +62,7 @@ const AppointmentReminders = ({navigation}) => {
   return (
     <>
       <View>
-        <SubHeader title={'Appointment Reminders'} navigation={navigation} />
+        <SubHeader title={'Save Appointment'} navigation={navigation} />
       </View>
       <View style={{margin: '0.3%'}}>
         <Text style={{fontSize: 18, marginTop: '5%', marginLeft: '7.5%'}}>

@@ -546,7 +546,9 @@ const Reminder = ({route, navigation, props}) => {
 
           <Divider></Divider>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.title}>Take Medicine:</Text>
+            <Text style={[styles.title, {marginTop: '4%'}]}>
+              Take Medicine:
+            </Text>
             <TouchableOpacity
               style={{
                 margin: '3%',
@@ -619,10 +621,10 @@ const Reminder = ({route, navigation, props}) => {
 
             {check2 && (
               <SectionedMultiSelect
+                hideSearch={false}
                 IconRenderer={Icon}
                 items={day_data}
                 uniqueKey="id"
-                hideSearch={true}
                 subKey="children"
                 selectText="Choose days"
                 showDropDowns={true}
@@ -656,7 +658,7 @@ const Reminder = ({route, navigation, props}) => {
                 currentCount,
                 userMedicineId,
               );
-              if(saveReminderResponse === "Success"){
+              if (saveReminderResponse === 'Success') {
                 route.params.fetchStatus();
               }
             }}
