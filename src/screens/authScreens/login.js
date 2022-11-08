@@ -74,7 +74,7 @@ const Login = ({navigation, text}) => {
       }
       Toast.show({
         type: 'info',
-        text1: 'Failed',
+        text1: 'Please connect to Internet',
       });
     }
   };

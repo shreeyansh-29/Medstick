@@ -65,6 +65,7 @@ const Prescriptions = ({navigation}) => {
   };
 
   const RenderItem = ({item, index}) => {
+    console.log(item,"item");
     return (
       <Animatable.View animation="zoomIn" duration={400} delay={index * 200}>
         <View style={styles.top}>

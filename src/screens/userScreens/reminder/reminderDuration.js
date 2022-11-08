@@ -52,7 +52,7 @@ const ReminderDuration = ({route, navigation}) => {
       endDateState(startDate);
   }
   return (
-    <View style={styles.container}>
+    <>
       <SubHeader navigation={navigation} title={'Duration'} />
       <View style={{marginHorizontal: 20}}>
         <View style={styles.dateContainer}>
@@ -166,7 +166,7 @@ const ReminderDuration = ({route, navigation}) => {
         <SaveButton/>
         </TouchableOpacity>
       </View>
-    </View>
+    </>
   );
 };
 

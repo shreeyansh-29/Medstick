@@ -1,4 +1,11 @@
-import {View, Text, FlatList, TouchableOpacity, Modal} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+  Alert,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {appointmentReminderSelector} from '../../constants/Selector/appointmentReminderSelector';
 import SubHeader from '../../components/molecules/headers/subHeader';
@@ -20,10 +27,10 @@ import {
 import {colorPalette} from '../../components/atoms/colorPalette';
 import Loader from '../../components/atoms/loader';
 import {deleteAppointmentRequest} from '../../redux/action/appointmentReminderAction/deleteAppointmentAction';
-import SubTitle from '../../components/atoms/subTitle';
 import DateTime from '../../components/organisms/dateTime';
 import {updateAppointmentRequest} from '../../redux/action/appointmentReminderAction/updateAppointmentAction';
 import DatePicker from 'react-native-date-picker';
+import {color} from 'react-native-reanimated';
 
 const AppointmentReminderList = ({navigation}) => {
   const dispatch = useDispatch();
@@ -36,13 +43,15 @@ const AppointmentReminderList = ({navigation}) => {
   const [time1, setTime1] = useState('');
   const [date, setDate] = useState(new Date());
   const getdoctor = useSelector(appointmentReminderSelector.getAppointment);
+  console.log(getdoctor, 'get doctor');
   const [modalVisible, setModalVisible] = useState(false);
   const getDoctorLoading = useSelector(
     appointmentReminderSelector.getAppointmentLoading,
   );
 
-  const updateAppointmentData = useSelector(appointmentReminderSelector.updateAppointment);
-  console.log(updateAppointmentData,"updateAppointmentData");
+  const updateAppointmentData = useSelector(
+    appointmentReminderSelector.updateAppointment,
+  );
 
   let fDate =
     date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
@@ -52,8 +61,6 @@ const AppointmentReminderList = ({navigation}) => {
     appointmentReminderSelector.updateAppointmentLoading,
   );
 
-  console.log(updateAppointment1, 'update....');
-
   const getAppointmentLoader = useSelector(
     appointmentReminderSelector.getAppointmentLoading,
   );
@@ -61,11 +68,10 @@ const AppointmentReminderList = ({navigation}) => {
   const deleteAppointment = useSelector(
     appointmentReminderSelector.deleteAppointment,
   );
-  console.log(deleteAppointment, 'delete appointment');
 
   useEffect(() => {
     if (getdoctor?.data !== null) {
-      setAppointments([getdoctor.data]);
+      setAppointments(getdoctor.data);
     }
   }, [getdoctor]);
 
@@ -75,20 +81,22 @@ const AppointmentReminderList = ({navigation}) => {
 
   const onClickDeleteAppointment = deleteId => {
     dispatch(deleteAppointmentRequest(deleteId));
+
     setTimeout(() => {
       dispatch(getAppointmentRequest(pageNo));
     }, 1000);
   };
 
   const updateAppointment = (fDate, time, notes1, appointmentId) => {
-    dispatch(updateAppointmentRequest(fDate, time, notes1, appointmentId));
-  
-    if(updateAppointmentData?.data?.status === 'Success')
-    {
-      setModalVisible(false)
+    if (notes1) {
+      dispatch(updateAppointmentRequest(fDate, time, notes1, appointmentId));
+      if (updateAppointmentData?.data?.status === 'Success') {
+        setModalVisible(false);
+      }
+      dispatch(getAppointmentRequest(pageNo));
+    } else {
+      Alert.alert("Empty fields are not required");
     }
-    dispatch(getAppointmentRequest(pageNo));
-    
   };
 
   const renderItem = ({item}) => {
@@ -97,25 +105,48 @@ const AppointmentReminderList = ({navigation}) => {
         <ListItem style={styles.list}>
           <ListItem.Content>
             <View>
-              <ListItem.Subtitle style={styles.patientName}>
-                Date: {`${item.localDate}`}
-              </ListItem.Subtitle>
-              <ListItem.Subtitle
-                style={{
-                  marginLeft: 3,
-                  fontSize: 15,
-                  color: colorPalette.mainColor,
-                }}>
-                Time: {`${item.localTime}`}
-              </ListItem.Subtitle>
-              <ListItem.Subtitle
-                style={{
-                  marginLeft: 3,
-                  fontSize: 15,
-                  color: colorPalette.mainColor,
-                }}>
-                Notes: {`${item.notes}`}
-              </ListItem.Subtitle>
+              <View style={{flexDirection: 'row'}}>
+                <ListItem.Subtitle style={styles.reminderKey}>
+                  Date:
+                </ListItem.Subtitle>
+                <ListItem.Subtitle
+                  style={{
+                    marginLeft: 3,
+                    fontSize: 15,
+                    color: colorPalette.mainColor,
+                  }}>
+                  {' '}
+                  {`${item.localDate}`}
+                </ListItem.Subtitle>
+              </View>
+
+              <View style={{flexDirection: 'row'}}>
+                <ListItem.Subtitle style={styles.reminderKey}>
+                  Time:
+                </ListItem.Subtitle>
+                <ListItem.Subtitle
+                  style={{
+                    marginLeft: 3,
+                    fontSize: 15,
+                    color: colorPalette.mainColor,
+                  }}>
+                  {`${item.localTime}`}
+                </ListItem.Subtitle>
+              </View>
+
+              <View style={{flexDirection: 'row'}}>
+                <ListItem.Subtitle style={styles.reminderKey}>
+                  Notes:
+                </ListItem.Subtitle>
+                <ListItem.Subtitle
+                  style={{
+                    marginLeft: 3,
+                    fontSize: 15,
+                    color: colorPalette.mainColor,
+                  }}>
+                  {`${item.notes}`}
+                </ListItem.Subtitle>
+              </View>
             </View>
           </ListItem.Content>
           <View style={{flexDirection: 'row', left: 55, padding: '6%'}}>
@@ -129,7 +160,7 @@ const AppointmentReminderList = ({navigation}) => {
               }}>
               <FontAwesomeIcon
                 icon={faPenToSquare}
-                size={17}
+                size={19}
                 color={colorPalette.mainColor}
               />
             </TouchableOpacity>
@@ -140,7 +171,7 @@ const AppointmentReminderList = ({navigation}) => {
               }}>
               <FontAwesomeIcon
                 icon={faTrash}
-                size={17}
+                size={19}
                 color={colorPalette.mainColor}
               />
             </TouchableOpacity>
@@ -151,150 +182,178 @@ const AppointmentReminderList = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
-      <SubHeader title={'Appointment Reminders'} navigation={navigation} />
-      <Modal visible={modalVisible}>
-        <View style={{flex: 1}}>
-          <View style={{backgroundColor: colorPalette.mainColor}}>
-            <Text style={{fontSize: 23, margin: '4%', fontWeight: '600'}}>
-              Update Appointment
-            </Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => setModalVisible(!modalVisible)}
+    <View style={{flex: 1, backgroundColor: colorPalette.backgroundColor}}>
+      <SubHeader
+        title={'Appointment Reminders'}
+        navigation={navigation}
+        routeName={'AppointmentReminders'}
+      />
+      <Modal
+        onRequestClose={() => setModalVisible(false)}
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}>
+        <View
+          style={{
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(52, 52, 52, 0.8)',
+          }}>
+          <View
             style={{
-              position: 'absolute',
-              right: 10,
-              marginTop: '3%',
-              marginLeft: '3%',
+              height: 310,
+              width: 340,
+              backgroundColor: '#fff',
+              borderRadius: 10,
             }}>
-            <FontAwesomeIcon
-              icon={faXmark}
-              size={30}
-              color={colorPalette.GREY}
-            />
-          </TouchableOpacity>
-          <View style={{margin: '2%'}}>
-            {/* <DateTime temp={temp} time1={time1} /> */}
             <View
               style={{
-                flexDirection: 'row',
-                paddingTop: 5,
-                marginTop: '3%',
-                marginRight: '20%',
-                marginLeft: '7%',
+                backgroundColor: colorPalette.mainColor,
+                borderTopStartRadius: 10,
+                borderTopRightRadius: 10,
               }}>
-              <TouchableOpacity onPress={() => setOpen(true)}>
-                <View style={Styles.box1}>
-                  <Text style={Styles.text}>DateTime</Text>
-                  <FontAwesomeIcon
-                    icon={faCalendarDays}
-                    size={28}
-                    color={colorPalette.mainColor}
-                  />
-                  <DatePicker
-                    modal
-                    open={open}
-                    date={date}
-                    value={date}
-                    mode="datetime"
-                    onConfirm={date => {
-                      setOpen(false);
-                      setDate(date);
-                    }}
-                    onCancel={() => {
-                      setOpen(false);
-                    }}
-                  />
-                </View>
-              </TouchableOpacity>
-              {date == Date() ? (
-                <View style={Styles.box2}>
-                  <Text>-----------------------</Text>
-                </View>
-              ) : (
-                <View style={Styles.box2}>
-                  <Text style={{fontSize: 18}}>
-                    {date?.getFullYear() +
-                      '/' +
-                      (date.getMonth() + 1) +
-                      '/' +
-                      date.getDate() +
-                      '  ' +
-                      date.getHours() +
-                      ':' +
-                      date.getMinutes() +
-                      ':' +
-                      date.getSeconds()}
-                  </Text>
-                </View>
-              )}
-            </View>
-            <TextInput
-              id="Notes"
-              style={{width: '82%', marginLeft: '8%', marginTop: '4%'}}
-              label="Notes"
-              value={notes1}
-              mode="outlined"
-              onChangeText={text => setNotes1(text)}
-              outlineColor="#02ABA6"
-              activeOutlineColor="#02ABA6"
-            />
-            <View
-              style={{
-                borderWidth: 1.5,
-                marginTop: '5%',
-                marginLeft: '8%',
-                marginRight: '9.6%',
-                borderRadius: 7,
-                borderColor: colorPalette.mainColor,
-              }}>
-              <TouchableOpacity
-                onPress={() =>
-                  updateAppointment(fDate, time, notes1, appointmentId)
-                }
+              <Text
                 style={{
-                  margin: '1%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  fontSize: 22,
+                  margin: '4%',
+                  fontWeight: '400',
+                  color: '#ffffff',
                 }}>
-                <Text
+                Update Appointment
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => setModalVisible(!modalVisible)}
+              style={{
+                position: 'absolute',
+                right: 10,
+                marginTop: '3%',
+                marginLeft: '3%',
+              }}>
+              <FontAwesomeIcon
+                icon={faXmark}
+                size={30}
+                color={colorPalette.GREY}
+              />
+            </TouchableOpacity>
+            <View style={{margin: '1%'}}>
+              {/* <DateTime temp={temp} time1={time1} /> */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  paddingTop: 5,
+                  marginTop: '3%',
+                  marginRight: '20%',
+                  marginLeft: '7%',
+                }}>
+                <TouchableOpacity onPress={() => setOpen(true)}>
+                  <View style={Styles.box1}>
+                    <Text style={[Styles.text, {fontSize: 15}]}>DateTime</Text>
+                    <FontAwesomeIcon
+                      icon={faCalendarDays}
+                      size={28}
+                      color={colorPalette.mainColor}
+                    />
+                    <DatePicker
+                      modal
+                      open={open}
+                      date={date}
+                      value={date}
+                      mode="datetime"
+                      onConfirm={date => {
+                        setOpen(false);
+                        setDate(date);
+                      }}
+                      onCancel={() => {
+                        setOpen(false);
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {date == Date() ? (
+                  <View style={Styles.box2}>
+                    <Text>-----------------------</Text>
+                  </View>
+                ) : (
+                  <View style={Styles.box2}>
+                    <Text style={{fontSize: 17}}>
+                      {date?.getFullYear() +
+                        '/' +
+                        (date.getMonth() + 1) +
+                        '/' +
+                        date.getDate() +
+                        '  ' +
+                        date.getHours() +
+                        ':' +
+                        date.getMinutes() +
+                        ':' +
+                        date.getSeconds()}
+                    </Text>
+                  </View>
+                )}
+              </View>
+              <TextInput
+                id="Notes"
+                style={{width: '82%', marginLeft: '8%', marginTop: '4%'}}
+                label="Notes"
+                value={notes1}
+                mode="outlined"
+                onChangeText={text => setNotes1(text)}
+                outlineColor="#02ABA6"
+                activeOutlineColor="#02ABA6"
+              />
+              <View
+                style={{
+                  borderWidth: 1.5,
+                  marginTop: '6%',
+                  marginLeft: '8%',
+                  marginRight: '9.6%',
+                  borderRadius: 7,
+                  borderColor: colorPalette.mainColor,
+                }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    updateAppointment(fDate, time, notes1, appointmentId)
+                  }
                   style={{
-                    fontSize: 20,
-                    padding: '1%',
-                    borderColor: colorPalette.mainColor,
-                    borderRadius: 7,
+                    margin: '1%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
-                  Update
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 17,
+                      padding: '1%',
+                      borderColor: colorPalette.mainColor,
+                      borderRadius: 7,
+                    }}>
+                    Update
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
       </Modal>
-      {/* {updateAppointment1?(<></>):(<Loader/>)} */}
-
       {getDoctorLoading ? (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={appointments[0]}
-          renderItem={renderItem}
-          extraData={appointments[0]}
-          numColumns={1}
-        />
+        <Loader />
       ) : (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <Loader />
-        </View>
+        <>
+          {appointments?.length === 0 ? (
+            <View></View>
+          ) : (
+            <View>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={appointments}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            </View>
+          )}
+        </>
       )}
-      <View style={{position: 'absolute', bottom: 20, right: 16}}>
-        <AddButton
-          text="add"
-          routeName={'AppointmentReminders'}
-          navigation={navigation}
-          styles={{height: 84, width: 84}}
-        />
-      </View>
     </View>
   );
 };

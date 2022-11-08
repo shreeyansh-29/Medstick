@@ -37,8 +37,7 @@ export const SAVED_MEDICINE_REMINDER = `${apiUrl}/medicine-reminder`;
 export const NOTIFY_USER = `${apiUrl}/notify-user`;
 export const MEDICINE_IMAGES = `${apiUrl}/medicine-images`;
 export const FETCH_IMAGE = `${apiUrl}`;
-export const GET_MEDICINE_HISTORY=`${apiUrl}/medicine-history`
-export const GET_MEDICINE_HISTORY_BY_DATE=`${apiUrl}/medicine-by-date`
+export const GET_MEDICINE_HISTORY = `${apiUrl}/medicine-history`;
+export const GET_MEDICINE_HISTORY_BY_DATE = `${apiUrl}/medicine-by-date`;
 export const DOWNLOAD_PDF = `${apiUrl}/pdf`;
 export const SAVE_REMINDER = `${apiUrl}/medicine-reminder`;
-

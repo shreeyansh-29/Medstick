@@ -44,8 +44,6 @@ const rootReducer = combineReducers({
   signIn: signInReducer,
   signUp: signUpReducer,
   medicineList: medicineListReducer,
-  careTaker: myCaretakerReducer,
-  listCaretaker: caretakerRequestReducer,
   myPatients: myPatientsReducer,
   patientsRequest: patientsRequestReducer,
   acceptPatientRequest: acceptPatientReqReducer,

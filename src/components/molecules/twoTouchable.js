@@ -8,8 +8,8 @@ const TwoTouchable = ({icon, title, navigation, navigationTitle}) => {
     <View
       style={{
         flexDirection: 'row',
-        alignItems:'center',
-        paddingVertical:5
+        alignItems: 'center',
+        paddingVertical: 14,
       }}>
       <TouchableOpacity
         activeOpacity={1}
@@ -20,16 +20,17 @@ const TwoTouchable = ({icon, title, navigation, navigationTitle}) => {
         <View style={Styles.icon}>
           <FontAwesomeIcon
             icon={icon}
-            size={20}
+            size={21}
             color={colorPalette.mainColor}
           />
         </View>
         <View style={Styles.name}>
           <Text
             style={{
-              fontSize: 17,
+              fontSize: 18,
               color: 'black',
-              alignSelf:'flex-start'
+              marginLeft: 6,
+              fontWeight: '400',
             }}>{`${title}`}</Text>
         </View>
       </TouchableOpacity>

@@ -17,6 +17,7 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
+import {useFocusEffect} from '@react-navigation/native';
 
 var counter = 0;
 
@@ -50,8 +51,7 @@ const Reminder = ({route, navigation, props}) => {
   const [breakfast, setBreakfast] = useState(false);
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
-  const [currentIndex, setCurrentIndex]= useState();
-
+  const [currentIndex, setCurrentIndex] = useState();
 
   const dispatch = useDispatch();
 
@@ -125,8 +125,6 @@ const Reminder = ({route, navigation, props}) => {
   //   }, 2000);
   // };
 
-
-
   const onSelecteddaysItemsChange = selectedi => {
     slecteddaysstate(selectedi);
   };
@@ -172,34 +170,19 @@ const Reminder = ({route, navigation, props}) => {
     store_start_date(date);
   };
 
-  // useEffect(()=>{
-  //   handleTimeArray()
-  // },[breakfast,lunch,dinner]);
-
-  // const handleTimeArray = ()=>{
-  //   if(!breakfast){
-  //     timearray.splice(0,1);
-  //   }
-  //   if(!lunch){
-  //     timearray.splice(1,1);
-  //   }
-  //   if(!dinner){
-  //     timearray.splice(2,1);
-  //   }
-  // }
-
-
   const handleConfirmfortime = date => {
-    console.log('A time has been picked: ', date.getHours(), date.getMinutes());
+    // console.log('A time has been picked: ', date.getHours(), date.getMinutes());
 
     if (date.getHours() > 11) {
-      timearray[currentIndex] = date.getHours() + ':' + date.getMinutes() + ' PM';
+      timearray[currentIndex] =
+        date.getHours() + ':' + date.getMinutes() + ' PM';
       timeings[currentIndex] = date.getHours() + ':' + date.getMinutes();
       timestate(timeings);
       // timearray.push(date.getHours() + ':' + date.getMinutes() + ' PM');
       // console.log(timeings, 'time added ');
     } else {
-      timearray[currentIndex] = date.getHours() + ':' + date.getMinutes() + ' AM';
+      timearray[currentIndex] =
+        date.getHours() + ':' + date.getMinutes() + ' AM';
       timeings[currentIndex] = date.getHours() + ':' + date.getMinutes();
       timestate(timeings);
     }
@@ -234,19 +217,42 @@ const Reminder = ({route, navigation, props}) => {
     let days = '';
     for (let i = 0; i < timearray.length; i++) {
       let mtime = timearray[i].split(' ')[0].split(':')[0];
-      if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
-        mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
-      } else {
-        mtime += ':' + timearray[i].split(' ')[0].split(':')[1];
-      }
-      if (i === timearray.length - 1) {
-        time += mtime + ' ' + timearray[i].split(' ')[1];
-      } else {
-        time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
+      if (breakfast && i == 0) {
+        if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
+          mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
+        } else {
+          mtime += ':' + timearray[i].split(' ')[0].split(':')[1];
+        }
+        if (i === timearray.length - 1) {
+          time += mtime + ' ' + timearray[i].split(' ')[1];
+        } else {
+          time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
+        }
+      } else if (lunch && i == 1) {
+        if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
+          mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
+        } else {
+          mtime += ':' + timearray[i].split(' ')[0].split(':')[1];
+        }
+        if (i === timearray.length - 1) {
+          time += mtime + ' ' + timearray[i].split(' ')[1];
+        } else {
+          time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
+        }
+      } else if (dinner && i == 2) {
+        if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
+          mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
+        } else {
+          mtime += ':' + timearray[i].split(' ')[0].split(':')[1];
+        }
+        if (i === timearray.length - 1) {
+          time += mtime + ' ' + timearray[i].split(' ')[1];
+        } else {
+          time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
+        }
       }
     }
     setTime(time);
-
     if (check2) {
       for (let i = 0; i < selecteddaysItems.length; i++) {
         if (i == selecteddaysItems.length - 1) {
@@ -256,30 +262,16 @@ const Reminder = ({route, navigation, props}) => {
         }
       }
       console.log(days, ' final days ');
-      // console.log('time and days ==>>> ', time, days);
     } else if (check1) {
       days += 'Everyday';
 
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
     const frequencyTemp = frequency.toString();
-    console.log(fDatePrimary, 'startDate');
 
-    console.log(days, 'days');
-    console.log(title, 'reminderTitle');
-    console.log(time, 'reminderTime');
-    console.log(check1, 'everyday');
-    console.log(noEndDate, ' no end date');
     if (endDate === 'No End Date') {
       setfDate('null');
     }
-    console.log(reminderStatus, 'reminderStatus');
-    console.log(frequencyTemp, 'frequency');
-    console.log(fDateSecondary, 'endDate');
-    console.log(food, 'beforeAfter');
-    console.log(totalReminders, 'totalReminders');
-    console.log(currentCount, 'currentCount');
-    console.log(userMedicineId, 'iddddd');
 
     dispatch(
       saveReminderRequest(
@@ -302,8 +294,6 @@ const Reminder = ({route, navigation, props}) => {
       navigation.navigate('MedicinePanel');
     }, 2000);
   };
-
-  console.log(timearray, "0000000")
 
   return (
     // { showReminderDuration &&  <ReminderDuration/>}
@@ -628,8 +618,8 @@ const Reminder = ({route, navigation, props}) => {
                     : 'white',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: 6,
-                  width: '45%',
+                  paddingVertical: 6,
+                  width: '46.5%',
                 }}
                 onPress={() => {
                   setFood('Before');
@@ -652,8 +642,8 @@ const Reminder = ({route, navigation, props}) => {
                   backgroundColor: foodAfter ? colorPalette.mainColor : 'white',
                   borderRadius: 6,
                   justifyContent: 'center',
-                  padding: 6,
-                  width: '45%',
+                  paddingVertical: 6,
+                  width: '46.5%',
                 }}
                 onPress={() => {
                   setFood('After');
@@ -665,15 +655,17 @@ const Reminder = ({route, navigation, props}) => {
                     fontSize: 16,
                     color: foodAfter ? 'white' : 'black',
                     textAlign: 'center',
-                  }}>
+                  }}
+                  numberOfLines={2}
+                  textBreakStrategy="highQuality">
                   After food
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
           <Divider></Divider>
-          <Text style={styles.title}>Select Days</Text>
-          <View style={styles.days}>
+          <View style={{marginBottom: 10}}>
+            <Text style={styles.title}>Select Days</Text>
             <CheckBox
               style={styles.days}
               onClick={() => {
@@ -683,6 +675,7 @@ const Reminder = ({route, navigation, props}) => {
               isChecked={check1}
               checkBoxColor={colorPalette.appColor}
               leftText={'Everyday'}
+              leftTextStyle={{fontSize: 16}}
             />
             <CheckBox
               style={styles.days}
@@ -693,23 +686,53 @@ const Reminder = ({route, navigation, props}) => {
               isChecked={check2}
               checkBoxColor={colorPalette.appColor}
               leftText={'Selected days'}
+              leftTextStyle={{fontSize: 16}}
             />
-
             {check2 && (
               <SectionedMultiSelect
+                hideSearch={true}
                 IconRenderer={Icon}
                 items={day_data}
                 uniqueKey="id"
-                hideSearch={true}
                 subKey="children"
                 selectText="Choose days"
                 showDropDowns={true}
                 expandDropDowns={true}
+                icons={{
+                  arrowUp: {
+                    size: 20,
+                    name: 'keyboard-arrow-up',
+                  },
+                  arrowDown: {
+                    name: 'keyboard-arrow-down', // dropdown toggle
+                    size: 22,
+                  },
+                  check: {
+                    name: 'check', // selected item
+                    size: 22,
+                  },
+                  close: {
+                    name: 'close', // chip close
+                    size: 16,
+                  },
+                }}
                 styles={{
-                  listContainer: {height: 400},
-                  container: {maxHeight: 400, marginTop: 200, padding: 20},
+                  listContainer: {height: 300, backgroundColor: 'red'},
+                  container: {maxHeight: 370, marginTop: 200, padding: 20},
                   backdrop: {height: 400},
                   modalWrapper: {height: 400},
+                  button: {
+                    backgroundColor: colorPalette.appColor,
+                  },
+                  cancelButton: {
+                    backgroundColor: 'white',
+                  },
+                  chipContainer: {
+                    backgroundColor: colorPalette.appColor,
+                  },
+                }}
+                colors={{
+                  chipColor: 'white',
                 }}
                 readOnlyHeadings={true}
                 onSelectedItemsChange={onSelecteddaysItemsChange}

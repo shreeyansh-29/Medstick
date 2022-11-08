@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     backgroundColor: colorPalette.mainColor,
-    // backgroundColor: 'red',
   },
   header: {
     flex: 2,
@@ -29,25 +28,6 @@ export const styles = StyleSheet.create({
   bellIcon: {
     flex: 0.5,
     alignItems: 'center',
-  },
-  subHeader: {
-    height: verticalScale(50),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: colorPalette.mainColor,
-  },
-  subHeaderFont: {
-    fontSize: 20,
-    fontFamily: '',
-    paddingLeft: horizontalScale(8),
-    color: colorPalette.basicColor,
-  },
-  backIcon: {
-    flex: 0.2,
-    paddingLeft: horizontalScale(20),
-    alignItems: 'flex-start',
-    justifyContent: 'center',
   },
   background: {
     position: 'absolute',

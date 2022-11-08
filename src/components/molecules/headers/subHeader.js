@@ -1,15 +1,16 @@
-import {View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, Text} from 'react-native';
 import React from 'react';
-import SubTitle from '../../atoms/subTitle';
-import {styles} from '../../../styles/homeScreenStyles/headerStyles';
+import {styles} from '../../../styles/homeScreenStyles/subHeaderStyles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../atoms/colorPalette';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
-import DownloadButton from '../../atoms/downloadButton';
+import AddAppointment from '../../atoms/addAppointment';
 import {useDispatch} from 'react-redux';
 import {notifyUserClear} from '../../../redux/action/patients/notifyUserAction';
+import ShareButton from '../../atoms/shareButton';
+import EditButton from '../../atoms/editButton';
 
-const SubHeader = ({title, navigation, download}) => {
+const SubHeader = ({title, navigation, download, options, routeName}) => {
   const dispatch = useDispatch();
   return (
     <View style={styles.subHeader}>
@@ -28,12 +29,21 @@ const SubHeader = ({title, navigation, download}) => {
         />
       </TouchableOpacity>
       <View style={styles.header}>
-        <SubTitle title={title} />
+        <Text style={styles.subHeaderFont}>{title}</Text>
       </View>
       {title !== 'Medicine Report' ? (
         <View style={styles.appIcon}></View>
       ) : (
-        <DownloadButton navigation={navigation} download={download} />
+        <DownloadButton download={download} />
+      )}
+      {title !== 'Appointment Reminders' ? (
+        <View style={styles.appIcon}></View>
+      ) : (
+        <AddAppointment navigation={navigation} routeName={routeName} />
+      )}
+      {title !== 'Send Snap' ? null : <ShareButton options={options} />}
+      {title !== 'Patient Profile' ? null : (
+        <EditButton navigation={navigation} />
       )}
     </View>
   );

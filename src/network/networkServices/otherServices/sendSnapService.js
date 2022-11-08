@@ -4,15 +4,20 @@ import {SEND_SNAP} from '../../../constants/apiUrl';
 
 class SendSnapService {
   async sendSnap(payload) {
+    console.log(payload);
     const formdata = payload.payload;
+    for (var pair of formdata.entries()) {
+      console.log(pair[0] + ', ' + pair[1]);
+    }
     const id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
     return await RequestService.postRequest(
       `${SEND_SNAP}?Id=${id}`,
-      {formdata},
+      formdata,
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       },
     );

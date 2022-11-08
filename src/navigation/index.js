@@ -20,7 +20,6 @@ import AddRemainder from '../screens/userScreens/medicines/addRemainder';
 import Edit from '../components/organisms/alarm/edit';
 import Alarm from '../components/organisms/alarm/alarm';
 import Prescriptions from '../screens/otherScreens/prescriptions';
-import Notifications from '../screens/otherScreens/notifications';
 import SendSnapToCaretaker from '../screens/otherScreens/sendSnapToCaretaker';
 import AddPrescription from '../screens/userScreens/medicines/addPrescription';
 import PatientProfile from '../screens/userScreens/patients/patientProfile';
@@ -69,14 +68,9 @@ const MainNavigation = () => {
         <Stack.Screen name="Prescriptions" component={Prescriptions} />
         <Stack.Screen name="MedicineList" component={MedicineList} />
         <Stack.Screen
-          name="MedicineDetailCard"
-          component={MedicineDetailCard}
-        />
-        <Stack.Screen
           name="SendSnapToCaretaker"
           component={SendSnapToCaretaker}
         />
-        <Stack.Screen name="Notifications" component={Notifications} />
         <Stack.Screen name="PatientProfile" component={PatientProfile} />
         <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
         <Stack.Screen
@@ -92,14 +86,20 @@ const MainNavigation = () => {
         <Stack.Screen name="PatientMedicines" component={ViewMedicines} />
         <Stack.Screen name="MedicineReport" component={MedicineReport} />
         <Stack.Screen name="MedicineImages" component={MedicineImages} />
-        <Stack.Screen name="notification" component={NotificationScreen} />
+        <Stack.Screen name="Notification" component={NotificationScreen} />
         <Stack.Screen name="AddReminder" component={AddRemainder} />
         <Stack.Screen name="Edit" component={Edit} />
         <Stack.Screen name="Alarm" component={Alarm} />
         <Stack.Screen name="Reminder" component={Reminder} />
         <Stack.Screen name="ReminderDuration" component={ReminderDuration} />
-        <Stack.Screen name="AppointmentReminders" component={AppointmentReminders} />
-        <Stack.Screen name="AppointmentReminderList" component={AppointmentReminderList} />
+        <Stack.Screen
+          name="AppointmentReminders"
+          component={AppointmentReminders}
+        />
+        <Stack.Screen
+          name="AppointmentReminderList"
+          component={AppointmentReminderList}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

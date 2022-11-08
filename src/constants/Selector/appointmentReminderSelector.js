@@ -5,7 +5,7 @@ const saveAppointmentReminder = state => state.saveAppointment;
 const saveAppointmentReminderLoading = state => state.saveAppointment.isLoading;
 const saveAppointmentReminderError = state => state.saveAppointment.error;
 const getAppointment = state => state.getAppointment;
-const getAppointmentLoading = state => state.getAppointment.isLoading;
+const getAppointmentLoading = state => state.getAppointment.isLoading.loader;
 const getAppointmentError = state => state.getAppointment.error;
 const updateAppointment = state => state.updateAppointment;
 const updateAppointmentLoading = state => state.updateAppointment.isLoading;

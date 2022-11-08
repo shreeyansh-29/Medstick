@@ -11,23 +11,23 @@ export const styles = StyleSheet.create({
   profile: {
     flexDirection: 'row',
     padding: moderateScale(20),
-    marginVertical:1,
+    marginBottom: verticalScale(4),
   },
   img: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginLeft: horizontalScale(10),
+    width: 60,
+    height: 60,
+    borderRadius: 30,
   },
-  heading: {marginTop: verticalScale(4)},
-  title: {
+  heading: {
+    justifyContent: 'center',
     marginLeft: verticalScale(18),
+  },
+  title: {
     fontSize: 20,
     color: colorPalette.mainColor,
     fontWeight: '600',
   },
   subTitle: {
-    marginLeft: verticalScale(18),
     fontSize: 16,
     color: 'grey',
     fontWeight: '500',
@@ -38,16 +38,5 @@ export const styles = StyleSheet.create({
   logout: {
     alignItems: 'center',
     marginTop: verticalScale(16),
-  },
-  lineCont: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: verticalScale(5),
-  },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: 'lightgrey',
-    marginHorizontal: horizontalScale(24),
   },
 });

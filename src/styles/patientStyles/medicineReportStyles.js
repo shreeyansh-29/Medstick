@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
   outerCircle: {},
   percentage: {fontSize: 18, color: colorPalette.redPercentageColor},
   performance: {
-    // color: colorPalette.mainColor,
     color: 'white',
     marginTop: verticalScale(8),
     marginBottom: verticalScale(4),
     fontSize: 20,
-    // paddingTop: 10,
+    width: '80%',
+    textAlign: 'center',
   },
   color: colorPalette.redPercentageColor,
   shadowColor: colorPalette.restPercentageColor,
@@ -67,13 +67,15 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
   },
 
-  mainView: {height: 130, alignItems: 'center', marginTop: 8},
+  mainView: {alignItems: 'center', marginTop: 8},
   heading: {
     fontWeight: '500',
     fontSize: 16,
     color: 'black',
     paddingVertical: 4,
     marginBottom: 2,
+    width: '64%',
+    textAlign: 'center',
   },
   scrollView: {
     paddingVertical: 3,
@@ -83,9 +85,11 @@ const styles = StyleSheet.create({
   scrollViewText: {color: 'black', fontSize: 16, paddingBottom: 4},
   scrollViewDate: {
     backgroundColor: 'white',
-    padding: 8,
-    borderRadius: 30,
-    color: 'black',
+    width: 28,
+    alignItems: 'center',
+    borderRadius: 14,
+    height: 28,
+    justifyContent: 'center',
   },
   medicineHistory: {
     fontWeight: '600',

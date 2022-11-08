@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   dateContainer: {flexDirection: 'row', width: '100%', paddingVertical: 6},
   dateText: {fontSize: 16, marginLeft: 8, fontWeight: '700'},
   dateText1: {
-    fontSize: 16,
+    fontSize: 17,
     marginLeft: 8,
     color: 'black',
   },
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     width: '10%',
   },
   title: {
-    fontSize: 16,
+    fontSize: 17,
     marginLeft: 8,
     marginTop: 10,
     fontWeight: '700',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   timeText: {fontWeight: '800'},
   selectDays: {fontSize: 16, fontWeight: '700'},
-  days: {padding: 8},
+  days: {paddingHorizontal: 16, paddingVertical:5,},
   durationContainer: {
     marginLeft: 10,
     marginRight: 10,
