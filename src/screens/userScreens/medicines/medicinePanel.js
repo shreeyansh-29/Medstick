@@ -225,22 +225,22 @@ const MedicinePanel = ({navigation}) => {
                         <ListItem.Title style={Styles.medName}>
                           {item.medicineName}
                         </ListItem.Title>
-                        <ListItem.Subtitle>
+                        {/* <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Type: </Text>
                           {item.dosageType}
-                        </ListItem.Subtitle>
+                        </ListItem.Subtitle> */}
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>
+                          <Text style={{color: 'grey'}}>
                             Dosage Quantity:{' '}
                           </Text>
                           {item.dosageQuantity}
                         </ListItem.Subtitle>
-                        <ListItem.Subtitle>
+                        {/* <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Dosage Unit: </Text>
                           {item.dosageUnit}
-                        </ListItem.Subtitle>
+                        </ListItem.Subtitle> */}
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Total Stock: </Text>
+                          <Text style={{color: 'grey'}}>Total Stock: </Text>
                           {item.stock}
                         </ListItem.Subtitle>
                       </View>
