@@ -12,7 +12,7 @@ const MainHeader = ({title, navigation}) => {
       <View style={styles.header}>
         <Title title={title} />
       </View>
-      {title === 'Account' ? (
+      {title !== 'Medstick' ? (
         <View style={styles.appIcon}></View>
       ) : (
         <BellIcon navigation={navigation} />

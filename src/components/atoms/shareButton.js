@@ -1,6 +1,6 @@
 import {View, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {styles} from '../../styles/homeScreenStyles/headerStyles';
+import {styles} from '../../styles/homeScreenStyles/subHeaderStyles';
 import {faShare, faShareFromSquare} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 

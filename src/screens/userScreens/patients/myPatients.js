@@ -84,8 +84,7 @@ const MyPatients = ({navigation}) => {
       ) : (
         <>
           {myPatients.length === 0 ? (
-            <View
-              style={styles.imgCont}>
+            <View style={styles.imgCont}>
               <CustomImage
                 resizeMode="contain"
                 styles={styles.img}
@@ -100,6 +99,8 @@ const MyPatients = ({navigation}) => {
               keyExtractor={(item, index) => index.toString()}
               refreshControl={
                 <RefreshControl
+                  colors={[colorPalette.mainColor]}
+                  tintColor={[colorPalette.mainColor]}
                   refreshing={refresh}
                   onRefresh={() => {
                     dispatch(myPatientsRequest(pageNo));

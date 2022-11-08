@@ -21,11 +21,10 @@ import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction
 import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import {sendSnapRequest} from '../../redux/action/otherScreenAction/sendSnapAction';
-import {SEND_SNAP} from '../../constants/apiUrl';
-import {apiUrl} from '../../constants/apiUrl';
-
-const height = Dimensions.get("window").height;
+import {
+  sendSnapClear,
+  sendSnapRequest,
+} from '../../redux/action/otherScreenAction/sendSnapAction';
 
 const SendSnapToCaretaker = ({navigation, route}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -34,6 +33,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   const dispatch = useDispatch();
   let res = useSelector(state => state.myCaretaker);
   let meds = useSelector(state => state.medicineList);
+  let res1 = useSelector(state => state.sendSnap?.data);
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');
@@ -42,6 +42,32 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   const userMeds = async () => {
     dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
   };
+
+  useEffect(() => {
+    dispatch(sendSnapClear());
+  }, []);
+
+  useEffect(() => {
+    if (res1?.status === 'Success') {
+      Toast.show({
+        type: 'success',
+        text1: 'Image Sent Successfully',
+      });
+      setTimeout(() => {
+        navigation.pop(2);
+      }, 2000);
+    }
+    if (res1?.status === 'Failed') {
+      Toast.show({
+        type: 'error',
+        text1: 'Something Went Wrong',
+        text2: 'Try Again',
+      });
+      setTimeout(() => {
+        navigation.pop(2);
+      }, 2000);
+    }
+  }, [res1]);
 
   useEffect(() => {
     dispatch(myCaretakerRequest(0));
@@ -80,7 +106,6 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   }, []);
 
   const {image_uri} = route.params;
-  console.log(image_uri);
   const [modalVisible, setModalVisible] = useState(false);
   const images = [
     {
@@ -114,24 +139,6 @@ const SendSnapToCaretaker = ({navigation, route}) => {
       });
       return;
     }
-    // let imagesData = await AsyncStorage.getItem(setDate + ' ' + selectMedicine);
-
-    // if (imagesData !== null) {
-    //   let parsedData = JSON.parse(imagesData);
-    //   parsedData.push(image_uri);
-    //   await AsyncStorage.setItem(
-    //     setDate + ' ' + selectMedicine,
-    //     JSON.stringify(parsedData),
-    //   );
-    // } else {
-    //   let parsedData = [];
-    //   parsedData.push(image_uri);
-
-    //   await AsyncStorage.setItem(
-    //     setDate + ' ' + selectMedicine,
-    //     JSON.stringify(parsedData),
-    //   );
-    // }
     const formdata = new FormData();
     var dt = new Date().getTime();
 
@@ -155,33 +162,6 @@ const SendSnapToCaretaker = ({navigation, route}) => {
     formdata.append('userMedicineId', selectedMedId);
 
     dispatch(sendSnapRequest(formdata));
-
-    // const id = await AsyncStorage.getItem('user_id');
-    // const token = await AsyncStorage.getItem('accessToken');
-
-    // const url = `${apiUrl}`;
-
-    // fetch(url + `/image?Id=${id}`, {
-    //   method: 'post',
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    //   body: formdata,
-    // }).then(res => console.log(res));
-
-    // fetch(SEND_SNAP + `?Id=${id}`, {
-    //   method: 'post',
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    //   body: formdata,
-    // }).then(res => console.log(res));
-
-    // setTimeout(() => {
-    //   navigation.pop(2);
-    // }, 3000);
   };
 
   return (
