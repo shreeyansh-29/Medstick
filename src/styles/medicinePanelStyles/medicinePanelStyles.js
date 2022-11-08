@@ -47,7 +47,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
   },
   medNameView: {flexDirection: 'column', marginLeft: verticalScale(16)},
-  medName: {fontWeight: '900'},
+  medName: {fontWeight: '600', fontSize:17},
   icon: {
     flexDirection: 'row',
   },
