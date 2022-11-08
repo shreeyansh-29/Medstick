@@ -10,8 +10,7 @@ import React from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {styles} from '../../../styles/patientStyles/patientProfileStyles';
 import {Card, Divider} from 'react-native-paper';
-import {colorPalette} from '../../../components/atoms/colorPalette';
-import ErrorBoundary from 'react-native-error-boundary';
+import ErrorBoundary from '../../../errorBoundary';
 
 const PatientProfile = ({navigation, route}) => {
   const dateHandler = date => {
@@ -21,12 +20,10 @@ const PatientProfile = ({navigation, route}) => {
   const item = route.params.profile;
 
   return item === null ? (
-    <>
-      <ErrorBoundary />
-    </>
+    <ErrorBoundary navigation={navigation} />
   ) : (
     <>
-      <View style={{flex: 1, backgroundColor: colorPalette.backgroundColor}}>
+      <View style={styles.container}>
         <SubHeader title={'Patient Profile'} navigation={navigation} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <ImageBackground
