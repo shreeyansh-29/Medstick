@@ -7,7 +7,11 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android/ && ./gradlew assembleRelease -x bundleReleaseJsAndAssets",
+    "run": "gnome-terminal --tab -e 'npm start --reset-cache' --tab -e 'npm run android'",
+    "gradle": "cd android/ && ./gradlew clean && cd ..",
+    "refresh_node_modules": "rm -rf node_modules/ && rm package-lock.json && npm i"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",

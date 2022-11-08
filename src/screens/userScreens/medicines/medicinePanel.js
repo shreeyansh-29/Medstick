@@ -259,7 +259,7 @@ const renderItemLocal = ({item, index}) => {
                       }}>
                       <FontAwesomeIcon
                         icon={faClock}
-                        color={clockActive && item.userMedicineId ?"red":"black"}
+                        color={clockActive && item.userMedicineId ?colorPalette.mainColor:colorPalette.GREY}
                         size={24}
                       />
 
