@@ -93,6 +93,8 @@ const ViewPrescriptions = ({navigation, route}) => {
                 renderItem={renderItem}
                 refreshControl={
                   <RefreshControl
+                    colors={[colorPalette.mainColor]}
+                    tintColor={[colorPalette.mainColor]}
                     refreshing={refresh}
                     onRefresh={() => {
                       setRefresh(false);

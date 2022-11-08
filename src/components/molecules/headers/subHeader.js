@@ -9,6 +9,7 @@ import {useDispatch} from 'react-redux';
 import {notifyUserClear} from '../../../redux/action/patients/notifyUserAction';
 import ShareButton from '../../atoms/shareButton';
 import EditButton from '../../atoms/editButton';
+import DownloadButton from '../../atoms/downloadButton';
 
 const SubHeader = ({title, navigation, download, options, routeName}) => {
   const dispatch = useDispatch();
@@ -32,13 +33,11 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
         <Text style={styles.subHeaderFont}>{title}</Text>
       </View>
       {title !== 'Medicine Report' ? (
-        <View style={styles.appIcon}></View>
+        null
       ) : (
         <DownloadButton download={download} />
       )}
-      {title !== 'Appointment Reminders' ? (
-        <View style={styles.appIcon}></View>
-      ) : (
+      {title !== 'Appointment Reminders' ? null : (
         <AddAppointment navigation={navigation} routeName={routeName} />
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}

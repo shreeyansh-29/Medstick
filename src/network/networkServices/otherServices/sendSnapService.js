@@ -4,11 +4,7 @@ import {SEND_SNAP} from '../../../constants/apiUrl';
 
 class SendSnapService {
   async sendSnap(payload) {
-    console.log(payload);
-    const formdata = payload.payload;
-    for (var pair of formdata.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
-    }
+    const formdata = payload.payload; 
     const id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
     return await RequestService.postRequest(

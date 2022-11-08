@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Modal,
   Alert,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {appointmentReminderSelector} from '../../constants/Selector/appointmentReminderSelector';
@@ -42,6 +43,7 @@ const AppointmentReminderList = ({navigation}) => {
   const [temp, setTemp] = useState('');
   const [time1, setTime1] = useState('');
   const [date, setDate] = useState(new Date());
+  const [refresh, setRefresh] = useState(false);
   const getdoctor = useSelector(appointmentReminderSelector.getAppointment);
   console.log(getdoctor, 'get doctor');
   const [modalVisible, setModalVisible] = useState(false);
@@ -95,7 +97,7 @@ const AppointmentReminderList = ({navigation}) => {
       }
       dispatch(getAppointmentRequest(pageNo));
     } else {
-      Alert.alert("Empty fields are not required");
+      Alert.alert('Empty fields are not required');
     }
   };
 
@@ -349,6 +351,17 @@ const AppointmentReminderList = ({navigation}) => {
                 data={appointments}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
+                refreshControl={
+                  <RefreshControl
+                    colors={[colorPalette.mainColor]}
+                    tintColor={[colorPalette.mainColor]}
+                    refreshing={refresh}
+                    onRefresh={() => {
+                      dispatch(getAppointmentRequest(pageNo));
+                      setRefresh(false);
+                    }}
+                  />
+                }
               />
             </View>
           )}

@@ -1,6 +1,5 @@
 let apiUrl = 'https://12a6-106-51-81-179.in.ngrok.io/api/v1/user';
 
-
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
 export const MY_PATIENTS = `${apiUrl}/my-patients`;

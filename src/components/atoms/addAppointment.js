@@ -11,7 +11,7 @@ const AddAppointment = ({navigation, routeName}) => {
         onPress={() => {
           navigation.navigate(routeName);
         }}>
-        <EvilIcons name="plus" color={"white"} size={34} />
+        <EvilIcons name="plus" color={"white"} size={32} />
       </TouchableOpacity>
     </View>
   );

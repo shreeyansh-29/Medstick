@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
@@ -17,7 +17,6 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
-import {useFocusEffect} from '@react-navigation/native';
 
 var counter = 0;
 
@@ -178,7 +177,6 @@ const Reminder = ({route, navigation, props}) => {
         date.getHours() + ':' + date.getMinutes() + ' PM';
       timeings[currentIndex] = date.getHours() + ':' + date.getMinutes();
       timestate(timeings);
-      // timearray.push(date.getHours() + ':' + date.getMinutes() + ' PM');
       // console.log(timeings, 'time added ');
     } else {
       timearray[currentIndex] =

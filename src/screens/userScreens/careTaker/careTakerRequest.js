@@ -1,4 +1,10 @@
-import {FlatList, RefreshControl, View} from 'react-native';
+import {
+  FlatList,
+  Modal,
+  RefreshControl,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
@@ -10,7 +16,8 @@ import {acceptCaretakerReqRequest} from '../../../redux/action/caretaker/acceptC
 import {deleteCaretakerReqRequest} from '../../../redux/action/caretaker/deleteCaretakerReqAction';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
-import { colorPalette } from '../../../components/atoms/colorPalette';
+import {colorPalette} from '../../../components/atoms/colorPalette';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
@@ -19,6 +26,14 @@ const CareTakerRequest = () => {
   const [pageNo, setPageNo] = useState(0);
   const [caretakers, setCaretakers] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [uri, setUri] = useState('');
+
+  const images = [
+    {
+      url: uri,
+    },
+  ];
 
   useEffect(() => {
     if (res?.data !== null) {
@@ -67,11 +82,22 @@ const CareTakerRequest = () => {
   };
 
   const renderItem = ({item}) => {
+    const image = {
+      url: item.user.picPath,
+    };
+
     return (
       <Card style={styles.card}>
         <View style={styles.cardInner}>
           <View style={styles.avatar}>
-            <Avatar size={80} rounded source={{uri: item.user.picPath}} />
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                setVisible(true);
+                setUri(item.user.picPath);
+              }}>
+              <Avatar size={80} rounded source={{uri: item.user.picPath}} />
+            </TouchableOpacity>
           </View>
           <View style={styles.container1}>
             <ListItem
@@ -115,6 +141,12 @@ const CareTakerRequest = () => {
 
   return (
     <View style={styles.container}>
+      <Modal
+        visible={visible}
+        transparent={true}
+        onRequestClose={() => setVisible(!visible)}>
+        <ImageViewer imageUrls={images} />
+      </Modal>
       {res?.isLoading ? (
         <Loader />
       ) : (
@@ -137,6 +169,8 @@ const CareTakerRequest = () => {
               keyExtractor={(item, index) => index.toString()}
               refreshControl={
                 <RefreshControl
+                  colors={[colorPalette.mainColor]}
+                  tintColor={[colorPalette.mainColor]}
                   refreshing={refresh}
                   onRefresh={() => {
                     dispatch(caretakerReqRequest(pageNo));
