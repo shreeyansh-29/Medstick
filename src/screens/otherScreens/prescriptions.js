@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
@@ -29,6 +30,8 @@ const Prescriptions = ({navigation}) => {
   const loading = useSelector(state => state.myPrescriptions?.isLoading);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [refresh, setRefresh] = useState(false);
+  const [id, setId] = useState('');
 
   const dispatch = useDispatch();
 
@@ -36,6 +39,7 @@ const Prescriptions = ({navigation}) => {
     React.useCallback(() => {
       const getPrescriptions = async () => {
         const Id = await AsyncStorage.getItem('user_id');
+        setId(Id);
         dispatch(myPrescriptionsRequest({currentPage, Id}));
       };
 
@@ -65,7 +69,7 @@ const Prescriptions = ({navigation}) => {
   };
 
   const RenderItem = ({item, index}) => {
-    console.log(item,"item");
+    console.log(item, 'item');
     return (
       <Animatable.View animation="zoomIn" duration={400} delay={index * 200}>
         <View style={styles.top}>
@@ -123,6 +127,17 @@ const Prescriptions = ({navigation}) => {
                 renderItem={RenderItem}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => index.toString()}
+                refreshControl={
+                  <RefreshControl
+                    colors={[colorPalette.mainColor]}
+                    tintColor={[colorPalette.mainColor]}
+                    refreshing={refresh}
+                    onRefresh={() => {
+                      dispatch(myPrescriptionsRequest({currentPage, id}));
+                      setRefresh(false);
+                    }}
+                  />
+                }
               />
             </View>
           )}

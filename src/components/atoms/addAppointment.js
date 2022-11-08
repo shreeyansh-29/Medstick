@@ -1,6 +1,6 @@
 import {View, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {styles} from '../../styles/homeScreenStyles/headerStyles';
+import {styles} from '../../styles/homeScreenStyles/subHeaderStyles';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const AddAppointment = ({navigation, routeName}) => {
@@ -11,7 +11,7 @@ const AddAppointment = ({navigation, routeName}) => {
         onPress={() => {
           navigation.navigate(routeName);
         }}>
-        <EvilIcons name="plus" color={"white"} size={34} />
+        <EvilIcons name="plus" color={"white"} size={32} />
       </TouchableOpacity>
     </View>
   );

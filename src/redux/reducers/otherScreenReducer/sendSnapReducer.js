@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import {
+  SEND_SNAP_CLEAR,
   SEND_SNAP_ERROR,
   SEND_SNAP_REQUEST,
   SEND_SNAP_SUCCESS,
@@ -18,6 +19,8 @@ export const sendSnapReducer = (state = initialState, action) => {
       return {...state, data: action.payload, isLoading: false};
     case SEND_SNAP_ERROR:
       return {...state, error: action.payload, isLoading: false};
+    case SEND_SNAP_CLEAR:
+      return {data: null, error: null, isLoading: true};
     default:
       return state;
   }
