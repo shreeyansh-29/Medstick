@@ -1,5 +1,5 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
-import userMedicineNetworkServices from '../../../network/networkServices/user/userMedicineNetworkServices';
+import medicineListNetworkService from '../../../network/networkServices/user/medicineListNetworkService';
 import {
   errorMedicineList,
   successMedicineList,
@@ -9,7 +9,7 @@ import * as types from '../../actionTypes';
 export function* medicineListWorkerSaga(data) {
   try {
     const response = yield call(
-      userMedicineNetworkServices.getUserMedicine,
+      medicineListNetworkService.getUserMedicine,
       data,
     );
     yield put(successMedicineList(response?.data));

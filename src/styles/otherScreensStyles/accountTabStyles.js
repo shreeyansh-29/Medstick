@@ -39,4 +39,5 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: verticalScale(16),
   },
+  divider: {height: 1, width: '100%'},
 });

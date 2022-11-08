@@ -5,56 +5,44 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadGetUserMedicine} from '../../redux/action/userMedicine/getUserMedicineAction';
 import {styles} from '../../styles/reportScreenStyles/reportScreenStyles';
 
-const MedicinePicker = (props) => {
-    const [medicineName, setMedicineName] = useState('')
-    const dispatch = useDispatch()
+const MedicinePicker = ({onChange}) => {
+  const [medicineName, setMedicineName] = useState('');
+  const dispatch = useDispatch();
 
-    const getUserMedicinedata = useSelector(state => state.getUserMedicineReducer?.data)
-    const getUserMedicine = useSelector(state => state.getUserMedicineReducer?.data?.result)
-    const getmedicine = () => {
-        dispatch(loadGetUserMedicine())
-    }
+  const getUserMedicine = useSelector(
+    state => state.getUserMedicineReducer?.data?.result,
+  );
 
-    useEffect(() => {
-        getmedicine()
-    }, [medicineName])
+  const getmedicine = () => {
+    dispatch(loadGetUserMedicine());
+  };
 
-    const onchangeFnc = (data) => {
-        setMedicineName(data)
-        props.onChange(medicineName)
-    }
+  useEffect(() => {
+    getmedicine();
+  }, [medicineName]);
 
-
-    return (
-
-        <View style={styles.picker} >
-
-            <Picker
-                id='picker1'
-                selectedValue={medicineName}
-                onValueChange={(data) => onchangeFnc(data)}
-
-            >
-
-                {getUserMedicine?.map((item, index) => {
-
-                    return (
-
-                        <Picker.Item
-                            label={item.medicineName}
-                            value={item.userMedicineId}
-                            key={index}
-                        />
-
-
-                    )
-                })}
-
-
-            </Picker>
-        </View >
-
-    )
-}
+  return (
+    <View style={styles.picker}>
+      <Picker
+        mode="dropdown"
+        id="picker1"
+        selectedValue={medicineName}
+        onValueChange={data => {
+          setMedicineName(data);
+          onChange(medicineName);
+        }}>
+        {getUserMedicine?.map((item, index) => {
+          return (
+            <Picker.Item
+              label={item.medicineName}
+              value={item.userMedicineId}
+              key={index}
+            />
+          );
+        })}
+      </Picker>
+    </View>
+  );
+};
 
 export default MedicinePicker;

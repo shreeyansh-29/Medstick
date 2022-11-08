@@ -74,7 +74,7 @@ const AccountTab = ({navigation}) => {
   return (
     <View style={styles.container}>
       <MainHeader title={'Account'} />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => {
@@ -98,44 +98,29 @@ const AccountTab = ({navigation}) => {
             </View>
           )}
         </TouchableOpacity>
-        <Divider style={{height: 1}} />
-        <View style={{alignItems: 'center'}}>
+        <View style={styles.card}>
+          <Divider style={styles.divider} />
           <TwoTouchable
             icon={faUserNurse}
             title="My Caretaker"
             navigationTitle="CareTaker"
             navigation={navigation}
           />
-          <Divider
-            style={{
-              height: 1,
-              width: '100%',
-            }}
-          />
+          <Divider style={styles.divider} />
           <TwoTouchable
             icon={faHospitalUser}
             title="My Patients"
             navigation={navigation}
             navigationTitle="Patients"
           />
-          <Divider
-            style={{
-              height: 1,
-              width: '100%',
-            }}
-          />
+          <Divider style={styles.divider} />
           <TwoTouchable
             icon={faUserDoctor}
             title="Prescriptions"
             navigationTitle="Prescriptions"
             navigation={navigation}
           />
-          <Divider
-            style={{
-              height: 1,
-              width: '100%',
-            }}
-          />
+          <Divider style={styles.divider} />
 
           <TwoTouchable
             icon={faStopwatch}
@@ -143,12 +128,7 @@ const AccountTab = ({navigation}) => {
             navigation={navigation}
             navigationTitle="AppointmentReminderList"
           />
-          <Divider
-            style={{
-              height: 1,
-              width: '100%',
-            }}
-          />
+          <Divider style={styles.divider} />
 
           <TwoTouchable
             icon={faGear}
@@ -156,12 +136,7 @@ const AccountTab = ({navigation}) => {
             navigation={navigation}
             navigationTitle="Settings"
           />
-          <Divider
-            style={{
-              height: 1,
-              width: '100%',
-            }}
-          />
+          <Divider style={styles.divider} />
 
           {/* <TwoTouchable
             icon={faCameraRetro}

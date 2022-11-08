@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
+    // justifyContent: 'space-evenly',
   },
   image: {
     width: 100,
@@ -75,17 +76,20 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: 'white',
     marginBottom: 20,
-    marginLeft: 20,
+    marginLeft: 14,
   },
   infoCont: {
     marginBottom: 20,
     marginLeft: 16,
-    width: '48%',
+    width: '60%',
+    // backgroundColor: 'yellow',
   },
   name: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
+    // backgroundColor: 'red',
+    width: '100%',
   },
   email: {
     fontSize: 16,
@@ -95,9 +99,13 @@ const styles = StyleSheet.create({
   },
   editBtn: {
     alignSelf: 'flex-end',
-    marginBottom: 10,
+    // marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    // backgroundColor: 'red',
+    position: 'absolute',
+    right: 14,
+    bottom: 10,
   },
   editText: {color: 'white', marginRight: 6, fontSize: 16},
 
