@@ -26,7 +26,6 @@ import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
 const Prescriptions = ({navigation}) => {
   const [myPrescriptions, setMyPrescriptions] = useState([]);
   const res = useSelector(state => state.myPrescriptions);
-  // console.log(res);
   const loading = useSelector(state => state.myPrescriptions?.isLoading);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);

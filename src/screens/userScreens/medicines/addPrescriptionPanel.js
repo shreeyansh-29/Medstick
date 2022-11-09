@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   Modal,
+  Dimensions,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AddPrescriptionPanelHeader from '../../../components/molecules/headers/addPrescriptionPanelHeader';
@@ -33,11 +34,11 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomButton from '../../../components/atoms/customButton';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {myPrescriptionsRequest} from '../../../redux/action/otherScreenAction/prescriptionsAction';
+import {useFocusEffect} from '@react-navigation/native';
 
 const AddPrescriptionPanel = ({navigation}) => {
-  const [id, setId] = useState('');
-  const [token, setToken] = useState('');
-  const [pageNo, setPageNo] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const dispatch = useDispatch();
   const [prescriptions, setPrescriptions] = useState([]);
   const [uri, setUri] = useState('');
@@ -48,36 +49,31 @@ const AddPrescriptionPanel = ({navigation}) => {
     },
   ];
   const [prescriptionId, setPrescriptionId] = useState('');
-  const [selected, setSelected] = useState(false);
-  const res = useSelector(state => state.getPrescriptionReducer?.data);
-  const loading = useSelector(
-    state => state.getPrescriptionReducer?.loading?.getPrescriptionLoader,
-  );
-
-  const getTokenId = async () => {
-    const tokentemp = await AsyncStorage.getItem('accessToken');
-    setToken(tokentemp);
-    const tempId = await AsyncStorage.getItem('user_id');
-    setId(tempId);
-  };
+  const res = useSelector(state => state.myPrescriptions);
+  console.log(res);
+  const loading = useSelector(state => state.myPrescriptions?.isLoading);
 
   useEffect(() => {
-    if (res?.result.length !== 0) {
-      setPrescriptions(res?.result);
+    if (res?.data !== null) {
+      setPrescriptions(res?.data);
     }
   }, [res]);
 
-  useEffect(() => {
-    getTokenId();
-  }, []);
+  console.log(prescriptions);
 
-  const getAllPrescriptions = () => {
-    dispatch(loadGetPrescription(id, token, pageNo));
-  };
+  useFocusEffect(
+    React.useCallback(() => {
+      const getPrescriptions = async () => {
+        const Id = await AsyncStorage.getItem('user_id');
+        dispatch(myPrescriptionsRequest({currentPage, Id}));
+      };
 
-  useEffect(() => {
-    getAllPrescriptions(id, token);
-  }, [id]);
+      getPrescriptions();
+      return () => {
+        true;
+      };
+    }, []),
+  );
 
   const renderItem = ({item, index}) => {
     return (
@@ -182,35 +178,35 @@ const AddPrescriptionPanel = ({navigation}) => {
       <Divider style={{height: 1, marginVertical: 8}} />
       {loading ? (
         <Loader />
-      ) : prescriptions?.length === 0 ? (
-        <>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-            }}>
-            <CustomImage
-              source={require('../../../assets/images/noPrescription.png')}
-              resizeMode="contain"
-              styles={{width: '80%'}}
-            />
-          </View>
-        </>
       ) : (
         <>
-          <FlatList
-            data={prescriptions}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            renderItem={renderItem}
-          />
+          {prescriptions?.length === 0 ? (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: Dimensions.get('window').height / 1.274,
+              }}>
+              <CustomImage
+                resizeMode="contain"
+                source={require('../../../assets/images/noPrescription.png')}
+                styles={{width: '70%'}}
+              />
+            </View>
+          ) : (
+            <FlatList
+              data={prescriptions}
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              renderItem={renderItem}
+            />
+          )}
         </>
       )}
-      <View style={{marginBottom: 10}}>
+      <View style={{marginBottom: 20}}>
         {prescriptionId ? (
           <>
-            <View
+            {/* <View
               style={{
                 alignSelf: 'center',
                 width: '87.5%',
@@ -221,7 +217,7 @@ const AddPrescriptionPanel = ({navigation}) => {
                   marginVertical: 13.5,
                 }}
               />
-            </View>
+            </View> */}
             <CustomButton
               title={'Save'}
               btnStyles={{
@@ -244,7 +240,7 @@ const AddPrescriptionPanel = ({navigation}) => {
           </>
         ) : (
           <>
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -272,7 +268,7 @@ const AddPrescriptionPanel = ({navigation}) => {
                   width: '40%',
                 }}
               />
-            </View>
+            </View> */}
             <CustomButton
               title={'Upload Prescription'}
               btnStyles={{

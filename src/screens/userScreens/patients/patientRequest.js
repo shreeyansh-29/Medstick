@@ -24,6 +24,7 @@ const PatientRequest = () => {
   const [pageNo, setPageNo] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.patientsRequest);
+  console.log(res);
   const loading = useSelector(state => state.patientsRequest.isLoading);
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
@@ -77,7 +78,7 @@ const PatientRequest = () => {
   const renderItem = ({item}) => {
     return (
       <Card style={styles.card}>
-        <View style={styles.cardInner}>
+        {/* <View style={styles.cardInner}>
           <View style={styles.avatar}>
             <TouchableOpacity
               activeOpacity={1}
@@ -122,7 +123,7 @@ const PatientRequest = () => {
               />
             </View>
           </View>
-        </View>
+        </View> */}
       </Card>
     );
   };

@@ -1,4 +1,4 @@
-export let apiUrl = 'https://0711-106-51-81-179.in.ngrok.io/api/v1/user';
+export let apiUrl = 'https://1e6a-202-131-132-14.in.ngrok.io/api/v1/user';
 
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
