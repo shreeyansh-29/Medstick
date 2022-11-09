@@ -624,6 +624,7 @@ const AddMedicines = ({navigation, route}) => {
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
                   keyboardType="numeric"
+                  placeholderTextColor={'grey'}
                 />
               </View>
               <View style={{width: '50%'}}>
@@ -636,6 +637,7 @@ const AddMedicines = ({navigation, route}) => {
                   onChangeText={setDoseType}
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>

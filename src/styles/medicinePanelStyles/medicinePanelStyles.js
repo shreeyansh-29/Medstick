@@ -47,7 +47,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
   },
   medNameView: {flexDirection: 'column', marginLeft: verticalScale(16)},
-  medName: {fontWeight: '600', fontSize:17},
+  medName: {fontWeight: '600', fontSize: 17},
   icon: {
     flexDirection: 'row',
   },
@@ -182,9 +182,6 @@ const Styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
-  text: {
-    color: colorPalette.appColor,
-  },
   textView: {
     flexDirection: 'row',
     width: '100%',
@@ -249,6 +246,7 @@ const Styles = StyleSheet.create({
     fontSize: 17,
     margin: '3%',
     paddingHorizontal: 3,
+    color: 'black',
   },
   box2: {
     margin: '1.6%',
@@ -306,10 +304,10 @@ const Styles = StyleSheet.create({
     padding: 20,
   },
   prescriptionBox: {
-    width: '100%',
+    // width: '100%',
     padding: 10,
     borderColor: colorPalette.appColor,
-    elevation: 2,
+
     borderStartWidth: 4,
   },
   prescriptionText1: {

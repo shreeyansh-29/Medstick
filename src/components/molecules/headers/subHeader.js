@@ -18,6 +18,7 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
       <TouchableOpacity
         style={styles.backIcon}
         onPress={() => {
+          console.log('clickde')
           navigation.pop();
           if (title === 'Patient Medicine') {
             dispatch(notifyUserClear());
@@ -41,9 +42,9 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
         <AddAppointment navigation={navigation} routeName={routeName} />
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}
-      {title !== 'Patient Profile' ? null : (
+      {/* {title !== 'Patient Profile' ? null : (
         <EditButton navigation={navigation} />
-      )}
+      )} */}
     </View>
   );
 };

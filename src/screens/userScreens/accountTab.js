@@ -26,6 +26,8 @@ import {useDispatch} from 'react-redux';
 import {resetLogin} from '../../redux/action/loginAction/loginAction';
 import {resetSignUp} from '../../redux/action/signUpAction/signUpAction';
 import {Divider} from 'react-native-paper';
+import CustomButton from '../../components/atoms/customButton';
+import {verticalScale} from '../../components/atoms/constant';
 
 const AccountTab = ({navigation}) => {
   const dispatch = useDispatch();
@@ -147,40 +149,32 @@ const AccountTab = ({navigation}) => {
         </View>
 
         {isLoggedIn ? (
-          <View style={styles.logout}>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{
-                borderRadius: 8,
-                padding: 12,
-                backgroundColor: colorPalette.mainColor,
-                width: '40%',
-                alignItems: 'center',
-                marginVertical: 40,
-              }}
-              onPress={async () => {
-                await GoogleSignin.signOut();
-                await AsyncStorage.setItem('user_id', '');
-                await AsyncStorage.setItem('user_name', '');
-                await AsyncStorage.setItem('user_photo', '');
-                await AsyncStorage.setItem('user_email', '');
-                await AsyncStorage.setItem('accessToken', '');
-                imgstate('https://i.stack.imgur.com/l60Hf.png');
-                setName('Please Login First');
-                setIsLoggedIn(false);
-                dispatch(resetLogin());
-                dispatch(resetSignUp());
-                // navigation.navigate('Logout');
-              }}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: colorPalette.basicColor,
-                }}>
-                Logout
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <CustomButton
+            title={'Logout'}
+            btnStyles={{
+              borderRadius: 5,
+              padding: 12,
+              backgroundColor: colorPalette.mainColor,
+              width: '40%',
+              alignItems: 'center',
+              marginVertical: 40,
+            }}
+            contStyles={{alignItems: 'center', marginTop: verticalScale(16)}}
+            handleSubmit={async () => {
+              await GoogleSignin.signOut();
+              await AsyncStorage.setItem('user_id', '');
+              await AsyncStorage.setItem('user_name', '');
+              await AsyncStorage.setItem('user_photo', '');
+              await AsyncStorage.setItem('user_email', '');
+              await AsyncStorage.setItem('accessToken', '');
+              imgstate('https://i.stack.imgur.com/l60Hf.png');
+              setName('Please Login First');
+              setIsLoggedIn(false);
+              dispatch(resetLogin());
+              dispatch(resetSignUp());
+              // navigation.navigate('Logout');
+            }}
+          />
         ) : null}
       </ScrollView>
     </View>
