@@ -152,7 +152,7 @@ const AddPrescriptionPanel = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colorPalette.backgroundColor}}>
+    <View style={{flex: 1, backgroundColor: colorPalette.basicColor}}>
       <SubHeader navigation={navigation} title={'Add Prescription'} />
       <Modal
         visible={visible}
@@ -203,7 +203,13 @@ const AddPrescriptionPanel = ({navigation}) => {
           )}
         </>
       )}
-      <View style={{marginBottom: 20}}>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          alignSelf: 'center',
+          width: '100%',
+        }}>
         {prescriptionId ? (
           <>
             {/* <View
@@ -219,6 +225,7 @@ const AddPrescriptionPanel = ({navigation}) => {
               />
             </View> */}
             <CustomButton
+              titleStyle={{fontSize: 18}}
               title={'Save'}
               btnStyles={{
                 backgroundColor: colorPalette.mainColor,
@@ -270,7 +277,8 @@ const AddPrescriptionPanel = ({navigation}) => {
               />
             </View> */}
             <CustomButton
-              title={'Upload Prescription'}
+              title={'Upload New'}
+              titleStyle={{fontSize: 18}}
               btnStyles={{
                 backgroundColor: colorPalette.mainColor,
                 width: '50%',

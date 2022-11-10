@@ -602,6 +602,9 @@ const AddMedicines = ({navigation, route}) => {
 
             <View style={Styles.picker}>
               <Picker
+                style={{
+                  color: 'black',
+                }}
                 id="picker1"
                 placeholder="Select Medicine Type"
                 selectedValue={pill}
