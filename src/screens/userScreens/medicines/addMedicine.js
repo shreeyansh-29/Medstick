@@ -42,16 +42,16 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 var db = openDatabase({name: 'MedicineDatabase.db'});
 
 const AddMedicines = ({navigation, route}) => {
-  const {
-    itemDescription,
-    itemDosageType,
-    itemDosageUnit,
-    Stock,
-    doctorName,
-    contact,
-    specialization,
-    loaction,
-  } = route.params;
+  // const {
+  //   itemDescription,
+  //   itemDosageType,
+  //   itemDosageUnit,
+  //   Stock,
+  //   doctorName,
+  //   contact,
+  //   specialization,
+  //   loaction,
+  // } = route.params;
 
   const [medicineName, setMedicineName] = useState('');
   const [userMedicineName, setUserMedicineName] = useState('');
@@ -63,7 +63,7 @@ const AddMedicines = ({navigation, route}) => {
   const [searchModal, setSearchModal] = useState(false);
   const [dosageQuantity, setDosageQuantity] = useState('');
   const [pill, setPill] = useState('tablet');
-  const [stock, setStock] = useState({Stock});
+  const [stock, setStock] = useState(null);
   const [remainingStock, setRemainingStock] = useState('');
   const [token, setToken] = useState('');
   const [medicineId, setMedicineId] = useState('');

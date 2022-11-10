@@ -4,7 +4,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Text
+  Text,
 } from 'react-native';
 import React, {useState, useRef} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
@@ -21,7 +21,7 @@ const MedicineList = ({route, navigation}) => {
   const [index, setIndex] = useState(route.params.index);
   const isCarousel = useRef(null);
 
-  const MedicineDetailCard = ({item,index}) => {
+  const MedicineDetailCard = ({item, index}) => {
     return (
       <TouchableOpacity activeOpacity={1}>
         <View style={styles.container} key={index}>
@@ -79,10 +79,10 @@ const MedicineList = ({route, navigation}) => {
                 </View>
                 <View style={styles.itemView}>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemHeading}>Dosage Unit : </Text>
+                    <Text style={styles.itemHeading}>Dosage Power : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.dosageUnit}</Text>
+                    <Text style={styles.itemData}>{item.dosagePower}</Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -142,7 +142,7 @@ const MedicineList = ({route, navigation}) => {
   };
 
   return (
-    <View style={styles.container1}>
+    <>
       <SubHeader title={'Medicine Description'} navigation={navigation} />
       <View style={styles.carouselContainer}>
         <Carousel
@@ -190,7 +190,7 @@ const MedicineList = ({route, navigation}) => {
           inactiveDotColor={'grey'}
         />
       </View>
-    </View>
+    </>
   );
 };
 
