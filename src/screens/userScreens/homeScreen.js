@@ -1,13 +1,19 @@
 import {View} from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
 import PerformanceCircle from '../../components/organisms/performanceCircle';
 import Reminders from './reminders';
 import {Styles} from '../../styles/homeScreenStyles/performanceCircleStyles';
 import {styles} from '../../styles/homeScreenStyles/homeScreenStyles';
+import { getReminder } from '../../utils/storage';
 
 const HomeScreen = ({navigation}) => {
+  const [reminders, setReminders] = useState('')
+
+  useEffect(()=>{
+    getReminder().then(data=>setReminders(data))
+  },[])
   return (
     <>
       <View style={styles.background} />

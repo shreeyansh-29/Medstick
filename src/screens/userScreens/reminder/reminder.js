@@ -17,12 +17,15 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
+import { addReminder, getReminder } from '../../../utils/storage';
+import { useEffect } from 'react';
+import uuid from 'react-native-uuid'
 
 var counter = 0;
 
 const Reminder = ({route, navigation, props}) => {
-  // console.log(route, 'route abcgdss');
-
+  const [medicineInfo,setMedicineInfo]=useState(route.params.data)
+  console.log(medicineInfo, 'route abcgdss');
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = React.useState(false);
@@ -47,6 +50,14 @@ const Reminder = ({route, navigation, props}) => {
   const [color, setColor] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
+  const [arr,setArr]=useState('')
+  console.log(arr,"array of reminder")
+
+ useEffect(()=>{
+  getReminder().then(data=>setArr(data))
+ },[])
+
+  
   const [breakfast, setBreakfast] = useState(false);
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
@@ -200,7 +211,9 @@ const Reminder = ({route, navigation, props}) => {
     currentCount,
     userMedicineId,
   ) => {
-    if (title.length === 0 || timearray.length === 0) {
+    if (title.length === 0 
+      // || timearray.length === 0
+      ) {
       Alert.alert('Make sure you have valid reminder', ' ', [
         {
           text: 'OK',
@@ -270,7 +283,41 @@ const Reminder = ({route, navigation, props}) => {
     if (endDate === 'No End Date') {
       setfDate('null');
     }
+    console.log(reminderStatus, 'reminderStatus');
+    console.log(frequencyTemp, 'frequency');
+    console.log(fDateSecondary, 'endDate');
+    console.log(food, 'beforeAfter');
+    console.log(totalReminders, 'totalReminders');
+    console.log(currentCount, 'currentCount');
+    console.log(userMedicineId, 'iddddd');
+    
+   let obj={
+    medicineId:medicineInfo.MedicineId,
+    medicineName:medicineInfo.MedicineName,
+    description:medicineInfo.MedicineDescription,
+    present:true,
+    doasgeType:medicineInfo.doasgeType,
+    doasageQuantity:medicineInfo.doasageQuantity,
+    doasgePower:medicineInfo.doasgePower,
+    stock:medicineInfo.stock,
+    leftStock:medicineInfo.leftStock,
+    reminderId:uuid.v4(),
+    startDate:fDatePrimary,
+    endDate:fDateSecondary ,
+    days:days,
+    reminderTitle:title,
+    reminderTime:time,
+    everyday:check1,
+    noEndDate:noEndDate,
+    reminderStatus:reminderStatus,
+    frequency:frequencyTemp,
+    beforeAfter:food,
+    totalReminders:totalReminders,
+    currentCount:currentCount
+  }
 
+  setArr([...arr,obj])
+  
     dispatch(
       saveReminderRequest(
         fDatePrimary,
@@ -288,10 +335,15 @@ const Reminder = ({route, navigation, props}) => {
         userMedicineId,
       ),
     );
-    setTimeout(() => {
-      navigation.navigate('MedicinePanel');
-    }, 2000);
+    // setTimeout(() => {
+    //   navigation.navigate('MedicinePanel');
+    // }, 2000);
   };
+
+  // console.log(endDate);
+  useEffect(()=>{
+  addReminder(arr)
+  },[arr])
 
   return (
     // { showReminderDuration &&  <ReminderDuration/>}

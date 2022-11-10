@@ -1,5 +1,5 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from '../../styles/homeScreenStyles/reminderStyles';
 import {FlatList} from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
@@ -13,67 +13,19 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import { getReminder } from '../../utils/storage';
 
 const Reminders = () => {
   const [visible, setVisible] = useState(false);
-  const [reminders, setReminders] = useState([
-    {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
-      frequency: 'Breakfast',
-      before: 'After',
-    },
-    {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
-      frequency: 'Breakfast',
-      before: 'After',
-    },
-    {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
-      frequency: 'Breakfast',
-      before: 'After',
-    },
-    {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
-      frequency: 'Breakfast',
-      before: 'After',
-    },
-    {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
-      frequency: 'Breakfast',
-      before: 'After',
-    },
-    {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
-      frequency: 'Breakfast',
-      before: 'After',
-    },
-    {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
-      frequency: 'Breakfast',
-    },
-  ]);
+  
+  const [reminders, setReminders] = useState('')
 
+useEffect(()=>{
+  getReminder().then(data=>setReminders(data))
+},[])
+
+
+console.log(reminders,'reminders')
   const renderItem = ({item}) => {
     return (
       <Animatable.View animation="zoomInUp" duration={400}>
@@ -84,7 +36,8 @@ const Reminders = () => {
                 <View style={styles.avatarView}>
                   <View style={styles.medNameView}>
                     <ListItem.Title style={styles.medName}>
-                      {item.reminderTime}
+                    <Text>Medicine Name :</Text>
+                      {item.medicineName}
                     </ListItem.Title>
                     <ListItem.Subtitle>{item.reminderTitle}</ListItem.Subtitle>
                     <ListItem.Subtitle>{item.days}</ListItem.Subtitle>

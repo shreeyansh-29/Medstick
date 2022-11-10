@@ -38,6 +38,7 @@ import {ListItem} from 'react-native-elements';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {openDatabase} from 'react-native-sqlite-storage';
 import SubHeader from '../../../components/molecules/headers/subHeader';
+import uuid from 'react-native-uuid'
 
 var db = openDatabase({name: 'MedicineDatabase.db'});
 
@@ -61,18 +62,20 @@ const AddMedicines = ({navigation, route}) => {
   const [details, setDeatils] = useState('');
   const [modal, setModal] = useState(false);
   const [searchModal, setSearchModal] = useState(false);
-  const [dosageQuantity, setDosageQuantity] = useState('');
   const [pill, setPill] = useState('tablet');
   const [stock, setStock] = useState(null);
   const [remainingStock, setRemainingStock] = useState('');
+  const [dosageQuantity,setDosageQuantity]=useState('');
   const [token, setToken] = useState('');
   const [medicineId, setMedicineId] = useState('');
   const [id, setId] = useState('');
+  const [dose,setDose]=useState('')
   const [prescriptionId, setPrescriptionId] = useState('');
   const [doseType, setDoseType] = useState('');
   const saveMedicineData = useSelector(state => state.addMedicineReducer?.data);
   const saveMedicine = useSelector(state => state.addMedicineReducer);
   const dispatch = useDispatch();
+  console.log('try',dose+doseType)
 
   const [arr, setArr] = useState('');
 
@@ -81,6 +84,18 @@ const AddMedicines = ({navigation, route}) => {
   }, []);
 
   console.log('array', arr);
+
+  console.log(route.params,'route')
+  if(route.params.itemMedicineName !== undefined)
+  {
+    let itemMedicineName=route.params.itemMedicineName
+    console.log(itemMedicineName)
+  }
+  else
+  {
+    console.log(route.params,'new')
+  }
+
   useEffect(() => {
     db.transaction(function (txn) {
       txn.executeSql(
@@ -317,11 +332,12 @@ const AddMedicines = ({navigation, route}) => {
       showPrescriptionAlert();
     } else {
       let obj = {
+        MedicineId:uuid.v4(),
         MedicineName: userMedicineName,
         MedicineDescription: userMedicineDescription,
         dosageType: pill,
         dosageQuantity: dosageQuantity,
-        dosageUnit: doseType,
+        dosagePower:dose+doseType,
         stock: stock,
         leftStock: remainingStock,
       };
@@ -599,7 +615,8 @@ const AddMedicines = ({navigation, route}) => {
                 />
               </View>
             )}
-
+<View style={Styles.textView1}>
+<View style={{width:'48%'}}>
             <View style={Styles.picker}>
               <Picker
                 id="picker1"
@@ -611,16 +628,30 @@ const AddMedicines = ({navigation, route}) => {
                 <Picker.Item label="Injection" value="injection" />
                 <Picker.Item label="Syrup" value="syrup" />
               </Picker>
+              </View>
+              </View>
+              <View style={{width:'50%'}}>
+              <TextInput
+                  style={{width: '97%'}}
+                  id="name"
+                  label="Dosage Quantity"
+                  value={dosageQuantity}
+                  mode="outlined"
+                  onChangeText={text => setDosageQuantity(text)}
+                  outlineColor="#02aba6"
+                  activeOutlineColor="#02aba6"
+                />
+            </View>
             </View>
             <View style={Styles.textView}>
               <View style={{width: '50%'}}>
                 <TextInput
                   style={{width: '97%'}}
                   id="name"
-                  label="Dose Quantity"
-                  value={dosageQuantity}
+                  label="DosagePower"
+                  value={dose}
                   mode="outlined"
-                  onChangeText={text => setDosageQuantity(text)}
+                  onChangeText={text => setDose(text)}
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
                   keyboardType="numeric"

@@ -27,7 +27,9 @@ import {AddMedicine, getMedicine} from '../../../utils/storage';
 
 const MedicinePanel = ({navigation}) => {
   const [flag, setFlag] = useState('');
+  console.log(flag,'flag')
   const [medicineResponse, setMedicineResponse] = useState();
+  console.log(medicineResponse,"medicineresponse")
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [id, setId] = useState('');
@@ -40,8 +42,7 @@ const MedicinePanel = ({navigation}) => {
   const [isActive, setIsActive] = useState(false);
   const [color, setColor] = useState(false);
   const [clockActive, setClockActive] = useState(false);
-  console.log(color, 'color');
-  console.log(clockActive, 'colorActive');
+
   // const saveReminderData = useSelector(saveReminderSelector.saveReminder);
   // console.log(saveReminderData.data.data,"dataaaaaa");
 
@@ -124,7 +125,7 @@ const MedicinePanel = ({navigation}) => {
             activeOpacity={1}
             onPress={() => {
               navigation.navigate('MedicineList', {
-                data: medicines,
+                data: medicineResponse,
                 index: index,
               });
             }}>
@@ -147,8 +148,8 @@ const MedicinePanel = ({navigation}) => {
                           {item.dosageType}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Dosage: </Text>
-                          {item.dosageUnit + item.dosageQuantity}
+                          <Text style={{color: 'black'}}>Dosage Power: </Text>
+                          {item.dosagePower}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Stock: </Text>
@@ -162,7 +163,7 @@ const MedicinePanel = ({navigation}) => {
                       style={Styles.rem}
                       onPress={() => {
                         navigation.navigate('Reminder', {
-                          id: item.userMedicineId,
+                          data: item,
                         });
                       }}>
                       <FontAwesomeIcon
@@ -359,7 +360,7 @@ const MedicinePanel = ({navigation}) => {
           )}
         </View>
       )}
-      {id === null && flag === 1 && (
+      {/* {id === null && flag === 1 && (
         <View style={Styles.container}>
           <MainHeader title={'Medicine'} />
           <View style={Styles.lottie}>
@@ -371,7 +372,7 @@ const MedicinePanel = ({navigation}) => {
             />
           </View>
         </View>
-      )}
+      )} */}
     </>
   );
 };
