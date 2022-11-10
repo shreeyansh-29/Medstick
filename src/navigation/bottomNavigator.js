@@ -75,7 +75,7 @@ const BottomNavigator = ({navigation}) => {
                 tabBarIcon: () => (
                   <View style={styles.addbtn}>
                     <AddButton
-                      routeName={'AddMedicine'}
+                      routeName={'AddMedicineStack'}
                       navigation={navigation}
                       styles={styles.btn}
                     />

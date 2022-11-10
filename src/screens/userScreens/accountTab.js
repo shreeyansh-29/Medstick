@@ -78,7 +78,7 @@ const AccountTab = ({navigation}) => {
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => {
-            navigation.navigate('EditProfile');
+            navigation.navigate('AccountStack', {screen: 'EditProfile'});
           }}>
           {isLoggedIn ? (
             <View style={styles.profile}>

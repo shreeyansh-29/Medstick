@@ -206,9 +206,12 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('MedicineList', {
-                data: medicines,
-                index: index,
+              navigation.navigate('MedicinePanelStack', {
+                screen: 'MedicineList',
+                params: {
+                  data: medicines,
+                  index: index,
+                },
               });
             }}>
             <Card style={Styles.card}>
@@ -230,9 +233,7 @@ const MedicinePanel = ({navigation}) => {
                           {item.dosageType}
                         </ListItem.Subtitle> */}
                         <ListItem.Subtitle>
-                          <Text style={{color: 'grey'}}>
-                            Dosage Quantity:{' '}
-                          </Text>
+                          <Text style={{color: 'grey'}}>Dosage Quantity: </Text>
                           {item.dosageQuantity}
                         </ListItem.Subtitle>
                         {/* <ListItem.Subtitle>
@@ -252,9 +253,12 @@ const MedicinePanel = ({navigation}) => {
                       id="touch1"
                       style={Styles.rem}
                       onPress={() => {
-                        navigation.navigate('Reminder', {
-                          id: item.userMedicineId,
-                          fetchStatus: getStatus(),
+                        navigation.navigate('MedicinePanelStack', {
+                          screen: 'Reminder',
+                          params: {
+                            id: item.userMedicineId,
+                            fetchStatus: getStatus(),
+                          },
                         });
                         clockColorChange(item);
                       }}>
