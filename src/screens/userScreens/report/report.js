@@ -122,7 +122,11 @@ const Report = ({navigation}) => {
       <View style={styles.container} />
       <View style={styles.report}>
         <MainHeader title={'Reports'} navigation={navigation} />
-        <Modal animationType="fade" transparent={true} visible={visible}>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={visible}
+          onRequestClose={() => setVisible(!visible)}>
           <View
             style={{
               height: '100%',
@@ -160,6 +164,36 @@ const Report = ({navigation}) => {
             <Text style={styles.reportText}>Your Report</Text>
           </View>
           <View style={styles.calendarView}>
+            <View>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                  Alert.alert('Modal has been closed.');
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.modalBox}>
+                  <View style={styles.modalContainer}>
+                    <View style={styles.modalHeader}>
+                      <TouchableOpacity onPress={() => setModalVisible(false)}>
+                        <CrossButton />
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.modalSubHeader}>
+                      <Text style={styles.modalHeaderText}>
+                        DATE: {date} -{month} -{year}
+                      </Text>
+                    </View>
+                    <View style={styles.progressBar}>
+                      <TimeSlot time={'Time'} />
+                      <ProgressBar />
+                      <MedicineTime />
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            </View>
             <Calendar
               style={styles.calendar}
               theme={styles.theme}

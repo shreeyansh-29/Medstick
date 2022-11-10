@@ -78,15 +78,15 @@ const PatientRequest = () => {
   const renderItem = ({item}) => {
     return (
       <Card style={styles.card}>
-        {/* <View style={styles.cardInner}>
+        <View style={styles.cardInner}>
           <View style={styles.avatar}>
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
                 setVisible(true);
-                setUri(item.user.picPath);
+                setUri(item.picPath);
               }}>
-              <Avatar size={80} rounded source={{uri: item.user.picPath}} />
+              <Avatar size={80} rounded source={{uri: item.picPath}} />
             </TouchableOpacity>
           </View>
           <View style={styles.container1}>
@@ -96,10 +96,10 @@ const PatientRequest = () => {
               tvParallaxProperties={undefined}>
               <ListItem.Content>
                 <ListItem.Title style={styles.listTitle}>
-                  {item.user.userName}
+                  {item.userName}
                 </ListItem.Title>
                 <ListItem.Subtitle style={styles.listSubTitle}>
-                  {item.user.contact}
+                  {item.contact}
                 </ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
@@ -123,7 +123,7 @@ const PatientRequest = () => {
               />
             </View>
           </View>
-        </View> */}
+        </View>
       </Card>
     );
   };

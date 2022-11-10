@@ -80,7 +80,7 @@ const AccountTab = ({navigation}) => {
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => {
-            navigation.navigate('EditProfile');
+            navigation.navigate('AccountStack', {screen: 'EditProfile'});
           }}>
           {isLoggedIn ? (
             <View style={styles.profile}>
@@ -140,12 +140,12 @@ const AccountTab = ({navigation}) => {
           />
           <Divider style={styles.divider} />
 
-          {/* <TwoTouchable
+          <TwoTouchable
             icon={faCameraRetro}
             title="Send Snap"
             navigation={navigation}
             navigationTitle="SendSnap"
-          /> */}
+          />
         </View>
 
         {isLoggedIn ? (

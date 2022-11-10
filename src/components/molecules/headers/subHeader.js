@@ -18,7 +18,6 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
       <TouchableOpacity
         style={styles.backIcon}
         onPress={() => {
-          console.log('clickde')
           navigation.pop();
           if (title === 'Patient Medicine') {
             dispatch(notifyUserClear());
@@ -33,9 +32,7 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
       <View style={styles.header}>
         <Text style={styles.subHeaderFont}>{title}</Text>
       </View>
-      {title !== 'Medicine Report' ? (
-        null
-      ) : (
+      {title !== 'Medicine Report' ? null : (
         <DownloadButton download={download} />
       )}
       {title !== 'Appointment Reminders' ? null : (
