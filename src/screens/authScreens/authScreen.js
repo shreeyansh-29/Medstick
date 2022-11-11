@@ -2,16 +2,11 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import SignUp from './signUp';
 import Login from './login';
-import Divider from '../../components/atoms/divider';
-import {horizontalScale, verticalScale} from '../../components/atoms/constant';
-import {colorPalette} from '../../components/atoms/colorPalette';
-import SubHeader from '../../components/molecules/headers/subHeader';
 import Toast from 'react-native-toast-message';
 
 const AuthScreen = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
-      <SubHeader navigation={navigation} />
       <Toast visibilityTime={3000} />
       <View
         style={{

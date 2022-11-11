@@ -33,16 +33,19 @@ export const styles = StyleSheet.create({
   },
   img: {height: 290, width: 192},
   card: {
-    borderRadius: 30,
+    borderRadius: 20,
     borderColor: 'lightgrey',
     elevation: 3,
     shadowColor: 'black',
     marginVertical: verticalScale(6),
     marginHorizontal: horizontalScale(14),
   },
-  listView: {margin: moderateScale(5)},
+  listView: {
+    marginVertical: moderateScale(5),
+    marginHorizontal: horizontalScale(2),
+  },
   list: {marginHorizontal: moderateScale(16)},
   avatarView: {flexDirection: 'row'},
   medNameView: {flexDirection: 'column'},
-  medName: {fontWeight: '600'},
+  medName: {fontWeight: '600', fontSize: 20},
 });
