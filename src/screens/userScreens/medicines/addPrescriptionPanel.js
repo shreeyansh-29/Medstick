@@ -6,6 +6,7 @@ import {
   FlatList,
   Modal,
   Dimensions,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AddPrescriptionPanelHeader from '../../../components/molecules/headers/addPrescriptionPanelHeader';
@@ -36,8 +37,10 @@ import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {myPrescriptionsRequest} from '../../../redux/action/otherScreenAction/prescriptionsAction';
 import {useFocusEffect} from '@react-navigation/native';
+import CustomModal from '../../../components/molecules/customModal';
 
 const AddPrescriptionPanel = ({navigation}) => {
+  const [refresh, setRefresh] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const dispatch = useDispatch();
   const [prescriptions, setPrescriptions] = useState([]);
@@ -50,8 +53,8 @@ const AddPrescriptionPanel = ({navigation}) => {
   ];
   const [prescriptionId, setPrescriptionId] = useState('');
   const res = useSelector(state => state.myPrescriptions);
-  console.log(res);
   const loading = useSelector(state => state.myPrescriptions?.isLoading);
+  const [id, setId] = useState('');
 
   useEffect(() => {
     if (res?.data !== null) {
@@ -59,12 +62,11 @@ const AddPrescriptionPanel = ({navigation}) => {
     }
   }, [res]);
 
-  console.log(prescriptions);
-
   useFocusEffect(
     React.useCallback(() => {
       const getPrescriptions = async () => {
         const Id = await AsyncStorage.getItem('user_id');
+        setId(Id);
         dispatch(myPrescriptionsRequest({currentPage, Id}));
       };
 
@@ -154,12 +156,12 @@ const AddPrescriptionPanel = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: colorPalette.basicColor}}>
       <SubHeader navigation={navigation} title={'Add Prescription'} />
-      <Modal
-        visible={visible}
-        transparent={true}
-        onRequestClose={() => setVisible(!visible)}>
-        <ImageViewer imageUrls={images} />
-      </Modal>
+      <CustomModal
+        modalVisible={visible}
+        text="imageViewer"
+        onRequestClose={() => setVisible(!visible)}
+        modalView={<ImageViewer imageUrls={images} backgroundColor="white" />}
+      />
 
       <View
         style={{
@@ -199,6 +201,17 @@ const AddPrescriptionPanel = ({navigation}) => {
               keyExtractor={(item, index) => index.toString()}
               showsVerticalScrollIndicator={false}
               renderItem={renderItem}
+              refreshControl={
+                <RefreshControl
+                  colors={[colorPalette.mainColor]}
+                  tintColor={[colorPalette.mainColor]}
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    dispatch(myPrescriptionsRequest({currentPage, id}));
+                    setRefresh(false);
+                  }}
+                />
+              }
             />
           )}
         </>
@@ -212,18 +225,6 @@ const AddPrescriptionPanel = ({navigation}) => {
         }}>
         {prescriptionId ? (
           <>
-            {/* <View
-              style={{
-                alignSelf: 'center',
-                width: '87.5%',
-              }}>
-              <Divider
-                style={{
-                  height: 1,
-                  marginVertical: 13.5,
-                }}
-              />
-            </View> */}
             <CustomButton
               titleStyle={{fontSize: 18}}
               title={'Save'}
@@ -247,35 +248,6 @@ const AddPrescriptionPanel = ({navigation}) => {
           </>
         ) : (
           <>
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                alignSelf: 'center',
-              }}>
-              <Divider
-                style={{
-                  height: 1,
-                  color: 'grey',
-                  width: '40%',
-                }}
-              />
-              <Text
-                style={{
-                  paddingHorizontal: 6,
-                  marginVertical: 6,
-                  color: 'black',
-                }}>
-                Or
-              </Text>
-              <Divider
-                style={{
-                  height: 1,
-                  color: 'grey',
-                  width: '40%',
-                }}
-              />
-            </View> */}
             <CustomButton
               title={'Upload New'}
               titleStyle={{fontSize: 18}}
@@ -292,26 +264,6 @@ const AddPrescriptionPanel = ({navigation}) => {
           </>
         )}
       </View>
-      {/* <View style={{alignItems: 'center'}}>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={{
-            borderRadius: 4,
-            backgroundColor: colorPalette.mainColor,
-          }}
-          onPress={() => {
-            navigation.navigate('Prescription');
-          }}>
-          <Text
-            style={{
-              fontSize: 18,
-              padding: 20,
-              color: 'white',
-            }}>
-            Upload New Prescription
-          </Text>
-        </TouchableOpacity>
-      </View> */}
       <Toast />
     </View>
   );

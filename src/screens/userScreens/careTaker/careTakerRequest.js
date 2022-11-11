@@ -1,10 +1,4 @@
-import {
-  FlatList,
-  Modal,
-  RefreshControl,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, RefreshControl, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
@@ -18,6 +12,7 @@ import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import CustomModal from '../../../components/molecules/customModal';
 
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
@@ -137,12 +132,12 @@ const CareTakerRequest = () => {
 
   return (
     <View style={styles.container}>
-      <Modal
-        visible={visible}
-        transparent={true}
-        onRequestClose={() => setVisible(!visible)}>
-        <ImageViewer imageUrls={images} />
-      </Modal>
+      <CustomModal
+        text="imageViewer"
+        modalVisible={visible}
+        onRequestClose={() => setVisible(!visible)}
+        modalView={<ImageViewer imageUrls={images} />}
+      />
       {res?.isLoading ? (
         <Loader />
       ) : (

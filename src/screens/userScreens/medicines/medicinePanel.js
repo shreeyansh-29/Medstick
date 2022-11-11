@@ -269,12 +269,13 @@ const MedicinePanel = ({navigation}) => {
                             ? colorPalette.mainColor
                             : 'grey'
                         }
-                        size={24}
+                        size={22}
                       />
 
                       {console.log(color, 'colorrrrrrrrrr')}
                     </TouchableOpacity>
                     <TouchableOpacity
+                      style={{padding: 8}}
                       activeOpacity={1}
                       onPress={() => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
@@ -290,7 +291,7 @@ const MedicinePanel = ({navigation}) => {
                       <FontAwesomeIcon
                         icon={faTrash}
                         color={colorPalette.mainColor}
-                        size={24}
+                        size={22}
                       />
                     </TouchableOpacity>
                   </View>
