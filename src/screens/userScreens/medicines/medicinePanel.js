@@ -206,9 +206,12 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('MedicineList', {
-                data: medicines,
-                index: index,
+              navigation.navigate('MedicinePanelStack', {
+                screen: 'MedicineList',
+                params: {
+                  data: medicines,
+                  index: index,
+                },
               });
             }}>
             <Card style={Styles.card}>
@@ -225,22 +228,20 @@ const MedicinePanel = ({navigation}) => {
                         <ListItem.Title style={Styles.medName}>
                           {item.medicineName}
                         </ListItem.Title>
-                        <ListItem.Subtitle>
+                        {/* <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Type: </Text>
                           {item.dosageType}
-                        </ListItem.Subtitle>
+                        </ListItem.Subtitle> */}
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>
-                            Dosage Quantity:{' '}
-                          </Text>
+                          <Text style={{color: 'grey'}}>Dosage Quantity: </Text>
                           {item.dosageQuantity}
                         </ListItem.Subtitle>
-                        <ListItem.Subtitle>
+                        {/* <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Dosage Unit: </Text>
                           {item.dosageUnit}
-                        </ListItem.Subtitle>
+                        </ListItem.Subtitle> */}
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Total Stock: </Text>
+                          <Text style={{color: 'grey'}}>Total Stock: </Text>
                           {item.stock}
                         </ListItem.Subtitle>
                       </View>
@@ -252,9 +253,12 @@ const MedicinePanel = ({navigation}) => {
                       id="touch1"
                       style={Styles.rem}
                       onPress={() => {
-                        navigation.navigate('Reminder', {
-                          id: item.userMedicineId,
-                          fetchStatus: getStatus(),
+                        navigation.navigate('MedicinePanelStack', {
+                          screen: 'Reminder',
+                          params: {
+                            id: item.userMedicineId,
+                            fetchStatus: getStatus(),
+                          },
                         });
                         clockColorChange(item);
                       }}>

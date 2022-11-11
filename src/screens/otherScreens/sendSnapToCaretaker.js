@@ -21,7 +21,10 @@ import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction
 import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import {sendSnapRequest} from '../../redux/action/otherScreenAction/sendSnapAction';
+import {
+  sendSnapClear,
+  sendSnapRequest,
+} from '../../redux/action/otherScreenAction/sendSnapAction';
 
 const SendSnapToCaretaker = ({navigation, route}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -30,6 +33,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   const dispatch = useDispatch();
   let res = useSelector(state => state.myCaretaker);
   let meds = useSelector(state => state.medicineList);
+  let res1 = useSelector(state => state.sendSnap?.data);
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');
@@ -38,6 +42,32 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   const userMeds = async () => {
     dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
   };
+
+  useEffect(() => {
+    dispatch(sendSnapClear());
+  }, []);
+
+  useEffect(() => {
+    if (res1?.status === 'Success') {
+      Toast.show({
+        type: 'success',
+        text1: 'Image Sent Successfully',
+      });
+      setTimeout(() => {
+        navigation.pop(2);
+      }, 2000);
+    }
+    if (res1?.status === 'Failed') {
+      Toast.show({
+        type: 'error',
+        text1: 'Something Went Wrong',
+        text2: 'Try Again',
+      });
+      setTimeout(() => {
+        navigation.pop(2);
+      }, 2000);
+    }
+  }, [res1]);
 
   useEffect(() => {
     dispatch(myCaretakerRequest(0));
@@ -76,7 +106,6 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   }, []);
 
   const {image_uri} = route.params;
-  console.log(image_uri);
   const [modalVisible, setModalVisible] = useState(false);
   const images = [
     {
@@ -110,7 +139,6 @@ const SendSnapToCaretaker = ({navigation, route}) => {
       });
       return;
     }
-
     const formdata = new FormData();
     var dt = new Date().getTime();
 

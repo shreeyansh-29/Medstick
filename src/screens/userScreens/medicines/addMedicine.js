@@ -42,16 +42,16 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 var db = openDatabase({name: 'MedicineDatabase.db'});
 
 const AddMedicines = ({navigation, route}) => {
-  const {
-    itemDescription,
-    itemDosageType,
-    itemDosageUnit,
-    Stock,
-    doctorName,
-    contact,
-    specialization,
-    loaction,
-  } = route.params;
+  // const {
+  //   itemDescription,
+  //   itemDosageType,
+  //   itemDosageUnit,
+  //   Stock,
+  //   doctorName,
+  //   contact,
+  //   specialization,
+  //   loaction,
+  // } = route.params;
 
   const [medicineName, setMedicineName] = useState('');
   const [userMedicineName, setUserMedicineName] = useState('');
@@ -63,7 +63,7 @@ const AddMedicines = ({navigation, route}) => {
   const [searchModal, setSearchModal] = useState(false);
   const [dosageQuantity, setDosageQuantity] = useState('');
   const [pill, setPill] = useState('tablet');
-  const [stock, setStock] = useState({Stock});
+  const [stock, setStock] = useState(null);
   const [remainingStock, setRemainingStock] = useState('');
   const [token, setToken] = useState('');
   const [medicineId, setMedicineId] = useState('');
@@ -602,6 +602,9 @@ const AddMedicines = ({navigation, route}) => {
 
             <View style={Styles.picker}>
               <Picker
+                style={{
+                  color: 'black',
+                }}
                 id="picker1"
                 placeholder="Select Medicine Type"
                 selectedValue={pill}
@@ -624,6 +627,7 @@ const AddMedicines = ({navigation, route}) => {
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
                   keyboardType="numeric"
+                  placeholderTextColor={'grey'}
                 />
               </View>
               <View style={{width: '50%'}}>
@@ -636,6 +640,7 @@ const AddMedicines = ({navigation, route}) => {
                   onChangeText={setDoseType}
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>

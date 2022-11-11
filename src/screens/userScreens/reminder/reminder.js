@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
@@ -14,41 +14,29 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import styles from './reminderStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
-import {xorBy} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
+import { addReminder, getReminder } from '../../../utils/storage';
+import PushNotification, {Importance} from "react-native-push-notification";
+import uuid from 'react-native-uuid'
 
 var counter = 0;
 
 const Reminder = ({route, navigation, props}) => {
-  console.log(route, 'route abcgdss');
-  const multiSliderValuesChange = values => {
-    var curr_date = new Date();
-    // console.log(curr_date, 'sjjf');
-    // console.log(curr_date.setDate(curr_date.getDate() + values[0]));
-
-    // console.log(curr_date.getDate(), values);
-    endDateState(curr_date);
-    storeEndDateState(curr_date);
-    setMultiSliderValue(values);
-  };
-
-  const [counter, setCounter] = useState('');
+  const [medicineInfo,setMedicineInfo]=useState(route.params.data)
+  console.log(medicineInfo, 'route abcgdss');
   const [picker, pickerstate] = useState(false);
-  const [selectedItems, slectedstate] = useState([]);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
-  const [load, loadstate] = React.useState(false);
+  const [load, loadstate] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, endDateState] = useState(new Date());
-  const [storeStartDate, storeEndDateState] = useState(new Date());
   const [check1, setCheck1] = useState(false);
   const [check2, setCheck2] = useState(false);
   const [title, titlestate] = useState('');
   const [time_picker_mode, time_picker_mode_state] = useState(false);
   const [timeings, timestate] = useState([]);
   const [timearray, timearraystate] = useState([]);
-  const [selectedTimings, setSelectedTimings] = useState([]);
   const [food, setFood] = useState();
   const [frequency, setFrequency] = useState([]);
   const [breakfastTouchable, setBreakfastTouchable] = useState(false);
@@ -62,19 +50,24 @@ const Reminder = ({route, navigation, props}) => {
   const [color, setColor] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
+  const [arr,setArr]=useState('')
+  console.log(arr,"array of reminder")
+
+ useEffect(()=>{
+  getReminder().then(data=>setArr(data))
+ },[])
+  
   const [breakfast, setBreakfast] = useState(false);
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState();
 
-  console.log(time, 'timeeeee');
   const dispatch = useDispatch();
 
   const saveReminderData = useSelector(saveReminderSelector.saveReminder);
   const saveReminderResponse = saveReminderData?.data?.data?.status;
-  console.log(saveReminderResponse, 'save reminder');
 
   const userMedicineId = route.params.id;
-  console.log(userMedicineId, 'id');
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -99,49 +92,8 @@ const Reminder = ({route, navigation, props}) => {
   // console.log(reminderStatus, 'reminderStatus');
   // console.log(frequency, 'frequency');
   // console.log(food, 'beforeAfter');
-  // console.log(totalReminders, 'totalReminders');
+  // console.log(totalReminders, 'totalReminders');start_date
   // console.log(currentCount, 'currentCount');
-
-  const onMultiChange = () => {
-    return item => setSelectedTimings(xorBy(selectedTimings, [item], 'id'));
-  };
-
-  // const saveData = (
-  //   fDatePrimary,
-  //   fDateSecondary,
-  //   days,
-  //   title,
-  //   time,
-  //   check1,
-  //   noEndDate,
-  //   reminderStatus,
-  //   frequencyTemp,
-  //   food,
-  //   totalReminders,
-  //   currentCount,
-  //   userMedicineId,
-  // ) => {
-  //   dispatch(
-  //     saveReminderRequest(
-  //       fDatePrimary,
-  //       fDateSecondary,
-  //       days,
-  //       title,
-  //       time,
-  //       check1,
-  //       noEndDate,
-  //       reminderStatus,
-  //       frequencyTemp,
-  //       food,
-  //       totalReminders,
-  //       currentCount,
-  //       userMedicineId,
-  //     ),
-  //   );
-  //   setTimeout(() => {
-  //     navigation.pop();
-  //   }, 2000);
-  // };
 
   const onSelecteddaysItemsChange = selectedi => {
     slecteddaysstate(selectedi);
@@ -155,6 +107,122 @@ const Reminder = ({route, navigation, props}) => {
   };
   const hideDatePickerfortime = () => {
     time_picker_mode_state(false);
+  };
+
+  const setreminderwithselecteddate = ({title, startDate, endDate}) => {
+    counter = 0;
+    var now = new Date();
+    console.log(now,'uo')
+    // now.setDate(startDate?.getDate());
+
+    console.log(now.getDate(), now.getHours(), now.getTime(), ".......................");
+    console.log(new Date(Date.now()));
+    console.log('now', now);
+    let sample_date = new Date(startDate);
+    var weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+    // var set = new Set() < String > selecteddaysItems;
+    if (check1) {
+      timeings.forEach(timee => {
+        var num = Math.floor(Math.random() * 90000) + 10000;
+
+        counter += 1;
+        let timm_array = timee.split(':');
+
+        now.setHours(timm_array[0]);
+        now.setMinutes(timm_array[1]);
+
+        PushNotification.localNotificationSchedule({
+          //... You can use all the options from localNotifications
+          title: title,
+          message: 'Time to eat your medicine',
+          subText: 'Mark as read if you have taken', // (required)
+          id: num.toString(),
+          channelId: 'test1',
+          color: '#3743ab',
+          showWhen: true,
+          tag: userMedicineId.toString(),
+          visibility: 'public',
+          usesChronometer: true,
+          when: now.getHours() + '' + now.getMinutes(),
+          date: new Date(now.getTime()), // in 60 secs
+          allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
+          vibrate: true,
+          playSound: true,
+          invokeApp: false,
+          soundName: 'android.resource://com.project/raw/my_sound.mp3',
+          importance: Importance.HIGH,
+          repeatType: 'day',
+          smallIcon: 'android.resource://com.project/raw/icon.png',
+
+          actions: ['Open app to mark', 'Skip'],
+
+          /* Android Only Properties */
+          repeatTime: 3, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
+        });
+      });
+      return;
+    }
+    while (sample_date <= endDate) {
+      now.setDate(sample_date.getDate());
+
+      now.setMonth(sample_date.getMonth());
+      if (set.has(weeks[now.getDay()])) {
+        timeings.forEach(timee => {
+          // var num = Math.floor(Math.random() * 90000) + 10000;
+          counter += 1;
+          let timm_array = timee.split(':');
+
+          now.setHours(timm_array[0]);
+          now.setMinutes(timm_array[1]);
+          console.log(now, ' ', now.getHours(), ' ', weeks[now.getDay()]);
+
+          let num1 = Math.floor(Math.random() * 90000) + 10000;
+
+          PushNotification.createChannel(
+            {
+              channelId: 'test1', // (required)
+              channelName: title + 'Med channel', // (required)
+              channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+              playSound: false, // (optional) default: true
+              soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+              importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
+              vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
+            },
+            created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+          );
+          PushNotification.localNotificationSchedule({
+            //... You can use all the options from localNotifications
+            title: title,
+            message: 'Time to eat your medicine',
+            subText: 'Mark as read if you have taken', // (required)
+            id: num1.toString(),
+            channelId: 'test1',
+            color: '#3743ab',
+            showWhen: true,
+            tag: userMedicineId.toString(),
+            visibility: 'public',
+            usesChronometer: true,
+            when: now.getHours() + '' + now.getMinutes(),
+            date: new Date(now.getTime()), // in 60 secs
+            allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
+            vibrate: true,
+            playSound: true,
+            invokeApp: false,
+            soundName: 'android.resource://com.project/raw/my_sound.mp3',
+            importance: Importance.HIGH,
+
+            smallIcon: 'ic_launcher',
+            largeIcon: 'ic_launcher',
+            actions: ['Open app to mark', 'Skip'],
+
+            /* Android Only Properties */
+            repeatTime: 3, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
+          });
+        });
+      }
+
+      sample_date.setDate(sample_date.getDate() + 1);
+    }
   };
 
   const onclickBreakfast = () => {
@@ -192,22 +260,19 @@ const Reminder = ({route, navigation, props}) => {
     // console.log('A time has been picked: ', date.getHours(), date.getMinutes());
 
     if (date.getHours() > 11) {
-      // console.log(timeings);
-      timearray.push(date.getHours() + ':' + date.getMinutes() + ' PM');
-      timeings.push(date.getHours() + ':' + date.getMinutes());
+      timearray[currentIndex] =
+        date.getHours() + ':' + date.getMinutes() + ' PM';
+      timeings[currentIndex] = date.getHours() + ':' + date.getMinutes();
       timestate(timeings);
-      // console.log(timeings);
+      // console.log(timeings, 'time added ');
     } else {
-      timearray.push(date.getHours() + ':' + date.getMinutes() + ' AM');
-
-      timeings.push(date.getHours() + ':' + date.getMinutes());
+      timearray[currentIndex] =
+        date.getHours() + ':' + date.getMinutes() + ' AM';
+      timeings[currentIndex] = date.getHours() + ':' + date.getMinutes();
       timestate(timeings);
-      // console.log(timeings);
     }
     hideDatePickerfortime();
   };
-
-  console.log(timearray, 'fdhghfhgf');
 
   const savereminder = (
     fDatePrimary,
@@ -222,7 +287,9 @@ const Reminder = ({route, navigation, props}) => {
     currentCount,
     userMedicineId,
   ) => {
-    if (title.length === 0 || timearray.length === 0) {
+    if (title.length === 0 
+      // || timearray.length === 0
+      ) {
       Alert.alert('Make sure you have valid reminder', ' ', [
         {
           text: 'OK',
@@ -237,19 +304,42 @@ const Reminder = ({route, navigation, props}) => {
     let days = '';
     for (let i = 0; i < timearray.length; i++) {
       let mtime = timearray[i].split(' ')[0].split(':')[0];
-      if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
-        mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
-      } else {
-        mtime += ':' + timearray[i].split(' ')[0].split(':')[1];
-      }
-      if (i === timearray.length - 1) {
-        time += mtime + ' ' + timearray[i].split(' ')[1];
-      } else {
-        time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
+      if (breakfast && i == 0) {
+        if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
+          mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
+        } else {
+          mtime += ':' + timearray[i].split(' ')[0].split(':')[1];
+        }
+        if (i === timearray.length - 1) {
+          time += mtime + ' ' + timearray[i].split(' ')[1];
+        } else {
+          time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
+        }
+      } else if (lunch && i == 1) {
+        if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
+          mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
+        } else {
+          mtime += ':' + timearray[i].split(' ')[0].split(':')[1];
+        }
+        if (i === timearray.length - 1) {
+          time += mtime + ' ' + timearray[i].split(' ')[1];
+        } else {
+          time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
+        }
+      } else if (dinner && i == 2) {
+        if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
+          mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
+        } else {
+          mtime += ':' + timearray[i].split(' ')[0].split(':')[1];
+        }
+        if (i === timearray.length - 1) {
+          time += mtime + ' ' + timearray[i].split(' ')[1];
+        } else {
+          time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
+        }
       }
     }
     setTime(time);
-
     if (check2) {
       for (let i = 0; i < selecteddaysItems.length; i++) {
         if (i == selecteddaysItems.length - 1) {
@@ -259,18 +349,54 @@ const Reminder = ({route, navigation, props}) => {
         }
       }
       console.log(days, ' final days ');
-      // console.log('time and days ==>>> ', time, days);
     } else if (check1) {
       days += 'Everyday';
 
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
+
+    setreminderwithselecteddate(title, startDate, endDate);
+
     const frequencyTemp = frequency.toString();
-    
+
     if (endDate === 'No End Date') {
       setfDate('null');
     }
+    // console.log(reminderStatus, 'reminderStatus');
+    // console.log(frequencyTemp, 'frequency');
+    // console.log(fDateSecondary, 'endDate');
+    // console.log(food, 'beforeAfter');
+    // console.log(totalReminders, 'totalReminders');
+    // console.log(currentCount, 'currentCount');
+    // console.log(userMedicineId, 'iddddd');
+    
+  //  let obj={
+  //   medicineId:medicineInfo.MedicineId,
+  //   medicineName:medicineInfo.MedicineName,
+  //   description:medicineInfo.MedicineDescription,
+  //   present:true,
+  //   doasgeType:medicineInfo.doasgeType,
+  //   doasageQuantity:medicineInfo.doasageQuantity,
+  //   doasgePower:medicineInfo.doasgePower,
+  //   stock:medicineInfo.stock,
+  //   leftStock:medicineInfo.leftStock,
+  //   reminderId:uuid.v4(),
+  //   startDate:fDatePrimary,
+  //   endDate:fDateSecondary ,
+  //   days:days,
+  //   reminderTitle:title,
+  //   reminderTime:time,
+  //   everyday:check1,
+  //   noEndDate:noEndDate,
+  //   reminderStatus:reminderStatus,
+  //   frequency:frequencyTemp,
+  //   beforeAfter:food,
+  //   totalReminders:totalReminders,
+  //   currentCount:currentCount
+  // }
 
+  // setArr([...arr,obj])
+  
     dispatch(
       saveReminderRequest(
         fDatePrimary,
@@ -289,11 +415,14 @@ const Reminder = ({route, navigation, props}) => {
       ),
     );
     setTimeout(() => {
-      navigation.navigate('MedicinePanel');
+      navigation.pop()
     }, 2000);
   };
 
   // console.log(endDate);
+  useEffect(()=>{
+  addReminder(arr)
+  },[arr])
 
   return (
     // { showReminderDuration &&  <ReminderDuration/>}
@@ -303,9 +432,6 @@ const Reminder = ({route, navigation, props}) => {
         <View style={styles.container1}>
           <TouchableOpacity
             onPress={() => {
-              // console.log('p');
-              // console.log(picker);
-
               pickerstate(true);
             }}
             style={styles.containerTouch}>
@@ -398,7 +524,6 @@ const Reminder = ({route, navigation, props}) => {
           <Text style={styles.title}>Add Title</Text>
           <TextInput
             placeholder="Title for reminder"
-            label="Title"
             style={styles.titleText}
             mode="outlined"
             value={title}
@@ -423,13 +548,12 @@ const Reminder = ({route, navigation, props}) => {
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
                   style={{
-                    borderWidth: 1.5,
-                    borderRadius: 3,
+                    borderRadius: breakfast ? 3 : 0,
                     alignItems: 'center',
                     borderColor: colorPalette.mainColor,
                     backgroundColor: breakfast
                       ? colorPalette.mainColor
-                      : colorPalette.backgroundColor,
+                      : colorPalette.greyColor,
                   }}
                   onPress={() => {
                     onclickBreakfast();
@@ -439,6 +563,7 @@ const Reminder = ({route, navigation, props}) => {
                     style={{
                       fontSize: 16,
                       color: breakfast ? 'white' : 'black',
+                      padding: 6,
                     }}>
                     Breakfast
                   </Text>
@@ -446,16 +571,28 @@ const Reminder = ({route, navigation, props}) => {
                 {breakfastTouchable ? (
                   <TouchableOpacity
                     style={{
-                      borderWidth: 1.5,
                       borderRadius: 3,
                       alignItems: 'center',
                       borderColor: colorPalette.mainColor,
+                      backgroundColor: colorPalette.greyColor,
+                      padding: 6,
                       marginTop: 6,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                     }}
                     onPress={() => {
                       time_picker_mode_state(true);
+                      setCurrentIndex(0);
                     }}>
-                    <Text style={{fontSize: 16}}>{timearray[0]}</Text>
+                    <Text style={{fontSize: 16, textAlign: 'center'}}>
+                      {timearray[0]}
+                    </Text>
+                    <View style={styles.arrow}>
+                      <FontAwesomeIcon
+                        icon={faCaretDown}
+                        style={styles.downIcon}
+                        color=""></FontAwesomeIcon>
+                    </View>
                   </TouchableOpacity>
                 ) : (
                   <></>
@@ -465,13 +602,12 @@ const Reminder = ({route, navigation, props}) => {
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
                   style={{
-                    borderWidth: 1.5,
-                    borderRadius: 3,
+                    borderRadius: lunch ? 3 : 0,
                     alignItems: 'center',
                     borderColor: colorPalette.mainColor,
                     backgroundColor: lunch
                       ? colorPalette.mainColor
-                      : colorPalette.backgroundColor,
+                      : colorPalette.greyColor,
                   }}
                   onPress={() => {
                     setLunchTouchable(!lunchTouchable);
@@ -482,6 +618,7 @@ const Reminder = ({route, navigation, props}) => {
                     style={{
                       fontSize: 16,
                       color: lunch ? 'white' : 'black',
+                      padding: 6,
                     }}>
                     Lunch
                   </Text>
@@ -489,32 +626,42 @@ const Reminder = ({route, navigation, props}) => {
                 {lunchTouchable ? (
                   <TouchableOpacity
                     style={{
-                      borderWidth: 1.5,
                       alignItems: 'center',
                       borderRadius: 3,
                       borderColor: colorPalette.mainColor,
+                      backgroundColor: colorPalette.greyColor,
+                      padding: 6,
                       marginTop: 6,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                     }}
                     onPress={() => {
                       time_picker_mode_state(true);
+                      setCurrentIndex(1);
                     }}>
-                    <Text style={styles.touchableText}>{timearray[1]}</Text>
+                    <Text style={{fontSize: 16, textAlign: 'center'}}>
+                      {timearray[1]}
+                    </Text>
+                    <View style={styles.arrow}>
+                      <FontAwesomeIcon
+                        icon={faCaretDown}
+                        style={styles.downIcon}
+                        color=""></FontAwesomeIcon>
+                    </View>
                   </TouchableOpacity>
                 ) : (
                   <></>
                 )}
               </View>
-
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
                   style={{
-                    borderWidth: 1.5,
-                    borderRadius: 3,
+                    borderRadius: dinner ? 3 : 0,
                     alignItems: 'center',
                     borderColor: colorPalette.mainColor,
                     backgroundColor: dinner
                       ? colorPalette.mainColor
-                      : colorPalette.backgroundColor,
+                      : colorPalette.greyColor,
                   }}
                   onPress={() => {
                     setDinnerTouchable(!dinnerTouchable);
@@ -525,6 +672,7 @@ const Reminder = ({route, navigation, props}) => {
                     style={{
                       fontSize: 16,
                       color: dinner ? 'white' : 'black',
+                      padding: 6,
                     }}>
                     Dinner
                   </Text>
@@ -532,16 +680,26 @@ const Reminder = ({route, navigation, props}) => {
                 {dinnerTouchable ? (
                   <TouchableOpacity
                     style={{
-                      borderWidth: 1.5,
                       alignItems: 'center',
                       borderRadius: 3,
                       borderColor: colorPalette.mainColor,
+                      backgroundColor: colorPalette.greyColor,
+                      padding: 6,
                       marginTop: 6,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                     }}
                     onPress={() => {
                       time_picker_mode_state(true);
+                      setCurrentIndex(2);
                     }}>
                     <Text style={styles.touchableText}>{timearray[2]}</Text>
+                    <View style={styles.arrow}>
+                      <FontAwesomeIcon
+                        icon={faCaretDown}
+                        style={styles.downIcon}
+                        color=""></FontAwesomeIcon>
+                    </View>
                   </TouchableOpacity>
                 ) : (
                   <></>
@@ -550,11 +708,35 @@ const Reminder = ({route, navigation, props}) => {
             </View>
           </View>
           <Divider></Divider>
-          <View style={{flexDirection: 'row'}}>
-            <View>
-              <Text style={styles.title}>Take Medicine:</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '95%',
+              alignSelf: 'center',
+              marginVertical: 10,
+            }}>
+            <View
+              style={{
+                width: '35%',
+                marginTop: 10,
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                paddingVertical: 6,
+              }}>
+              <Text style={{fontSize: 16, fontWeight: '700'}}>
+                Take Medicine:
+              </Text>
             </View>
-            <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 10,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '65%',
+                alignSelf: 'center',
+              }}>
               <TouchableOpacity
                 style={{
                   borderWidth: 1,
@@ -564,9 +746,9 @@ const Reminder = ({route, navigation, props}) => {
                     ? colorPalette.mainColor
                     : 'white',
                   alignItems: 'center',
-                  marginHorizontal: 5,
-                  paddingHorizontal: 5,
                   justifyContent: 'center',
+                  paddingVertical: 6,
+                  width: '46.5%',
                 }}
                 onPress={() => {
                   setFood('Before');
@@ -574,21 +756,23 @@ const Reminder = ({route, navigation, props}) => {
                   setFoodAfter(false);
                 }}>
                 <Text
-                  style={{fontSize: 16, color: foodBefore ? 'white' : 'black'}}>
+                  style={{
+                    fontSize: 16,
+                    color: foodBefore ? 'white' : 'black',
+                    textAlign: 'center',
+                  }}>
                   Before food
                 </Text>
               </TouchableOpacity>
-            </View>
-            <View>
               <TouchableOpacity
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,
                   backgroundColor: foodAfter ? colorPalette.mainColor : 'white',
                   borderRadius: 6,
-                  paddingHorizontal: 5,
                   justifyContent: 'center',
-                  marginHorizontal: 5,
+                  paddingVertical: 6,
+                  width: '46.5%',
                 }}
                 onPress={() => {
                   setFood('After');
@@ -596,16 +780,21 @@ const Reminder = ({route, navigation, props}) => {
                   setFoodBefore(false);
                 }}>
                 <Text
-                  style={{fontSize: 16, color: foodAfter ? 'white' : 'black'}}>
+                  style={{
+                    fontSize: 16,
+                    color: foodAfter ? 'white' : 'black',
+                    textAlign: 'center',
+                  }}
+                  numberOfLines={2}
+                  textBreakStrategy="highQuality">
                   After food
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.days}>
-            <TouchableOpacity>
-              <Text style={styles.selectDays}>Select Days</Text>
-            </TouchableOpacity>
+          <Divider></Divider>
+          <View style={{marginBottom: 10}}>
+            <Text style={styles.title}>Select Days</Text>
             <CheckBox
               style={styles.days}
               onClick={() => {
@@ -615,6 +804,7 @@ const Reminder = ({route, navigation, props}) => {
               isChecked={check1}
               checkBoxColor={colorPalette.appColor}
               leftText={'Everyday'}
+              leftTextStyle={{fontSize: 16}}
             />
             <CheckBox
               style={styles.days}
@@ -625,11 +815,11 @@ const Reminder = ({route, navigation, props}) => {
               isChecked={check2}
               checkBoxColor={colorPalette.appColor}
               leftText={'Selected days'}
+              leftTextStyle={{fontSize: 16}}
             />
-
             {check2 && (
               <SectionedMultiSelect
-                hideSearch={false}
+                hideSearch={true}
                 IconRenderer={Icon}
                 items={day_data}
                 uniqueKey="id"
@@ -637,11 +827,41 @@ const Reminder = ({route, navigation, props}) => {
                 selectText="Choose days"
                 showDropDowns={true}
                 expandDropDowns={true}
+                icons={{
+                  arrowUp: {
+                    size: 20,
+                    name: 'keyboard-arrow-up',
+                  },
+                  arrowDown: {
+                    name: 'keyboard-arrow-down', // dropdown toggle
+                    size: 22,
+                  },
+                  check: {
+                    name: 'check', // selected item
+                    size: 22,
+                  },
+                  close: {
+                    name: 'close', // chip close
+                    size: 16,
+                  },
+                }}
                 styles={{
-                  listContainer: {height: 400},
-                  container: {maxHeight: 400, marginTop: 200, padding: 20},
+                  listContainer: {height: 300, backgroundColor: 'red'},
+                  container: {maxHeight: 370, marginTop: 200, padding: 20},
                   backdrop: {height: 400},
                   modalWrapper: {height: 400},
+                  button: {
+                    backgroundColor: colorPalette.appColor,
+                  },
+                  cancelButton: {
+                    backgroundColor: 'white',
+                  },
+                  chipContainer: {
+                    backgroundColor: colorPalette.appColor,
+                  },
+                }}
+                colors={{
+                  chipColor: 'white',
                 }}
                 readOnlyHeadings={true}
                 onSelectedItemsChange={onSelecteddaysItemsChange}
@@ -667,7 +887,7 @@ const Reminder = ({route, navigation, props}) => {
                 userMedicineId,
               );
               if (saveReminderResponse === 'Success') {
-                route.params.fetchStatus();
+                route.params?.fetchStatus();
               }
             }}
             buttonStyle={styles.buttonStyle}

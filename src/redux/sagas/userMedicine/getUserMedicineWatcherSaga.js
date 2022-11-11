@@ -13,7 +13,6 @@ export function* getUserMedicineWorkerSaga(data) {
       UserMedicineNetworkService.getUserMedicine,
       payload,
     );
-    console.log(response, 'response');
     yield put(successGetUserMedicine(response?.data));
   } catch (err) {
     yield put(errorGetUserMedicine(err));

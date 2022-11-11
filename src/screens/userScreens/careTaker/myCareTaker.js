@@ -8,11 +8,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAction';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
+import {colorPalette} from '../../../components/atoms/colorPalette';
 
 const MyCareTaker = ({navigation}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.myCaretaker);
-  console.log('caretakerRes', res);
   const [pageNo, setPageNo] = useState(0);
   const [caretaker, setCaretaker] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -91,6 +91,8 @@ const MyCareTaker = ({navigation}) => {
               showsVerticalScrollIndicator={false}
               refreshControl={
                 <RefreshControl
+                  colors={[colorPalette.mainColor]}
+                  tintColor={[colorPalette.mainColor]}
                   refreshing={refresh}
                   onRefresh={() => {
                     dispatch(myCaretakerRequest(pageNo));

@@ -37,7 +37,7 @@ const RenderModalVisible = ({
       Toast.show({
         type: 'success',
         text1: 'Updated Successfully!!!',
-        position: 'bottom',
+        position: 'top',
       });
       setTimeout(() => {
         setModalVisible(false);
@@ -48,7 +48,7 @@ const RenderModalVisible = ({
       Toast.show({
         type: 'error',
         text1: 'Something Went Wrong!!!',
-        position: 'bottom',
+        position: 'top',
       });
     }
   }, [res]);
@@ -70,7 +70,6 @@ const RenderModalVisible = ({
 
   return (
     <View>
-      <Toast visibilityTime={3000} />
       <View style={{alignItems: 'flex-end', paddingVertical: 10}}>
         {isCancel ? (
           <>
@@ -131,6 +130,7 @@ const RenderModalVisible = ({
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
+      <Toast visibilityTime={3000} />
     </View>
   );
 };

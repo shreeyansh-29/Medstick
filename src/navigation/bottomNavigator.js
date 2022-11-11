@@ -41,7 +41,9 @@ const BottomNavigator = ({navigation}) => {
         style={styles.ripple}
         rippleCentered={true}
         rippleColor={colorPalette.colorTabs}
-        rippleDuration={800}>
+        rippleDuration={700}
+        rippleOpacity={0.87}
+        rippleContainerBorderRadius={400}>
         <FontAwesomeIcon icon={item.iconName} size={size} color={colors} />
         {focused ? (
           <Text style={styles.focused}>{item.route}</Text>
@@ -75,7 +77,7 @@ const BottomNavigator = ({navigation}) => {
                 tabBarIcon: () => (
                   <View style={styles.addbtn}>
                     <AddButton
-                      routeName={'AddMedicine'}
+                      routeName={'AddMedicineStack'}
                       navigation={navigation}
                       styles={styles.btn}
                     />

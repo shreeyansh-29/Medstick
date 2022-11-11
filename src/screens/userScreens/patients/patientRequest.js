@@ -1,6 +1,12 @@
-import {View, FlatList, ActivityIndicator, RefreshControl} from 'react-native';
+import {
+  View,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {colorPalette} from '../../../components/atoms/colorPalette';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
@@ -9,6 +15,8 @@ import {patientsReqRequest} from '../../../redux/action/patients/patientsRequest
 import {acceptPatientReqRequest} from '../../../redux/action/patients/acceptPatientReqAction';
 import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import {colorPalette} from '../../../components/atoms/colorPalette';
 
 const PatientRequest = () => {
   const dispatch = useDispatch();
@@ -16,8 +24,16 @@ const PatientRequest = () => {
   const [pageNo, setPageNo] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.patientsRequest);
+  console.log(res);
   const loading = useSelector(state => state.patientsRequest.isLoading);
+  const [uri, setUri] = useState('');
+  const [visible, setVisible] = useState(false);
   // console.log(res);
+  const images = [
+    {
+      url: uri,
+    },
+  ];
 
   useEffect(() => {
     if (res?.data !== null) {
@@ -64,7 +80,14 @@ const PatientRequest = () => {
       <Card style={styles.card}>
         <View style={styles.cardInner}>
           <View style={styles.avatar}>
-            <Avatar size={80} rounded source={{uri: item.user.picPath}} />
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                setVisible(true);
+                setUri(item.picPath);
+              }}>
+              <Avatar size={80} rounded source={{uri: item.picPath}} />
+            </TouchableOpacity>
           </View>
           <View style={styles.container1}>
             <ListItem
@@ -73,10 +96,10 @@ const PatientRequest = () => {
               tvParallaxProperties={undefined}>
               <ListItem.Content>
                 <ListItem.Title style={styles.listTitle}>
-                  {item.user.userName}
+                  {item.userName}
                 </ListItem.Title>
                 <ListItem.Subtitle style={styles.listSubTitle}>
-                  {item.user.contact}
+                  {item.contact}
                 </ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
@@ -106,6 +129,12 @@ const PatientRequest = () => {
   };
   return (
     <View style={styles.container}>
+      <Modal
+        visible={visible}
+        transparent={true}
+        onRequestClose={() => setVisible(!visible)}>
+        <ImageViewer imageUrls={images} />
+      </Modal>
       {loading ? (
         <Loader />
       ) : (
@@ -126,6 +155,8 @@ const PatientRequest = () => {
               keyExtractor={(item, index) => index.toString()}
               refreshControl={
                 <RefreshControl
+                  colors={[colorPalette.mainColor]}
+                  tintColor={[colorPalette.mainColor]}
                   refreshing={refresh}
                   onRefresh={() => {
                     dispatch(patientsReqRequest(pageNo));

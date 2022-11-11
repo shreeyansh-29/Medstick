@@ -9,8 +9,9 @@
     "test": "jest",
     "lint": "eslint .",
     "build": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android/ && ./gradlew assembleRelease -x bundleReleaseJsAndAssets",
+    "run": "gnome-terminal --tab -e 'npm start --reset-cache' --tab -e 'npm run android'",
     "gradle": "cd android/ && ./gradlew clean && cd ..",
-    "run": "gnome-terminal --tab -e 'npm start --reset-cache' --tab -e 'npm run android'"
+    "refresh_node_modules": "rm -rf node_modules/ && rm package-lock.json && npm i"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
@@ -32,7 +33,7 @@
     "@react-navigation/drawer": "^6.4.4",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.8.0",
-    "axios": "^1.1.3",
+    "axios": "^0.27.2",
     "deprecated-react-native-prop-types": "^2.3.0",
     "entities": "^4.4.0",
     "formik": "^2.2.9",
@@ -63,6 +64,7 @@
     "react-native-paper": "^4.12.4",
     "react-native-progress": "^5.0.0",
     "react-native-progress-circle": "^2.1.0",
+    "react-native-push-notification": "^8.1.1",
     "react-native-reanimated": "^2.12.0",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^3.17.0",

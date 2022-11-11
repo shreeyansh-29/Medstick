@@ -18,3 +18,8 @@ export const sendSnapError = payload => {
     payload,
   };
 };
+export const sendSnapClear = () => {
+  return {
+    type: types.SEND_SNAP_CLEAR,
+  };
+};

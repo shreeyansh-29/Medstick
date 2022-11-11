@@ -11,34 +11,35 @@ import React, {useEffect, useRef, useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import DatePicker from 'react-native-date-picker';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import LottieView from 'lottie-react-native';
-import { horizontalScale, verticalScale } from '../atoms/constant';
-import { colorPalette } from '../atoms/colorPalette';
-import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {horizontalScale, verticalScale} from '../atoms/constant';
+import {colorPalette} from '../atoms/colorPalette';
+import {faCalendarDays} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import SaveButton from './saveButton';
-import { Alert } from 'react-native';
-import { showInvalidMessage } from '../atoms/invaliMessage';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadSaveDoctorPrescription } from '../../redux/action/doctorPrescription/saveDoctorPrescriptionAction';
+import {Alert} from 'react-native';
+import {showInvalidMessage} from '../atoms/invaliMessage';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadSaveDoctorPrescription} from '../../redux/action/doctorPrescription/saveDoctorPrescriptionAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const AddPrescriptionList = ({ navigation }) => {
-
+const AddPrescriptionList = ({navigation}) => {
   const [doctorName, setDoctorName] = useState('');
   const [specialization, setSpecialization] = useState('');
   const [number, setNumber] = useState('');
   const [locations, setLocation] = useState('');
-  const [id, setId] = useState('')
-  const [token, setToken] = useState('')
-  const [selectedImage, setSelectedImage] = useState('')
+  const [id, setId] = useState('');
+  const [token, setToken] = useState('');
+  const [selectedImage, setSelectedImage] = useState('');
   // const [prescriptionId,setPrescriptionId]=useState('')
- 
-  const dispatch = useDispatch()
-  const saveDoctorPrescriptiondata = useSelector(state => state.saveDoctorPrescriptionReducer.data)
+
+  const dispatch = useDispatch();
+  const saveDoctorPrescriptiondata = useSelector(
+    state => state.saveDoctorPrescriptionReducer.data,
+  );
   // const savePrescriptionId=useSelector(state=>state.saveDoctorPrescriptionReducer?.data?.result?.prescriptionId)
-  console.log(saveDoctorPrescriptiondata, "data")
+  console.log(saveDoctorPrescriptiondata, 'data');
 
   // useEffect(() => {
   //   if (saveDoctorPrescriptiondata?.status === 'Success') {
@@ -49,60 +50,73 @@ const AddPrescriptionList = ({ navigation }) => {
   // }, [saveDoctorPrescriptiondata])
 
   const getTokenId = async () => {
-    const tokentemp = await AsyncStorage.getItem('accessToken')
-    setToken(tokentemp)
-    const tempId = await AsyncStorage.getItem('user_id')
-    setId(tempId)
-  }
-
+    const tokentemp = await AsyncStorage.getItem('accessToken');
+    setToken(tokentemp);
+    const tempId = await AsyncStorage.getItem('user_id');
+    setId(tempId);
+  };
 
   const showAlertMessage = () => {
-    Alert.alert('Alert!!', 'image is already selected ', [{
-      text: 'OK'
-    }],
-      { cancelable: false }
-    )
-  }
+    Alert.alert(
+      'Alert!!',
+      'image is already selected ',
+      [
+        {
+          text: 'OK',
+        },
+      ],
+      {cancelable: false},
+    );
+  };
 
   const showSuccesMessage = () => {
-    Alert.alert('Success', 'Prescription Addded Succesfully ', [{
-      text: 'OK'
-    }],
-      { cancelable: false }
-    )
-  }
+    Alert.alert(
+      'Success',
+      'Prescription Addded Succesfully ',
+      [
+        {
+          text: 'OK',
+        },
+      ],
+      {cancelable: false},
+    );
+  };
 
-  const successfullyPrescriptionAdded=()=>{
-    
-    
-    showSuccesMessage()
-    navigation.navigate('AddMedicine')
-    
-  }
+  const successfullyPrescriptionAdded = () => {
+    showSuccesMessage();
+    navigation.navigate('AddMedicine');
+  };
 
   const savePrescription = async () => {
-    if (doctorName === '' || specialization === '' || number === '' || locations === '' || selectedImage === '') {
-      showInvalidMessage()
-    }
-    else {
-      const formdata = new FormData()
+    if (
+      doctorName === '' ||
+      specialization === '' ||
+      number === '' ||
+      locations === '' ||
+      selectedImage === ''
+    ) {
+      showInvalidMessage();
+    } else {
+      const formdata = new FormData();
       formdata.append('image', {
         uri: selectedImage.path,
         type: 'image/jpg',
-        name: 'Prescription'
-      })
-      formdata.append('doctorName', doctorName)
-      formdata.append('specialization', specialization)
-      formdata.append('contact', number)
-      formdata.append('location', locations)
-      dispatch(loadSaveDoctorPrescription(token, id, formdata))
-      if(saveDoctorPrescriptiondata?.status === 'Success')
-      {
-      await AsyncStorage.setItem('prescription_id',saveDoctorPrescriptiondata.result.prescriptionId)
-      successfullyPrescriptionAdded()
+        name: 'Prescription',
+      });
+      formdata.append('doctorName', doctorName);
+      formdata.append('specialization', specialization);
+      formdata.append('contact', number);
+      formdata.append('location', locations);
+      dispatch(loadSaveDoctorPrescription(token, id, formdata));
+      if (saveDoctorPrescriptiondata?.status === 'Success') {
+        await AsyncStorage.setItem(
+          'prescription_id',
+          saveDoctorPrescriptiondata.result.prescriptionId,
+        );
+        successfullyPrescriptionAdded();
       }
     }
-  }
+  };
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -114,8 +128,8 @@ const AddPrescriptionList = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    getTokenId()
-  }, [id])
+    getTokenId();
+  }, [id]);
   return (
     <View>
       <ScrollView showsHorizontalScrollIndicator={false}>
@@ -200,7 +214,6 @@ const AddPrescriptionList = ({ navigation }) => {
               />
               
             </TouchableOpacity> */}
-
           </View>
           <View style={Styles.addingPrescription}>
             <View style={Styles.textInput}>
@@ -209,14 +222,15 @@ const AddPrescriptionList = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 {
-                  selectedImage !== "" ? showAlertMessage() :
-                    ImagePicker.openCamera({
-                      width: 300,
-                      height: 400,
-                      cropping: true,
-                    }).then(image => {
-                      setSelectedImage(image)
-                    });
+                  selectedImage !== ''
+                    ? showAlertMessage()
+                    : ImagePicker.openCamera({
+                        width: 300,
+                        height: 400,
+                        cropping: true,
+                      }).then(image => {
+                        setSelectedImage(image);
+                      });
                 }
               }}>
               <LottieView
@@ -226,18 +240,16 @@ const AddPrescriptionList = ({ navigation }) => {
                 source={require('../../assets/animation/addPrescriptionButton.json')}
               />
             </TouchableOpacity>
-
           </View>
 
-          {selectedImage !== "" ?
-            (<Image
-              source={{ uri: `${selectedImage.path}` }}
-              style={{ width: 150, height: 150, margin: 15 }}
+          {selectedImage !== '' ? (
+            <Image
+              source={{uri: `${selectedImage.path}`}}
+              style={{width: 150, height: 150, margin: 15}}
             />
-            ) : (
-              <View></View>
-            )
-          }
+          ) : (
+            <View></View>
+          )}
           {/* <View style={Styles.box}>
             <Text style={{fontSize: 17, marginTop: '2%'}}>
               Add Appointment Remainder
@@ -297,14 +309,13 @@ const AddPrescriptionList = ({ navigation }) => {
             </View>
           </View> */}
         </KeyboardAvoidingView>
-        <TouchableOpacity style={Styles.saveButtonArea} onPress={() => savePrescription()}>
+        <TouchableOpacity
+          style={Styles.saveButtonArea}
+          onPress={() => savePrescription()}>
           <SaveButton />
         </TouchableOpacity>
       </ScrollView>
-
-
     </View>
-
   );
 };
 export default AddPrescriptionList;
