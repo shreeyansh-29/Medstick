@@ -6,6 +6,7 @@ const AddButton = ({routeName, navigation, styles, text}) => {
   return (
     <>
       <TouchableOpacity
+        activeOpacity={1}
         onPress={() => {
           navigation.navigate(routeName, {
             sentBy: text,

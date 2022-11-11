@@ -13,6 +13,8 @@ const MedicinePicker = ({onChange}) => {
     state => state.getUserMedicineReducer?.data?.result,
   );
 
+  console.log(getUserMedicine);
+
   const getmedicine = () => {
     dispatch(loadGetUserMedicine());
   };

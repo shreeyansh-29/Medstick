@@ -88,7 +88,6 @@ const RenderModalVisible = ({
         behavior={'padding'}
         keyboardVerticalOffset={avoidKeyboardRequired ? -125 : -500}>
         <ScrollView
-          contentContainerStyle={{width: deviceWidth / 1.1, flexGrow: 1}}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}>
           <Formik

@@ -6,6 +6,7 @@ import {TouchableOpacity} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {Card, Divider} from 'react-native-paper';
 import {styles} from '../../styles/otherScreensStyles/prescriptionsStyles';
+import CustomModal from '../../components/molecules/customModal';
 
 const DoctorPrescription = ({navigation, route}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -36,12 +37,12 @@ const DoctorPrescription = ({navigation, route}) => {
             source={require('../../assets/animation/addPrescription.json')}
           />
         </View>
-        <Modal
-          visible={visible}
-          transparent={true}
-          onRequestClose={() => setVisible(!visible)}>
-          <ImageViewer imageUrls={images} />
-        </Modal>
+        <CustomModal
+          modalVisible={visible}
+          text="imageViewer"
+          onRequestClose={() => setVisible(!visible)}
+          modalView={<ImageViewer backgroundColor="white" imageUrls={images} />}
+        />
         <Card style={styles.card1}>
           <View style={styles.mainView}>
             <View style={styles.subCont}>

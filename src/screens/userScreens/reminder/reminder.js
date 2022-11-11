@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {DateTimePickerModal,DateTimePicker} from 'react-native-modal-datetime-picker';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {day_data, months} from './pushNotification/timeData';
@@ -10,7 +10,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {TextInput} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
-import DateTimePicker from 'react-native-modal-datetime-picker';
 import styles from './reminderStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -20,6 +19,7 @@ import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAc
 import { addReminder, getReminder } from '../../../utils/storage';
 import PushNotification, {Importance} from "react-native-push-notification";
 import uuid from 'react-native-uuid'
+import CustomButton from '../../../components/atoms/customButton';
 
 var counter = 0;
 
@@ -287,10 +287,8 @@ const Reminder = ({route, navigation, props}) => {
     currentCount,
     userMedicineId,
   ) => {
-    if (title.length === 0 
-      // || timearray.length === 0
-      ) {
-      Alert.alert('Make sure you have valid reminder', ' ', [
+    if (title.length === 0 || timearray.length === 0) {
+      Alert.alert('Please fill all the details', ' ', [
         {
           text: 'OK',
           onPress: () => {},
@@ -869,10 +867,10 @@ const Reminder = ({route, navigation, props}) => {
             )}
           </View>
           <Divider></Divider>
-          <Button
+          <CustomButton
             loading={load}
             title="Save reminder"
-            onPress={() => {
+            handleSubmit={() => {
               savereminder(
                 fDatePrimary,
                 fDateSecondary,
@@ -890,8 +888,9 @@ const Reminder = ({route, navigation, props}) => {
                 route.params?.fetchStatus();
               }
             }}
-            buttonStyle={styles.buttonStyle}
-            containerStyle={styles.buttonContainer}></Button>
+            btnStyles={styles.buttonStyle}
+            contStyles={styles.buttonContainer}
+          />
         </View>
       </View>
     </ScrollView>
