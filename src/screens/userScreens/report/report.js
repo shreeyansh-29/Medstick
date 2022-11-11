@@ -6,7 +6,7 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
@@ -21,11 +21,14 @@ import ProgressBar from '../../../components/molecules/progressBar';
 import TimeSlot from '../../../components/atoms/timeSlot';
 import {Picker} from '@react-native-picker/picker';
 import MedicinePicker from '../../../components/atoms/medicinePicker';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadGetMedicineHistory } from '../../../redux/action/userMedicine/getMedicineHistoryAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {loadGetMedicineHistory} from '../../../redux/action/userMedicine/getMedicineHistoryAction';
 import TimeText from '../../../components/atoms/Text';
 import MedicineTime from '../../../components/molecules/medicineTime';
-import { loadGetMedicineHistoryByDate } from '../../../redux/action/userMedicine/getMedicineHistoryByDateAction';
+import {loadGetMedicineHistoryByDate} from '../../../redux/action/userMedicine/getMedicineHistoryByDateAction';
+import {Alert} from 'react-native';
+import DayComponent from './dayComponent';
+import HistoryDetail from '../patients/historyDetail';
 LocaleConfig.locales['en'] = {
   monthNames: [
     'January',
@@ -67,60 +70,113 @@ LocaleConfig.locales['en'] = {
   dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
 };
 LocaleConfig.defaultLocale = 'en';
-const Report = ({ navigation }) => {
-  const dispatch = useDispatch()
-  const [medicineId, setMedicineId] = useState('')
-  console.log(medicineId, "mid")
+const Report = ({navigation}) => {
+  const dispatch = useDispatch();
+  const [medicineId, setMedicineId] = useState('');
+  // console.log(medicineId, 'mid');
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState('')
-  const [selectDate,setSelectDate]=useState('')
-  console.log(selectedDate,'sdate')
-  const [medicineName, setMedicineName] = useState('')
-  
-  const year = selectedDate?.year
-  const month = selectedDate?.month
-  const date = selectedDate?.day
-
-  const medicineHistory = useSelector(state => state.getMedicineHistoryByDateReducer)
-  console.log(medicineHistory, "medicine History")
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectDate, setSelectDate] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [percentage, setPercentage] = useState();
+  const [medicineName, setMedicineName] = useState('');
+  const year = selectedDate?.year;
+  const month = selectedDate?.month;
+  const date = selectedDate?.day;
+  const medicineHistory = useSelector(
+    state => state.getMedicineHistoryByDateReducer,
+  );
+  // console.log(medicineHistory, 'medicine History');
   // useEffect(()=>{
   //   dispatch(loadGetMedicineHistory(medicineId))
   // },[])
-
-  const fetchMedicineHistory=()=>{
-    setSelectDate(year+'-'+month+'-'+date)
-    dispatch(loadGetMedicineHistoryByDate(medicineId,selectDate))
-  }
- 
-
-  console.log(selectedDate, "date")
-  const modalOpen=(day)=>{
-    console.log(day)
-    setSelectedDate(day)
-    setModalVisible(true)
-    fetchMedicineHistory()
-    
-  }
-
-  const fetchMedicineId = (data) => {
-    setMedicineId(data)
-    if (medicineId !== null) {
-      // dispatch(loadGetMedicineHistory(medicineId))
+  const fetchMedicineHistory = () => {
+    setSelectDate(year + '-' + month + '-' + date);
+    dispatch(loadGetMedicineHistoryByDate(medicineId, selectDate));
+  };
+  useEffect(() => {
+    if (medicineId === null) {
+      setVisible(true);
     }
-  }
-
+  }, [medicineId]);
+  console.log(selectedDate, 'date');
+  const ModalOpen = day => {
+    console.log('12345');
+    setModalVisible(true);
+    // fetchMedicineHistory();
+  };
+  const fetchMedicineId = data => {
+    if (data === null) {
+      setVisible(true);
+    } else setMedicineId(data);
+  };
   let startDate = new Date().toDateString();
+  const dayComponent = (date, state) => {
+    const a = b => b.date == date.dateString;
+    const index = dataMap.findIndex(a);
+    return (
+      <>
+        {dataMap.some(a) ? (
+          <DayComponent
+            date={date}
+            state={state}
+            selectedDate={selectedDate}
+            initialDate={'2022-11-11'}
+            setSelectedDate={setSelectedDate}
+            percentage={dataMap[index].percentage}
+            setModalVisible={ModalOpen}
+          />
+        ) : (
+          <DayComponent
+            date={date}
+            state={state}
+            selectedDate={selectedDate}
+            initialDate={'2022-11-11'}
+            setSelectedDate={setSelectedDate}
+            percentage={0}
+            setModalVisible={ModalOpen}
+          />
+        )}
+      </>
+    );
+  };
   return (
     <>
       <View style={styles.container} />
       <View style={styles.report}>
         <MainHeader title={'Reports'} navigation={navigation} />
-        <View style={{padding:15}}>
-        <MedicinePicker
-          onChange={fetchMedicineId}
-        /></View>
-        
-
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={visible}
+          onRequestClose={() => setVisible(!visible)}>
+          <View
+            style={{
+              height: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(52, 52, 52, 0.8)',
+            }}>
+            <Text>Add Medicine First</Text>
+          </View>
+        </Modal>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.modalBox}>
+            <HistoryDetail
+              data={history}
+              onPress={() => setModalVisible(false)}
+            />
+          </View>
+        </Modal>
+        <View style={{paddingHorizontal: 12, paddingTop: 10}}>
+          <MedicinePicker onChange={fetchMedicineId} />
+        </View>
         <ScrollView>
           <View style={styles.reportContainer}>
             <View style={styles.analytics}>
@@ -135,7 +191,7 @@ const Report = ({ navigation }) => {
                   styles={styles}
                   radius={42}
                   borderWidth={6}
-                  percent={3}
+                  percent={90}
                 />
               </View>
             </View>
@@ -144,49 +200,12 @@ const Report = ({ navigation }) => {
             <Text style={styles.reportText}>Your Report</Text>
           </View>
           <View style={styles.calendarView}>
-            <View>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  Alert.alert('Modal has been closed.');
-                  setModalVisible(!modalVisible);
-                }}>
-                <View style={styles.modalBox}>
-                  <View style={styles.modalContainer}>
-                    <View style={styles.modalHeader}>
-                      <TouchableOpacity onPress={() => setModalVisible(false)}>
-                        <CrossButton />
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.modalSubHeader}>
-                      <Text style={styles.modalHeaderText}>
-                        DATE: {date} -{month} -{year}
-                      </Text>
-                    </View>
-
-                    <View style={styles.progressBar}>
-                      <TimeSlot
-                        time={'Time'}
-                      />
-                      <ProgressBar />
-                      <MedicineTime />
-
-                    </View>
-                  </View>
-                </View>
-              </Modal>
-            </View>
             <Calendar
               style={styles.calendar}
               theme={styles.theme}
               initialDate={startDate}
               minDate={'2012-05-10'}
               maxDate={'2222-12-30'}
-              onDayPress={day => {
-                modalOpen(day,year,month,date)
-              }}
               onDayLongPress={day => {
                 // console.log('selected day', day);
               }}
@@ -206,62 +225,45 @@ const Report = ({ navigation }) => {
                 return (
                   <Text
                     style={{fontSize: 20, fontWeight: '600', color: 'grey'}}>
-                    {date.toDateString()}
+                    {date.toLocaleDateString()}
                   </Text>
                 );
               }}
               enableSwipeMonths={true}
-              markingType={'dot'}
-              markedDates={markedDay}
+              dayComponent={({date, state}) => dayComponent(date, state)}
             />
           </View>
-          {data.date == '2022-09-22' ? (
-            <View></View>
-          ) : (
-            <View style={{ margin: 15 }}>
-              <Text style={{ fontSize: 17, color: 'black' }}>No Remainders</Text>
-
-            </View>
-          )}
         </ScrollView>
       </View>
     </>
   );
 };
 
-function ColorCode(percentage) {
-  if (percentage < 60) {
-    return colorPalette.redPercentageColor;
-  } else if (61 <= percentage && percentage < 90) {
-    return 'orange';
-  } else {
-    return colorPalette.greenPercentageColor;
-  }
-}
-
-const data = [
-  {id: 1, date: '2022-09-22', percentage: 100},
-  {id: 2, date: '2022-09-23', percentage: 70},
-  {id: 3, date: '2022-09-24', percentage: 30},
-  {id: 4, date: '2022-09-25', percentage: 93},
-  {id: 1, date: '2022-10-02', percentage: 100},
-  {id: 2, date: '2022-10-03', percentage: 70},
-  {id: 3, date: '2022-10-04', percentage: 30},
-  {id: 4, date: '2022-10-15', percentage: 93},
-  {id: 1, date: '2022-10-12', percentage: 100},
-  {id: 2, date: '2022-10-23', percentage: 70},
-  {id: 3, date: '2022-10-24', percentage: 30},
-  {id: 4, date: '2022-10-25', percentage: 93},
+const history = {
+  historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
+  date: '2022-08-30',
+  taken: '10:00 AM,14:00 PM,20:00 PM',
+  notTaken: '',
+};
+var dataMap = [
+  {date: '2022-11-01', percentage: 91},
+  {date: '2022-11-03', percentage: 91},
+  {date: '2022-11-05', percentage: 91},
+  {date: '2022-11-07', percentage: 61},
+  {date: '2022-11-08', percentage: 95},
+  {date: '2022-11-09', percentage: 91},
+  {date: '2022-11-10', percentage: 91},
+  {date: '2022-11-12', percentage: 91},
+  {date: '2022-11-13', percentage: 61},
+  {date: '2022-11-14', percentage: 95},
+  {date: '2022-11-15', percentage: 91},
+  {date: '2022-11-17', percentage: 91},
+  {date: '2022-11-18', percentage: 95},
+  {date: '2022-11-19', percentage: 91},
+  {date: '2022-11-21', percentage: 91},
+  {date: '2022-11-22', percentage: 21},
+  {date: '2022-11-24', percentage: 61},
+  {date: '2022-11-25', percentage: 11},
 ];
-let markedDay = {};
-
-data.map(item => {
-  // console.log(item.percentage);
-  markedDay[item.date] = {
-    selected: true,
-    marked: true,
-    selectedColor: ColorCode(item.percentage),
-  };
-});
 
 export default Report;
