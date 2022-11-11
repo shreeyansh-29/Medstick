@@ -34,3 +34,14 @@ export const appointmentValidationSchema = yup.object().shape({
   Date: yup.string().required('Date is Required*').nullable(),
   Time: yup.string().required('Time is Required*').nullable(),
 });
+
+export const prescriptionValidationSchema = yup.object().shape({
+  doctorName: yup.string().required('Doctor Name is Required*').nullable(),
+  specialization: yup
+    .string()
+    .required('Specialization is Required*')
+    .nullable(),
+  contact: yup.string().required('Contact is Required*').nullable(),
+  location: yup.string().required('Location is Required*').nullable(),
+  image: yup.string().required('Image is Required*').nullable(),
+});

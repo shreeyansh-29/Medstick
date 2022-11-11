@@ -1,10 +1,4 @@
-import {
-  FlatList,
-  Modal,
-  RefreshControl,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, RefreshControl, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
@@ -18,11 +12,12 @@ import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import CustomModal from '../../../components/molecules/customModal';
 
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.caretakerRequest);
-  // console.log('caretakerReq', res);
+  console.log('caretakerReq', res);
   const [pageNo, setPageNo] = useState(0);
   const [caretakers, setCaretakers] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -82,10 +77,6 @@ const CareTakerRequest = () => {
   };
 
   const renderItem = ({item}) => {
-    const image = {
-      url: item.user.picPath,
-    };
-
     return (
       <Card style={styles.card}>
         <View style={styles.cardInner}>
@@ -94,9 +85,9 @@ const CareTakerRequest = () => {
               activeOpacity={1}
               onPress={() => {
                 setVisible(true);
-                setUri(item.user.picPath);
+                setUri(item.picPath);
               }}>
-              <Avatar size={80} rounded source={{uri: item.user.picPath}} />
+              <Avatar size={80} rounded source={{uri: item.picPath}} />
             </TouchableOpacity>
           </View>
           <View style={styles.container1}>
@@ -106,11 +97,11 @@ const CareTakerRequest = () => {
               tvParallaxProperties={undefined}>
               <ListItem.Content>
                 <ListItem.Title style={styles.listTitle}>
-                  {item.user.userName}
+                  {item.userName}
                 </ListItem.Title>
                 <ListItem.Subtitle style={styles.listSubTitle}>
-                  {item.user.contact !== null ? 'Phone No: ' : null}
-                  {item.user.contact !== null ? item.user.contact : null}
+                  {item.contact !== null ? 'Phone No: ' : null}
+                  {item.contact !== null ? item.contact : null}
                 </ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
@@ -141,12 +132,12 @@ const CareTakerRequest = () => {
 
   return (
     <View style={styles.container}>
-      <Modal
-        visible={visible}
-        transparent={true}
-        onRequestClose={() => setVisible(!visible)}>
-        <ImageViewer imageUrls={images} />
-      </Modal>
+      <CustomModal
+        text="imageViewer"
+        modalVisible={visible}
+        onRequestClose={() => setVisible(!visible)}
+        modalView={<ImageViewer imageUrls={images} />}
+      />
       {res?.isLoading ? (
         <Loader />
       ) : (

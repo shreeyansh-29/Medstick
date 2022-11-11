@@ -8,7 +8,7 @@ import myPrescriptionsService from '../../../network/networkServices/otherServic
 
 export function* myPrescriptionsSaga(data) {
   try {
-    let response = yield call(myPrescriptionsService.getMyPrescriptions,data);
+    let response = yield call(myPrescriptionsService.getMyPrescriptions, data);
     yield put(myPrescriptionsSuccess(response?.data));
   } catch (error) {
     yield put(myPrescriptionsError(error));

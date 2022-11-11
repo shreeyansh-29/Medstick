@@ -23,7 +23,6 @@ const MyPatients = ({navigation}) => {
   const [myPatients, setMyPatients] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.myPatients);
-  // console.log(res);
   const loading = useSelector(state => state.myPatients.isLoading);
 
   useEffect(() => {

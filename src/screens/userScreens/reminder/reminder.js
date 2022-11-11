@@ -17,6 +17,7 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
+import CustomButton from '../../../components/atoms/customButton';
 
 var counter = 0;
 
@@ -201,7 +202,7 @@ const Reminder = ({route, navigation, props}) => {
     userMedicineId,
   ) => {
     if (title.length === 0 || timearray.length === 0) {
-      Alert.alert('Make sure you have valid reminder', ' ', [
+      Alert.alert('Please fill all the details', ' ', [
         {
           text: 'OK',
           onPress: () => {},
@@ -738,10 +739,10 @@ const Reminder = ({route, navigation, props}) => {
             )}
           </View>
           <Divider></Divider>
-          <Button
+          <CustomButton
             loading={load}
             title="Save reminder"
-            onPress={() => {
+            handleSubmit={() => {
               savereminder(
                 fDatePrimary,
                 fDateSecondary,
@@ -759,8 +760,9 @@ const Reminder = ({route, navigation, props}) => {
                 route.params.fetchStatus();
               }
             }}
-            buttonStyle={styles.buttonStyle}
-            containerStyle={styles.buttonContainer}></Button>
+            btnStyles={styles.buttonStyle}
+            contStyles={styles.buttonContainer}
+          />
         </View>
       </View>
     </ScrollView>

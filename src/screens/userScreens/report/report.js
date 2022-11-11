@@ -1,32 +1,12 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Pressable,
-  Modal,
-  TouchableOpacity,
-} from 'react-native';
-import React, {useState, useEffect, useMemo} from 'react';
+import {View, Text, ScrollView, Modal} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
-import {colorPalette} from '../../../components/atoms/colorPalette';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
-import {horizontalScale} from '../../../components/atoms/constant';
-import {icon} from '@fortawesome/fontawesome-svg-core';
-import CrossButton from '../../../components/atoms/crossButton';
-import Line from '../../../components/atoms/line';
-import Dot from '../../../components/atoms/dot';
-import ProgressBar from '../../../components/molecules/progressBar';
-import TimeSlot from '../../../components/atoms/timeSlot';
-import {Picker} from '@react-native-picker/picker';
 import MedicinePicker from '../../../components/atoms/medicinePicker';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadGetMedicineHistory} from '../../../redux/action/userMedicine/getMedicineHistoryAction';
-import TimeText from '../../../components/atoms/Text';
-import MedicineTime from '../../../components/molecules/medicineTime';
 import {loadGetMedicineHistoryByDate} from '../../../redux/action/userMedicine/getMedicineHistoryByDateAction';
-import {Alert} from 'react-native';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 LocaleConfig.locales['en'] = {

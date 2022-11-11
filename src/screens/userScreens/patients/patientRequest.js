@@ -3,7 +3,6 @@ import {
   FlatList,
   ActivityIndicator,
   RefreshControl,
-  Modal,
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -17,6 +16,7 @@ import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {colorPalette} from '../../../components/atoms/colorPalette';
+import CustomModal from '../../../components/molecules/customModal';
 
 const PatientRequest = () => {
   const dispatch = useDispatch();
@@ -24,10 +24,11 @@ const PatientRequest = () => {
   const [pageNo, setPageNo] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.patientsRequest);
+  console.log(res);
   const loading = useSelector(state => state.patientsRequest.isLoading);
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
-  // console.log(res);
+
   const images = [
     {
       url: uri,
@@ -83,9 +84,9 @@ const PatientRequest = () => {
               activeOpacity={1}
               onPress={() => {
                 setVisible(true);
-                setUri(item.user.picPath);
+                setUri(item.picPath);
               }}>
-              <Avatar size={80} rounded source={{uri: item.user.picPath}} />
+              <Avatar size={80} rounded source={{uri: item.picPath}} />
             </TouchableOpacity>
           </View>
           <View style={styles.container1}>
@@ -95,10 +96,10 @@ const PatientRequest = () => {
               tvParallaxProperties={undefined}>
               <ListItem.Content>
                 <ListItem.Title style={styles.listTitle}>
-                  {item.user.userName}
+                  {item.userName}
                 </ListItem.Title>
                 <ListItem.Subtitle style={styles.listSubTitle}>
-                  {item.user.contact}
+                  {item.contact}
                 </ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
@@ -128,12 +129,12 @@ const PatientRequest = () => {
   };
   return (
     <View style={styles.container}>
-      <Modal
-        visible={visible}
-        transparent={true}
-        onRequestClose={() => setVisible(!visible)}>
-        <ImageViewer imageUrls={images} />
-      </Modal>
+      <CustomModal
+        text="imageViewer"
+        modalVisible={visible}
+        onRequestClose={() => setVisible(!visible)}
+        modalView={<ImageViewer imageUrls={images} />}
+      />
       {loading ? (
         <Loader />
       ) : (

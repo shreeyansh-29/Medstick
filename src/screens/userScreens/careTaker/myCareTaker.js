@@ -13,7 +13,6 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 const MyCareTaker = ({navigation}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.myCaretaker);
-  console.log('caretakerRes', res);
   const [pageNo, setPageNo] = useState(0);
   const [caretaker, setCaretaker] = useState([]);
   const [refresh, setRefresh] = useState(false);

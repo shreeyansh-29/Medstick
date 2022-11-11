@@ -26,7 +26,6 @@ import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
 const Prescriptions = ({navigation}) => {
   const [myPrescriptions, setMyPrescriptions] = useState([]);
   const res = useSelector(state => state.myPrescriptions);
-  // console.log(res);
   const loading = useSelector(state => state.myPrescriptions?.isLoading);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -69,7 +68,6 @@ const Prescriptions = ({navigation}) => {
   };
 
   const RenderItem = ({item, index}) => {
-    console.log(item, 'item');
     return (
       <Animatable.View animation="zoomIn" duration={400} delay={index * 200}>
         <View style={styles.top}>
@@ -120,26 +118,24 @@ const Prescriptions = ({navigation}) => {
               />
             </View>
           ) : (
-            <View style={styles.flatlistView}>
-              <FlatList
-                style={styles.flatList}
-                data={myPrescriptions}
-                renderItem={RenderItem}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(item, index) => index.toString()}
-                refreshControl={
-                  <RefreshControl
-                    colors={[colorPalette.mainColor]}
-                    tintColor={[colorPalette.mainColor]}
-                    refreshing={refresh}
-                    onRefresh={() => {
-                      dispatch(myPrescriptionsRequest({currentPage, id}));
-                      setRefresh(false);
-                    }}
-                  />
-                }
-              />
-            </View>
+            <FlatList
+              style={styles.flatList}
+              data={myPrescriptions}
+              renderItem={RenderItem}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              refreshControl={
+                <RefreshControl
+                  colors={[colorPalette.mainColor]}
+                  tintColor={[colorPalette.mainColor]}
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    dispatch(myPrescriptionsRequest({currentPage, id}));
+                    setRefresh(false);
+                  }}
+                />
+              }
+            />
           )}
         </>
       )}

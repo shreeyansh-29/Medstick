@@ -3,7 +3,7 @@ import React from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
 import PerformanceCircle from '../../components/organisms/performanceCircle';
-import Reminders from './reminders';
+import Reminders from './homeReminders';
 import {Styles} from '../../styles/homeScreenStyles/performanceCircleStyles';
 import {styles} from '../../styles/homeScreenStyles/homeScreenStyles';
 
