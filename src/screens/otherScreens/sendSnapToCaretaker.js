@@ -22,10 +22,6 @@ import {loadMedicineList} from '../../redux/action/userMedicine/medicineListActi
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import {sendSnapRequest} from '../../redux/action/otherScreenAction/sendSnapAction';
-import {SEND_SNAP} from '../../constants/apiUrl';
-import {apiUrl} from '../../constants/apiUrl';
-
-const height = Dimensions.get("window").height;
 
 const SendSnapToCaretaker = ({navigation, route}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -114,24 +110,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
       });
       return;
     }
-    // let imagesData = await AsyncStorage.getItem(setDate + ' ' + selectMedicine);
 
-    // if (imagesData !== null) {
-    //   let parsedData = JSON.parse(imagesData);
-    //   parsedData.push(image_uri);
-    //   await AsyncStorage.setItem(
-    //     setDate + ' ' + selectMedicine,
-    //     JSON.stringify(parsedData),
-    //   );
-    // } else {
-    //   let parsedData = [];
-    //   parsedData.push(image_uri);
-
-    //   await AsyncStorage.setItem(
-    //     setDate + ' ' + selectMedicine,
-    //     JSON.stringify(parsedData),
-    //   );
-    // }
     const formdata = new FormData();
     var dt = new Date().getTime();
 
@@ -155,33 +134,6 @@ const SendSnapToCaretaker = ({navigation, route}) => {
     formdata.append('userMedicineId', selectedMedId);
 
     dispatch(sendSnapRequest(formdata));
-
-    // const id = await AsyncStorage.getItem('user_id');
-    // const token = await AsyncStorage.getItem('accessToken');
-
-    // const url = `${apiUrl}`;
-
-    // fetch(url + `/image?Id=${id}`, {
-    //   method: 'post',
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    //   body: formdata,
-    // }).then(res => console.log(res));
-
-    // fetch(SEND_SNAP + `?Id=${id}`, {
-    //   method: 'post',
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    //   body: formdata,
-    // }).then(res => console.log(res));
-
-    // setTimeout(() => {
-    //   navigation.pop(2);
-    // }, 3000);
   };
 
   return (

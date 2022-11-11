@@ -1,51 +1,86 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, FlatList, RefreshControl} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import NotificationCard from '../../components/molecules/notificationCard';
-import {notificationStyles} from '../../styles/notificationScreenStyles/notificationPanelStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadGetAllNotification} from '../../redux/action/notification/getAllNotification';
+import {colorPalette} from '../../components/atoms/colorPalette';
+import Loader from '../../components/atoms/loader';
+import CustomImage from '../../components/atoms/customImage';
 
 const NotificationScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const pageNo = 0;
-  const getAllNotification = useSelector(
-    state => state.getAllNotificationReducer?.data,
+  const [notification, setNotification] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+  const res = useSelector(state => state.getAllNotificationReducer?.data);
+  const loading = useSelector(
+    state => state.getAllNotificationReducer?.loading?.loader,
   );
-  const getNotificationMessage = useSelector(
-    state => state.getAllNotificationReducer?.data?.object,
-  );
-  console.log(getNotificationMessage, 'notification');
 
-  const getNotification = () => {
-    dispatch(loadGetAllNotification(pageNo));
-  };
   useEffect(() => {
-    getNotification(pageNo);
+    if (res?.object !== 0) {
+      setNotification(res?.object);
+    }
+  }, [res]);
+
+  useEffect(() => {
+    dispatch(loadGetAllNotification(pageNo));
   }, []);
 
   return (
-    <ScrollView style={notificationStyles.screen}>
+    <View style={{flex: 1, backgroundColor: colorPalette.backgroundColor}}>
       <SubHeader title={'Notifications'} navigation={navigation} />
-      <View style={notificationStyles.container}>
-        {getAllNotification?.status === 'Success' ? (
-          getNotificationMessage.map(item => (
-            <NotificationCard
-              text={item.message}
-              date={item.localDate}
-              time={item.localTime}
-              notificationId={item.notificationId}
-              sender={item.sender}
-              navigation={navigation}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {notification?.length === 0 ? (
+            <>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <CustomImage
+                  resizeMode="contain"
+                  styles={{width: '70%'}}
+                  source={require('../../assets/images/nopatients.png')}
+                />
+              </View>
+            </>
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              keyExtractor={index => index.toString()}
+              data={notification}
+              renderItem={({item}) => (
+                <NotificationCard
+                  text={item.message}
+                  date={item.localDate}
+                  time={item.localTime}
+                  notificationId={item.notificationId}
+                  sender={item.sender}
+                  navigation={navigation}
+                />
+              )}
+              refreshControl={
+                <RefreshControl
+                  colors={[colorPalette.mainColor]}
+                  tintColor={[colorPalette.mainColor]}
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    dispatch(loadGetAllNotification(pageNo));
+                    setRefresh(false);
+                  }}
+                />
+              }
             />
-          ))
-        ) : (
-          <View>
-            <Text>no data</Text>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </>
+      )}
+    </View>
   );
 };
 
