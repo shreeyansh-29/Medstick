@@ -4,25 +4,19 @@ import {Picker} from '@react-native-picker/picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadGetUserMedicine} from '../../redux/action/userMedicine/getUserMedicineAction';
 import {styles} from '../../styles/reportScreenStyles/reportScreenStyles';
-
 const MedicinePicker = ({onChange}) => {
   const [medicineName, setMedicineName] = useState('');
   const dispatch = useDispatch();
-
   const getUserMedicine = useSelector(
     state => state.getUserMedicineReducer?.data?.result,
   );
 
-  console.log(getUserMedicine);
-
   const getmedicine = () => {
     dispatch(loadGetUserMedicine());
   };
-
   useEffect(() => {
     getmedicine();
   }, [medicineName]);
-
   return (
     <View style={styles.picker}>
       <Picker
@@ -46,5 +40,4 @@ const MedicinePicker = ({onChange}) => {
     </View>
   );
 };
-
 export default MedicinePicker;

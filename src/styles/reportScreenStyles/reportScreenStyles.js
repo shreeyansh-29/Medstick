@@ -22,30 +22,31 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 3,
-    marginTop: 25,
+    marginTop: 15,
     marginBottom: 20,
   },
   analytics: {
     alignItems: 'center',
     width: '92%',
-    borderRadius: 10,
-    backgroundColor: colorPalette.basicColor,
+    borderRadius: 12,
+    backgroundColor: colorPalette.backgroundColor,
     justifyContent: 'center',
-    elevation: 2,
+    elevation: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 30,
+    paddingVertical: 15,
+    borderWidth: 2,
+    borderColor: 'white',
   },
   container1Text: {
     width: '65%',
-    backgroundColor: 'white',
+    backgroundColor: colorPalette.backgroundColor,
     paddingLeft: horizontalScale(20),
   },
   font: {
     color: colorPalette.mainColor,
     fontSize: 22,
     fontWeight: '600',
-    paddingVertical: verticalScale(10),
   },
   fontSmall: {
     color: 'grey',
@@ -54,9 +55,9 @@ export const styles = StyleSheet.create({
   progressView: {
     width: '35%',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: colorPalette.backgroundColor,
   },
-  percentage: {fontSize: 16, color: colorPalette.redPercentageColor},
+  percentage: {fontSize: 16, color: colorPalette.greenPercentageColor},
   color: colorPalette.greenPercentageColor,
   shadowColor: 'lightgrey',
   bgColor: colorPalette.basicColor,
@@ -103,7 +104,7 @@ export const styles = StyleSheet.create({
   lottie: {height: 40, width: 40},
   theme: {
     backgroundColor: 'yellow',
-    calendarBackground: '#ffffff',
+    calendarBackground: colorPalette.backgroundColor,
     textSectionTitleColor: '#b6c1cd',
     textSectionTitleDisabledColor: '#d9e1e8',
     selectedDayBackgroundColor: '#00adf5',
@@ -126,16 +127,20 @@ export const styles = StyleSheet.create({
     textDayFontSize: 13,
     textMonthFontSize: 10,
     textDayHeaderFontSize: 14,
-    arrowStyle: {
-      // height:10,
-      // width:20
-    },
   },
-  calendarView: {flex: 5.5, alignItems: 'center', marginBottom: 10},
+  calendarView: {
+    flex: 5.5,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   calendar: {
-    elevation: 2,
+    elevation: 8,
     borderRadius: 7,
     width: horizontalScale(320),
+    backgroundColor: colorPalette.backgroundColor,
+    borderWidth: 2,
+    borderColor: 'white',
+    paddingBottom: 10,
     // paddingHorizontal: 10,
   },
   modalHeader: {
@@ -145,9 +150,10 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   modalBox: {
-    flex: 1,
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
   },
   modalContainer: {
     width: '98%',
@@ -158,11 +164,11 @@ export const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: colorPalette.appColor,
   },
-  progressBar:{
-   justifyContent:'center',
-    flex:8,
-    padding:10,
-    flexDirection:'row'
+  progressBar: {
+    justifyContent: 'center',
+    flex: 8,
+    padding: 10,
+    flexDirection: 'row',
     // alignItems:'center',
   },
   modalHeaderText: {
@@ -176,15 +182,14 @@ export const styles = StyleSheet.create({
     flex: 2,
     margin: 15,
   },
-  timeSlot:{
-    backgroundColor:colorPalette.appColor,
-    borderRadius:70,
-  width:'30%',
-  height:'15%',
-  justifyContent:'center',
-  alignItems:'center',
-  marginEnd:10,
-
+  timeSlot: {
+    backgroundColor: colorPalette.appColor,
+    borderRadius: 70,
+    width: '30%',
+    height: '15%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginEnd: 10,
   },
   timeSlotText: {
     color: colorPalette.basicColor,
@@ -196,24 +201,24 @@ export const styles = StyleSheet.create({
     backgroundColor: colorPalette.basicColor,
     borderRadius: 10,
     marginHorizontal: 13,
-    marginTop:8
+    marginTop: 8,
   },
-  picker:{
-    borderWidth:2,
-    borderColor:colorPalette.appColor,
-    backgroundColor:colorPalette.basicColor,
-    borderRadius:10,
-    paddingHorizontal:20,
+  picker: {
+    borderWidth: 2,
+    borderColor: colorPalette.appColor,
+    backgroundColor: colorPalette.basicColor,
+    borderRadius: 10,
+    paddingHorizontal: 20,
   },
-  timeText:{
-    fontSize:20,
-    paddingLeft:20,
-    color:'#000'
+  timeText: {
+    fontSize: 20,
+    paddingLeft: 20,
+    color: '#000',
   },
-  takenText:{
-    color:colorPalette.redColor,
-    fontSize:20,
-    paddingLeft:20,
-    paddingTop:10,
-  }
+  takenText: {
+    color: colorPalette.redColor,
+    fontSize: 20,
+    paddingLeft: 20,
+    paddingTop: 10,
+  },
 });
