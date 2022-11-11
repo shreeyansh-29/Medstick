@@ -4,24 +4,23 @@ import {styles} from '../../styles/homeScreenStyles/reminderStyles';
 import {FlatList} from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import {Card} from 'react-native-paper';
-import {verticalScale, horizontalScale} from '../../components/atoms/constant';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faEllipsisVertical,
-  faPills,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import {faEllipsisVertical} from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
+import {
+  faCircleCheck,
+  faCircleXmark,
+} from '@fortawesome/free-regular-svg-icons';
 
-const Reminders = () => {
-  const [visible, setVisible] = useState(false);
+const Reminders = ({setVisible}) => {
   const [reminders, setReminders] = useState([
     {
+      medName: 'Acetaminophen',
       endDate: '2022-09-30',
       days: 'Monday,Tuesday,Friday',
       reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
+      reminderTime: '10:00AM',
       frequency: 'Breakfast',
       before: 'After',
     },
@@ -29,48 +28,46 @@ const Reminders = () => {
       endDate: '2022-09-30',
       days: 'Monday,Tuesday,Friday',
       reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
+      reminderTime: '10:00AM',
       frequency: 'Breakfast',
       before: 'After',
+      medName: 'Azithromycin',
     },
     {
       endDate: '2022-09-30',
       days: 'Monday,Tuesday,Friday',
       reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
+      reminderTime: '10:00AM',
       frequency: 'Breakfast',
       before: 'After',
+      medName: 'Dalcoflex',
     },
     {
       endDate: '2022-09-30',
       days: 'Monday,Tuesday,Friday',
       reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
+      reminderTime: '10:00AM',
       frequency: 'Breakfast',
       before: 'After',
+      medName: 'Benzhydrocodone',
     },
     {
       endDate: '2022-09-30',
       days: 'Monday,Tuesday,Friday',
       reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
+      reminderTime: '10:00AM',
       frequency: 'Breakfast',
       before: 'After',
+      medName: 'Acetaminophen',
     },
     {
       endDate: '2022-09-30',
       days: 'Monday,Tuesday,Friday',
       reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
+      reminderTime: '10:00AM',
       frequency: 'Breakfast',
       before: 'After',
-    },
-    {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
-      reminderTime: '10:00AM, 8:00PM',
-      frequency: 'Breakfast',
+      medName: 'Diflorasone Diacetate',
     },
   ]);
 
@@ -80,29 +77,46 @@ const Reminders = () => {
         <Card style={styles.card}>
           <View style={styles.listView}>
             <ListItem style={styles.list}>
-              <ListItem.Content>
+              <ListItem.Content
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
                 <View style={styles.avatarView}>
                   <View style={styles.medNameView}>
                     <ListItem.Title style={styles.medName}>
                       {item.reminderTime}
                     </ListItem.Title>
-                    <ListItem.Subtitle>{item.reminderTitle}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{item.days}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{item.frequency}</ListItem.Subtitle>
+                    <ListItem.Subtitle
+                      style={{marginVertical: 2, fontSize: 16}}>
+                      {item.medName}
+                    </ListItem.Subtitle>
                   </View>
                 </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <TouchableOpacity
+                    style={{padding: 8}}
+                    activeOpacity={1}
+                    onPress={() => setVisible(true)}>
+                    <FontAwesomeIcon
+                      icon={faCircleCheck}
+                      color={colorPalette.mainColor}
+                      size={24}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{padding: 8}} activeOpacity={1}>
+                    <FontAwesomeIcon
+                      icon={faCircleXmark}
+                      color={colorPalette.redPercentageColor}
+                      size={24}
+                    />
+                  </TouchableOpacity>
+                </View>
               </ListItem.Content>
-
-              <TouchableOpacity
-                onPress={() => {
-                  setVisible(true);
-                }}>
-                <FontAwesomeIcon
-                  icon={faEllipsisVertical}
-                  color={colorPalette.mainColor}
-                  size={24}
-                />
-              </TouchableOpacity>
             </ListItem>
           </View>
         </Card>

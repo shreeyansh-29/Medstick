@@ -22,7 +22,6 @@ import {useIsFocused} from '@react-navigation/native';
 import {deleteMedicineRequest} from '../../../redux/action/userMedicine/deleteMedicine';
 import Loader from '../../../components/atoms/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 
 const MedicinePanel = ({navigation}) => {
