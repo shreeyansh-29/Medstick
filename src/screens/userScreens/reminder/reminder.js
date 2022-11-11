@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
-import {DateTimePickerModal,DateTimePicker} from 'react-native-modal-datetime-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {day_data, months} from './pushNotification/timeData';
@@ -10,6 +10,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {TextInput} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import styles from './reminderStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -19,7 +20,6 @@ import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAc
 import { addReminder, getReminder } from '../../../utils/storage';
 import PushNotification, {Importance} from "react-native-push-notification";
 import uuid from 'react-native-uuid'
-import CustomButton from '../../../components/atoms/customButton';
 
 var counter = 0;
 
@@ -51,11 +51,11 @@ const Reminder = ({route, navigation, props}) => {
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
   const [arr,setArr]=useState('')
-  console.log(arr,"array of reminder")
+  console.log(startDate,"array of reminder")
 
- useEffect(()=>{
-  getReminder().then(data=>setArr(data))
- },[])
+//  useEffect(()=>{
+//   getReminder().then(data=>setArr(data))
+//  },[])
   
   const [breakfast, setBreakfast] = useState(false);
   const [lunch, setLunch] = useState(false);
@@ -118,7 +118,8 @@ const Reminder = ({route, navigation, props}) => {
     console.log(now.getDate(), now.getHours(), now.getTime(), ".......................");
     console.log(new Date(Date.now()));
     console.log('now', now);
-    let sample_date = new Date(startDate);
+    let sample_date = new Date();
+    console.log(sample_date,"sample date")
     var weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
     // var set = new Set() < String > selecteddaysItems;
     if (check1) {
@@ -287,8 +288,10 @@ const Reminder = ({route, navigation, props}) => {
     currentCount,
     userMedicineId,
   ) => {
-    if (title.length === 0 || timearray.length === 0) {
-      Alert.alert('Please fill all the details', ' ', [
+    if (title.length === 0 
+      // || timearray.length === 0
+      ) {
+      Alert.alert('Make sure you have valid reminder', ' ', [
         {
           text: 'OK',
           onPress: () => {},
@@ -301,7 +304,7 @@ const Reminder = ({route, navigation, props}) => {
     let time = '';
     let days = '';
     for (let i = 0; i < timearray.length; i++) {
-      let mtime = timearray[i].split(' ')[0].split(':')[0];
+      let mtime = timearray[i]?.split(' ')[0]?.split(':')[0];
       if (breakfast && i == 0) {
         if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
           mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
@@ -418,9 +421,9 @@ const Reminder = ({route, navigation, props}) => {
   };
 
   // console.log(endDate);
-  useEffect(()=>{
-  addReminder(arr)
-  },[arr])
+  // useEffect(()=>{
+  // addReminder(arr)
+  // },[arr])
 
   return (
     // { showReminderDuration &&  <ReminderDuration/>}
@@ -867,10 +870,10 @@ const Reminder = ({route, navigation, props}) => {
             )}
           </View>
           <Divider></Divider>
-          <CustomButton
+          <Button
             loading={load}
             title="Save reminder"
-            handleSubmit={() => {
+            onPress={() => {
               savereminder(
                 fDatePrimary,
                 fDateSecondary,
@@ -888,9 +891,8 @@ const Reminder = ({route, navigation, props}) => {
                 route.params?.fetchStatus();
               }
             }}
-            btnStyles={styles.buttonStyle}
-            contStyles={styles.buttonContainer}
-          />
+            buttonStyle={styles.buttonStyle}
+            containerStyle={styles.buttonContainer}></Button>
         </View>
       </View>
     </ScrollView>
