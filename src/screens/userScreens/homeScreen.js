@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {Text, View} from 'react-native';
 import React from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
@@ -6,6 +6,9 @@ import PerformanceCircle from '../../components/organisms/performanceCircle';
 import Reminders from './homeReminders';
 import {Styles} from '../../styles/homeScreenStyles/performanceCircleStyles';
 import {styles} from '../../styles/homeScreenStyles/homeScreenStyles';
+import AnimatedProgressCircle from '../../components/atoms/AnimatedProgressCircle';
+import {verticalScale} from '../../components/atoms/constant';
+import {colorPalette} from '../../components/atoms/colorPalette';
 
 const HomeScreen = ({navigation}) => {
   return (
@@ -22,13 +25,15 @@ const HomeScreen = ({navigation}) => {
             }}> */}
         <View style={styles.card}>
           <Calender />
-          <PerformanceCircle
-            styles={Styles}
-            radius={42}
-            borderWidth={6}
-            percent={30}
-            text="Today's Performance"
-          />
+          <View
+            style={styles.progressCircleContainer}>
+            <AnimatedProgressCircle
+              radius={55}
+              percentage={75}
+              strokeWidth={10}
+            />
+            <Text style={styles.progressText}>Today's Overall Performance</Text>
+          </View>
         </View>
         <Reminders />
         {/* </ScrollView>

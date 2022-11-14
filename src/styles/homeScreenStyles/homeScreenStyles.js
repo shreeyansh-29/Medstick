@@ -26,5 +26,17 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     shadowColor: 'black',
     elevation: 4,
+    backgroundColor: 'red',
   },
+  progressCircleContainer: {
+    borderWidth: 0,
+    alignItems: 'center',
+    paddingBottom: verticalScale(12),
+    backgroundColor: colorPalette.basicColor,
+    borderBottomLeftRadius: 18,
+    borderBottomRightRadius: 18,
+    height: verticalScale(170),
+    paddingBottom: 15,
+  },
+  progressText: {fontSize: 20, fontWeight: '600', color: 'black'},
 });

@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadGetMedicineHistoryByDate} from '../../../redux/action/userMedicine/getMedicineHistoryByDateAction';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
+import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
 LocaleConfig.locales['en'] = {
   monthNames: [
     'January',
@@ -167,11 +168,10 @@ const Report = ({navigation}) => {
                 </Text>
               </View>
               <View style={styles.progressView}>
-                <ProgressReport
-                  styles={styles}
-                  radius={42}
-                  borderWidth={6}
-                  percent={90}
+                <AnimatedProgressCircle
+                  radius={55}
+                  percentage={75}
+                  strokeWidth={10}
                 />
               </View>
             </View>
