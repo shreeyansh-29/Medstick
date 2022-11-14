@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import React, {useState} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
@@ -10,13 +10,34 @@ import CustomModal from '../../components/molecules/customModal';
 import {Divider} from 'react-native-elements';
 
 const HomeScreen = ({navigation}) => {
-  const [visible, setVisible] = useState(false);
+  const showAlert = () => {
+    Alert.alert(
+      'Would you like to send a snap to caretaker',
+      'Click Ok to send',
+      [
+        {
+          text: 'Ok',
+          onPress: () => {
+            navigation.navigate('HomeStack', {screen: 'SendSnap'});
+          },
+        },
+        {
+          text: 'Cancel',
+          onPress: () => {
+            {
+            }
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <>
       <View style={styles.background} />
       <View style={styles.container}>
         <MainHeader title={'Medstick'} navigation={navigation} />
-        <CustomModal
+        {/* <CustomModal
           modalVisible={visible}
           type="fade"
           customStyles={{
@@ -75,7 +96,7 @@ const HomeScreen = ({navigation}) => {
               </View>
             </View>
           }
-        />
+        /> */}
         <View style={styles.card}>
           <Calender />
           <PerformanceCircle
@@ -86,7 +107,7 @@ const HomeScreen = ({navigation}) => {
             text="Today's Performance"
           />
         </View>
-        <Reminders setVisible={setVisible} />
+        <Reminders showAlert={showAlert} />
       </View>
     </>
   );

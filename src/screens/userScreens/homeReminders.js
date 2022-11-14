@@ -13,60 +13,30 @@ import {
   faCircleXmark,
 } from '@fortawesome/free-regular-svg-icons';
 
-const Reminders = ({setVisible}) => {
+const Reminders = ({showAlert}) => {
   const [reminders, setReminders] = useState([
     {
       medName: 'Acetaminophen',
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
       reminderTime: '10:00AM',
-      frequency: 'Breakfast',
-      before: 'After',
     },
     {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
       reminderTime: '10:00AM',
-      frequency: 'Breakfast',
-      before: 'After',
       medName: 'Azithromycin',
     },
     {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
       reminderTime: '10:00AM',
-      frequency: 'Breakfast',
-      before: 'After',
       medName: 'Dalcoflex',
     },
     {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
       reminderTime: '10:00AM',
-      frequency: 'Breakfast',
-      before: 'After',
       medName: 'Benzhydrocodone',
     },
     {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
       reminderTime: '10:00AM',
-      frequency: 'Breakfast',
-      before: 'After',
       medName: 'Acetaminophen',
     },
     {
-      endDate: '2022-09-30',
-      days: 'Monday,Tuesday,Friday',
-      reminderTitle: 'Take after eating something',
       reminderTime: '10:00AM',
-      frequency: 'Breakfast',
-      before: 'After',
       medName: 'Diflorasone Diacetate',
     },
   ]);
@@ -101,7 +71,7 @@ const Reminders = ({setVisible}) => {
                   <TouchableOpacity
                     style={{padding: 8}}
                     activeOpacity={1}
-                    onPress={() => setVisible(true)}>
+                    onPress={() => showAlert()}>
                     <FontAwesomeIcon
                       icon={faCircleCheck}
                       color={colorPalette.mainColor}

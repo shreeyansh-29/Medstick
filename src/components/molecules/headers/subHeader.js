@@ -8,19 +8,29 @@ import AddAppointment from '../../atoms/addAppointment';
 import {useDispatch} from 'react-redux';
 import {notifyUserClear} from '../../../redux/action/patients/notifyUserAction';
 import ShareButton from '../../atoms/shareButton';
-import EditButton from '../../atoms/editButton';
 import DownloadButton from '../../atoms/downloadButton';
+import {resetSend} from '../../../redux/action/getUserAction/sendReqAction';
+import {resetUser} from '../../../redux/action/getUserAction/getUserAction';
+import {sendSnapClear} from '../../../redux/action/otherScreenAction/sendSnapAction';
 
 const SubHeader = ({title, navigation, download, options, routeName}) => {
   const dispatch = useDispatch();
   return (
     <View style={styles.subHeader}>
       <TouchableOpacity
+        activeOpacity={1}
         style={styles.backIcon}
         onPress={() => {
           navigation.pop();
           if (title === 'Patient Medicine') {
             dispatch(notifyUserClear());
+          }
+          if (title === 'Search') {
+            dispatch(resetSend());
+            dispatch(resetUser());
+          }
+          if (title === 'Send Snap') {
+            dispatch(sendSnapClear());
           }
         }}>
         <FontAwesomeIcon

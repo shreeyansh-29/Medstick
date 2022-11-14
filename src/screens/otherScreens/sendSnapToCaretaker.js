@@ -27,6 +27,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   let res = useSelector(state => state.myCaretaker);
   let meds = useSelector(state => state.medicineList);
   let res1 = useSelector(state => state.sendSnap?.data);
+  console.log(res1);
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');
@@ -37,18 +38,15 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    dispatch(sendSnapClear());
-  }, []);
-
-  useEffect(() => {
     if (res1?.status === 'Success') {
       Toast.show({
         type: 'success',
         text1: 'Image Sent Successfully',
       });
+      dispatch(sendSnapClear());
       setTimeout(() => {
-        navigation.pop(2);
-      }, 2000);
+        navigation.popToTop();
+      }, 3000);
     }
     if (res1?.status === 'Failed') {
       Toast.show({

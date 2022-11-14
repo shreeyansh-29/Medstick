@@ -9,6 +9,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadGetMedicineHistoryByDate} from '../../../redux/action/userMedicine/getMedicineHistoryByDateAction';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
+import {useFocusEffect} from '@react-navigation/native';
+import {Alert} from 'react-native';
+import {loadGetUserMedicine} from '../../../redux/action/userMedicine/getUserMedicineAction';
+import {Picker} from '@react-native-picker/picker';
 LocaleConfig.locales['en'] = {
   monthNames: [
     'January',
@@ -53,32 +57,42 @@ LocaleConfig.defaultLocale = 'en';
 const Report = ({navigation}) => {
   const dispatch = useDispatch();
   const [medicineId, setMedicineId] = useState('');
-  // console.log(medicineId, 'mid');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectDate, setSelectDate] = useState('');
-  const [visible, setVisible] = useState(false);
-  const [percentage, setPercentage] = useState();
-  const [medicineName, setMedicineName] = useState('');
   const year = selectedDate?.year;
   const month = selectedDate?.month;
   const date = selectedDate?.day;
-  const medicineHistory = useSelector(
-    state => state.getMedicineHistoryByDateReducer,
+  const getUserMedicine = useSelector(
+    state => state.getUserMedicineReducer?.data?.result,
   );
-  // console.log(medicineHistory, 'medicine History');
-  // useEffect(()=>{
-  //   dispatch(loadGetMedicineHistory(medicineId))
-  // },[])
-  const fetchMedicineHistory = () => {
-    setSelectDate(year + '-' + month + '-' + date);
-    dispatch(loadGetMedicineHistoryByDate(medicineId, selectDate));
-  };
+
   useEffect(() => {
-    if (medicineId === null) {
-      setVisible(true);
-    }
-  }, [medicineId]);
+    dispatch(loadGetUserMedicine());
+  }, []);
+
+  useFocusEffect(() => {
+    const checkMeds = () => {
+      if (getUserMedicine?.length === 0) {
+        Alert.alert('Add Medicine First', 'Click Ok to proceed', [
+          {
+            text: 'Ok',
+            onPress: () => {
+              navigation.navigate('AddMedicineStack', {screen: 'AddMedicine'});
+            },
+          },
+          {
+            text: 'Cancel',
+            onPress: () => {
+              navigation.navigate('Home');
+            },
+          },
+        ]);
+      }
+    };
+    checkMeds();
+  });
+
   console.log(selectedDate, 'date');
   const ModalOpen = day => {
     console.log('12345');
@@ -86,9 +100,7 @@ const Report = ({navigation}) => {
     // fetchMedicineHistory();
   };
   const fetchMedicineId = data => {
-    if (data === null) {
-      setVisible(true);
-    } else setMedicineId(data);
+    setMedicineId(data);
   };
   let startDate = new Date().toDateString();
   const dayComponent = (date, state) => {
@@ -125,21 +137,7 @@ const Report = ({navigation}) => {
       <View style={styles.container} />
       <View style={styles.report}>
         <MainHeader title={'Reports'} navigation={navigation} />
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={visible}
-          onRequestClose={() => setVisible(!visible)}>
-          <View
-            style={{
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'rgba(52, 52, 52, 0.8)',
-            }}>
-            <Text>Add Medicine First</Text>
-          </View>
-        </Modal>
+
         <Modal
           animationType="fade"
           transparent={true}
@@ -155,7 +153,25 @@ const Report = ({navigation}) => {
           </View>
         </Modal>
         <View style={{paddingHorizontal: 12, paddingTop: 10}}>
-          <MedicinePicker onChange={fetchMedicineId} />
+          <View style={styles.picker}>
+            <Picker
+              mode="dropdown"
+              id="picker1"
+              selectedValue={medicineId}
+              onValueChange={data => {
+                setMedicineId(data);
+              }}>
+              {getUserMedicine?.map((item, index) => {
+                return (
+                  <Picker.Item
+                    label={item.medicineName}
+                    value={item.userMedicineId}
+                    key={index}
+                  />
+                );
+              })}
+            </Picker>
+          </View>
         </View>
         <ScrollView>
           <View style={styles.reportContainer}>
