@@ -13,8 +13,8 @@ import {
   editProfileRequest,
   resetProfile,
 } from '../../redux/action/profileAction/editProfileAction';
-import {useDispatch} from 'react-redux';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import moment from 'moment';
 import Toast from 'react-native-toast-message';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
@@ -55,14 +55,15 @@ const RenderModalVisible = ({
   const handleClick = values => {
     dispatch(
       editProfileRequest({
-        bio: values.bio,
-        dateOfBirth: values.dateofBirth,
-        gender: values.gender,
-        bloodGroup: values.bloodGroup,
-        country: values.country,
-        state: values.state,
-        address: values.address,
-        contact: values.contact,
+        bio: values?.bio,
+        dateOfBirth: values?.dateofBirth,
+        gender: values?.gender,
+        bloodGroup: values?.bloodGroup,
+        country: values?.country,
+        state: values?.state,
+        address: values?.address,
+        contact: values?.contact,
+        date: values?.date,
       }),
     );
   };

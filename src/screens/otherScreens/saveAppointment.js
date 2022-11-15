@@ -267,7 +267,6 @@ const AppointmentReminders = ({navigation}) => {
                 btnStyles={{
                   backgroundColor: colorPalette.mainColor,
                   borderRadius: 5,
-                  // paddingHorizontal: 20,
                   alignItems: 'center',
                 }}
               />

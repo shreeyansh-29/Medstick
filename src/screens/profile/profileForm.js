@@ -1,13 +1,16 @@
-import {Text, View} from 'react-native';
-import React from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import InputField from '../../components/atoms/inputField';
 import styles from '../../styles/profile/profileStyles';
 import PickerField from '../../components/atoms/customPicker';
 import {bloodGroup, gender} from '../../constants/pickerItem';
 import CustomButton from '../../components/atoms/customButton';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
 const ProfileForm = props => {
+  const [dateOpen, setDateOpen] = useState(false);
   return (
     <View style={styles.inputForm}>
       <View style={styles.inputField}>
@@ -51,24 +54,35 @@ const ProfileForm = props => {
       </View>
 
       <View style={styles.inputField}>
-        <Text style={styles.fieldHeading}>Date Of Birth :</Text>
-        <InputField
-          styles={styles.field}
-          dense={true}
-          placeholder="Date of Birth(yyyy-mm-dd)"
-          mode="outlined"
-          outlineColor="lightgrey"
-          text="dateofBirth"
-          activeOutlineColor={colorPalette.mainColor}
-          {...props}
-          value={props.values.dateofBirth}
-          keyboardType="numeric"
-          selectTextOnFocus={true}
-        />
+        <Text style={[styles.fieldHeading, {marginBottom: 8}]}>
+          Date Of Birth :
+        </Text>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            setDateOpen(true);
+          }}
+          style={styles.dobTouch}>
+          <Text style={styles.dobText}>
+            {moment(props.values.dateofBirth).format('YYYY-MM-DD')}
+          </Text>
+        </TouchableOpacity>
         {props.errors.dateofBirth && props.touched.dateofBirth && (
           <Text style={styles.errorText}>{props.errors.dateofBirth}</Text>
         )}
       </View>
+
+      <DateTimePickerModal
+        isVisible={dateOpen}
+        mode="date"
+        onConfirm={date => {
+          console.log(date);
+          props.setFieldValue('dateofBirth', moment(date).format('YYYY-MM-DD'));
+          setDateOpen(false);
+        }}
+        onCancel={() => setDateOpen(false)}
+        date={moment(props.values.dateofBirth).toDate()}
+      />
 
       <View style={styles.inputField}>
         <Text style={styles.fieldHeading}>Address :</Text>
