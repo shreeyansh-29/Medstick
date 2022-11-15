@@ -1,10 +1,4 @@
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
+import {View, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
@@ -17,6 +11,7 @@ import Loader from '../../../components/atoms/loader';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import CustomModal from '../../../components/molecules/customModal';
+import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
 
 const PatientRequest = () => {
   const dispatch = useDispatch();
@@ -24,7 +19,6 @@ const PatientRequest = () => {
   const [pageNo, setPageNo] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.patientsRequest);
-  console.log(res);
   const loading = useSelector(state => state.patientsRequest.isLoading);
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
@@ -69,7 +63,7 @@ const PatientRequest = () => {
   };
 
   const deleteRequest = requestId => {
-    dispatch(acceptPatientReqRequest(requestId));
+    dispatch(deletePatientReqRequest(requestId));
     setTimeout(() => {
       dispatch(patientsReqRequest(pageNo));
     }, 1000);

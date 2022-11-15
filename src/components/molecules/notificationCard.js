@@ -7,14 +7,8 @@ import CloseButton from '../atoms/closeButton';
 import BellIcon from '../atoms/bellIcon';
 import {colorPalette} from '../atoms/colorPalette';
 
-const NotificationCard = ({
-  text,
-  date,
-  time,
-  notificationId,
-  sender,
-  navigation,
-}) => {
+const NotificationCard = ({text, date, time, notificationId, sender}) => {
+  
   return (
     <View
       style={{
@@ -27,7 +21,7 @@ const NotificationCard = ({
       }}>
       <View style={notificationStyles.cardHeader}>
         <NotificationHeading sender={sender} />
-        <CloseButton notificationId={notificationId} navigation={navigation} />
+        <CloseButton notificationId={notificationId} />
       </View>
       <View style={notificationStyles.cardMessage}>
         <BellIcon />

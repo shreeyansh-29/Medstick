@@ -1,4 +1,4 @@
-import {View, FlatList, RefreshControl} from 'react-native';
+import {View, FlatList, RefreshControl, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import NotificationCard from '../../components/molecules/notificationCard';
@@ -12,14 +12,16 @@ const NotificationScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const pageNo = 0;
   const [notification, setNotification] = useState([]);
+
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.getAllNotificationReducer?.data);
+
   const loading = useSelector(
     state => state.getAllNotificationReducer?.loading?.loader,
   );
 
   useEffect(() => {
-    if (res?.object !== 0) {
+    if (res?.object.length !== 0 && res !== null) {
       setNotification(res?.object);
     }
   }, [res]);
@@ -42,6 +44,7 @@ const NotificationScreen = ({navigation}) => {
                   flex: 1,
                   alignItems: 'center',
                   justifyContent: 'center',
+                  backgroundColor: 'white',
                 }}>
                 <CustomImage
                   resizeMode="contain"
@@ -62,7 +65,6 @@ const NotificationScreen = ({navigation}) => {
                   time={item.localTime}
                   notificationId={item.notificationId}
                   sender={item.sender}
-                  navigation={navigation}
                 />
               )}
               refreshControl={
