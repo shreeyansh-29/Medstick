@@ -17,9 +17,9 @@ import {deviceWidth} from '../../../components/atoms/constant';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 const MedicineList = ({route, navigation}) => {
-  const data = route.params.data;
-  console.log(data,"data")
-  const [index, setIndex] = useState(route.params.index);
+  const data = route.params?.data;
+  console.log(route,"data")
+  const [index, setIndex] = useState(route.params?.index);
   const isCarousel = useRef(null);
 
   const MedicineDetailCard = ({item, index}) => {
@@ -35,8 +35,8 @@ const MedicineList = ({route, navigation}) => {
                 <TouchableOpacity
                   onPress={() => {
                     navigation?.navigate('AddMedicine', {
-                      itemMedicineName:item.MedicineName,
-                      itemDescription: item.MedicineDescription,
+                      itemMedicineName:item.medicineName,
+                      itemDescription: item.medicineDescription,
                       itemDosageType: item.dosageType,
                       itemDosagePower: item.dosagePower,
                       itemDosageQuantity:item.dosageQuantity,
@@ -69,7 +69,7 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Description : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.MedicineDescription}</Text>
+                    <Text style={styles.itemData}>{item.medicineDescription}</Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -172,7 +172,7 @@ const MedicineList = ({route, navigation}) => {
           inactiveSlideShift={0}
         />
         <Pagination
-          dotsLength={data.length}
+          dotsLength={data?.length}
           activeDotIndex={index}
           carouselRef={isCarousel}
           dotStyle={{

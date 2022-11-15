@@ -35,7 +35,7 @@ import AddMedicineButton from '../../../components/atoms/addMedicineButton';
 import {loadSaveUserMedicine} from '../../../redux/action/userMedicine/saveUserMedicineAction';
 import {searchMedicineRequest} from '../../../redux/action/userMedicine/searchMedicineAction';
 import {ListItem} from 'react-native-elements';
-import {AddMedicine, getMedicine} from '../../../utils/storage';
+import {AddMedicine, getMedicine, getPrescription, getSaveMedicine,saveMedicine} from '../../../utils/storage';
 import {openDatabase} from 'react-native-sqlite-storage';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import uuid from 'react-native-uuid'
@@ -43,16 +43,6 @@ import uuid from 'react-native-uuid'
 var db = openDatabase({name: 'MedicineDatabase.db'});
 
 const AddMedicines = ({navigation, route}) => {
-  // const {
-  //   itemDescription,
-  //   itemDosageType,
-  //   itemDosageUnit,
-  //   Stock,
-  //   doctorName,
-  //   contact,
-  //   specialization,
-  //   loaction,
-  // } = route.params;
 
   const [medicineName, setMedicineName] = useState('');
   const [userMedicineName, setUserMedicineName] = useState('');
@@ -63,7 +53,8 @@ const AddMedicines = ({navigation, route}) => {
   const [modal, setModal] = useState(false);
   const [searchModal, setSearchModal] = useState(false);
   const [pill, setPill] = useState('tablet');
-  const [stock, setStock] = useState(null);
+  const [stock, setStock] = useState('');
+  console.log(stock,'stock')
   const [remainingStock, setRemainingStock] = useState('');
   const [dosageQuantity,setDosageQuantity]=useState('');
   const [token, setToken] = useState('');
@@ -73,20 +64,24 @@ const AddMedicines = ({navigation, route}) => {
   const [prescriptionId, setPrescriptionId] = useState('');
   const [doseType, setDoseType] = useState('');
   const saveMedicineData = useSelector(state => state.addMedicineReducer?.data);
-  const saveMedicine = useSelector(state => state.addMedicineReducer);
   const dispatch = useDispatch();
-  console.log('try',dose+doseType)
-
   const [arr, setArr] = useState('');
+  const [array,setArray]=useState('')
+  const [flag,setFlag]=useState('')
+  
 
+  useEffect(()=>{
+    getSaveMedicine().then(data=>setArray(data))
+  },[])
+  
   useEffect(() => {
     getMedicine().then(data => setArr(data));
   }, []);
 
   console.log('array', arr);
 
-  console.log(route.params,'route')
-  if(route.params.itemMedicineName !== undefined)
+  console.log(route.params?.data,'route')
+  if(route.params?.itemMedicineName !== undefined)
   {
     let itemMedicineName=route.params.itemMedicineName
     console.log(itemMedicineName)
@@ -96,29 +91,6 @@ const AddMedicines = ({navigation, route}) => {
     console.log(route.params,'new')
   }
 
-  useEffect(() => {
-    db.transaction(function (txn) {
-      txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND  name='table_medicine'",
-        [],
-        function (tx, res) {
-          console.log('item', res.rows.length);
-          if (res.rows.length == 0) {
-            txn.executeSql('DROP TABLE IF EXISTS table_medicine', []);
-            txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS table_medicine(medicine_idINTEGER PRIMARY KEY AUTOINCREMENT,medicine_name VARCHAR(20),dosage_Type VARCHAR(20),dosage_Quantity VARCHAR(20),dosage_Unit INT(1000),stock INT(100),left_Stock INT(100))',
-              [],
-            );
-          }
-        },
-      );
-    });
-  }, []);
-
-  const saveUserMedicineData = useSelector(
-    state => state.saveUserMedicineReducer,
-  );
-  console.log(saveUserMedicineData, 'RESPONSE');
   const searchMedicine = useSelector(state => state.searchMedicine);
   console.log(tempSearch, 'search');
 
@@ -194,7 +166,7 @@ const AddMedicines = ({navigation, route}) => {
   };
 
   const showMedicineAlert = () => {
-    Alert.alert('Warning', 'select the medicine name', [{text: 'OK'}], {
+    Alert.alert('Warning', 'select the medicine', [{text: 'OK'}], {
       cancelable: false,
     });
   };
@@ -212,25 +184,59 @@ const AddMedicines = ({navigation, route}) => {
     );
   };
 
-  const saveMedicineModal = async () => {
-    if (medicineName === '' || details === '') {
-      showAlert();
-    } else {
-      dispatch(loadAddMedicine(id, token, medicineName, details));
-      if (saveMedicineData?.status === 'Success') {
-        try {
-          await AsyncStorage.setItem(
-            'medicine_id',
-            saveMedicineData.result.medicineId,
-          );
-          showSuccessMessage();
-          setModal(false);
-        } catch (error) {
-          console.log(error, 'error');
-        }
-      }
+  const saveMedicineModalLocal=async()=>{
+    if(medicineName===''||details === '')
+    {
+      showAlert()
     }
-  };
+    else{
+      let obj={
+        medicineId:uuid.v4(),
+        medicineName:medicineName,
+        medicineDescription:details,
+
+      }
+      if(array!==null)
+      {
+        setArray([...array,obj])
+      }
+      else
+      {
+        setArray([obj])
+      }
+      setTimeout(()=>{
+        setModal(false)
+        setFlag(1)
+      },300)
+    }
+  }
+
+  useEffect(()=>{
+    if(medicineName!==null && details!==null)
+    {
+      saveMedicine(array)
+    }
+  },[array])
+
+  // const saveMedicineModal = async () => {
+  //   if (medicineName === '' || details === '') {
+  //     showAlert();
+  //   } else {
+  //     dispatch(loadAddMedicine(id, token, medicineName, details));
+  //     if (saveMedicineData?.status === 'Success') {
+  //       try {
+  //         await AsyncStorage.setItem(
+  //           'medicine_id',
+  //           saveMedicineData.result.medicineId,
+  //         );
+  //         showSuccessMessage();
+  //         setModal(false);
+  //       } catch (error) {
+  //         console.log(error, 'error');
+  //       }
+  //     }
+  //   }
+  // };
   const setType = () => {
     switch (pill) {
       case 'tablet': {
@@ -326,47 +332,35 @@ const AddMedicines = ({navigation, route}) => {
       doseType === ''
     ) {
       showAlert();
-    } else if (medicineId === '') {
+    } else if (flag==='') {
       showMedicineAlert();
-    } else if (prescriptionId === '') {
+    } else if (route.params === undefined) {
       showPrescriptionAlert();
     } else {
       let obj = {
-        MedicineId:uuid.v4(),
-        MedicineName: userMedicineName,
-        MedicineDescription: userMedicineDescription,
+        userMedicineId:uuid.v4(),
+        medicineId:uuid.v4(),
+        medicineName: array[array.length-1]?.medicineName,
+        medicineDescription: array[array.length-1]?.medicineDescription,
+        present:'true',
         dosageType: pill,
         dosageQuantity: dosageQuantity,
         dosagePower:dose+doseType,
-        stock: stock,
         leftStock: remainingStock,
+        stock: stock,
+        prescriptionId:route.params.data.prescriptionId,
+        doctorName:route.params.data.doctorName,
+        specialization:route.params.data.specialization,
+        contact:route.params.data.contact,
+        location:route.params.data.location,
+        prescriptionUrl:route.params.data.prescriptionUrl
       };
       setArr([...arr, obj]);
-      if (id !== null || token !== null) {
-        dispatch(
-          loadSaveUserMedicine(
-            id,
-            token,
-            prescriptionId,
-            medicineId,
-            pill,
-            dosageQuantity,
-            // dose,
-            doseType,
-            stock,
-            remainingStock,
-          ),
-        );
+       
+      setTimeout(()=>{
+        navigation.navigate('Medicine')
+      })
 
-        if (id === null) {
-          console.log(arr, 'savedddd');
-          navigation?.navigate('MedicinePanel');
-        }
-        if (saveUserMedicineData?.status === 'Success') {
-          showSuccessMessage();
-          navigation.navigate('Home');
-        }
-      }
     }
   };
 
@@ -386,53 +380,9 @@ const AddMedicines = ({navigation, route}) => {
     }
   }, [arr]);
 
-  let save_Medicine = () => {
-    console.log(pill, 'pills');
-    if (
-      userMedicineName === '' ||
-      pill === '' ||
-      stock === '' ||
-      remainingStock === '' ||
-      dosageQuantity === '' ||
-      doseType === ''
-    ) {
-      showAlert();
-      return;
-    }
+  
 
-    console.log('else');
-    db.transaction(function (tx) {
-      tx.executeSql(
-        'INSERT INTO table_medicine (medicine_name,dosage_Type,dosage_Quantity,dosage_Unit,stock,left_Stock) VALUES(?,?,?,?,?)',
-        [userMedicineName, pill, doseType, stock, remainingStock],
-        (tx, results) => {
-          console.log('Results', results.rowsAffected);
-          if (results.rowsAffected > 0) {
-            showSuccessMessage();
-          }
-        },
-      );
-    });
-  };
 
-  const addMedicine = async () => {
-    if (
-      pill === '' ||
-      stock === '' ||
-      remainingStock === '' ||
-      dosageQuantity === '' ||
-      doseType === ''
-    ) {
-      showAlert();
-    }
-    if (medicineId === '') {
-      showMedicineAlert();
-    }
-    if (prescriptionId === '') {
-      showPrescriptionAlert();
-    } else {
-    }
-  };
 
   return (
     <View style={Styles.addMedicinePage}>
@@ -474,6 +424,7 @@ const AddMedicines = ({navigation, route}) => {
                     activeOutlineColor="#02aba6"
                   />
                 </View>
+                {id !==null &&
                 <View
                   style={{
                     alignSelf: 'center',
@@ -491,6 +442,7 @@ const AddMedicines = ({navigation, route}) => {
                     />
                   </TouchableOpacity>
                 </View>
+                }
               </View>
               <TextInput
                 id="name"
@@ -506,7 +458,7 @@ const AddMedicines = ({navigation, route}) => {
               <TouchableOpacity
                 style={{marginVertical: 40}}
                 onPress={() =>
-                  saveMedicineModal(token, id, medicineName, details)
+                  saveMedicineModalLocal()
                 }>
                 <SaveButton />
               </TouchableOpacity>
@@ -585,11 +537,11 @@ const AddMedicines = ({navigation, route}) => {
       <View style={Styles.constainer}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <KeyboardAvoidingView>
-            {id !== null ? (
+            {/* {id !== null ? ( */}
               <TouchableOpacity onPress={() => setModal(true)}>
                 <SelectMedicineName medicineName={medicineName} />
               </TouchableOpacity>
-            ) : (
+            {/* ) : (
               <View>
                 <TextInput
                   style={{width: '100%'}}
@@ -614,11 +566,14 @@ const AddMedicines = ({navigation, route}) => {
                   numberOfLines={6}
                 />
               </View>
-            )}
+            )} */}
 <View style={Styles.textView1}>
 <View style={{width:'48%'}}>
             <View style={Styles.picker}>
               <Picker
+                style={{
+                  color: 'black',
+                }}
                 id="picker1"
                 placeholder="Select Medicine Type"
                 selectedValue={pill}
@@ -655,6 +610,7 @@ const AddMedicines = ({navigation, route}) => {
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
                   keyboardType="numeric"
+                  placeholderTextColor={'grey'}
                 />
               </View>
               <View style={{width: '50%'}}>
@@ -667,6 +623,7 @@ const AddMedicines = ({navigation, route}) => {
                   onChangeText={setDoseType}
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
+                  placeholderTextColor={'grey'}
                 />
               </View>
             </View>
@@ -686,7 +643,7 @@ const AddMedicines = ({navigation, route}) => {
                 <LeftStock onChange={getRemainingStock} />
               </View>
             </View>
-            {id !== null ? (
+            
               <View style={Styles.textView}>
                 <View style={Styles.textbox}>
                   <Text style={Styles.text}>Add Prescription Here </Text>
@@ -705,9 +662,7 @@ const AddMedicines = ({navigation, route}) => {
                   />
                 </TouchableOpacity>
               </View>
-            ) : (
-              <View></View>
-            )}
+            
             <TouchableOpacity
               style={Styles.touchableOpacity}
               onPress={

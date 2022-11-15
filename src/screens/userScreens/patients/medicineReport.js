@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   FlatList,
   ToastAndroid,
-  Modal,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -22,6 +21,7 @@ import {weeks, months, month} from '../../../constants/constants';
 import styles from '../../../styles/patientStyles/medicineReportStyles';
 import LottieView from 'lottie-react-native';
 import HistoryDetail from './historyDetail';
+import CustomModal from '../../../components/molecules/customModal';
 
 let detailData = {};
 
@@ -113,14 +113,11 @@ const MedicineReport = ({navigation, route}) => {
         download={downloadPdf}
         navigation={navigation}
       />
-      <Modal
+      <CustomModal
         onRequestClose={() => setModalVisible(false)}
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        style={styles.modal}>
-        <View style={styles.detailView}>
-          {showDetail ? (
+        type="fade"
+        modalView={
+          showDetail ? (
             <HistoryDetail
               data={detailData}
               onPress={() => {
@@ -136,9 +133,12 @@ const MedicineReport = ({navigation, route}) => {
               autoPlay
               loop
             />
-          )}
-        </View>
-      </Modal>
+          )
+        }
+        modalVisible={modalVisible}
+        customStyles={styles.detailView}
+      />
+
       <View style={styles.progress}>
         <PerformanceCircle
           styles={styles}

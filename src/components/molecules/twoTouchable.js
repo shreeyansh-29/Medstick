@@ -15,7 +15,11 @@ const TwoTouchable = ({icon, title, navigation, navigationTitle}) => {
         activeOpacity={1}
         style={Styles.box}
         onPress={() => {
-          navigation.navigate('AccountStack', {screen: navigationTitle});
+          if (title === 'Send Snap') {
+            navigation.navigate('HomeStack', {screen: navigationTitle});
+          } else {
+            navigation.navigate('AccountStack', {screen: navigationTitle});
+          }
         }}>
         <View style={Styles.icon}>
           <FontAwesomeIcon

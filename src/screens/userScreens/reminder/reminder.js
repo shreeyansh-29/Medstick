@@ -20,10 +20,11 @@ import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAc
 import { addReminder, getReminder } from '../../../utils/storage';
 import { useEffect } from 'react';
 import uuid from 'react-native-uuid'
+import CustomButton from '../../../components/atoms/customButton';
 
 var counter = 0;
 
-const Reminder = ({route, navigation, props}) => {
+const Reminder = ({navigation,route}) => {
   const [medicineInfo,setMedicineInfo]=useState(route.params.data)
   console.log(medicineInfo, 'route abcgdss');
   const [picker, pickerstate] = useState(false);
@@ -212,7 +213,6 @@ const Reminder = ({route, navigation, props}) => {
     userMedicineId,
   ) => {
     if (title.length === 0 
-      // || timearray.length === 0
       ) {
       Alert.alert('Make sure you have valid reminder', ' ', [
         {
@@ -283,24 +283,24 @@ const Reminder = ({route, navigation, props}) => {
     if (endDate === 'No End Date') {
       setfDate('null');
     }
-    console.log(reminderStatus, 'reminderStatus');
-    console.log(frequencyTemp, 'frequency');
-    console.log(fDateSecondary, 'endDate');
-    console.log(food, 'beforeAfter');
-    console.log(totalReminders, 'totalReminders');
-    console.log(currentCount, 'currentCount');
-    console.log(userMedicineId, 'iddddd');
     
    let obj={
-    medicineId:medicineInfo.MedicineId,
-    medicineName:medicineInfo.MedicineName,
-    description:medicineInfo.MedicineDescription,
+    userMedicineId:medicineInfo.userMedicineId,
+    medicineId:medicineInfo.medicineId,
+    medicineName:medicineInfo.medicineName,
+    description:medicineInfo.medicineDescription,
     present:true,
     doasgeType:medicineInfo.doasgeType,
     doasageQuantity:medicineInfo.doasageQuantity,
     doasgePower:medicineInfo.doasgePower,
     stock:medicineInfo.stock,
     leftStock:medicineInfo.leftStock,
+    prescriptionId:medicineInfo.prescriptionId,
+    doctorName:medicineInfo.doctorName,
+    specialization:medicineInfo.specialization,
+    contact:medicineInfo.contact,
+    location:medicineInfo.location,
+    prescriptionUrl:medicineInfo.prescriptionUrl,
     reminderId:uuid.v4(),
     startDate:fDatePrimary,
     endDate:fDateSecondary ,
@@ -315,29 +315,24 @@ const Reminder = ({route, navigation, props}) => {
     totalReminders:totalReminders,
     currentCount:currentCount
   }
-
-  setArr([...arr,obj])
+  if(arr !==null)
+  {
+    setArr([...arr,obj])
+     
+    setTimeout(() => {
+      navigation.navigate('Medicine');
+    }, 2000);
+  }
+  else{
+    setArr([obj])
+    setTimeout(() => {
+      navigation.navigate('Medicine');
+    }, 2000);
+  }
   
-    dispatch(
-      saveReminderRequest(
-        fDatePrimary,
-        fDateSecondary,
-        days,
-        title,
-        time,
-        check1,
-        noEndDate,
-        reminderStatus,
-        frequencyTemp,
-        food,
-        totalReminders,
-        currentCount,
-        userMedicineId,
-      ),
-    );
-    // setTimeout(() => {
-    //   navigation.navigate('MedicinePanel');
-    // }, 2000);
+   
+
+  
   };
 
   // console.log(endDate);
@@ -790,10 +785,10 @@ const Reminder = ({route, navigation, props}) => {
             )}
           </View>
           <Divider></Divider>
-          <Button
+          <CustomButton
             loading={load}
             title="Save reminder"
-            onPress={() => {
+            handleSubmit={() => {
               savereminder(
                 fDatePrimary,
                 fDateSecondary,
@@ -811,8 +806,9 @@ const Reminder = ({route, navigation, props}) => {
                 route.params.fetchStatus();
               }
             }}
-            buttonStyle={styles.buttonStyle}
-            containerStyle={styles.buttonContainer}></Button>
+            btnStyles={styles.buttonStyle}
+            contStyles={styles.buttonContainer}
+          />
         </View>
       </View>
     </ScrollView>

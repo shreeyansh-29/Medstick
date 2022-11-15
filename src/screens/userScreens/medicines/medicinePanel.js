@@ -22,7 +22,6 @@ import {useIsFocused} from '@react-navigation/native';
 import {deleteMedicineRequest} from '../../../redux/action/userMedicine/deleteMedicine';
 import Loader from '../../../components/atoms/loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 
 const MedicinePanel = ({navigation}) => {
@@ -93,7 +92,7 @@ const MedicinePanel = ({navigation}) => {
   const deleteMedicineLocal = async index => {
     medicineResponse.splice(medicineResponse.indexOf(index), 1);
     AddMedicine(medicineResponse);
-    navigation.navigate('MedicinePanel');
+    navigation.navigate('Medicine');
   };
 
   const deleteMedicine = userMedicineId => {
@@ -104,12 +103,9 @@ const MedicinePanel = ({navigation}) => {
   };
 
   useEffect(() => {
-    let res = getMedicine();
-    res.then(data => {
+    getMedicine().then(data => {
       setMedicineResponse(data);
-    }),
-      getTokenId();
-    setFlag(1);
+    })
   }, []);
 
   const getTokenId = async () => {
@@ -124,9 +120,12 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('MedicineList', {
-                data: medicineResponse,
-                index: index,
+              navigation.navigate('MedicinePanelStack', {
+                screen: 'MedicineList',
+                params: {
+                  data: medicineResponse,
+                  index: index,
+                },
               });
             }}>
             <Card style={Styles.card}>
@@ -141,7 +140,7 @@ const MedicinePanel = ({navigation}) => {
                       />
                       <View style={Styles.medNameView}>
                         <ListItem.Title style={Styles.medName}>
-                          {item.MedicineName}
+                          {item.medicineName}
                         </ListItem.Title>
                         <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Type: </Text>
@@ -162,9 +161,13 @@ const MedicinePanel = ({navigation}) => {
                     <TouchableOpacity
                       style={Styles.rem}
                       onPress={() => {
-                        navigation.navigate('Reminder', {
-                          data: item,
-                        });
+                        navigation.navigate('MedicinePanelStack', {
+                screen: 'Reminder',
+                params: {
+                  data: item,
+                  index: index,
+                },
+              });
                       }}>
                       <FontAwesomeIcon
                         icon={faClock}
@@ -270,12 +273,13 @@ const MedicinePanel = ({navigation}) => {
                             ? colorPalette.mainColor
                             : 'grey'
                         }
-                        size={24}
+                        size={22}
                       />
 
                       {console.log(color, 'colorrrrrrrrrr')}
                     </TouchableOpacity>
                     <TouchableOpacity
+                      style={{padding: 8}}
                       activeOpacity={1}
                       onPress={() => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
@@ -291,7 +295,7 @@ const MedicinePanel = ({navigation}) => {
                       <FontAwesomeIcon
                         icon={faTrash}
                         color={colorPalette.mainColor}
-                        size={24}
+                        size={22}
                       />
                     </TouchableOpacity>
                   </View>
@@ -306,7 +310,7 @@ const MedicinePanel = ({navigation}) => {
 
   return (
     <>
-      {id !== null && (
+      
         <View style={Styles.container}>
           <View style={Styles.background} />
           <MainHeader title={'Medicine'} navigation={navigation} />
@@ -314,7 +318,7 @@ const MedicinePanel = ({navigation}) => {
             <Loader />
           ) : (
             <>
-              {medicines?.length === 0 ? (
+              {medicineResponse?.length === 0 ? (
                 <View style={Styles.lottie}>
                   <LottieView
                     style={{width: '60%'}}
@@ -326,8 +330,8 @@ const MedicinePanel = ({navigation}) => {
               ) : (
                 <View style={{flex: 1}}>
                   <FlatList
-                    data={medicines}
-                    renderItem={renderItem}
+                    data={medicineResponse}
+                    renderItem={renderItemLocal}
                     showsVerticalScrollIndicator={false}
                   />
                 </View>
@@ -335,46 +339,7 @@ const MedicinePanel = ({navigation}) => {
             </>
           )}
         </View>
-      )}
-      {id === null && medicineResponse !== null && (
-        <View style={Styles.container}>
-          <View style={Styles.background} />
-          <MainHeader title={'Medicine'} />
-          {medicineResponse?.length === 0 ? (
-            <View style={Styles.lottie}>
-              <LottieView
-                style={{width: '60%'}}
-                speed={0.8}
-                source={require('../../../assets/animation/noMed1.json')}
-                progress={progress}
-              />
-            </View>
-          ) : (
-            <View style={{flex: 1}}>
-              <FlatList
-                data={medicineResponse}
-                renderItem={renderItemLocal}
-                showsVerticalScrollIndicator={false}
-              />
-            </View>
-          )}
-        </View>
-      )}
-      {/* {id === null && flag === 1 && (
-        <View style={Styles.container}>
-          <MainHeader title={'Medicine'} />
-          <View style={Styles.lottie}>
-            <LottieView
-              style={{width: '60%'}}
-              speed={0.8}
-              source={require('../../../assets/animation/noMed1.json')}
-              progress={progress}
-            />
-          </View>
-        </View>
-      )} */}
-    </>
-  );
-};
-
+      </>
+  )
+              }
 export default MedicinePanel;

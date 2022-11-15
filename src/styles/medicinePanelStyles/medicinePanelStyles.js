@@ -36,22 +36,26 @@ const Styles = StyleSheet.create({
     elevation: 3,
     shadowColor: 'black',
     marginVertical: verticalScale(5),
-    marginHorizontal: horizontalScale(14),
+    marginHorizontal: horizontalScale(10),
   },
   camera: {height: '100%'},
-  listView: {margin: moderateScale(5)},
+  listView: {margin: moderateScale(4)},
   list: {marginHorizontal: moderateScale(16)},
   avatarView: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  medNameView: {flexDirection: 'column', marginLeft: verticalScale(16)},
-  medName: {fontWeight: '600', fontSize:17},
+  medNameView: {
+    flexDirection: 'column',
+    marginLeft: verticalScale(16),
+  },
+  medName: {fontWeight: '600', fontSize: 17},
   icon: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
-  rem: {marginRight: 12},
+  rem: {padding: 8},
   background: {
     position: 'absolute',
     backgroundColor: colorPalette.mainColor,
@@ -182,9 +186,6 @@ const Styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
-  text: {
-    color: colorPalette.appColor,
-  },
   textView: {
     flexDirection: 'row',
     width: '100%',
@@ -257,6 +258,7 @@ const Styles = StyleSheet.create({
     fontSize: 17,
     margin: '3%',
     paddingHorizontal: 3,
+    color: 'black',
   },
   box2: {
     margin: '1.6%',
@@ -314,10 +316,12 @@ const Styles = StyleSheet.create({
     padding: 20,
   },
   prescriptionBox: {
-    width: '100%',
-    padding: 10,
+    width: '98%',
+    padding: 5,
+    elevation:2,
+    marginTop:5,
     borderColor: colorPalette.appColor,
-    elevation: 2,
+
     borderStartWidth: 4,
   },
   prescriptionText1: {

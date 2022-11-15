@@ -1,18 +1,9 @@
-import {
-  View,
-  Text,
-  Modal,
-  Animated,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import {View, Text, Animated, TouchableOpacity, ScrollView} from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
-import {colorPalette} from '../../components/atoms/colorPalette';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import LottieView from 'lottie-react-native';
 import Share from 'react-native-share';
-import {Button} from 'react-native-elements';
 import {styles} from '../../styles/otherScreensStyles/sendSnapToCaretakerStyles';
 import {Divider} from 'react-native-paper';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -25,6 +16,8 @@ import {
   sendSnapClear,
   sendSnapRequest,
 } from '../../redux/action/otherScreenAction/sendSnapAction';
+import CustomButton from '../../components/atoms/customButton';
+import CustomModal from '../../components/molecules/customModal';
 
 const SendSnapToCaretaker = ({navigation, route}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -34,6 +27,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   let res = useSelector(state => state.myCaretaker);
   let meds = useSelector(state => state.medicineList);
   let res1 = useSelector(state => state.sendSnap?.data);
+  console.log(res1);
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');
@@ -44,18 +38,15 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    dispatch(sendSnapClear());
-  }, []);
-
-  useEffect(() => {
     if (res1?.status === 'Success') {
       Toast.show({
         type: 'success',
         text1: 'Image Sent Successfully',
       });
+      dispatch(sendSnapClear());
       setTimeout(() => {
-        navigation.pop(2);
-      }, 2000);
+        navigation.popToTop();
+      }, 3000);
     }
     if (res1?.status === 'Failed') {
       Toast.show({
@@ -165,55 +156,35 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colorPalette.mainColor}}>
+    <View style={styles.container}>
       <SubHeader
         navigation={navigation}
         title={'Send Snap'}
         options={options}
       />
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+      <CustomModal
+        modalVisible={modalVisible}
+        text="imageViewer"
+        onRequestClose={() => setModalVisible(!modalVisible)}
+        modalView={<ImageViewer imageUrls={images} backgroundColor="white" />}
+      />
+
+      <View style={styles.lottieView}>
         <LottieView
-          style={{width: '42%'}}
+          style={styles.lottie}
           progress={progress}
           speed={0.6}
           source={require('../../assets/animation/share.json')}
         />
       </View>
-      <Modal
-        visible={modalVisible}
-        transparent={true}
-        onRequestClose={() => setModalVisible(!modalVisible)}>
-        <ImageViewer imageUrls={images} />
-      </Modal>
-      <View
-        style={{
-          alignItems: 'center',
-          backgroundColor: 'white',
-          borderTopStartRadius: 20,
-          borderTopEndRadius: 20,
-          flex: 1,
-          marginTop: 16,
-        }}>
+      <View style={styles.mainView}>
         <ScrollView
-          style={{width: '80%'}}
-          contentContainerStyle={{
-            alignItems: 'center',
-          }}>
-          <View style={{marginTop: 20, marginBottom: 30}}>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: '700',
-                color: 'black',
-              }}>
-              Send Image To CareTaker
-            </Text>
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollCont}>
+          <View style={styles.textContainer}>
+            <Text style={styles.heading}>Send Image To CareTaker</Text>
           </View>
-          <View style={{marginBottom: 20, width: '90%'}}>
+          <View style={styles.dropdownCont}>
             <Text style={styles.mnText}>Select Medicine</Text>
             <Dropdown
               style={styles.dropdown}
@@ -233,7 +204,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
             />
           </View>
 
-          <View style={{marginBottom: 20, width: '90%'}}>
+          <View style={styles.dropdownCont}>
             <Text style={styles.mnText}>Select CareTaker</Text>
             <Dropdown
               style={styles.dropdown}
@@ -256,52 +227,24 @@ const SendSnapToCaretaker = ({navigation, route}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => setModalVisible(true)}
-            style={{marginTop: 10}}>
-            <Text style={{color: 'black', fontSize: 18}}>View Image</Text>
+            style={styles.imgCont}>
+            <Text style={styles.imgText}>View Image</Text>
           </TouchableOpacity>
 
-          <View
-            style={{
-              marginVertical: 8,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Divider
-              style={{
-                height: 1,
-                color: 'grey',
-                width: '6%',
-              }}
-            />
-            <Text
-              style={{
-                paddingHorizontal: 6,
-                marginVertical: 6,
-                color: 'black',
-              }}>
-              Or
-            </Text>
-            <Divider
-              style={{
-                height: 1,
-                color: 'grey',
-                width: '6%',
-              }}
-            />
+          <View style={styles.dividerCont}>
+            <Divider style={styles.divider} />
+            <Text style={styles.dividerText}>Or</Text>
+            <Divider style={styles.divider} />
           </View>
           <TouchableOpacity activeOpacity={1} onPress={() => navigation.pop()}>
-            <Text style={{color: 'black', fontSize: 18}}>Re-Take</Text>
+            <Text style={styles.imgText}>Re-Take</Text>
           </TouchableOpacity>
-          <Button
-            onPress={SendImage}
+
+          <CustomButton
+            handleSubmit={SendImage}
             title="Send"
-            buttonStyle={{
-              backgroundColor: colorPalette.mainColor,
-              borderRadius: 6,
-              paddingHorizontal: 40,
-              paddingVertical: 10,
-            }}
-            containerStyle={{marginTop: 40, marginBottom: 80}}
+            btnStyles={styles.btnStyle}
+            contStyles={styles.btnContainer}
           />
         </ScrollView>
       </View>

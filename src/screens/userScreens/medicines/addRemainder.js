@@ -5,7 +5,6 @@ import {
   Animated,
   Alert,
   StyleSheet,
-  Modal,
 } from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';

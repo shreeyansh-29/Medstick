@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AddPrescriptionPanelHeader from '../../../components/molecules/headers/addPrescriptionPanelHeader'
 import AddNewPrescription from '../../../components/molecules/addNewPrescription'
@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import NoData from '../../../components/atoms/noData'
 import { colorPalette } from '../../../components/atoms/colorPalette'
 import PrescriptionBox from '../../../components/atoms/prescriptionBox'
+import { getPrescription } from '../../../utils/storage'
 
 
 const AddPrescriptionPanel = ({ navigation }) => {
@@ -17,8 +18,13 @@ const AddPrescriptionPanel = ({ navigation }) => {
     const [pageNo, setPageNo] = useState(0)
     const pageSize = 2
     const dispatch = useDispatch()
-    const getAllPrescription = useSelector(state => state.getPrescriptionReducer?.data?.result)
-    console.log(getAllPrescription, "getallPrescription")
+    // const getAllPrescription = useSelector(state => state.getPrescriptionReducer?.data?.result)
+    // console.log(getAllPrescription, "getallPrescription")
+    const [prescriptionList,setPrescriptionList]=useState('')
+    console.log(prescriptionList,"plist")
+    useEffect(()=>{
+      getPrescription().then (data=>setPrescriptionList(data))
+    },[])
 
     const getTokenId = async () => {
         const tokentemp = await AsyncStorage.getItem('accessToken')
@@ -30,13 +36,9 @@ const AddPrescriptionPanel = ({ navigation }) => {
         getTokenId()
     }, [])
 
-    const getAllPrescriptions = () => {
-        dispatch(loadGetPrescription(id, token, pageNo, pageSize))
-    }
+   
 
-    useEffect(() => {
-        getAllPrescriptions(id, token)
-    }, [id])
+ 
 
     return (
         <View style={{ flex: 1, backgroundColor: colorPalette.backgroundColor }}>
@@ -47,20 +49,27 @@ const AddPrescriptionPanel = ({ navigation }) => {
             </View>
             <AddNewPrescription navigation={navigation} />
             <ExistingPrescriptionText />
-            {getAllPrescription?.data?.result?.length === 0 ?
+            {prescriptionList === ''?
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={require('../../../assets/images/noPrescription.png')} resizeMode='contain' style={{ width: '80%' }} />
                 </View>
                 :
                 
-                getAllPrescription?.map((item)=>(
+                prescriptionList?.map((item)=>(
+                    <TouchableOpacity onPress={()=>{
+                        navigation.navigate('AddMedicine',{
+                            data:item
+                        })
+                    }}>
                     <PrescriptionBox
                         
                         doctorName={item.doctorName}
                         locations={item.location}
                         contact={item.contact}
                         specialization={item.specialization}
+                        prescriptionUrl={item.prescriptionUrl}
                     />
+                    </TouchableOpacity>
                 ))
                 
                 

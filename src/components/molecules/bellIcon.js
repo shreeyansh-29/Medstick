@@ -7,7 +7,10 @@ import {faBell} from '@fortawesome/free-solid-svg-icons';
 const BellIcon = ({navigation}) => {
   return (
     <View style={styles.bellIcon}>
-      <TouchableOpacity onPress={() => navigation?.navigate('Notification')}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation?.navigate('HomeStack', {screen: 'Notification'})
+        }>
         <FontAwesomeIcon icon={faBell} color={'white'} size={24} />
       </TouchableOpacity>
     </View>

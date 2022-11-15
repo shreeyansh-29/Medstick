@@ -5,7 +5,7 @@ import InputField from '../../components/atoms/inputField';
 import styles from '../../styles/profile/profileStyles';
 import PickerField from '../../components/atoms/customPicker';
 import {bloodGroup, gender} from '../../constants/pickerItem';
-import {Button} from 'react-native-elements';
+import CustomButton from '../../components/atoms/customButton';
 
 const ProfileForm = props => {
   return (
@@ -165,13 +165,12 @@ const ProfileForm = props => {
         </View>
       </View>
 
-      <View>
-        <Button
-          title="Save"
-          buttonStyle={styles.editButton}
-          containerStyle={styles.editButtonContainer}
-          onPress={props.handleSubmit}></Button>
-      </View>
+      <CustomButton
+        title="Save"
+        btnStyles={styles.editButton}
+        contStyles={styles.editButtonContainer}
+        handleSubmit={props.handleSubmit}
+      />
     </View>
   );
 };

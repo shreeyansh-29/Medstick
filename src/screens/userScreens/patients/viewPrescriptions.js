@@ -85,25 +85,23 @@ const ViewPrescriptions = ({navigation, route}) => {
               />
             </View>
           ) : (
-            <View style={style.flatList}>
-              <FlatList
-                data={precriptions}
-                keyExtractor={(item, index) => index.toString()}
-                showsVerticalScrollIndicator={false}
-                renderItem={renderItem}
-                refreshControl={
-                  <RefreshControl
-                    colors={[colorPalette.mainColor]}
-                    tintColor={[colorPalette.mainColor]}
-                    refreshing={refresh}
-                    onRefresh={() => {
-                      setRefresh(false);
-                      dispatch(myPrescriptionsRequest({currentPage, Id}));
-                    }}
-                  />
-                }
-              />
-            </View>
+            <FlatList
+              data={precriptions}
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              renderItem={renderItem}
+              refreshControl={
+                <RefreshControl
+                  colors={[colorPalette.mainColor]}
+                  tintColor={[colorPalette.mainColor]}
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    setRefresh(false);
+                    dispatch(myPrescriptionsRequest({currentPage, Id}));
+                  }}
+                />
+              }
+            />
           )}
         </>
       )}

@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -117,13 +123,16 @@ const style = StyleSheet.create({
   },
   lineCont: {
     // marginVertical: 10,
-    width: '80%',
+    width: Dimensions.get('window').width / 1.4,
     height: '70%',
     // backgroundColor: 'lightblue',
     paddingHorizontal: 18,
     paddingVertical: 10,
   },
-  timelineCont: {flex: 1, color: 'white', marginLeft: 10},
+  timelineCont: {
+    color: 'white',
+    marginLeft: 10,
+  },
   listViewStyle: {
     // backgroundColor: 'yellow',
     paddingVertical: 12,
