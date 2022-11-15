@@ -1,6 +1,5 @@
 import React from 'react';
 import {Picker} from '@react-native-picker/picker';
-import {colorPalette} from './colorPalette';
 
 const PickerField = props => {
   const list = props?.pickerItem;

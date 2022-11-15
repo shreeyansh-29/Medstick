@@ -129,14 +129,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'red',
     alignSelf: 'flex-start',
-    marginLeft: 14,
+    // marginLeft: 14,
     marginTop: 1,
   },
   errorText1: {
     fontSize: 15,
     color: 'red',
     alignSelf: 'flex-start',
-    marginLeft: 14,
+    // marginLeft: 14,
     marginTop: 1,
   },
   inputGroup: {
