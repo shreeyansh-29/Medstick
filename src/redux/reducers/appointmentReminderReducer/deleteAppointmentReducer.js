@@ -3,6 +3,7 @@ import {
   DELETE_APPOINTMENT_REQUEST,
   DELETE_APPOINTMENT_SUCCESS,
   DELETE_APPOINTMENT_ERROR,
+  DELETE_APPOINTMENT_CLEAR,
 } from '../../actionTypes';
 
 const initialState = {
@@ -34,6 +35,16 @@ export const deleteAppointmentReducer = (state = initialState, action) => {
         ...state,
         isLoading: {...state.isLoading, loader: false},
         error: {...state.error, error: action.payload},
+      };
+    case DELETE_APPOINTMENT_CLEAR:
+      return {
+        data: null,
+        isLoading: {
+          loader: false,
+        },
+        error: {
+          error: null,
+        },
       };
     default:
       return state;

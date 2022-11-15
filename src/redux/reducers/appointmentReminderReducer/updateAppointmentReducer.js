@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import {
+  UPDATE_APPOINTMENT_CLEAR,
   UPDATE_APPOINTMENT_ERROR,
   UPDATE_APPOINTMENT_REQUEST,
   UPDATE_APPOINTMENT_SUCCESS,
@@ -34,6 +35,16 @@ export const updateAppointmentReducer = (state = initialState, action) => {
         ...state,
         isLoading: {...state.isLoading, loader: false},
         error: {...state.error, error: action.payload},
+      };
+    case UPDATE_APPOINTMENT_CLEAR:
+      return {
+        data: null,
+        isLoading: {
+          loader: false,
+        },
+        error: {
+          error: null,
+        },
       };
     default:
       return state;

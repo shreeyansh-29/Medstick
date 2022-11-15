@@ -14,7 +14,6 @@ import {
   resetProfile,
 } from '../../redux/action/profileAction/editProfileAction';
 import {useDispatch} from 'react-redux';
-import {deviceWidth} from '../../components/atoms/constant';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {colorPalette} from '../../components/atoms/colorPalette';

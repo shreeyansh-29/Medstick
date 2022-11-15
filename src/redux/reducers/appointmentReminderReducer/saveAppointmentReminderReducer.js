@@ -3,6 +3,7 @@ import {
   SAVE_APPOINTMENT_REQUEST,
   SAVE_APPOINTMENT_ERROR,
   SAVE_APPOINTMENT_SUCCESS,
+  SAVE_APPOINTMENT_CLEAR,
 } from '../../actionTypes';
 
 const initialState = {
@@ -37,6 +38,16 @@ export const saveAppointmentReminderReducer = (
         ...state,
         isLoading: {...state.isLoading, loader: false},
         error: {...state.error, error: action.payload},
+      };
+    case SAVE_APPOINTMENT_CLEAR:
+      return {
+        data: null,
+        isLoading: {
+          loader: false,
+        },
+        error: {
+          error: null,
+        },
       };
     default:
       return state;

@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
 import {notificationStyles} from '../../styles/notificationScreenStyles/notificationPanelStyles';
 import NotificationHeading from '../atoms/notificationHeading';
@@ -6,7 +6,6 @@ import NotificationMessage from '../atoms/notificationMessage';
 import CloseButton from '../atoms/closeButton';
 import BellIcon from '../atoms/bellIcon';
 import {colorPalette} from '../atoms/colorPalette';
-import {Divider} from 'react-native-paper';
 
 const NotificationCard = ({
   text,

@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // padding: 4,
+    marginBottom: 4,
   },
   patientName: {
     color: 'black',

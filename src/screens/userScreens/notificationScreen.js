@@ -53,7 +53,7 @@ const NotificationScreen = ({navigation}) => {
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
-              keyExtractor={index => index.toString()}
+              keyExtractor={(index, item) => index.toString()}
               data={notification}
               renderItem={({item}) => (
                 <NotificationCard
