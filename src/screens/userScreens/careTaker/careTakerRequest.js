@@ -1,9 +1,8 @@
 import {FlatList, RefreshControl, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
-import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {caretakerReqRequest} from '../../../redux/action/caretaker/caretakerRequestAction';
 import {acceptCaretakerReqRequest} from '../../../redux/action/caretaker/acceptCaretakerReqAction';
@@ -17,12 +16,12 @@ import CustomModal from '../../../components/molecules/customModal';
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.caretakerRequest);
-  console.log('caretakerReq', res);
   const [pageNo, setPageNo] = useState(0);
   const [caretakers, setCaretakers] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [visible, setVisible] = useState(false);
   const [uri, setUri] = useState('');
+  const loading = useSelector(state => state.caretakerRequest.isLoading);
 
   const images = [
     {
@@ -138,7 +137,7 @@ const CareTakerRequest = () => {
         onRequestClose={() => setVisible(!visible)}
         modalView={<ImageViewer imageUrls={images} />}
       />
-      {res?.isLoading ? (
+      {loading ? (
         <Loader />
       ) : (
         <>

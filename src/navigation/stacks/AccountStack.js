@@ -17,7 +17,7 @@ import ViewPrescriptions from '../../screens/userScreens/patients/viewPrescripti
 import ViewMedicines from '../../screens/userScreens/patients/viewMedicines';
 import MedicineReport from '../../screens/userScreens/patients/medicineReport';
 import MedicineImages from '../../screens/userScreens/patients/medicineImages';
-import AppointmentReminders from '../../screens/otherScreens/appointmentReminders';
+import SaveAppointment from '../../screens/otherScreens/saveAppointment';
 import AppointmentReminderList from '../../screens/otherScreens/appointmentReminderList';
 
 const Stack = createNativeStackNavigator();
@@ -42,8 +42,8 @@ const AccountStack = () => {
       <Stack.Screen name="MedicineReport" component={MedicineReport} />
       <Stack.Screen name="MedicineImages" component={MedicineImages} />
       <Stack.Screen
-        name="AppointmentReminders"
-        component={AppointmentReminders}
+        name="SaveAppointment"
+        component={SaveAppointment}
       />
       <Stack.Screen
         name="AppointmentReminderList"

@@ -1,26 +1,25 @@
 import * as types from '../../actionTypes';
 
-export const updateAppointmentRequest = (fDate, time, notes1, appointmentId) => {
+export const updateAppointmentRequest = payload => {
   return {
     type: types.UPDATE_APPOINTMENT_REQUEST,
-    payload: {
-      fDate,
-      time,
-      notes1,
-      appointmentId
-    },
+    payload,
   };
 };
-export const updateAppointmentSuccess = data => {
+export const updateAppointmentSuccess = payload => {
   return {
     type: types.UPDATE_APPOINTMENT_SUCCESS,
-    payload: data,
+    payload,
   };
 };
-export const updateAppointmentError = err => {
+export const updateAppointmentError = payload => {
   return {
     type: types.UPDATE_APPOINTMENT_ERROR,
-    payload: err,
+    payload,
   };
 };
-
+export const updateAppointmentClear = () => {
+  return {
+    type: types.UPDATE_APPOINTMENT_CLEAR,
+  };
+};

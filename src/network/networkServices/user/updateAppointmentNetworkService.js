@@ -2,9 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import RequestService from '../../requestService';
 import {UPDATE_APPOINTMENT} from '../../../constants/apiUrl';
 
-class updateAppointmentNetworkService {
+class UpdateAppointmentNetworkService {
   async updateAppointment(payload) {
-    console.log(payload);
     const appointmentid = payload.payload.appointmentId;
     const {fDate, notes1, time} = payload.payload;
     const token = await AsyncStorage.getItem('accessToken');
@@ -24,4 +23,4 @@ class updateAppointmentNetworkService {
     );
   }
 }
-export default new updateAppointmentNetworkService();
+export default new UpdateAppointmentNetworkService();

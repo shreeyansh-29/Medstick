@@ -1,20 +1,23 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
-import updateAppointmentNetworkService from '../../../network/networkServices/user/updateAppointmentNetworkService';
-import { updateAppointmentError, updateAppointmentSuccess } from '../../action/appointmentReminderAction/updateAppointmentAction';
+import {
+  updateAppointmentError,
+  updateAppointmentSuccess,
+} from '../../action/appointmentReminderAction/updateAppointmentAction';
 import * as types from '../../actionTypes';
+import UpdateAppointmentNetworkService from '../../../network/networkServices/user/updateAppointmentNetworkService';
 
-export function* updateAppointmentWorkerSaga(data) {
+export function* updateAppointmentSaga(data) {
   try {
-    const response = yield call(updateAppointmentNetworkService.updateAppointment,data);
-    console.log(response,"response");
+    let response = yield call(
+      UpdateAppointmentNetworkService.updateAppointment,
+      data,
+    );
     yield put(updateAppointmentSuccess(response?.data));
   } catch (error) {
-    console.log(error);
     yield put(updateAppointmentError(error));
   }
 }
 
-export function* updateAppointmentWatcherSaga() {
-  yield takeLatest(types.UPDATE_APPOINTMENT_REQUEST, updateAppointmentWorkerSaga);
+export function* watchUpdateAppointmentSaga() {
+  yield takeLatest(types.UPDATE_APPOINTMENT_REQUEST, updateAppointmentSaga);
 }
-

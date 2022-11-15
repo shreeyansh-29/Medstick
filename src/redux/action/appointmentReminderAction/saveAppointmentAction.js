@@ -23,3 +23,9 @@ export const saveAppointmentError = err => {
     payload: err,
   };
 };
+
+export const saveAppointmentClear = () => {
+  return {
+    type: types.SAVE_APPOINTMENT_CLEAR,
+  };
+};

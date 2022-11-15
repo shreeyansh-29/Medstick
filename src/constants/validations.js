@@ -25,14 +25,14 @@ export const profileValidationSchema = yup.object().shape({
 });
 
 export const appointmentValidationSchema = yup.object().shape({
-  DoctorName: yup.string().required('Doctor name is required').nullable(),
-  Description: yup
+  doctorName: yup.string().required('Doctor name is required').nullable(),
+  notes: yup
     .string()
-    .max(200, ({max}) => `Description can be only ${max} characters`)
-    .required('Description is Required*')
+    .max(100, ({max}) => `Notes can be only ${max} characters`)
+    .required('Notes is Required*')
     .nullable(),
-  Date: yup.string().required('Date is Required*').nullable(),
-  Time: yup.string().required('Time is Required*').nullable(),
+  date: yup.string().required('Date is Required*').nullable(),
+  time: yup.string().required('Time is Required*').nullable(),
 });
 
 export const prescriptionValidationSchema = yup.object().shape({
@@ -45,3 +45,10 @@ export const prescriptionValidationSchema = yup.object().shape({
   location: yup.string().required('Location is Required*').nullable(),
   image: yup.string().required('Image is Required*').nullable(),
 });
+
+export const updateAppointmentSchema = yup.object().shape({
+  notes: yup.string().required('Description is Required*').nullable(),
+  date1: yup.string().required('Date is Required*').nullable(),
+  time: yup.string().required('Time is Required*').nullable(),
+});
+

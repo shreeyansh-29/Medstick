@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
@@ -17,19 +17,18 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
-import { addReminder, getReminder } from '../../../utils/storage';
-import { useEffect } from 'react';
-import uuid from 'react-native-uuid'
-import CustomButton from '../../../components/atoms/customButton';
+import {addReminder, getReminder} from '../../../utils/storage';
+import PushNotification, {Importance} from 'react-native-push-notification';
+import uuid from 'react-native-uuid';
 
 var counter = 0;
 
-const Reminder = ({navigation,route}) => {
-  const [medicineInfo,setMedicineInfo]=useState(route.params.data)
+const Reminder = ({route, navigation, props}) => {
+  const [medicineInfo, setMedicineInfo] = useState(route.params.data);
   console.log(medicineInfo, 'route abcgdss');
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
-  const [load, loadstate] = React.useState(false);
+  const [load, loadstate] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, endDateState] = useState(new Date());
   const [check1, setCheck1] = useState(false);
@@ -51,14 +50,13 @@ const Reminder = ({navigation,route}) => {
   const [color, setColor] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
-  const [arr,setArr]=useState('')
-  console.log(arr,"array of reminder")
+  const [arr, setArr] = useState('');
+  console.log(startDate, 'array of reminder');
 
- useEffect(()=>{
-  getReminder().then(data=>setArr(data))
- },[])
+  //  useEffect(()=>{
+  //   getReminder().then(data=>setArr(data))
+  //  },[])
 
-  
   const [breakfast, setBreakfast] = useState(false);
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
@@ -68,10 +66,8 @@ const Reminder = ({navigation,route}) => {
 
   const saveReminderData = useSelector(saveReminderSelector.saveReminder);
   const saveReminderResponse = saveReminderData?.data?.data?.status;
-  // console.log(saveReminderResponse, 'save reminder');
 
   const userMedicineId = route.params.id;
-  // console.log(userMedicineId, 'id');
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -92,49 +88,10 @@ const Reminder = ({navigation,route}) => {
   // console.log(title, 'reminderTitle');
   // console.log(timearray, 'reminderTime');
   // console.log(check1, 'everyday');
-  // console.log(noEndDate, ' no end date');
-  // console.log(reminderStatus, 'reminderStatus');
-  // console.log(frequency, 'frequency');
+  // console.log(noEndDate, ' no end date');native
   // console.log(food, 'beforeAfter');
-  // console.log(totalReminders, 'totalReminders');
+  // console.log(totalReminders, 'totalReminders');start_date
   // console.log(currentCount, 'currentCount');
-
-  // const saveData = (
-  //   fDatePrimary,
-  //   fDateSecondary,
-  //   days,
-  //   title,
-  //   time,
-  //   check1,
-  //   noEndDate,
-  //   reminderStatus,
-  //   frequencyTemp,
-  //   food,
-  //   totalReminders,
-  //   currentCount,
-  //   userMedicineId,
-  // ) => {
-  //   dispatch(
-  //     saveReminderRequest(
-  //       fDatePrimary,
-  //       fDateSecondary,
-  //       days,
-  //       title,
-  //       time,
-  //       check1,
-  //       noEndDate,
-  //       reminderStatus,
-  //       frequencyTemp,
-  //       food,
-  //       totalReminders,
-  //       currentCount,
-  //       userMedicineId,
-  //     ),
-  //   );
-  //   setTimeout(() => {
-  //     navigation.pop();
-  //   }, 2000);
-  // };
 
   const onSelecteddaysItemsChange = selectedi => {
     slecteddaysstate(selectedi);
@@ -149,6 +106,149 @@ const Reminder = ({navigation,route}) => {
   const hideDatePickerfortime = () => {
     time_picker_mode_state(false);
   };
+
+  const setreminderwithselecteddate = ({title, startDate, endDate}) => {
+    counter = 0;
+    var now = new Date();
+    console.log(now, 'uo');
+    // now.setDate(startDate?.getDate());
+
+    console.log(
+      now.getDate(),
+      now.getHours(),
+      now.getTime(),
+      '.......................',
+    );
+    console.log(new Date(now.getTime()));
+    console.log(now, 'now');
+    let sample_date = new Date();
+    console.log(sample_date, 'sample date');
+    var weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+    // var set = new Set() < String > selecteddaysItems;
+    if (check1) {
+      timeings.forEach(timee => {
+        var num = Math.floor(Math.random() * 90000) + 10000;
+
+        counter += 1;
+        let timm_array = timee.split(':');
+
+        now.setHours(timm_array[0]);
+        now.setMinutes(timm_array[1]);
+
+        PushNotification.localNotificationSchedule({
+          //... You can use all the options from localNotifications
+          title: title,
+          message: 'Time to eat your medicine',
+          subText: 'Mark as read if you have taken', // (required)
+          id: num.toString(),
+          channelId: 'test1',
+          color: '#3743ab',
+          showWhen: true,
+          tag: userMedicineId.toString(),
+          visibility: 'public',
+          usesChronometer: true,
+          when: now.getHours() + '' + now.getMinutes(),
+          date: new Date(now.getTime() + 5 * 100), // in 60 secs
+          allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
+          vibrate: true,
+          playSound: true,
+          invokeApp: false,
+          soundName: 'android.resource://com.project/raw/my_sound.mp3',
+          importance: Importance.HIGH,
+          repeatType: 'day',
+          smallIcon: 'android.resource://com.project/raw/icon.png',
+
+          actions: ['Open app to mark', 'Skip'],
+
+          /* Android Only Properties */
+          repeatTime: 3, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
+        });
+      });
+      return;
+    }
+    while (sample_date <= endDate) {
+      now.setDate(sample_date.getDate());
+
+      now.setMonth(sample_date.getMonth());
+      if (set.has(weeks[now.getDay()])) {
+        timeings.forEach(timee => {
+          // var num = Math.floor(Math.random() * 90000) + 10000;
+          counter += 1;
+          let timm_array = timee.split(':');
+
+          now.setHours(timm_array[0]);
+          now.setMinutes(timm_array[1]);
+          console.log(now, ' ', now.getHours(), ' ', weeks[now.getDay()]);
+
+          let num1 = Math.floor(Math.random() * 90000) + 10000;
+
+          PushNotification.createChannel(
+            {
+              channelId: 'test1', // (required)
+              channelName: title + 'Med channel', // (required)
+              channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+              playSound: false, // (optional) default: true
+              soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+              importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
+              vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
+            },
+            created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+          );
+          PushNotification.localNotificationSchedule({
+            //... You can use all the options from localNotifications
+            title: title,
+            message: 'Time to eat your medicine',
+            subText: 'Mark as read if you have taken', // (required)
+            id: num1.toString(),
+            channelId: 'test1',
+            color: '#3743ab',
+            showWhen: true,
+            tag: userMedicineId.toString(),
+            visibility: 'public',
+            usesChronometer: true,
+            when: new Date(now.getTime() + 5 * 100),
+            date: new Date(now.getTime()), // in 60 secs
+            allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
+            vibrate: true,
+            playSound: true,
+            invokeApp: false,
+            soundName: 'android.resource://com.project/raw/my_sound.mp3',
+            importance: Importance.HIGH,
+
+            smallIcon: 'ic_launcher',
+            largeIcon: 'ic_launcher',
+            actions: ['Open app to mark', 'Skip'],
+
+            /* Android Only Properties */
+            repeatTime: 3, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
+          });
+        });
+      }
+
+      sample_date.setDate(sample_date.getDate() + 1);
+    }
+  };
+
+  const pushReminderChannel = () => {
+    PushNotification.createChannel({
+      channelId: 'test-channel',
+      channelName: 'Test Channel',
+    });
+  };
+
+  const handlePushNotification = () => {
+    PushNotification.localNotificationSchedule({
+      channelId: 'test-channel',
+      title: 'Alarm',
+      message: 'take medicine',
+      date: new Date(Date.now() + 20 * 1000),
+      allowWhileIdle: true,
+    });
+  };
+
+  useEffect(() => {
+    pushReminderChannel();
+  }, []);
 
   const onclickBreakfast = () => {
     if (breakfastTouchable === false) {
@@ -212,8 +312,11 @@ const Reminder = ({navigation,route}) => {
     currentCount,
     userMedicineId,
   ) => {
-    if (title.length === 0 || timearray.length === 0) {
-      Alert.alert('Please fill all the details', ' ', [
+    if (
+      title.length === 0
+      // || timearray.length === 0
+    ) {
+      Alert.alert('Make sure you have valid reminder', ' ', [
         {
           text: 'OK',
           onPress: () => {},
@@ -226,7 +329,7 @@ const Reminder = ({navigation,route}) => {
     let time = '';
     let days = '';
     for (let i = 0; i < timearray.length; i++) {
-      let mtime = timearray[i].split(' ')[0].split(':')[0];
+      let mtime = timearray[i]?.split(' ')[0]?.split(':')[0];
       if (breakfast && i == 0) {
         if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
           mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
@@ -277,67 +380,77 @@ const Reminder = ({navigation,route}) => {
 
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
+
+    // setreminderwithselecteddate(title, startDate, endDate);
+
+    handlePushNotification();
+
     const frequencyTemp = frequency.toString();
 
     if (endDate === 'No End Date') {
       setfDate('null');
     }
-    
-   let obj={
-    userMedicineId:medicineInfo.userMedicineId,
-    medicineId:medicineInfo.medicineId,
-    medicineName:medicineInfo.medicineName,
-    description:medicineInfo.medicineDescription,
-    present:true,
-    doasgeType:medicineInfo.doasgeType,
-    doasageQuantity:medicineInfo.doasageQuantity,
-    doasgePower:medicineInfo.doasgePower,
-    stock:medicineInfo.stock,
-    leftStock:medicineInfo.leftStock,
-    prescriptionId:medicineInfo.prescriptionId,
-    doctorName:medicineInfo.doctorName,
-    specialization:medicineInfo.specialization,
-    contact:medicineInfo.contact,
-    location:medicineInfo.location,
-    prescriptionUrl:medicineInfo.prescriptionUrl,
-    reminderId:uuid.v4(),
-    startDate:fDatePrimary,
-    endDate:fDateSecondary ,
-    days:days,
-    reminderTitle:title,
-    reminderTime:time,
-    everyday:check1,
-    noEndDate:noEndDate,
-    reminderStatus:reminderStatus,
-    frequency:frequencyTemp,
-    beforeAfter:food,
-    totalReminders:totalReminders,
-    currentCount:currentCount
-  }
-  if(arr !==null)
-  {
-    setArr([...arr,obj])
-     
-    setTimeout(() => {
-      navigation.navigate('Medicine');
-    }, 2000);
-  }
-  else{
-    setArr([obj])
-    setTimeout(() => {
-      navigation.navigate('Medicine');
-    }, 2000);
-  }
-  
-   
+    // console.log(reminderStatus, 'reminderStatus');
+    // console.log(frequencyTemp, 'frequency');
+    // console.log(fDateSecondary, 'endDate');
+    // console.log(food, 'beforeAfter');
+    // console.log(totalReminders, 'totalReminders');
+    // console.log(currentCount, 'currentCount');
+    // console.log(userMedicineId, 'iddddd');
 
-  
+    //  let obj={
+    //   medicineId:medicineInfo.MedicineId,
+    //   medicineName:medicineInfo.MedicineName,
+    //   description:medicineInfo.MedicineDescription,
+    //   present:true,
+    //   doasgeType:medicineInfo.doasgeType,
+    //   doasageQuantity:medicineInfo.doasageQuantity,
+    //   doasgePower:medicineInfo.doasgePower,
+    //   stock:medicineInfo.stock,
+    //   leftStock:medicineInfo.leftStock,
+    //   reminderId:uuid.v4(),
+    //   startDate:fDatePrimary,
+    //   endDate:fDateSecondary ,
+    //   days:days,
+    //   reminderTitle:title,
+    //   reminderTime:time,
+    //   everyday:check1,
+    //   noEndDate:noEndDate,
+    //   reminderStatus:reminderStatus,
+    //   frequency:frequencyTemp,
+    //   beforeAfter:food,
+    //   totalReminders:totalReminders,
+    //   currentCount:currentCount
+    // }
+
+    // setArr([...arr,obj])
+
+    dispatch(
+      saveReminderRequest(
+        fDatePrimary,
+        fDateSecondary,
+        days,
+        title,
+        time,
+        check1,
+        noEndDate,
+        reminderStatus,
+        frequencyTemp,
+        food,
+        totalReminders,
+        currentCount,
+        userMedicineId,
+      ),
+    );
+    setTimeout(() => {
+      navigation.pop();
+    }, 2000);
   };
 
   // console.log(endDate);
-  useEffect(()=>{
-  addReminder(arr)
-  },[arr])
+  // useEffect(()=>{
+  // addReminder(arr)
+  // },[arr])
 
   return (
     // { showReminderDuration &&  <ReminderDuration/>}
@@ -784,10 +897,10 @@ const Reminder = ({navigation,route}) => {
             )}
           </View>
           <Divider></Divider>
-          <CustomButton
+          <Button
             loading={load}
             title="Save reminder"
-            handleSubmit={() => {
+            onPress={() => {
               savereminder(
                 fDatePrimary,
                 fDateSecondary,
@@ -802,12 +915,11 @@ const Reminder = ({navigation,route}) => {
                 userMedicineId,
               );
               if (saveReminderResponse === 'Success') {
-                route.params.fetchStatus();
+                route.params?.fetchStatus();
               }
             }}
-            btnStyles={styles.buttonStyle}
-            contStyles={styles.buttonContainer}
-          />
+            buttonStyle={styles.buttonStyle}
+            containerStyle={styles.buttonContainer}></Button>
         </View>
       </View>
     </ScrollView>
