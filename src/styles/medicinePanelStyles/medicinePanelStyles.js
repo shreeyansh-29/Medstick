@@ -191,19 +191,27 @@ const Styles = StyleSheet.create({
     width: '100%',
     marginTop: 10,
   },
-  textbox: {
-    width: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
+  textView1:{
+    flexDirection:'row',
+    width:'100%',
+    marginTop:10,
+    justifyContent:'space-between'
+    
+  },
+  textbox:{
+    width:'50%',
+    justifyContent:'center',
+    alignItems:'center',
   },
   stockbox: {
     width: '30%',
   },
-  picker: {
-    borderColor: colorPalette.appColor,
-    borderWidth: 1,
-    marginTop: 10,
-    borderRadius: 5,
+  picker:{
+    borderColor:colorPalette.appColor,
+    borderWidth:1,
+    borderRadius:5,
+    marginTop:6,
+   
   },
   addbutton: {
     justifyContent: 'center',
@@ -308,10 +316,11 @@ const Styles = StyleSheet.create({
     padding: 20,
   },
   prescriptionBox: {
-    // width: '100%',
-    padding: 10,
+    width: '98%',
+    padding: 5,
+    elevation:2,
+    marginTop:5,
     borderColor: colorPalette.appColor,
-
     borderStartWidth: 4,
   },
   prescriptionText1: {

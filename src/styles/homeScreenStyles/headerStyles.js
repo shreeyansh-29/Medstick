@@ -4,6 +4,7 @@ import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   headerItem: {
+    
     height: verticalScale(56),
     flexDirection: 'row',
     alignItems: 'center',

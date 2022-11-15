@@ -17,13 +17,16 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
+import { addReminder, getReminder } from '../../../utils/storage';
+import { useEffect } from 'react';
+import uuid from 'react-native-uuid'
 import CustomButton from '../../../components/atoms/customButton';
 
 var counter = 0;
 
-const Reminder = ({route, navigation, props}) => {
-  // console.log(route, 'route abcgdss');
-
+const Reminder = ({navigation,route}) => {
+  const [medicineInfo,setMedicineInfo]=useState(route.params.data)
+  console.log(medicineInfo, 'route abcgdss');
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = React.useState(false);
@@ -48,6 +51,14 @@ const Reminder = ({route, navigation, props}) => {
   const [color, setColor] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
+  const [arr,setArr]=useState('')
+  console.log(arr,"array of reminder")
+
+ useEffect(()=>{
+  getReminder().then(data=>setArr(data))
+ },[])
+
+  
   const [breakfast, setBreakfast] = useState(false);
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
@@ -271,28 +282,62 @@ const Reminder = ({route, navigation, props}) => {
     if (endDate === 'No End Date') {
       setfDate('null');
     }
-
-    dispatch(
-      saveReminderRequest(
-        fDatePrimary,
-        fDateSecondary,
-        days,
-        title,
-        time,
-        check1,
-        noEndDate,
-        reminderStatus,
-        frequencyTemp,
-        food,
-        totalReminders,
-        currentCount,
-        userMedicineId,
-      ),
-    );
+    
+   let obj={
+    userMedicineId:medicineInfo.userMedicineId,
+    medicineId:medicineInfo.medicineId,
+    medicineName:medicineInfo.medicineName,
+    description:medicineInfo.medicineDescription,
+    present:true,
+    doasgeType:medicineInfo.doasgeType,
+    doasageQuantity:medicineInfo.doasageQuantity,
+    doasgePower:medicineInfo.doasgePower,
+    stock:medicineInfo.stock,
+    leftStock:medicineInfo.leftStock,
+    prescriptionId:medicineInfo.prescriptionId,
+    doctorName:medicineInfo.doctorName,
+    specialization:medicineInfo.specialization,
+    contact:medicineInfo.contact,
+    location:medicineInfo.location,
+    prescriptionUrl:medicineInfo.prescriptionUrl,
+    reminderId:uuid.v4(),
+    startDate:fDatePrimary,
+    endDate:fDateSecondary ,
+    days:days,
+    reminderTitle:title,
+    reminderTime:time,
+    everyday:check1,
+    noEndDate:noEndDate,
+    reminderStatus:reminderStatus,
+    frequency:frequencyTemp,
+    beforeAfter:food,
+    totalReminders:totalReminders,
+    currentCount:currentCount
+  }
+  if(arr !==null)
+  {
+    setArr([...arr,obj])
+     
     setTimeout(() => {
-      navigation.navigate('MedicinePanel');
+      navigation.navigate('Medicine');
     }, 2000);
+  }
+  else{
+    setArr([obj])
+    setTimeout(() => {
+      navigation.navigate('Medicine');
+    }, 2000);
+  }
+  
+   
+
+  
   };
+
+  // console.log(endDate);
+  useEffect(()=>{
+  addReminder(arr)
+  },[arr])
 
   return (
     // { showReminderDuration &&  <ReminderDuration/>}

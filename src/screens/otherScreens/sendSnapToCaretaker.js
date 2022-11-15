@@ -27,6 +27,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   let res = useSelector(state => state.myCaretaker);
   let meds = useSelector(state => state.medicineList);
   let res1 = useSelector(state => state.sendSnap?.data);
+  console.log(res1);
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');

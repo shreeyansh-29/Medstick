@@ -15,15 +15,7 @@ import {loadGetUserMedicine} from '../../../redux/action/userMedicine/getUserMed
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
-function ColorCode(percentage) {
-  if (percentage < 60) {
-    return colorPalette.redPercentageColor;
-  } else if (61 <= percentage && percentage < 90) {
-    return 'orange';
-  } else {
-    return colorPalette.greenPercentageColor;
-  }
-}
+
 LocaleConfig.locales['en'] = {
   monthNames: [
     'January',
@@ -80,6 +72,24 @@ const history = [
   {
     historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
     date: '2022-11-05',
+    taken: '10:00 AM',
+    notTaken: '14:00 PM,20:00 PM',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
+    date: '2022-11-07',
+    taken: '10:00 AM,14:00 PM,20:00 PM',
+    notTaken: '',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
+    date: '2022-11-08',
+    taken: '10:00 AM,14:00 PM',
+    notTaken: '20:00 PM',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
+    date: '2022-11-09',
     taken: '10:00 AM',
     notTaken: '14:00 PM,20:00 PM',
   },
@@ -181,7 +191,6 @@ const Report = ({navigation}) => {
   const dayComponent = (date, state) => {
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
-
     return (
       <>
         {dataMap.some(a) ? (
@@ -216,7 +225,6 @@ const Report = ({navigation}) => {
       </>
     );
   };
-
   return (
     <>
       <View style={styles.container} />
@@ -320,22 +328,6 @@ const Report = ({navigation}) => {
   );
 };
 
-var dataMap = [
-  {date: '2022-11-07', percentage: 61},
-  {date: '2022-11-08', percentage: 95},
-  {date: '2022-11-09', percentage: 91},
-  {date: '2022-11-10', percentage: 91},
-  {date: '2022-11-12', percentage: 91},
-  {date: '2022-11-13', percentage: 61},
-  {date: '2022-11-14', percentage: 95},
-  {date: '2022-11-15', percentage: 91},
-  {date: '2022-11-17', percentage: 91},
-  {date: '2022-11-18', percentage: 95},
-  {date: '2022-11-19', percentage: 91},
-  {date: '2022-11-21', percentage: 91},
-  {date: '2022-11-22', percentage: 21},
-  {date: '2022-11-24', percentage: 61},
-  {date: '2022-11-25', percentage: 11},
-];
+var dataMap = [];
 
 export default Report;

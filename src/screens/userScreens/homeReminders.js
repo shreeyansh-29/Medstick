@@ -1,47 +1,38 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from '../../styles/homeScreenStyles/reminderStyles';
 import {FlatList} from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import {Card} from 'react-native-paper';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faEllipsisVertical} from '@fortawesome/free-solid-svg-icons';
+import {faCircleCheck, faCircleXmark} from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {
-  faCircleCheck,
-  faCircleXmark,
-} from '@fortawesome/free-regular-svg-icons';
+import {getReminder} from '../../utils/storage';
 
-const Reminders = ({showAlert}) => {
-  const [reminders, setReminders] = useState([
-    {
-      medName: 'Acetaminophen',
-      reminderTime: '10:00AM',
-    },
-    {
-      reminderTime: '10:00AM',
-      medName: 'Azithromycin',
-    },
-    {
-      reminderTime: '10:00AM',
-      medName: 'Dalcoflex',
-    },
-    {
-      reminderTime: '10:00AM',
-      medName: 'Benzhydrocodone',
-    },
-    {
-      reminderTime: '10:00AM',
-      medName: 'Acetaminophen',
-    },
-    {
-      reminderTime: '10:00AM',
-      medName: 'Diflorasone Diacetate',
-    },
-  ]);
+const Reminders = () => {
+  const [visible, setVisible] = useState(false);
+  const [flag, setFlag] = useState(0);
+  let [startDate, setStartDate] = useState('');
+  startDate = startDate.split('-');
+  startDate = startDate?.map(Number);
+  let startingDate = startDate[2];
+  console.log(startingDate, 'startdate');
 
+  const [reminders, setReminders] = useState('');
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+  const currentDate = new Date().getDate();
+  console.log(currentDate, currentMonth, currentYear, 'date');
+
+  useEffect(() => {
+    getReminder().then(data => setReminders(data));
+  }, []);
+
+  console.log(reminders, 'reminders');
   const renderItem = ({item}) => {
+    setStartDate(item.startDate);
+
     return (
       <Animatable.View animation="zoomInUp" duration={400}>
         <Card style={styles.card}>
@@ -55,11 +46,12 @@ const Reminders = ({showAlert}) => {
                 <View style={styles.avatarView}>
                   <View style={styles.medNameView}>
                     <ListItem.Title style={styles.medName}>
-                      {item.reminderTime}
+                      <Text>Medicine Name :</Text>
+                      {item.medicineName}
                     </ListItem.Title>
                     <ListItem.Subtitle
                       style={{marginVertical: 2, fontSize: 16}}>
-                      {item.medName}
+                      {item.reminderTime}
                     </ListItem.Subtitle>
                   </View>
                 </View>
@@ -99,7 +91,7 @@ const Reminders = ({showAlert}) => {
       <View style={styles.container}>
         <Text style={styles.font}>Reminders</Text>
       </View>
-      {reminders.length === 0 ? (
+      {reminders?.length === 0 && flag === 0 ? (
         <View style={styles.imgContainer}>
           <Image
             resizeMode="contain"

@@ -17,8 +17,9 @@ import {deviceWidth} from '../../../components/atoms/constant';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 const MedicineList = ({route, navigation}) => {
-  const data = route.params.data;
-  const [index, setIndex] = useState(route.params.index);
+  const data = route.params?.data;
+  console.log(route,"data")
+  const [index, setIndex] = useState(route.params?.index);
   const isCarousel = useRef(null);
 
   const MedicineDetailCard = ({item, index}) => {
@@ -28,15 +29,17 @@ const MedicineList = ({route, navigation}) => {
           <View style={styles.top}>
             <View style={styles.medNameContainer}>
               <View style={styles.medNameView}>
-                <Text style={styles.medName}>{item.medicineName}</Text>
+                <Text style={styles.medName}>{item.MedicineName}</Text>
               </View>
               <View style={styles.iconView}>
                 <TouchableOpacity
                   onPress={() => {
                     navigation?.navigate('AddMedicine', {
-                      itemDescription: item.description,
-                      itemDosageType: item.dosageQuantity,
-                      itemDosageUnit: item.dosageUnit,
+                      itemMedicineName:item.medicineName,
+                      itemDescription: item.medicineDescription,
+                      itemDosageType: item.dosageType,
+                      itemDosagePower: item.dosagePower,
+                      itemDosageQuantity:item.dosageQuantity,
                       Stock: item.stock,
                       doctorName: item.doctorName,
                       contact: item.contact,
@@ -66,7 +69,7 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Description : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.description}</Text>
+                    <Text style={styles.itemData}>{item.medicineDescription}</Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -74,7 +77,7 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Dosage Type : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.dosageQuantity}</Text>
+                    <Text style={styles.itemData}>{item.dosageType}</Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -169,7 +172,7 @@ const MedicineList = ({route, navigation}) => {
           inactiveSlideShift={0}
         />
         <Pagination
-          dotsLength={data.length}
+          dotsLength={data?.length}
           activeDotIndex={index}
           carouselRef={isCarousel}
           dotStyle={{
