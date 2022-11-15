@@ -26,18 +26,14 @@ import {AddMedicine, getMedicine} from '../../../utils/storage';
 
 const MedicinePanel = ({navigation}) => {
   const [flag, setFlag] = useState('');
-  console.log(flag,'flag')
+  console.log(flag, 'flag');
   const [medicineResponse, setMedicineResponse] = useState();
-  console.log(medicineResponse,"medicineresponse")
+  console.log(medicineResponse, 'medicineresponse');
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [id, setId] = useState('');
   console.log('id', id);
   const [medicines, setMedicines] = useState([]);
-  const res = useSelector(state => state.medicineList);
-  console.log(res);
-  const loading = useSelector(state => state.medicineList?.isLoading);
-  const res1 = useSelector(state => state.deleteMedicine);
   const [isActive, setIsActive] = useState(false);
   const [color, setColor] = useState(false);
   const [clockActive, setClockActive] = useState(false);
@@ -70,42 +66,16 @@ const MedicinePanel = ({navigation}) => {
     }).start();
   }, []);
 
-  useEffect(() => {
-    if (res?.data !== null) {
-      console.log(res);
-      setMedicines(res?.data);
-    } else {
-      setMedicines([]);
-    }
-  }, [res]);
-
-  const userMeds = async () => {
-    dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
-  };
-
-  useEffect(() => {
-    if (isFocused) {
-      userMeds();
-    }
-  }, [isFocused]);
-
   const deleteMedicineLocal = async index => {
     medicineResponse.splice(medicineResponse.indexOf(index), 1);
     AddMedicine(medicineResponse);
     navigation.navigate('Medicine');
   };
 
-  const deleteMedicine = userMedicineId => {
-    dispatch(deleteMedicineRequest(userMedicineId));
-    setTimeout(async () => {
-      dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
-    }, 300);
-  };
-
   useEffect(() => {
     getMedicine().then(data => {
       setMedicineResponse(data);
-    })
+    });
   }, []);
 
   const getTokenId = async () => {
@@ -162,12 +132,12 @@ const MedicinePanel = ({navigation}) => {
                       style={Styles.rem}
                       onPress={() => {
                         navigation.navigate('MedicinePanelStack', {
-                screen: 'Reminder',
-                params: {
-                  data: item,
-                  index: index,
-                },
-              });
+                          screen: 'Reminder',
+                          params: {
+                            data: item,
+                            index: index,
+                          },
+                        });
                       }}>
                       <FontAwesomeIcon
                         icon={faClock}
@@ -203,143 +173,31 @@ const MedicinePanel = ({navigation}) => {
     );
   };
 
-  const renderItem = ({item, index}) => {
-    return (
-      <>
-        <Animatable.View animation="zoomInUp" duration={400}>
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              navigation.navigate('MedicinePanelStack', {
-                screen: 'MedicineList',
-                params: {
-                  data: medicines,
-                  index: index,
-                },
-              });
-            }}>
-            <Card style={Styles.card}>
-              <View style={Styles.listView}>
-                <ListItem style={Styles.list}>
-                  <ListItem.Content>
-                    <View style={Styles.avatarView}>
-                      <FontAwesomeIcon
-                        icon={faPills}
-                        size={36}
-                        color={colorPalette.mainColor}
-                      />
-                      <View style={Styles.medNameView}>
-                        <ListItem.Title style={Styles.medName}>
-                          {item.medicineName}
-                        </ListItem.Title>
-                        {/* <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Type: </Text>
-                          {item.dosageType}
-                        </ListItem.Subtitle> */}
-                        <ListItem.Subtitle>
-                          <Text style={{color: 'grey'}}>Dosage Quantity: </Text>
-                          {item.dosageQuantity}
-                        </ListItem.Subtitle>
-                        {/* <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Dosage Unit: </Text>
-                          {item.dosageUnit}
-                        </ListItem.Subtitle> */}
-                        <ListItem.Subtitle>
-                          <Text style={{color: 'grey'}}>Total Stock: </Text>
-                          {item.stock}
-                        </ListItem.Subtitle>
-                      </View>
-                    </View>
-                  </ListItem.Content>
-                  <View style={Styles.icon}>
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      id="touch1"
-                      style={Styles.rem}
-                      onPress={() => {
-                        navigation.navigate('MedicinePanelStack', {
-                          screen: 'Reminder',
-                          params: {
-                            id: item.userMedicineId,
-                            fetchStatus: getStatus(),
-                          },
-                        });
-                        clockColorChange(item);
-                      }}>
-                      <FontAwesomeIcon
-                        icon={faClock}
-                        color={
-                          clockActive && item.userMedicineId
-                            ? colorPalette.mainColor
-                            : 'grey'
-                        }
-                        size={22}
-                      />
-
-                      {console.log(color, 'colorrrrrrrrrr')}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{padding: 8}}
-                      activeOpacity={1}
-                      onPress={() => {
-                        Alert.alert('Delete it!', 'Sure you want delete it', [
-                          {
-                            text: 'Delete',
-                            onPress: () => deleteMedicine(item.userMedicineId),
-                          },
-                          {
-                            text: 'Cancel',
-                          },
-                        ]);
-                      }}>
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        color={colorPalette.mainColor}
-                        size={22}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </ListItem>
-              </View>
-            </Card>
-          </TouchableOpacity>
-        </Animatable.View>
-      </>
-    );
-  };
-
   return (
     <>
-      
-        <View style={Styles.container}>
-          <View style={Styles.background} />
-          <MainHeader title={'Medicine'} navigation={navigation} />
-          {loading ? (
-            <Loader />
-          ) : (
-            <>
-              {medicineResponse?.length === 0 ? (
-                <View style={Styles.lottie}>
-                  <LottieView
-                    style={{width: '60%'}}
-                    speed={0.8}
-                    source={require('../../../assets/animation/noMed1.json')}
-                    progress={progress}
-                  />
-                </View>
-              ) : (
-                <View style={{flex: 1}}>
-                  <FlatList
-                    data={medicineResponse}
-                    renderItem={renderItemLocal}
-                    showsVerticalScrollIndicator={false}
-                  />
-                </View>
-              )}
-            </>
-          )}
-        </View>
-      </>
-  )
-              }
+      <View style={Styles.container}>
+        <View style={Styles.background} />
+        <MainHeader title={'Medicine'} navigation={navigation} />
+        {medicineResponse === null ? (
+          <View style={Styles.lottie}>
+            <LottieView
+              style={{width: '60%'}}
+              speed={0.8}
+              source={require('../../../assets/animation/noMed1.json')}
+              progress={progress}
+            />
+          </View>
+        ) : (
+          <>
+            <FlatList
+              data={medicineResponse}
+              renderItem={renderItemLocal}
+              showsVerticalScrollIndicator={false}
+            />
+          </>
+        )}
+      </View>
+    </>
+  );
+};
 export default MedicinePanel;

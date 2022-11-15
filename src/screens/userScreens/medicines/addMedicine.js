@@ -35,15 +35,20 @@ import AddMedicineButton from '../../../components/atoms/addMedicineButton';
 import {loadSaveUserMedicine} from '../../../redux/action/userMedicine/saveUserMedicineAction';
 import {searchMedicineRequest} from '../../../redux/action/userMedicine/searchMedicineAction';
 import {ListItem} from 'react-native-elements';
-import {AddMedicine, getMedicine, getPrescription, getSaveMedicine,saveMedicine} from '../../../utils/storage';
+import {
+  AddMedicine,
+  getMedicine,
+  getPrescription,
+  getSaveMedicine,
+  saveMedicine,
+} from '../../../utils/storage';
 import {openDatabase} from 'react-native-sqlite-storage';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-import uuid from 'react-native-uuid'
+import uuid from 'react-native-uuid';
 
 var db = openDatabase({name: 'MedicineDatabase.db'});
 
 const AddMedicines = ({navigation, route}) => {
-
   const [medicineName, setMedicineName] = useState('');
   const [userMedicineName, setUserMedicineName] = useState('');
   const [userMedicineDescription, setUserMedicineDescription] = useState('');
@@ -54,41 +59,37 @@ const AddMedicines = ({navigation, route}) => {
   const [searchModal, setSearchModal] = useState(false);
   const [pill, setPill] = useState('tablet');
   const [stock, setStock] = useState('');
-  console.log(stock,'stock')
+  console.log(stock, 'stock');
   const [remainingStock, setRemainingStock] = useState('');
-  const [dosageQuantity,setDosageQuantity]=useState('');
+  const [dosageQuantity, setDosageQuantity] = useState('');
   const [token, setToken] = useState('');
   const [medicineId, setMedicineId] = useState('');
   const [id, setId] = useState('');
-  const [dose,setDose]=useState('')
+  const [dose, setDose] = useState('');
   const [prescriptionId, setPrescriptionId] = useState('');
   const [doseType, setDoseType] = useState('');
   const saveMedicineData = useSelector(state => state.addMedicineReducer?.data);
   const dispatch = useDispatch();
   const [arr, setArr] = useState('');
-  const [array,setArray]=useState('')
-  const [flag,setFlag]=useState('')
-  
+  const [array, setArray] = useState('');
+  const [flag, setFlag] = useState('');
 
-  useEffect(()=>{
-    getSaveMedicine().then(data=>setArray(data))
-  },[])
-  
+  useEffect(() => {
+    getSaveMedicine().then(data => setArray(data));
+  }, []);
+
   useEffect(() => {
     getMedicine().then(data => setArr(data));
   }, []);
 
   console.log('array', arr);
 
-  console.log(route.params?.data,'route')
-  if(route.params?.itemMedicineName !== undefined)
-  {
-    let itemMedicineName=route.params.itemMedicineName
-    console.log(itemMedicineName)
-  }
-  else
-  {
-    console.log(route.params,'new')
+  console.log(route.params?.data, 'route');
+  if (route.params?.itemMedicineName !== undefined) {
+    let itemMedicineName = route.params.itemMedicineName;
+    console.log(itemMedicineName);
+  } else {
+    console.log(route.params, 'new');
   }
 
   const searchMedicine = useSelector(state => state.searchMedicine);
@@ -184,39 +185,32 @@ const AddMedicines = ({navigation, route}) => {
     );
   };
 
-  const saveMedicineModalLocal=async()=>{
-    if(medicineName===''||details === '')
-    {
-      showAlert()
+  const saveMedicineModalLocal = async () => {
+    if (medicineName === '' || details === '') {
+      showAlert();
+    } else {
+      let obj = {
+        medicineId: uuid.v4(),
+        medicineName: medicineName,
+        medicineDescription: details,
+      };
+      if (array !== null) {
+        setArray([...array, obj]);
+      } else {
+        setArray([obj]);
+      }
+      setTimeout(() => {
+        setModal(false);
+        setFlag(1);
+      }, 300);
     }
-    else{
-      let obj={
-        medicineId:uuid.v4(),
-        medicineName:medicineName,
-        medicineDescription:details,
+  };
 
-      }
-      if(array!==null)
-      {
-        setArray([...array,obj])
-      }
-      else
-      {
-        setArray([obj])
-      }
-      setTimeout(()=>{
-        setModal(false)
-        setFlag(1)
-      },300)
+  useEffect(() => {
+    if (medicineName !== null && details !== null) {
+      saveMedicine(array);
     }
-  }
-
-  useEffect(()=>{
-    if(medicineName!==null && details!==null)
-    {
-      saveMedicine(array)
-    }
-  },[array])
+  }, [array]);
 
   // const saveMedicineModal = async () => {
   //   if (medicineName === '' || details === '') {
@@ -332,35 +326,34 @@ const AddMedicines = ({navigation, route}) => {
       doseType === ''
     ) {
       showAlert();
-    } else if (flag==='') {
+    } else if (flag === '') {
       showMedicineAlert();
     } else if (route.params === undefined) {
       showPrescriptionAlert();
     } else {
       let obj = {
-        userMedicineId:uuid.v4(),
-        medicineId:uuid.v4(),
-        medicineName: array[array.length-1]?.medicineName,
-        medicineDescription: array[array.length-1]?.medicineDescription,
-        present:'true',
+        userMedicineId: uuid.v4(),
+        medicineId: uuid.v4(),
+        medicineName: array[array.length - 1]?.medicineName,
+        medicineDescription: array[array.length - 1]?.medicineDescription,
+        present: 'true',
         dosageType: pill,
         dosageQuantity: dosageQuantity,
-        dosagePower:dose+doseType,
+        dosagePower: dose + doseType,
         leftStock: remainingStock,
         stock: stock,
-        prescriptionId:route.params.data.prescriptionId,
-        doctorName:route.params.data.doctorName,
-        specialization:route.params.data.specialization,
-        contact:route.params.data.contact,
-        location:route.params.data.location,
-        prescriptionUrl:route.params.data.prescriptionUrl
+        prescriptionId: route.params.data.prescriptionId,
+        doctorName: route.params.data.doctorName,
+        specialization: route.params.data.specialization,
+        contact: route.params.data.contact,
+        location: route.params.data.location,
+        prescriptionUrl: route.params.data.prescriptionUrl,
       };
       setArr([...arr, obj]);
-       
-      setTimeout(()=>{
-        navigation.navigate('Medicine')
-      })
 
+      setTimeout(() => {
+        navigation.navigate('Medicine');
+      });
     }
   };
 
@@ -379,10 +372,6 @@ const AddMedicines = ({navigation, route}) => {
       console.log('else');
     }
   }, [arr]);
-
-  
-
-
 
   return (
     <View style={Styles.addMedicinePage}>
@@ -424,25 +413,25 @@ const AddMedicines = ({navigation, route}) => {
                     activeOutlineColor="#02aba6"
                   />
                 </View>
-                {id !==null &&
-                <View
-                  style={{
-                    alignSelf: 'center',
-                    marginLeft: 12,
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSearchModal(true);
-                      setDeatils('');
+                {id !== null && (
+                  <View
+                    style={{
+                      alignSelf: 'center',
+                      marginLeft: 12,
                     }}>
-                    <FontAwesomeIcon
-                      size={25}
-                      icon={faSearch}
-                      color={colorPalette.mainColor}
-                    />
-                  </TouchableOpacity>
-                </View>
-                }
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSearchModal(true);
+                        setDeatils('');
+                      }}>
+                      <FontAwesomeIcon
+                        size={25}
+                        icon={faSearch}
+                        color={colorPalette.mainColor}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
               <TextInput
                 id="name"
@@ -457,9 +446,7 @@ const AddMedicines = ({navigation, route}) => {
               />
               <TouchableOpacity
                 style={{marginVertical: 40}}
-                onPress={() =>
-                  saveMedicineModalLocal()
-                }>
+                onPress={() => saveMedicineModalLocal()}>
                 <SaveButton />
               </TouchableOpacity>
             </ScrollView>
@@ -538,9 +525,9 @@ const AddMedicines = ({navigation, route}) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <KeyboardAvoidingView>
             {/* {id !== null ? ( */}
-              <TouchableOpacity onPress={() => setModal(true)}>
-                <SelectMedicineName medicineName={medicineName} />
-              </TouchableOpacity>
+            <TouchableOpacity onPress={() => setModal(true)}>
+              <SelectMedicineName medicineName={medicineName} />
+            </TouchableOpacity>
             {/* ) : (
               <View>
                 <TextInput
@@ -567,26 +554,26 @@ const AddMedicines = ({navigation, route}) => {
                 />
               </View>
             )} */}
-<View style={Styles.textView1}>
-<View style={{width:'48%'}}>
-            <View style={Styles.picker}>
-              <Picker
-                style={{
-                  color: 'black',
-                }}
-                id="picker1"
-                placeholder="Select Medicine Type"
-                selectedValue={pill}
-                onValueChange={value => setPill(value)}>
-                <Picker.Item label="Tablet" value="tablet" />
-                <Picker.Item label="Inhaler" value="inhaler" />
-                <Picker.Item label="Injection" value="injection" />
-                <Picker.Item label="Syrup" value="syrup" />
-              </Picker>
+            <View style={Styles.textView1}>
+              <View style={{width: '48%'}}>
+                <View style={Styles.picker}>
+                  <Picker
+                    style={{
+                      color: 'black',
+                    }}
+                    id="picker1"
+                    placeholder="Select Medicine Type"
+                    selectedValue={pill}
+                    onValueChange={value => setPill(value)}>
+                    <Picker.Item label="Tablet" value="tablet" />
+                    <Picker.Item label="Inhaler" value="inhaler" />
+                    <Picker.Item label="Injection" value="injection" />
+                    <Picker.Item label="Syrup" value="syrup" />
+                  </Picker>
+                </View>
               </View>
-              </View>
-              <View style={{width:'50%'}}>
-              <TextInput
+              <View style={{width: '50%'}}>
+                <TextInput
                   style={{width: '97%'}}
                   id="name"
                   label="Dosage Quantity"
@@ -596,14 +583,14 @@ const AddMedicines = ({navigation, route}) => {
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
                 />
-            </View>
+              </View>
             </View>
             <View style={Styles.textView}>
               <View style={{width: '50%'}}>
                 <TextInput
                   style={{width: '97%'}}
                   id="name"
-                  label="DosagePower"
+                  label="Dosage Power"
                   value={dose}
                   mode="outlined"
                   onChangeText={text => setDose(text)}
@@ -643,26 +630,26 @@ const AddMedicines = ({navigation, route}) => {
                 <LeftStock onChange={getRemainingStock} />
               </View>
             </View>
-            
-              <View style={Styles.textView}>
-                <View style={Styles.textbox}>
-                  <Text style={Styles.text}>Add Prescription Here </Text>
-                </View>
 
-                <TouchableOpacity
-                  style={Styles.touchableOpacity}
-                  onPress={() => {
-                    navigation.navigate('addPrescriptionPanel');
-                  }}>
-                  <LottieView
-                    style={Styles.addPrescriptionIcon}
-                    speed={0.7}
-                    progress={progress}
-                    source={require('../../../assets/animation/addPrescriptionButton.json')}
-                  />
-                </TouchableOpacity>
+            <View style={Styles.textView}>
+              <View style={Styles.textbox}>
+                <Text style={Styles.text}>Add Prescription Here </Text>
               </View>
-            
+
+              <TouchableOpacity
+                style={Styles.touchableOpacity}
+                onPress={() => {
+                  navigation.navigate('addPrescriptionPanel');
+                }}>
+                <LottieView
+                  style={Styles.addPrescriptionIcon}
+                  speed={0.7}
+                  progress={progress}
+                  source={require('../../../assets/animation/addPrescriptionButton.json')}
+                />
+              </TouchableOpacity>
+            </View>
+
             <TouchableOpacity
               style={Styles.touchableOpacity}
               onPress={

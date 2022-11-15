@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: colorPalette.backgroundColor,
     justifyContent: 'center',
-    elevation: 5,
+    elevation: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 15,
@@ -134,7 +134,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   calendar: {
-    elevation: 5,
+    elevation: 6,
     borderRadius: 7,
     width: horizontalScale(320),
     backgroundColor: colorPalette.backgroundColor,

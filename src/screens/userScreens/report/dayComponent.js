@@ -4,6 +4,7 @@ import {StyleSheet, TouchableOpacity, Text, View} from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 import HistoryDetail from '../patients/historyDetail';
 import {Modal} from 'react-native-paper';
+import AnimatedCircles from '../../../components/atoms/AnimatedCircle';
 
 function ColorCode(percentage) {
   if (percentage < 60) {
@@ -44,6 +45,13 @@ function DayComponent({
           {date.day}
         </Text>
       </ProgressCircle>
+        {/* <AnimatedCircles
+        radius={15}
+        percentage={percentage}
+        strokeWidth={2}
+        text={date.day}
+        color={ColorCode(percentage)}
+      /> */}
     </TouchableOpacity>
   );
 }

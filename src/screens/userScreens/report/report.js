@@ -9,12 +9,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadGetMedicineHistoryByDate} from '../../../redux/action/userMedicine/getMedicineHistoryByDateAction';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
+import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
 import {useFocusEffect} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {loadGetUserMedicine} from '../../../redux/action/userMedicine/getUserMedicineAction';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
+import {getMedicine} from '../../../utils/storage';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -97,7 +99,6 @@ const history = [
 LocaleConfig.defaultLocale = 'en';
 
 const Report = ({navigation}) => {
-  const dispatch = useDispatch();
   const [medicineId, setMedicineId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
@@ -106,18 +107,18 @@ const Report = ({navigation}) => {
   const year = selectedDate?.year;
   const month = selectedDate?.month;
   const date = selectedDate?.day;
-  const getUserMedicine = useSelector(
-    state => state.getUserMedicineReducer?.data?.result,
-  );
+  const [getUserMedicine, setGetUserMedicine] = useState([]);
   const [historyData, setHistoryData] = useState({});
 
   useEffect(() => {
-    dispatch(loadGetUserMedicine());
+    getMedicine().then(data => {
+      setGetUserMedicine(data);
+    });
   }, []);
 
   useFocusEffect(() => {
     const checkMeds = () => {
-      if (getUserMedicine?.length === 0) {
+      if (getUserMedicine === null) {
         Alert.alert('Add Medicine First', 'Click Ok to proceed', [
           {
             text: 'Ok',
@@ -276,11 +277,10 @@ const Report = ({navigation}) => {
                 </Text>
               </View>
               <View style={styles.progressView}>
-                <ProgressReport
-                  styles={styles}
-                  radius={42}
-                  borderWidth={6}
-                  percent={90}
+                <AnimatedProgressCircle
+                  radius={55}
+                  percentage={75}
+                  strokeWidth={10}
                 />
               </View>
             </View>
