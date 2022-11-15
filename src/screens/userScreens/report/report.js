@@ -1,4 +1,4 @@
-import {View, Text, ScrollView, Modal} from 'react-native';
+import {View, Text, ScrollView, Modal, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
@@ -13,6 +13,17 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {loadGetUserMedicine} from '../../../redux/action/userMedicine/getUserMedicineAction';
 import {Picker} from '@react-native-picker/picker';
+import {colorPalette} from '../../../components/atoms/colorPalette';
+import ProgressCircle from 'react-native-progress-circle';
+function ColorCode(percentage) {
+  if (percentage < 60) {
+    return colorPalette.redPercentageColor;
+  } else if (61 <= percentage && percentage < 90) {
+    return 'orange';
+  } else {
+    return colorPalette.greenPercentageColor;
+  }
+}
 LocaleConfig.locales['en'] = {
   monthNames: [
     'January',
@@ -53,12 +64,34 @@ LocaleConfig.locales['en'] = {
   ],
   dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
 };
+const history = [
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
+    date: '2022-11-01',
+    taken: '10:00 AM,14:00 PM,20:00 PM',
+    notTaken: '',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
+    date: '2022-11-03',
+    taken: '10:00 AM,14:00 PM',
+    notTaken: '20:00 PM',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
+    date: '2022-11-05',
+    taken: '10:00 AM',
+    notTaken: '14:00 PM,20:00 PM',
+  },
+];
 LocaleConfig.defaultLocale = 'en';
+
 const Report = ({navigation}) => {
   const dispatch = useDispatch();
   const [medicineId, setMedicineId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
+  const [percentage, setPercentage] = useState(0);
   const [selectDate, setSelectDate] = useState('');
   const year = selectedDate?.year;
   const month = selectedDate?.month;
@@ -66,6 +99,7 @@ const Report = ({navigation}) => {
   const getUserMedicine = useSelector(
     state => state.getUserMedicineReducer?.data?.result,
   );
+  const [historyData, setHistoryData] = useState({});
 
   useEffect(() => {
     dispatch(loadGetUserMedicine());
@@ -93,19 +127,61 @@ const Report = ({navigation}) => {
     checkMeds();
   });
 
-  console.log(selectedDate, 'date');
-  const ModalOpen = day => {
-    console.log('12345');
+  const dayPercentageCalculator = (Taken, notTaken) => {
+    const nt = [];
+    const t = [];
+    if (notTaken !== '') {
+      notTaken.split(',').map(i => {
+        nt.push(i);
+      });
+    }
+    if (Taken !== '') {
+      Taken.split(',').map(i => {
+        t.push(i);
+      });
+    }
+    let totalCount = nt.length + t.length;
+    return Math.floor((t.length / totalCount) * 100);
+  };
+
+  const dateSelector = history => {
+    history.map(item => {
+      let percentage = dayPercentageCalculator(item.taken, item.notTaken);
+      dataMap.push({date: item.date, percentage: percentage});
+    });
+  };
+
+  useEffect(() => {
+    if (medicineId !== null) {
+      dateSelector(history);
+    }
+  }, [medicineId]);
+
+  const ModalOpen = () => {
     setModalVisible(true);
-    // fetchMedicineHistory();
   };
-  const fetchMedicineId = data => {
-    setMedicineId(data);
+
+  const alertFunction = () => {
+    Alert.alert('You have no reminder of this date', '', [
+      {
+        text: 'Ok',
+        onPress: () => {},
+      },
+    ]);
   };
+
+  const getHistorydata = date => {
+    const a = b => b.date == date.dateString;
+    const historyIndex = history.findIndex(a);
+    setHistoryData(history[historyIndex]);
+    console.log(historyData, 'his');
+  };
+
   let startDate = new Date().toDateString();
   const dayComponent = (date, state) => {
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
+
     return (
       <>
         {dataMap.some(a) ? (
@@ -117,21 +193,30 @@ const Report = ({navigation}) => {
             setSelectedDate={setSelectedDate}
             percentage={dataMap[index].percentage}
             setModalVisible={ModalOpen}
+            history={getHistorydata}
           />
         ) : (
-          <DayComponent
-            date={date}
-            state={state}
-            selectedDate={selectedDate}
-            initialDate={'2022-11-11'}
-            setSelectedDate={setSelectedDate}
-            percentage={0}
-            setModalVisible={ModalOpen}
-          />
+          <TouchableOpacity
+            style={{}}
+            activeOpacity={1}
+            onPress={() => alertFunction()}>
+            <ProgressCircle
+              percent={0}
+              radius={15}
+              borderWidth={3}
+              color={'grey'}
+              shadowColor={'lightgrey'}
+              bgColor={colorPalette.backgroundColor}>
+              <Text style={{fontSize: 16, color: colorPalette.blackColor}}>
+                {date.day}
+              </Text>
+            </ProgressCircle>
+          </TouchableOpacity>
         )}
       </>
     );
   };
+
   return (
     <>
       <View style={styles.container} />
@@ -147,7 +232,7 @@ const Report = ({navigation}) => {
           }}>
           <View style={styles.modalBox}>
             <HistoryDetail
-              data={history}
+              data={historyData}
               onPress={() => setModalVisible(false)}
             />
           </View>
@@ -235,16 +320,7 @@ const Report = ({navigation}) => {
   );
 };
 
-const history = {
-  historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
-  date: '2022-08-30',
-  taken: '10:00 AM,14:00 PM,20:00 PM',
-  notTaken: '',
-};
 var dataMap = [
-  {date: '2022-11-01', percentage: 91},
-  {date: '2022-11-03', percentage: 91},
-  {date: '2022-11-05', percentage: 91},
   {date: '2022-11-07', percentage: 61},
   {date: '2022-11-08', percentage: 95},
   {date: '2022-11-09', percentage: 91},

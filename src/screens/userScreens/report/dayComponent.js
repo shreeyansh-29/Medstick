@@ -19,10 +19,9 @@ function DayComponent({
   state,
   date,
   setSelectedDate,
-  initialDate,
-  selectedDate,
   percentage,
   setModalVisible,
+  history,
 }) {
   return (
     <TouchableOpacity
@@ -31,7 +30,8 @@ function DayComponent({
       activeOpacity={1}
       onPress={() => {
         setSelectedDate(date.dateString);
-        setModalVisible(date.dateString);
+        setModalVisible();
+        history(date);
       }}>
       <ProgressCircle
         percent={percentage}

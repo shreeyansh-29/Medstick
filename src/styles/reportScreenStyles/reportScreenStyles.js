@@ -134,7 +134,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   calendar: {
-    elevation: 8,
+    elevation: 5,
     borderRadius: 7,
     width: horizontalScale(320),
     backgroundColor: colorPalette.backgroundColor,

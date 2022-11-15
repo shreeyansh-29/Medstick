@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
 import PerformanceCircle from '../../components/organisms/performanceCircle';
@@ -8,18 +8,24 @@ import {Styles} from '../../styles/homeScreenStyles/performanceCircleStyles';
 import {styles} from '../../styles/homeScreenStyles/homeScreenStyles';
 import CustomModal from '../../components/molecules/customModal';
 import {Divider} from 'react-native-elements';
+import {useDispatch, useSelector} from 'react-redux';
+import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction';
 
 const HomeScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(myCaretakerRequest(0));
+  }, []);
+
+  let res = useSelector(state => state.myCaretaker?.data);
+
   const showAlert = () => {
-    Alert.alert(
-      'Would you like to send a snap to caretaker',
-      'Click Ok to send',
-      [
+    if (res?.length === 0) {
+      Alert.alert('Need to add caretaker first', '', [
         {
           text: 'Ok',
-          onPress: () => {
-            navigation.navigate('HomeStack', {screen: 'SendSnap'});
-          },
+          onPress: () => {},
         },
         {
           text: 'Cancel',
@@ -28,8 +34,28 @@ const HomeScreen = ({navigation}) => {
             }
           },
         },
-      ],
-    );
+      ]);
+    } else {
+      Alert.alert(
+        'Would you like to send a snap to caretaker',
+        'Click Ok to send',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {
+              navigation.navigate('HomeStack', {screen: 'SendSnap'});
+            },
+          },
+          {
+            text: 'Cancel',
+            onPress: () => {
+              {
+              }
+            },
+          },
+        ],
+      );
+    }
   };
 
   return (

@@ -25,10 +25,10 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
           if (title === 'Patient Medicine') {
             dispatch(notifyUserClear());
           }
-          if (title === 'Search') {
-            dispatch(resetSend());
-            dispatch(resetUser());
-          }
+          // if (title === 'Search') {
+          //   dispatch(resetSend());
+          //   dispatch(resetUser());
+          // }
           if (title === 'Send Snap') {
             dispatch(sendSnapClear());
           }

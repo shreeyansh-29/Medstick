@@ -17,8 +17,14 @@ import UserAvatar from 'react-native-user-avatar';
 import {ListItem, SearchBar, Icon} from 'react-native-elements';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUserRequest} from '../../redux/action/getUserAction/getUserAction';
-import {sendReqRequest} from '../../redux/action/getUserAction/sendReqAction';
+import {
+  getUserRequest,
+  resetUser,
+} from '../../redux/action/getUserAction/getUserAction';
+import {
+  resetSend,
+  sendReqRequest,
+} from '../../redux/action/getUserAction/sendReqAction';
 import Toast from 'react-native-toast-message';
 import {useRoute} from '@react-navigation/native';
 
@@ -81,6 +87,8 @@ const SearchScreen = ({navigation}) => {
         position: 'bottom',
       });
     }
+    dispatch(resetSend());
+    dispatch(resetUser());
   }, [res1]);
 
   const sendMailToUser = async email => {
@@ -158,7 +166,7 @@ const SearchScreen = ({navigation}) => {
                   }}
                   inputContainerStyle={{
                     borderRadius: 30,
-                    backgroundColor: 'lightgrey',
+                    backgroundColor: '#EFF5F5',
                   }}
                   inputStyle={{
                     fontSize: 18,
