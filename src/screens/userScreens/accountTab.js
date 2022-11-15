@@ -140,12 +140,12 @@ const AccountTab = ({navigation}) => {
           />
           <Divider style={styles.divider} />
 
-          <TwoTouchable
+          {/* <TwoTouchable
             icon={faCameraRetro}
             title="Send Snap"
             navigation={navigation}
             navigationTitle="SendSnap"
-          />
+          /> */}
         </View>
 
         {isLoggedIn ? (

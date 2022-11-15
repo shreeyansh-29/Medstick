@@ -1,43 +1,94 @@
-import {Text, View} from 'react-native';
-import React from 'react';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
-import PerformanceCircle from '../../components/organisms/performanceCircle';
 import Reminders from './homeReminders';
-import {Styles} from '../../styles/homeScreenStyles/performanceCircleStyles';
 import {styles} from '../../styles/homeScreenStyles/homeScreenStyles';
 import AnimatedProgressCircle from '../../components/atoms/AnimatedProgressCircle';
-import {verticalScale} from '../../components/atoms/constant';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faInfo} from '@fortawesome/free-solid-svg-icons';
+import CustomModal from '../../components/molecules/customModal';
 
 const HomeScreen = ({navigation}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const showAlert = () => {
+    Alert.alert(
+      'Would you like to send a snap to caretaker',
+      'Click Ok to send',
+      [
+        {
+          text: 'Ok',
+          onPress: () => {
+            navigation.navigate('HomeStack', {screen: 'SendSnap'});
+          },
+        },
+        {
+          text: 'Cancel',
+          onPress: () => {
+            {
+            }
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <>
-      <View style={styles.background} />
       <View style={styles.container}>
+        <View style={styles.background} />
         <MainHeader title={'Medstick'} navigation={navigation} />
-        {/* <View style={{flex: 1, width: '100%'}}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              width: '100%',
-              alignItems: 'center',
-            }}> */}
         <View style={styles.card}>
           <Calender />
-          <View
-            style={styles.progressCircleContainer}>
+          <View style={styles.progressCircleContainer}>
             <AnimatedProgressCircle
-              radius={55}
+              radius={47}
               percentage={75}
-              strokeWidth={10}
+              strokeWidth={8}
             />
             <Text style={styles.progressText}>Today's Overall Performance</Text>
           </View>
         </View>
-        <Reminders />
-        {/* </ScrollView>
-        </View> */}
+        <View>
+          <CustomModal
+            modalVisible={modalVisible}
+            type="fade"
+            modalView={
+              <View style={styles.modalContainer}>
+                <Text style={styles.modalHeading}>INFO</Text>
+                <Text style={{fontSize: 18}} numberOfLines={3}>
+                  All your Reminders will be shown here. Save and mark your
+                  reminders to view your report in Report Section.
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                  activeOpacity={0.8}
+                  style={styles.modalTouch}>
+                  <Text style={styles.modalOk}>OK</Text>
+                </TouchableOpacity>
+              </View>
+            }
+            onRequestClose={() => setModalVisible(!modalVisible)}
+            customStyles={styles.modal}
+          />
+        </View>
+        <View style={styles.reminderView}>
+          <Text style={styles.font}>Reminders</Text>
+          <View
+            style={styles.info}>
+            <TouchableOpacity
+              style={styles.circle}
+              activeOpacity={0.8}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <FontAwesomeIcon icon={faInfo} color={'grey'} size={13} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{width: '100%', height: '44%'}}>
+          <Reminders showAlert={showAlert} />
+        </View>
       </View>
     </>
   );
