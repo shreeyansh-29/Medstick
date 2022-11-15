@@ -6,7 +6,6 @@ import * as Animatable from 'react-native-animatable';
 import {Card} from 'react-native-paper';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faEllipsisVertical} from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import {
   faCircleCheck,
@@ -148,25 +147,6 @@ const Reminders = ({setVisible}) => {
         </View>
       )}
     </>
-    // <View style={styles.card}>
-    //   <Text style={styles.font}>Reminders</Text>
-    //   {/* </View> */}
-    //   <View style={{height: 309, width: '100%'}}>
-    //     {reminders.length === 0 ? (
-    //       <View style={styles.container}>
-    //         <Image
-    //           resizeMode="contain"
-    //           style={styles.img}
-    //           source={require('../../assets/images/noremtoday.png')}
-    //         />
-    //       </View>
-    //     ) : (
-    //       <View style={styles.flatList}>
-    //         <ReminderList />
-    //       </View>
-    //     )}
-    //   </View>
-    // </View>
   );
 };
 

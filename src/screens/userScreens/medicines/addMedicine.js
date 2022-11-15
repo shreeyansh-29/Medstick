@@ -10,7 +10,6 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import AddMedicinesHeader from '../../../components/molecules/headers/addMedicinesHeader';
 import {styles} from '../../../styles/homeScreenStyles/headerStyles';
 
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -24,16 +23,16 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SelectMedicineName from '../../../components/atoms/selectMedicineName';
 import TotalStock from '../../../components/molecules/totalStock';
 import LeftStock from '../../../components/molecules/leftStock';
-import ModalHeader from '../../../components/molecules/headers/modalHeader';
 import SaveButton from '../../../components/molecules/saveButton';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {loadAddMedicine} from '../../../redux/action/userMedicine/addMedicineAction';
-import {showSuccessMessage} from '../../../components/atoms/successMessage';
 import Toast from 'react-native-toast-message';
-import AddMedicineButton from '../../../components/atoms/addMedicineButton';
 import {loadSaveUserMedicine} from '../../../redux/action/userMedicine/saveUserMedicineAction';
-import {searchMedicineRequest} from '../../../redux/action/userMedicine/searchMedicineAction';
+import {
+  searchMedicineClear,
+  searchMedicineRequest,
+} from '../../../redux/action/userMedicine/searchMedicineAction';
 import {ListItem} from 'react-native-elements';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {openDatabase} from 'react-native-sqlite-storage';
@@ -274,7 +273,11 @@ const AddMedicines = ({navigation, route}) => {
         <ListItem style={styles.list}>
           <ListItem.Content>
             <View style={{padding: 2}}>
-              <TouchableOpacity onPress={() => setdata(item)}>
+              <TouchableOpacity
+                onPress={() => {
+                  setdata(item);
+                  dispatch(searchMedicineClear());
+                }}>
                 <View style={{flexDirection: 'row'}}>
                   <ListItem.Subtitle>
                     <Text
@@ -504,39 +507,56 @@ const AddMedicines = ({navigation, route}) => {
         onRequestClose={() => {
           setSearchModal(false);
         }}>
-        <View style={{margin: '5%'}}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => {
-              setSearchModal(false);
-            }}>
-            <FontAwesomeIcon
-              icon={faArrowLeft}
-              size={22}
-              color={colorPalette.mainColor}
-            />
-          </TouchableOpacity>
-          <View style={{marginTop: '4%'}}>
-            <TextInput
-              label="Search Medicine"
-              mode="outlined"
-              multiline={true}
-              onChangeText={text => search(text)}
-              outlineColor={colorPalette.mainColor}
-              activeOutlineColor={colorPalette.mainColor}
-            />
+        <ScrollView>
+          <View style={{margin: '5%'}}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => {
+                setSearchModal(false);
+                dispatch(searchMedicineClear());
+              }}>
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                size={22}
+                color={colorPalette.mainColor}
+              />
+            </TouchableOpacity>
+            <View style={{marginTop: '4%'}}>
+              <TextInput
+                label="Search Medicine"
+                mode="outlined"
+                multiline={true}
+                onChangeText={text => search(text)}
+                outlineColor={colorPalette.mainColor}
+                activeOutlineColor={colorPalette.mainColor}
+              />
+            </View>
+            {tempSearch?.result?.content?.length === 0 ? (
+              <>
+                {Alert.alert(
+                  'No such medicine present',
+                  'Please add manually',
+                  [
+                    {
+                      text: 'Ok',
+                      onPress: () => {
+                        setSearchModal(false);
+                      },
+                    },
+                    
+                  ],
+                )}
+              </>
+            ) : (
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={tempSearch?.result?.content}
+                renderItem={renderItem}
+                numColumns={1}
+              />
+            )}
           </View>
-          {tempSearch?.result?.content?.length === 0 ? (
-            <></>
-          ) : (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={tempSearch?.result?.content}
-              renderItem={renderItem}
-              numColumns={1}
-            />
-          )}
-        </View>
+        </ScrollView>
       </Modal>
 
       {/* <View style={Styles.addMedicinesHeader}>

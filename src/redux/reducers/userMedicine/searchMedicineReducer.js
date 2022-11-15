@@ -1,11 +1,14 @@
-import {SEARCH_MEDICINE_ERROR, 
-SEARCH_MEDICINE_SUCCESS,
-SEARCH_MEDICINE_REQUEST} from '../../actionTypes'
+import {
+  SEARCH_MEDICINE_ERROR,
+  SEARCH_MEDICINE_SUCCESS,
+  SEARCH_MEDICINE_REQUEST,
+  SEARCH_MEDICINE_CLEAR,
+} from '../../actionTypes';
 
 const initialState = {
   data: null,
   isLoading: false,
-  error: '',
+  error: null,
 };
 
 export const searchMedicineReducer = (state = initialState, action = {}) => {
@@ -17,6 +20,9 @@ export const searchMedicineReducer = (state = initialState, action = {}) => {
     }
     case SEARCH_MEDICINE_ERROR: {
       return {...state, error: action.err};
+    }
+    case SEARCH_MEDICINE_CLEAR: {
+      return {data: null, isLoading: false, error: null};
     }
     default:
       return state;

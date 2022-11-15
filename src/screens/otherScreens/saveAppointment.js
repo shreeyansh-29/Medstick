@@ -14,7 +14,6 @@ import {Picker} from '@react-native-picker/picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {appointmentReminderSelector} from '../../constants/Selector/appointmentReminderSelector';
 import {
-  appointmentReminderClear,
   appointmentReminderRequest,
 } from '../../redux/action/userMedicine/appointmentReminderAction';
 import {

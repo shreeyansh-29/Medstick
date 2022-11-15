@@ -17,9 +17,7 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
-import {addReminder, getReminder} from '../../../utils/storage';
 import PushNotification, {Importance} from 'react-native-push-notification';
-import uuid from 'react-native-uuid';
 
 var counter = 0;
 

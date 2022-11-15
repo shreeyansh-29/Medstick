@@ -16,7 +16,6 @@ import {
   faUserNurse,
   faUserDoctor,
   faStopwatch,
-  faCameraRetro,
   faGear,
   faHospitalUser,
 } from '@fortawesome/free-solid-svg-icons';

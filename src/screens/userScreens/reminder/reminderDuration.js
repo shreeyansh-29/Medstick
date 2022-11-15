@@ -5,13 +5,12 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCaretDown, faCircle} from '@fortawesome/free-solid-svg-icons';
+import { faCircle} from '@fortawesome/free-solid-svg-icons';
 import CheckBox from 'react-native-check-box';
 import {deviceWidth} from '../../../components/atoms/constant';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
 import { day_data, months } from './pushNotification/timeData';
-import { useEffect } from 'react';
 import SaveButton from '../../../components/molecules/saveButton';
 
 const ReminderDuration = ({route, navigation}) => {
