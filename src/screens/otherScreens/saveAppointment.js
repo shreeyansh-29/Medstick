@@ -26,6 +26,9 @@ import CustomButton from '../../components/atoms/customButton';
 import Toast from 'react-native-toast-message';
 import {getAppointmentRequest} from '../../redux/action/appointmentReminderAction/getAppointmentAction';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import {hour} from '../../constants/constants';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -198,17 +201,24 @@ const AppointmentReminders = ({navigation, route}) => {
                       </View>
                       <View
                         style={{
-                          width: '65%',
+                          width: '51%',
                           flexDirection: 'row',
                           alignItems: 'center',
                         }}>
                         <View
                           style={{
-                            width: '90%',
+                            width: '100%',
                             alignItems: 'center',
                           }}>
                           <Text style={styles.dateText1}>{values.date}</Text>
                         </View>
+                      </View>
+                      <View style={styles.arrow}>
+                        <FontAwesomeIcon
+                          icon={faCaretDown}
+                          style={styles.downIcon}
+                          size={14}
+                        />
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -242,17 +252,24 @@ const AppointmentReminders = ({navigation, route}) => {
                       </View>
                       <View
                         style={{
-                          width: '65%',
+                          width: '51%',
                           flexDirection: 'row',
                           alignItems: 'center',
                         }}>
                         <View
                           style={{
-                            width: '90%',
+                            width: '100%',
                             alignItems: 'center',
                           }}>
                           <Text style={styles.dateText1}>{values.time}</Text>
                         </View>
+                      </View>
+                      <View style={styles.arrow}>
+                        <FontAwesomeIcon
+                          icon={faCaretDown}
+                          style={styles.downIcon}
+                          size={14}
+                        />
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -264,24 +281,17 @@ const AppointmentReminders = ({navigation, route}) => {
                   isVisible={saveTimeOpen}
                   mode="time"
                   onConfirm={date => {
-                    let time;
+                    let minutes =
+                      date.getMinutes() < 10
+                        ? '0' + date.getMinutes()
+                        : date.getMinutes();
 
-                    if (date.getHours() < 10) {
-                      time =
-                        date.getHours() + ':' + date.getMinutes() + ':' + '00';
-                    } else {
-                      time =
-                        date.getHours() + ':' + date.getMinutes() + ':' + '00';
-                    }
+                    let newTime =
+                      date.getHours() > 12
+                        ? hour[date.getHours()] + ':' + minutes + ' ' + 'PM'
+                        : date.getHours() + ':' + minutes + ' ' + 'AM';
 
-                    console.log(time);
-
-                    // let minutes =
-                    //   date.getMinutes() < 10
-                    //     ? '0' + date.getMinutes()
-                    //     : date.getMinutes();
-                    // let newTime = date.getHours() + ':' + minutes + ':' + '00';
-                    setFieldValue('time', time);
+                    setFieldValue('time', newTime);
                     setSaveTimeOpen(false);
                   }}
                   onCancel={() => setSaveTimeOpen(false)}
@@ -357,6 +367,14 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     color: 'black',
   },
+  arrow: {
+    // alignItems: 'flex-start',
+    justifyContent: 'center',
+    // right: 4,
+    width: '10%',
+    // backgroundColor: 'red',
+  },
+  downIcon: {},
 });
 
 export default AppointmentReminders;
