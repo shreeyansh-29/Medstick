@@ -110,8 +110,8 @@ const SearchScreen = ({navigation}) => {
     dispatch(getUserRequest(email));
   };
 
-  const sendReqToCaretaker = patient_id => {
-    dispatch(sendReqRequest({patient_id, sentby}));
+  const sendReqToCaretaker = (patient_id, fcmToken) => {
+    dispatch(sendReqRequest({patient_id, sentby, fcmToken}));
   };
 
   const renderItem = ({item}) => {
@@ -137,7 +137,7 @@ const SearchScreen = ({navigation}) => {
                 activeOpacity={1}
                 style={styles.listButton}
                 onPress={() => {
-                  sendReqToCaretaker(item.id);
+                  sendReqToCaretaker(item?.id, item?.userDetails?.fcmToken);
                 }}>
                 <Text style={styles.text1}>Send Request</Text>
               </TouchableOpacity>
