@@ -44,6 +44,7 @@ const MyCareTaker = ({navigation}) => {
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
+        activeOpacity={1}
         style={styles.top}
         onPress={() => {
           navigation.navigate('CareTakerProfile', {profile: item});

@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator();
 
 const AccountStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{headerShown: false, orientation:'portrait'}}>
       <Stack.Screen name="CareTaker" component={CareTaker} />
       <Stack.Screen name="Patients" component={Patients} />
       <Stack.Screen name="PatientProfile" component={PatientProfile} />

@@ -23,6 +23,7 @@ import {Dimensions} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import {savePrescription} from '../../../utils/storage';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -45,11 +46,7 @@ const AddPrescription = ({navigation}) => {
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colorPalette.appColor,
-      }}>
+    <View style={{flex: 1}}>
       <CustomModal
         modalVisible={visible}
         modalView={

@@ -4,7 +4,10 @@ import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
-import {caretakerReqRequest} from '../../../redux/action/caretaker/caretakerRequestAction';
+import {
+  caretakerReqClear,
+  caretakerReqRequest,
+} from '../../../redux/action/caretaker/caretakerRequestAction';
 import {acceptCaretakerReqRequest} from '../../../redux/action/caretaker/acceptCaretakerReqAction';
 import {deleteCaretakerReqRequest} from '../../../redux/action/caretaker/deleteCaretakerReqAction';
 import Loader from '../../../components/atoms/loader';
@@ -12,6 +15,7 @@ import CustomImage from '../../../components/atoms/customImage';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomModal from '../../../components/molecules/customModal';
+import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAction';
 
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
@@ -31,9 +35,7 @@ const CareTakerRequest = () => {
 
   useEffect(() => {
     if (res?.data !== null) {
-      setCaretakers([...res.data]);
-    } else if (res?.data === null) {
-      setCaretakers([]);
+      setCaretakers(res.data);
     }
   }, [res]);
 
@@ -64,6 +66,8 @@ const CareTakerRequest = () => {
   const acceptRequest = requestId => {
     dispatch(acceptCaretakerReqRequest(requestId));
     setTimeout(() => {
+      dispatch(myCaretakerRequest(0));
+      dispatch(caretakerReqClear());
       dispatch(caretakerReqRequest(pageNo));
     }, 1000);
   };
@@ -71,6 +75,8 @@ const CareTakerRequest = () => {
   const deleteRequest = requestId => {
     dispatch(deleteCaretakerReqRequest(requestId));
     setTimeout(() => {
+      dispatch(myCaretakerRequest(0));
+      dispatch(caretakerReqClear());
       dispatch(caretakerReqRequest(pageNo));
     }, 1000);
   };
@@ -146,7 +152,7 @@ const CareTakerRequest = () => {
               <CustomImage
                 resizeMode="contain"
                 styles={styles.img}
-                source={require('../../../assets/images/nocaretakers.jpg')}
+                source={require('../../../assets/images/noRequest.png')}
               />
             </View>
           ) : (

@@ -119,11 +119,15 @@ const UpdateAppointment = ({
                     text="notes"
                     activeOutlineColor={colorPalette.mainColor}
                     value={values.notes}
-                    styles={{height: 100}}
+                    styles={{height: 100, backgroundColor: 'white'}}
                     multiline={true}
                     selectTextOnFocus={true}
                   />
-                  {errors.notes && touched.notes && <Text>{errors.notes}</Text>}
+                  {errors.notes && touched.notes && (
+                    <Text style={{color: 'red', marginTop: 4}}>
+                      {errors.notes}
+                    </Text>
+                  )}
                 </View>
 
                 {/* Date */}
@@ -224,7 +228,7 @@ const UpdateAppointment = ({
                   btnStyles={{
                     backgroundColor: colorPalette.mainColor,
                     borderRadius: 5,
-                    paddingHorizontal: 20,
+                    paddingHorizontal: 30,
                   }}
                 />
               </View>
@@ -257,7 +261,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   container1: {
-    marginBottom: 15,
+    marginVertical: 10,
     width: '92%',
   },
   containerTouch: {

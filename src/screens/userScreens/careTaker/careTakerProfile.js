@@ -8,6 +8,7 @@ import ErrorBoundary from 'react-native-error-boundary';
 
 const CareTakerProfile = ({navigation, route}) => {
   const item = route.params.profile;
+  console.log(item);
   const dateHandler = date => {
     let dob = date.split('-');
     return dob[2] + '-' + dob[1] + '-' + dob[0];
@@ -43,9 +44,11 @@ const CareTakerProfile = ({navigation, route}) => {
                 <Text style={styles.heading}>Location</Text>
               </View>
               <View style={styles.subView2}>
-                <Text style={styles.content}>
-                  {item.address + ', ' + item.state + ', ' + item.country}
-                </Text>
+                {item?.address ? (
+                  <Text style={styles.content}>
+                    {item.address + ', ' + item.state + ', ' + item.country}
+                  </Text>
+                ) : null}
               </View>
             </View>
             <Divider style={styles.divider} />

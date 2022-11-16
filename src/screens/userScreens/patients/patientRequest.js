@@ -12,6 +12,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import CustomModal from '../../../components/molecules/customModal';
 import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
+import {myPatientsRequest} from '../../../redux/action/patients/myPatientsAction';
 
 const PatientRequest = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const PatientRequest = () => {
   const acceptRequest = requestId => {
     dispatch(acceptPatientReqRequest(requestId));
     setTimeout(() => {
+      dispatch(myPatientsRequest(0));
       dispatch(patientsReqRequest(pageNo));
     }, 1000);
   };
@@ -65,6 +67,7 @@ const PatientRequest = () => {
   const deleteRequest = requestId => {
     dispatch(deletePatientReqRequest(requestId));
     setTimeout(() => {
+      dispatch(myPatientsRequest(0));
       dispatch(patientsReqRequest(pageNo));
     }, 1000);
   };
@@ -138,7 +141,7 @@ const PatientRequest = () => {
               <CustomImage
                 resizeMode="contain"
                 styles={styles.img}
-                source={require('../../../assets/images/nopatientreq.png')}
+                source={require('../../../assets/images/noRequest.png')}
               />
             </View>
           ) : (

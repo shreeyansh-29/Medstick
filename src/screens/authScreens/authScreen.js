@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     color: 'grey',
-    width: '37%',
+    width: '6%',
   },
   dividerText: {
     paddingHorizontal: 6,

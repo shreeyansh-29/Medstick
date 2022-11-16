@@ -47,8 +47,11 @@ export const prescriptionValidationSchema = yup.object().shape({
 });
 
 export const updateAppointmentSchema = yup.object().shape({
-  notes: yup.string().required('Description is Required*').nullable(),
+  notes: yup
+    .string()
+    .max(100, ({max}) => `Notes can be only ${max} characters`)
+    .required('Notes is Required*')
+    .nullable(),
   date1: yup.string().required('Date is Required*').nullable(),
   time: yup.string().required('Time is Required*').nullable(),
 });
-

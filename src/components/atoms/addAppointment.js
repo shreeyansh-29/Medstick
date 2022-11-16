@@ -3,15 +3,15 @@ import React from 'react';
 import {styles} from '../../styles/homeScreenStyles/subHeaderStyles';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
-const AddAppointment = ({navigation, routeName}) => {
+const AddAppointment = ({navigation, routeName, notes}) => {
   return (
     <View style={styles.bellIcon}>
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          navigation.navigate(routeName);
+          navigation.navigate(routeName, {notes: notes});
         }}>
-        <EvilIcons name="plus" color={"white"} size={32} />
+        <EvilIcons name="plus" color={'white'} size={32} />
       </TouchableOpacity>
     </View>
   );

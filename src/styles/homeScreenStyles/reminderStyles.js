@@ -1,49 +1,48 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {
-  horizontalScale,
-  verticalScale,
-} from '../../components/atoms/constant';
+import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     marginVertical: verticalScale(6),
-    alignItems:'center',
+    alignItems: 'center',
     // backgroundColor:'red',
-    paddingHorizontal:horizontalScale(13)
+    paddingHorizontal: horizontalScale(13),
   },
   imgContainer: {
     backgroundColor: colorPalette.basicColor,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    marginTop: verticalScale(5),
+    marginVertical: verticalScale(5),
     borderRadius: 20,
     elevation: 3,
-    height:300,
-    margin:20
-    },
+    height: 300,
+  },
   flatList: {
     flex: 1,
     width: '100%',
-    height:verticalScale(200)
+    height: verticalScale(200),
   },
-  list:{
+  list: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: colorPalette.backgroundColor,
-    marginHorizontal:8,
-    marginVertical:6,
-    elevation:3,
-    borderRadius:20,
-    padding:10,
-    paddingHorizontal:20,
-    borderWidth:2,
-    borderColor:'white',
+    marginHorizontal: 8,
+    marginVertical: 6,
+    elevation: 3,
+    borderRadius: 20,
+    padding: 10,
+    paddingHorizontal: 20,
+    borderWidth: 2,
+    borderColor: 'white',
   },
-  img: {height: 290,width:280},
-  avatarView: {flexDirection: 'row', backgroundColor:colorPalette.backgroundColor},
+  img: {width: '60%'},
+  avatarView: {
+    flexDirection: 'row',
+    backgroundColor: colorPalette.backgroundColor,
+  },
   medNameView: {flexDirection: 'column'},
   medName: {fontWeight: '600', fontSize: 20},
 });

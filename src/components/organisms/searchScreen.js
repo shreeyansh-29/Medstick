@@ -63,6 +63,9 @@ const SearchScreen = ({navigation}) => {
         text2: 'Invitation sent to user with given email id',
         position: 'top',
       });
+      setTimeout(() => {
+        navigation.pop();
+      }, 2000);
     }
   }, [res]);
 
@@ -73,6 +76,9 @@ const SearchScreen = ({navigation}) => {
         text1: 'Request Send Successfully',
         position: 'bottom',
       });
+      setTimeout(() => {
+        navigation.pop();
+      }, 2000);
     } else if (res1?.status === 'Failed') {
       Toast.show({
         type: 'error',
@@ -167,23 +173,23 @@ const SearchScreen = ({navigation}) => {
                   inputContainerStyle={{
                     borderRadius: 30,
                     backgroundColor: '#EFF5F5',
+                    height: 50,
                   }}
                   inputStyle={{
                     fontSize: 18,
                     color: colorPalette.mainColor,
-                    marginLeft: -4,
                   }}
                   lightTheme="true"
                   placeholderTextColor={colorPalette.mainColor}
                   clearIcon={{color: colorPalette.mainColor, size: 22}}
                   searchIcon={
                     <Icon
-                      size={20}
+                      size={22}
                       name="search"
                       type="font-awesome"
                       color={colorPalette.mainColor}
                       onPress={() => handleSubmit()}
-                      containerStyle={{padding: 10}}
+                      containerStyle={{marginLeft: 10}}
                     />
                   }
                 />

@@ -22,6 +22,8 @@ import styles from '../../../styles/patientStyles/medicineReportStyles';
 import LottieView from 'lottie-react-native';
 import HistoryDetail from './historyDetail';
 import CustomModal from '../../../components/molecules/customModal';
+import AnimatedProgessCircle from '../../../components/atoms/AnimatedProgressCircle';
+import {verticalScale} from '../../../components/atoms/constant';
 
 let detailData = {};
 
@@ -51,7 +53,7 @@ const MedicineReport = ({navigation, route}) => {
       mld = new Date(endDate);
     let daysSet = new Set(days?.split(','));
     let todayDate = new Date();
-    while (msd <= mld) {
+    while (msd <= mld && msd <= todayDate) {
       if (daysSet.has(weeks[msd.getDay()])) {
         let currentDate = new Date(msd);
         const dateObj = {day: '', date: '', month: 0, color: '', year: 0};
@@ -139,14 +141,23 @@ const MedicineReport = ({navigation, route}) => {
         customStyles={styles.detailView}
       />
 
-      <View style={styles.progress}>
-        <PerformanceCircle
-          styles={styles}
-          radius={52}
-          borderWidth={9}
-          percent={30}
-          text={item?.medicineName}
+      <View
+        style={{
+          alignItems: 'center',
+          padding: verticalScale(8),
+          backgroundColor: colorPalette.mainColor,
+          height: 200,
+        }}>
+        <AnimatedProgessCircle
+          radius={58}
+          strokeWidth={12}
+          percentage={91}
+          outerCircleColor={'#CFF5E7'}
+          innerCircleColor={'grey'}
         />
+        <Text style={styles.performance} numberOfLines={1}>
+          {item?.medicineName}
+        </Text>
       </View>
       <View style={styles.bottomSheet}>
         <View style={styles.mainView}>

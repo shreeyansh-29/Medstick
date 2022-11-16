@@ -10,7 +10,7 @@ const AddMedicineStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="AddMedicine"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{headerShown: false, orientation:'portrait'}}>
       <Stack.Screen name="AddMedicine" component={AddMedicine} />
       <Stack.Screen name="Prescription" component={AddPrescription} />
       <Stack.Screen

@@ -63,9 +63,13 @@ const ProfileForm = props => {
             setDateOpen(true);
           }}
           style={styles.dobTouch}>
-          <Text style={styles.dobText}>
-            {moment(props.values.dateofBirth).format('YYYY-MM-DD')}
-          </Text>
+          {props.values.dateofBirth === null ? (
+            <Text style={styles.dobText}>Date Of Birth</Text>
+          ) : (
+            <Text style={styles.dobText}>
+              {moment(props.values.dateofBirth).format('YYYY-MM-DD')}
+            </Text>
+          )}
         </TouchableOpacity>
         {props.errors.dateofBirth && props.touched.dateofBirth && (
           <Text style={styles.errorText}>{props.errors.dateofBirth}</Text>
@@ -76,7 +80,6 @@ const ProfileForm = props => {
         isVisible={dateOpen}
         mode="date"
         onConfirm={date => {
-          console.log(date);
           props.setFieldValue('dateofBirth', moment(date).format('YYYY-MM-DD'));
           setDateOpen(false);
         }}

@@ -13,7 +13,14 @@ import {resetSend} from '../../../redux/action/getUserAction/sendReqAction';
 import {resetUser} from '../../../redux/action/getUserAction/getUserAction';
 import {sendSnapClear} from '../../../redux/action/otherScreenAction/sendSnapAction';
 
-const SubHeader = ({title, navigation, download, options, routeName}) => {
+const SubHeader = ({
+  title,
+  navigation,
+  download,
+  options,
+  routeName,
+  notes,
+}) => {
   const dispatch = useDispatch();
   return (
     <View style={styles.subHeader}>
@@ -22,12 +29,8 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
         style={styles.backIcon}
         onPress={() => {
           navigation.pop();
-          if (title === 'Patient Medicine') {
-            dispatch(notifyUserClear());
-          }
-          // if (title === 'Search') {
-          //   dispatch(resetSend());
-          //   dispatch(resetUser());
+          // if (title === 'Patient Medicine') {
+          //   dispatch(notifyUserClear());
           // }
           if (title === 'Send Snap') {
             dispatch(sendSnapClear());
@@ -46,7 +49,7 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
         <DownloadButton download={download} />
       )}
       {title !== 'Appointment Reminders' ? null : (
-        <AddAppointment navigation={navigation} routeName={routeName} />
+        <AddAppointment navigation={navigation} routeName={routeName} notes={notes}/>
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}
       {/* {title !== 'Patient Profile' ? null : (

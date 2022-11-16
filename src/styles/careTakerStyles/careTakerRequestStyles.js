@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  img: {width: '70%'},
+  img: {width: '90%'},
   card: {
     elevation: 3,
     marginTop: 8,

@@ -11,6 +11,7 @@ import CustomModal from '../../components/molecules/customModal';
 import {useDispatch, useSelector} from 'react-redux';
 import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction';
 import CheckConnection from '../../connectivity/checkConnection';
+import {verticalScale} from '../../components/atoms/constant';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -54,7 +55,9 @@ const HomeScreen = ({navigation}) => {
             {
               text: 'Ok',
               onPress: () => {
-                navigation.navigate('HomeStack', {screen: 'SendSnap'});
+                navigation.navigate('HomeStack', {
+                  screen: 'SendSnapToCaretaker',
+                });
               },
             },
             {
@@ -79,9 +82,9 @@ const HomeScreen = ({navigation}) => {
           <Calender />
           <View style={styles.progressCircleContainer}>
             <AnimatedProgressCircle
-              radius={47}
-              percentage={75}
-              strokeWidth={8}
+              radius={verticalScale(50)}
+              percentage={95}
+              strokeWidth={verticalScale(10)}
             />
             <Text style={styles.progressText}>Today's Overall Performance</Text>
           </View>
@@ -93,7 +96,7 @@ const HomeScreen = ({navigation}) => {
             modalView={
               <View style={styles.modalContainer}>
                 <Text style={styles.modalHeading}>INFO</Text>
-                <Text style={{fontSize: 18}} numberOfLines={3}>
+                <Text style={{fontSize: 18, color: 'black'}} numberOfLines={3}>
                   All your Reminders will be shown here. Save and mark your
                   reminders to view your report in Report Section.
                 </Text>

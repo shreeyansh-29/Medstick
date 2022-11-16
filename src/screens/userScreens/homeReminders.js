@@ -21,7 +21,7 @@ const Reminders = ({showAlert}) => {
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const currentDate = new Date().getDate();
-  console.log(currentDate, currentMonth, currentYear, 'date');
+  // console.log(currentDate, currentMonth, currentYear, 'date');
   // const [reminders, setReminders] = useState([
   //   {
   //     medName: 'Acetaminophen',
@@ -52,8 +52,6 @@ const Reminders = ({showAlert}) => {
   useEffect(() => {
     getReminder().then(data => setReminders(data));
   }, []);
-
-  console.log(reminders, flag);
 
   const renderItem = (item, index) => {
     return (
@@ -104,13 +102,17 @@ const Reminders = ({showAlert}) => {
     <>
       <View style={styles.container}>
         {reminders === null && flag === 0 ? (
-          <View style={styles.imgContainer}>
-            <Image
-              resizeMode="contain"
-              style={styles.img}
-              source={require('../../assets/images/noremtoday.png')}
-            />
-          </View>
+          <ScrollView
+            style={{width: '100%'}}
+            showsVerticalScrollIndicator={false}>
+            <View style={styles.imgContainer}>
+              <Image
+                resizeMode="contain"
+                style={styles.img}
+                source={require('../../assets/images/noremtoday.png')}
+              />
+            </View>
+          </ScrollView>
         ) : (
           <View
             style={{

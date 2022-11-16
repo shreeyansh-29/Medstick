@@ -1,6 +1,7 @@
 import {View, Animated, StyleSheet, TextInput} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import Svg, {G, Circle} from 'react-native-svg';
+import {colorPalette} from './colorPalette';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const Animatedinput = Animated.createAnimatedComponent(TextInput);
@@ -8,15 +9,15 @@ const Animatedinput = Animated.createAnimatedComponent(TextInput);
 function ColorCode(percentage) {
   if (percentage < 60) {
     return colorPalette.redPercentageColor;
-  } else if (61 <= percentage && percentage < 90) {
+  } else if (61 <= percentage && percentage < 85) {
     return 'orange';
   } else {
     return colorPalette.greenPercentageColor;
   }
 }
 
-const AnimatedProgressCircle = ({radius,percentage,strokeWidth}) => {
-  const duration = 1000;
+const AnimatedProgressCircle = ({radius, percentage, strokeWidth, outerCircleColor, innerCircleColor}) => {
+  const duration = 2000;
   const color = ColorCode(percentage);
   const delay = 500;
   const textColor = 'black';
@@ -39,23 +40,24 @@ const AnimatedProgressCircle = ({radius,percentage,strokeWidth}) => {
     animation(percentage);
     animatedValue.addListener(v => {
       if (circleRef?.current) {
-        const strokeDashoffset = circumference - (circumference * v.value) / 100;
+        const strokeDashoffset =
+          circumference - (circumference * v.value) / 100;
         circleRef.current.setNativeProps({
           strokeDashoffset,
         });
       }
 
-      if(inputRef?.current){
+      if (inputRef?.current) {
         inputRef.current.setNativeProps({
-            text:`${Math.round(v.value)}`
-        })
+          text: `${Math.round(v.value)}`,
+        });
       }
     });
 
-    return ()=>{
-        animatedValue.removeAllListeners();
-    }
-  },[percentage]);
+    return () => {
+      animatedValue.removeAllListeners();
+    };
+  }, [percentage]);
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Svg
@@ -69,14 +71,14 @@ const AnimatedProgressCircle = ({radius,percentage,strokeWidth}) => {
             stroke={'grey'}
             strokeWidth={strokeWidth}
             r={radius}
-            strokeOpacity={0.3}
+            strokeOpacity={innerCircleColor ? 0.5 : 0.3}
             fill="transparent"
           />
           <AnimatedCircle
             ref={circleRef}
             cx="50%"
             cy="50%"
-            stroke={color}
+            stroke={outerCircleColor ? outerCircleColor : color}
             strokeWidth={strokeWidth}
             r={radius}
             strokeDasharray={circumference}
@@ -85,11 +87,20 @@ const AnimatedProgressCircle = ({radius,percentage,strokeWidth}) => {
           />
         </G>
       </Svg>
-      <Animatedinput 
-      ref={inputRef}
-      editable={false}
-      underlineColorAndroid='transparent'
-      style={[StyleSheet.absoluteFillObject,{textAlign:'center', fontSize:radius/2,color:color}]}>%</Animatedinput>
+      <Animatedinput
+        ref={inputRef}
+        editable={false}
+        underlineColorAndroid="transparent"
+        style={[
+          StyleSheet.absoluteFillObject,
+          {
+            textAlign: 'center',
+            fontSize: radius / 2.2,
+            color: outerCircleColor ? outerCircleColor : color,
+          },
+        ]}>
+        %
+      </Animatedinput>
     </View>
   );
 };

@@ -1,9 +1,7 @@
 import {
   View,
-  Text,
   FlatList,
   TouchableOpacity,
-  Modal,
   Alert,
   RefreshControl,
 } from 'react-native';
@@ -12,34 +10,33 @@ import {appointmentReminderSelector} from '../../constants/Selector/appointmentR
 import SubHeader from '../../components/molecules/headers/subHeader';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../styles/patientStyles/myPatientsStyles';
-import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import AddButton from '../../components/atoms/addButton';
 import {getAppointmentRequest} from '../../redux/action/appointmentReminderAction/getAppointmentAction';
 import CustomImage from '../../components/atoms/customImage';
-import {
-  faCalendarDays,
-  faPenToSquare,
-  faTrash,
-  faXmark,
-} from '@fortawesome/free-solid-svg-icons';
+import {faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import Loader from '../../components/atoms/loader';
-import {
-  deleteAppointmentClear,
-  deleteAppointmentRequest,
-} from '../../redux/action/appointmentReminderAction/deleteAppointmentAction';
-import DateTime from '../../components/organisms/dateTime';
-import {updateAppointmentRequest} from '../../redux/action/appointmentReminderAction/updateAppointmentAction';
-import DatePicker from 'react-native-date-picker';
-import {color} from 'react-native-reanimated';
+import {deleteAppointmentRequest} from '../../redux/action/appointmentReminderAction/deleteAppointmentAction';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
-import Toast from 'react-native-toast-message';
+import {appointmentReminderRequest} from '../../redux/action/userMedicine/appointmentReminderAction';
 
 const AppointmentReminderList = ({navigation}) => {
   const dispatch = useDispatch();
+  const doctor = useSelector(appointmentReminderSelector.appointmentReminder);
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    dispatch(appointmentReminderRequest(0));
+  }, []);
+
+  useEffect(() => {
+    if (doctor !== null) {
+      setNotes(doctor);
+    }
+  }, [doctor]);
+
   const [pageNo, setPageNo] = useState(0);
   const [appointments, setAppointments] = useState([]);
   const [notes1, setNotes1] = useState('');
@@ -73,7 +70,7 @@ const AppointmentReminderList = ({navigation}) => {
 
   const renderItem = ({item}) => {
     return (
-      <View>
+      <View style={styles.top}>
         <ListItem style={styles.list}>
           <ListItem.Content>
             <View>
@@ -171,6 +168,7 @@ const AppointmentReminderList = ({navigation}) => {
         title={'Appointment Reminders'}
         navigation={navigation}
         routeName={'SaveAppointment'}
+        notes={notes}
       />
 
       <CustomModal
@@ -194,10 +192,21 @@ const AppointmentReminderList = ({navigation}) => {
       ) : (
         <>
           {appointments?.length === 0 ? (
-            <View></View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+              }}>
+              <CustomImage
+                resizeMode="contain"
+                styles={styles.img}
+                source={require('../../assets/images/noAppointments.png')}
+              />
+            </View>
           ) : (
             <FlatList
-              style={{marginTop: 6}}
               showsVerticalScrollIndicator={false}
               data={appointments}
               renderItem={renderItem}

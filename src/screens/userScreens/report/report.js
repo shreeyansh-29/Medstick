@@ -2,17 +2,12 @@ import {View, Text, ScrollView, Modal, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
-import ProgressReport from '../../../components/atoms/progressCircle';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
-import MedicinePicker from '../../../components/atoms/medicinePicker';
-import {useDispatch, useSelector} from 'react-redux';
-import {loadGetMedicineHistoryByDate} from '../../../redux/action/userMedicine/getMedicineHistoryByDateAction';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
 import {useFocusEffect} from '@react-navigation/native';
 import {Alert} from 'react-native';
-import {loadGetUserMedicine} from '../../../redux/action/userMedicine/getUserMedicineAction';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
@@ -62,38 +57,38 @@ const history = [
   {
     historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
     date: '2022-11-01',
-    taken: '10:00 AM,14:00 PM,20:00 PM',
+    taken: '10:00 AM,2:00 PM,8:00 PM',
     notTaken: '',
   },
   {
     historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
     date: '2022-11-03',
-    taken: '10:00 AM,14:00 PM',
-    notTaken: '20:00 PM',
+    taken: '10:00 AM,2:00 PM',
+    notTaken: '8:00 PM',
   },
   {
     historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
     date: '2022-11-05',
     taken: '10:00 AM',
-    notTaken: '14:00 PM,20:00 PM',
+    notTaken: '2:00 PM,8:00 PM',
   },
   {
     historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
     date: '2022-11-07',
-    taken: '10:00 AM,14:00 PM,20:00 PM',
+    taken: '10:00 AM,2:00 PM,8:00 PM',
     notTaken: '',
   },
   {
     historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
     date: '2022-11-08',
-    taken: '10:00 AM,14:00 PM',
-    notTaken: '20:00 PM',
+    taken: '10:00 AM,2:00 PM',
+    notTaken: '8:00 PM',
   },
   {
     historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
     date: '2022-11-09',
     taken: '10:00 AM',
-    notTaken: '14:00 PM,20:00 PM',
+    notTaken: '2:00 PM,8:00 PM',
   },
 ];
 LocaleConfig.defaultLocale = 'en';
@@ -278,9 +273,9 @@ const Report = ({navigation}) => {
               </View>
               <View style={styles.progressView}>
                 <AnimatedProgressCircle
-                  radius={55}
+                  radius={57}
                   percentage={75}
-                  strokeWidth={10}
+                  strokeWidth={12}
                 />
               </View>
             </View>

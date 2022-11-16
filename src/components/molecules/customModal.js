@@ -16,16 +16,8 @@ const CustomModal = ({
       visible={modalVisible}
       onRequestClose={onRequestClose}>
       {type === 'slide' && (
-        <View
-          style={{
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(52, 52, 52, 0.8)',
-          }}>
-          <View style={{flex: 1, justifyContent: 'flex-end'}}>
-            <View style={customStyles}>{modalView}</View>
-          </View>
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+          <View style={customStyles}>{modalView}</View>
         </View>
       )}
       {type === 'fade' && (

@@ -144,7 +144,7 @@ const AccountTab = ({navigation}) => {
             icon={faCameraRetro}
             title="Send Snap"
             navigation={navigation}
-            navigationTitle="SendSnap"
+            navigationTitle="SendSnapToCaretaker"
           /> */}
         </View>
 

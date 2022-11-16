@@ -28,8 +28,6 @@ const MyPatients = ({navigation}) => {
   useEffect(() => {
     if (res?.data !== null) {
       setMyPatients([...res.data]);
-    } else {
-      setMyPatients([]);
     }
   }, [res]);
 

@@ -80,8 +80,8 @@ const ViewPrescriptions = ({navigation, route}) => {
             <View style={style.imgCont}>
               <CustomImage
                 resizeMode="contain"
-                source={require('../../../assets/images/nopatients.png')}
-                styles={{width: '70%'}}
+                source={require('../../../assets/images/noPrescriptionPatient.png')}
+                styles={{width: '80%'}}
               />
             </View>
           ) : (
