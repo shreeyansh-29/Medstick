@@ -96,7 +96,7 @@ const HomeScreen = ({navigation}) => {
             modalView={
               <View style={styles.modalContainer}>
                 <Text style={styles.modalHeading}>INFO</Text>
-                <Text style={{fontSize: 18, color: 'black'}} numberOfLines={3}>
+                <Text style={{fontSize: 18, color: 'grey'}} numberOfLines={3}>
                   All your Reminders will be shown here. Save and mark your
                   reminders to view your report in Report Section.
                 </Text>

@@ -12,8 +12,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 const PrescriptionForm = props => {
   const openCamera = () => {
     ImagePicker.openCamera({
-      width: 300,
-      height: 400,
+      width: 620,
+      height: 820,
       cropping: true,
     }).then(image => {
       props.setFieldValue('image', image.path);
@@ -23,8 +23,8 @@ const PrescriptionForm = props => {
 
   const uploadPhoto = () => {
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 620,
+      height: 820,
       cropping: true,
     }).then(image => {
       props.setFieldValue('image', image.path);
@@ -86,6 +86,7 @@ const PrescriptionForm = props => {
             activeOutlineColor={colorPalette.mainColor}
             {...props}
             value={props.values.contact}
+            keyboardType="numeric"
           />
           {props.errors.contact && props.touched.contact && (
             <Text style={styles.errorText}>{props.errors.contact}</Text>

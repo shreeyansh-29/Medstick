@@ -16,7 +16,13 @@ function ColorCode(percentage) {
   }
 }
 
-const AnimatedProgressCircle = ({radius, percentage, strokeWidth, outerCircleColor, innerCircleColor}) => {
+const AnimatedProgressCircle = ({
+  radius,
+  percentage,
+  strokeWidth,
+  outerCircleColor,
+  innerCircleColor,
+}) => {
   const duration = 2000;
   const color = ColorCode(percentage);
   const delay = 500;
@@ -33,7 +39,7 @@ const AnimatedProgressCircle = ({radius, percentage, strokeWidth, outerCircleCol
       toValue,
       duration,
       delay,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   };
   useEffect(() => {

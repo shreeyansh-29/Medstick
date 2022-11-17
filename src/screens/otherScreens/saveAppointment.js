@@ -43,7 +43,7 @@ const AppointmentReminders = ({navigation, route}) => {
   );
 
   useEffect(() => {
-    if (notes.length === 0) {
+    if (notes.length === 0 || notes === undefined) {
       Alert.alert('Need to add prescription first', '', [
         {
           text: 'Ok',
