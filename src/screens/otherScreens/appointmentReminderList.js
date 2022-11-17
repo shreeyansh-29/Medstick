@@ -1,10 +1,7 @@
 import {
   View,
-  Text,
   FlatList,
   TouchableOpacity,
-  Modal,
-  Alert,
   RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -12,31 +9,20 @@ import {appointmentReminderSelector} from '../../constants/Selector/appointmentR
 import SubHeader from '../../components/molecules/headers/subHeader';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../styles/patientStyles/myPatientsStyles';
-import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import AddButton from '../../components/atoms/addButton';
 import {getAppointmentRequest} from '../../redux/action/appointmentReminderAction/getAppointmentAction';
-import CustomImage from '../../components/atoms/customImage';
 import {
-  faCalendarDays,
   faPenToSquare,
   faTrash,
-  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import Loader from '../../components/atoms/loader';
 import {
-  deleteAppointmentClear,
   deleteAppointmentRequest,
 } from '../../redux/action/appointmentReminderAction/deleteAppointmentAction';
-import DateTime from '../../components/organisms/dateTime';
-import {updateAppointmentRequest} from '../../redux/action/appointmentReminderAction/updateAppointmentAction';
-import DatePicker from 'react-native-date-picker';
-import {color} from 'react-native-reanimated';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
-import Toast from 'react-native-toast-message';
 
 const AppointmentReminderList = ({navigation}) => {
   const dispatch = useDispatch();

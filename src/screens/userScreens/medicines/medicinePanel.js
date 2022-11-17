@@ -39,8 +39,6 @@ const MedicinePanel = ({navigation}) => {
   const [isActive, setIsActive] = useState(false);
   const [color, setColor] = useState(false);
   const [clockActive, setClockActive] = useState(false);
-  console.log(color, 'color');
-  console.log(clockActive, 'colorActive');
   // const saveReminderData = useSelector(saveReminderSelector.saveReminder);
   // console.log(saveReminderData.data.data,"dataaaaaa");
 

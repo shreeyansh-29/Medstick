@@ -7,7 +7,6 @@ export function* searchMedicineWorkerSaga(data) {
   const {payload} = data;
   try {
     const response = yield call(searchMedicineNetworkService.searchMedicineRequest,payload);
-    console.log(response,"repsonse");
     yield put(searchMedicineSuccess(response?.data));
   } catch (err) {
     yield put(searchMedicineError(err));

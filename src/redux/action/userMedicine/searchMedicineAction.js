@@ -20,8 +20,7 @@ export const searchMedicineError = err => {
 };
 export const searchMedicineClear = () => {
     return {
-      type: types.SEARCH_MEDICINE_CLEAR,
-     
+      type: types.SEARCH_MEDICINE_CLEAR,   
     };
   };
   

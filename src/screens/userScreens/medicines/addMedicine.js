@@ -13,7 +13,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {styles} from '../../../styles/homeScreenStyles/headerStyles';
 
 import {colorPalette} from '../../../components/atoms/colorPalette';
-import {faArrowLeft, faSearch} from '@fortawesome/free-solid-svg-icons';
+import {faSearch, faXmark} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {Divider, TextInput} from 'react-native-paper';
@@ -37,6 +37,8 @@ import {ListItem} from 'react-native-elements';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {openDatabase} from 'react-native-sqlite-storage';
 import SubHeader from '../../../components/molecules/headers/subHeader';
+import {faXmarkCircle} from '@fortawesome/free-regular-svg-icons';
+import {text} from '@fortawesome/fontawesome-svg-core';
 
 var db = openDatabase({name: 'MedicineDatabase.db'});
 
@@ -79,7 +81,6 @@ const AddMedicines = ({navigation, route}) => {
     getMedicine().then(data => setArr(data));
   }, []);
 
-  console.log('array', arr);
   useEffect(() => {
     db.transaction(function (txn) {
       txn.executeSql(
@@ -102,13 +103,13 @@ const AddMedicines = ({navigation, route}) => {
   const saveUserMedicineData = useSelector(
     state => state.saveUserMedicineReducer,
   );
-  console.log(saveUserMedicineData, 'RESPONSE');
+
   const searchMedicine = useSelector(state => state.searchMedicine);
-  console.log(tempSearch, 'search');
+  // console.log(tempSearch, 'search');
 
   useEffect(() => {
     if (searchMedicine.data !== null) {
-      setTempSearch(searchMedicine.data);
+      setTempSearch(searchMedicine?.data?.result);
     }
   }, [searchMedicine]);
 
@@ -274,6 +275,7 @@ const AddMedicines = ({navigation, route}) => {
           <ListItem.Content>
             <View style={{padding: 2}}>
               <TouchableOpacity
+                activeOpacity={0.9}
                 onPress={() => {
                   setdata(item);
                   dispatch(searchMedicineClear());
@@ -507,56 +509,57 @@ const AddMedicines = ({navigation, route}) => {
         onRequestClose={() => {
           setSearchModal(false);
         }}>
-        <ScrollView>
-          <View style={{margin: '5%'}}>
+        <View style={{}}>
+          <View style={{alignSelf: 'flex-end', marginTop: 8, marginRight: 12}}>
             <TouchableOpacity
-              style={styles.backButton}
+              activeOpacity={1}
               onPress={() => {
                 setSearchModal(false);
                 dispatch(searchMedicineClear());
+                setTempSearch([]);
               }}>
               <FontAwesomeIcon
-                icon={faArrowLeft}
-                size={22}
+                icon={faXmarkCircle}
+                size={26}
                 color={colorPalette.mainColor}
               />
             </TouchableOpacity>
-            <View style={{marginTop: '4%'}}>
-              <TextInput
-                label="Search Medicine"
-                mode="outlined"
-                multiline={true}
-                onChangeText={text => search(text)}
-                outlineColor={colorPalette.mainColor}
-                activeOutlineColor={colorPalette.mainColor}
-              />
-            </View>
-            {tempSearch?.result?.content?.length === 0 ? (
-              <>
-                {Alert.alert(
-                  'No such medicine present',
-                  'Please add manually',
-                  [
-                    {
-                      text: 'Ok',
-                      onPress: () => {
-                        setSearchModal(false);
-                      },
-                    },
-                    
-                  ],
-                )}
-              </>
-            ) : (
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={tempSearch?.result?.content}
-                renderItem={renderItem}
-                numColumns={1}
-              />
-            )}
           </View>
-        </ScrollView>
+        </View>
+        <View style={{marginVertical: 10}}>
+          <TextInput
+            label="Search Medicine"
+            mode="outlined"
+            onChangeText={text => search(text)}
+            outlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPalette.mainColor}
+            style={{width: '90%', alignSelf: 'center'}}
+            right={
+              <TextInput.Icon
+                onPress={() => {}}
+                name={() => (
+                  <FontAwesomeIcon
+                    size={20}
+                    icon={faXmark}
+                    color={colorPalette.mainColor}
+                  />
+                )}
+              />
+            }
+          />
+        </View>
+        <View style={{flex: 1}}>
+          {tempSearch.length === 0 ? (
+            <></>
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={tempSearch?.content}
+              renderItem={renderItem}
+              numColumns={1}
+            />
+          )}
+        </View>
       </Modal>
 
       {/* <View style={Styles.addMedicinesHeader}>
@@ -652,6 +655,7 @@ const AddMedicines = ({navigation, route}) => {
               </View>
               <View style={{width: '50%'}}>
                 <TextInput
+                  disabled
                   id="name"
                   style={{width: '97%'}}
                   label="Dose Type"

@@ -86,6 +86,7 @@ const PrescriptionForm = props => {
             activeOutlineColor={colorPalette.mainColor}
             {...props}
             value={props.values.contact}
+            keyboardType="numeric"
           />
           {props.errors.contact && props.touched.contact && (
             <Text style={styles.errorText}>{props.errors.contact}</Text>
