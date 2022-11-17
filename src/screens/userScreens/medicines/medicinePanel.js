@@ -16,46 +16,12 @@ import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
-import {useDispatch, useSelector} from 'react-redux';
-import {loadMedicineList} from '../../../redux/action/userMedicine/medicineListAction';
-import {useIsFocused} from '@react-navigation/native';
-import {deleteMedicineRequest} from '../../../redux/action/userMedicine/deleteMedicine';
-import Loader from '../../../components/atoms/loader';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
+import {RefreshControl} from 'react-native-gesture-handler';
 
 const MedicinePanel = ({navigation}) => {
-  const [flag, setFlag] = useState('');
-  console.log(flag, 'flag');
-  const [medicineResponse, setMedicineResponse] = useState();
-  console.log(medicineResponse, 'medicineresponse');
-  const dispatch = useDispatch();
-  const isFocused = useIsFocused();
-  const [id, setId] = useState('');
-  console.log('id', id);
-  const [medicines, setMedicines] = useState([]);
-  const [isActive, setIsActive] = useState(false);
-  const [color, setColor] = useState(false);
-  const [clockActive, setClockActive] = useState(false);
-
-  // const saveReminderData = useSelector(saveReminderSelector.saveReminder);
-  // console.log(saveReminderData.data.data,"dataaaaaa");
-
-  const onClickTouchable = saveReminder => {
-    if (saveReminderData.data.data.status === 'Success') {
-      setIsActive(true);
-    }
-  };
-
-  const clockColorChange = item => {
-    if (item.userMedicineId && color) {
-      setClockActive(true);
-    }
-  };
-
-  const getStatus = () => {
-    setColor(true);
-  };
+  const [medicineResponse, setMedicineResponse] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -69,19 +35,15 @@ const MedicinePanel = ({navigation}) => {
   const deleteMedicineLocal = async index => {
     medicineResponse.splice(medicineResponse.indexOf(index), 1);
     AddMedicine(medicineResponse);
-    navigation.navigate('Medicine');
   };
 
   useEffect(() => {
     getMedicine().then(data => {
-      setMedicineResponse(data);
+      if (data !== null) {
+        setMedicineResponse(data);
+      }
     });
-  }, []);
-
-  const getTokenId = async () => {
-    const tempId = await AsyncStorage.getItem('user_id');
-    setId(tempId);
-  };
+  }, [medicineResponse]);
 
   const renderItemLocal = ({item, index}) => {
     return (
@@ -178,7 +140,7 @@ const MedicinePanel = ({navigation}) => {
       <View style={Styles.container}>
         <View style={Styles.background} />
         <MainHeader title={'Medicine'} navigation={navigation} />
-        {medicineResponse === null ? (
+        {medicineResponse.length === 0 ? (
           <View style={Styles.lottie}>
             <LottieView
               style={{width: '60%'}}
@@ -193,6 +155,19 @@ const MedicinePanel = ({navigation}) => {
               data={medicineResponse}
               renderItem={renderItemLocal}
               showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  colors={[colorPalette.mainColor]}
+                  tintColor={[colorPalette.mainColor]}
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    getMedicine().then(data => {
+                      setMedicineResponse(data);
+                    });
+                    setRefresh(false);
+                  }}
+                />
+              }
             />
           </>
         )}

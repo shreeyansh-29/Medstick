@@ -114,7 +114,6 @@ const Styles = StyleSheet.create({
   touchableOpacity: {
     width: '100%',
     height: '100%',
-    marginTop: 30,
   },
   addPrescriptionHeader: {
     flex: 1,
@@ -191,27 +190,24 @@ const Styles = StyleSheet.create({
     width: '100%',
     marginTop: 10,
   },
-  textView1:{
-    flexDirection:'row',
-    width:'100%',
-    marginTop:10,
-    justifyContent:'space-between'
-    
+  textView1: {
+    flexDirection: 'row',
+    width: '100%',
+    marginTop: 10,
+    justifyContent: 'space-between',
   },
-  textbox:{
-    width:'50%',
-    justifyContent:'center',
-    alignItems:'center',
+  textbox: {
+    width: '50%',
+    justifyContent: 'center',
   },
   stockbox: {
-    width: '30%',
+    width: '40%',
   },
-  picker:{
-    borderColor:colorPalette.appColor,
-    borderWidth:1,
-    borderRadius:5,
-    marginTop:6,
-   
+  picker: {
+    borderColor: colorPalette.appColor,
+    borderWidth: 1,
+    borderRadius: 5,
+    marginTop: 6,
   },
   addbutton: {
     justifyContent: 'center',
@@ -256,8 +252,6 @@ const Styles = StyleSheet.create({
   },
   text: {
     fontSize: 17,
-    margin: '3%',
-    paddingHorizontal: 3,
     color: 'black',
   },
   box2: {
@@ -318,8 +312,8 @@ const Styles = StyleSheet.create({
   prescriptionBox: {
     width: '98%',
     padding: 5,
-    elevation:2,
-    marginTop:5,
+    elevation: 2,
+    marginTop: 5,
     borderColor: colorPalette.appColor,
     borderStartWidth: 4,
   },

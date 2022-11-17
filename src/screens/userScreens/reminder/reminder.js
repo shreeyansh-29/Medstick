@@ -17,15 +17,15 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
-import {addReminder, getReminder} from '../../../utils/storage';
+import {addReminder, getReminder, SaveReminder} from '../../../utils/storage';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import uuid from 'react-native-uuid';
 
 var counter = 0;
 
 const Reminder = ({route, navigation, props}) => {
+  console.log(route.params);
   const [medicineInfo, setMedicineInfo] = useState(route.params.data);
-  console.log(medicineInfo, 'route abcgdss');
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = useState(false);
@@ -51,12 +51,6 @@ const Reminder = ({route, navigation, props}) => {
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
   const [arr, setArr] = useState('');
-  console.log(startDate, 'array of reminder');
-
-  //  useEffect(()=>{
-  //   getReminder().then(data=>setArr(data))
-  //  },[])
-
   const [breakfast, setBreakfast] = useState(false);
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
@@ -390,70 +384,43 @@ const Reminder = ({route, navigation, props}) => {
     if (endDate === 'No End Date') {
       setfDate('null');
     }
-    // console.log(reminderStatus, 'reminderStatus');
-    // console.log(frequencyTemp, 'frequency');
-    // console.log(fDateSecondary, 'endDate');
-    // console.log(food, 'beforeAfter');
-    // console.log(totalReminders, 'totalReminders');
-    // console.log(currentCount, 'currentCount');
-    // console.log(userMedicineId, 'iddddd');
 
-    //  let obj={
-    //   medicineId:medicineInfo.MedicineId,
-    //   medicineName:medicineInfo.MedicineName,
-    //   description:medicineInfo.MedicineDescription,
-    //   present:true,
-    //   doasgeType:medicineInfo.doasgeType,
-    //   doasageQuantity:medicineInfo.doasageQuantity,
-    //   doasgePower:medicineInfo.doasgePower,
-    //   stock:medicineInfo.stock,
-    //   leftStock:medicineInfo.leftStock,
-    //   reminderId:uuid.v4(),
-    //   startDate:fDatePrimary,
-    //   endDate:fDateSecondary ,
-    //   days:days,
-    //   reminderTitle:title,
-    //   reminderTime:time,
-    //   everyday:check1,
-    //   noEndDate:noEndDate,
-    //   reminderStatus:reminderStatus,
-    //   frequency:frequencyTemp,
-    //   beforeAfter:food,
-    //   totalReminders:totalReminders,
-    //   currentCount:currentCount
-    // }
+    let obj = route?.params?.data;
 
-    // setArr([...arr,obj])
+    obj.days = days;
+    obj.frequency = frequencyTemp;
+    obj.endDate = endDate;
+    obj.noEndDate = noEndDate;
+    obj.reminderId = uuid.v4();
+    obj.reminderStatus = reminderStatus;
+    obj.reminderTime = time;
+    obj.beforeAfter=food;
+    obj.everyday=false;
+    obj.reminderTitle=title;
+    obj.startDate=fDatePrimary;
 
-    dispatch(
-      saveReminderRequest(
-        fDatePrimary,
-        fDateSecondary,
-        days,
-        title,
-        time,
-        check1,
-        noEndDate,
-        reminderStatus,
-        frequencyTemp,
-        food,
-        totalReminders,
-        currentCount,
-        userMedicineId,
-      ),
-    );
-    setTimeout(() => {
-      navigation.pop();
-    }, 2000);
+    SaveReminder(obj);
+
+    // dispatch(
+    //   saveReminderRequest(
+    //     fDatePrimary,
+    //     fDateSecondary,
+    //     days,
+    //     title,
+    //     time,
+    //     check1,
+    //     noEndDate,
+    //     reminderStatus,
+    //     frequencyTemp,
+    //     food,
+    //     totalReminders,
+    //     currentCount,
+    //     userMedicineId,
+    //   ),
+    // );
   };
 
-  // console.log(endDate);
-  // useEffect(()=>{
-  // addReminder(arr)
-  // },[arr])
-
   return (
-    // { showReminderDuration &&  <ReminderDuration/>}
     <ScrollView style={styles.scrollView}>
       <SubHeader title={'Add Reminder'} navigation={navigation} />
       <View style={styles.top}>
@@ -914,12 +881,10 @@ const Reminder = ({route, navigation, props}) => {
                 currentCount,
                 userMedicineId,
               );
-              if (saveReminderResponse === 'Success') {
-                route.params?.fetchStatus();
-              }
             }}
             buttonStyle={styles.buttonStyle}
-            containerStyle={styles.buttonContainer}></Button>
+            containerStyle={styles.buttonContainer}
+          />
         </View>
       </View>
     </ScrollView>
