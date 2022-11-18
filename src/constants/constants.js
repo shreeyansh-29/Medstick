@@ -38,6 +38,7 @@ export const month = {
 };
 
 export const hour = {
+  12: '12',
   13: '1',
   14: '2',
   15: '3',
@@ -51,5 +52,3 @@ export const hour = {
   23: '11',
   24: '12',
 };
-
-

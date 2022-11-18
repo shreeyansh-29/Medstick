@@ -18,12 +18,12 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {RefreshControl} from 'react-native-gesture-handler';
-import {useFocusEffect} from '@react-navigation/native';
-import Loader from '../../../components/atoms/loader';
+import {useIsFocused} from '@react-navigation/native';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const isFocused = useIsFocused();
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -36,16 +36,22 @@ const MedicinePanel = ({navigation}) => {
 
   const deleteMedicineLocal = async index => {
     medicineResponse.splice(medicineResponse.indexOf(index), 1);
-    AddMedicine(medicineResponse);
+    setTimeout(() => {
+      AddMedicine(medicineResponse);
+    }, 200);
   };
 
   useEffect(() => {
-    getMedicine().then(data => {
-      if (data !== null) {
-        setMedicineResponse(data);
-      }
-    });
-  }, []);
+    if (isFocused) {
+      getMedicine().then(data => {
+        if (data !== null) {
+          setMedicineResponse(data);
+        } else {
+          setMedicineResponse([]);
+        }
+      });
+    }
+  }, [isFocused]);
 
   const renderItemLocal = ({item, index}) => {
     return (
@@ -105,7 +111,11 @@ const MedicinePanel = ({navigation}) => {
                       }}>
                       <FontAwesomeIcon
                         icon={faClock}
-                        color={item.reminderStatus? colorPalette.mainColor:'lightgrey'}
+                        color={
+                          item.reminderStatus
+                            ? colorPalette.mainColor
+                            : 'lightgrey'
+                        }
                         size={24}
                       />
                     </TouchableOpacity>

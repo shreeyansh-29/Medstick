@@ -16,7 +16,8 @@ const Reminders = ({showAlert}) => {
   const [medData, setMedData] = useState([]);
   const [reminderList, setReminderList] = useState([]);
 
-  MedicineHistory();
+  // MedicineHistory();
+
   useEffect(() => {
     getMedicine().then(data => {
       if (data !== null) setMedData(data);

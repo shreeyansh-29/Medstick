@@ -180,7 +180,6 @@ const Report = ({navigation}) => {
     const a = b => b.date == date.dateString;
     const historyIndex = history.findIndex(a);
     setHistoryData(history[historyIndex]);
-    console.log(historyData, 'his');
   };
 
   let startDate = new Date().toDateString();

@@ -103,7 +103,7 @@ const AddMedicineLocal = ({navigation}) => {
       reminderStatus: null,
       frequency: null,
       beforeAfter: null,
-      totalReminder: null,
+      totalReminders: null,
       currentCount: null,
       historyList: [],
     };
