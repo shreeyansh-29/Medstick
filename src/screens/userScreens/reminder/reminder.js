@@ -17,7 +17,13 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
-import {addReminder, getReminder, SaveReminder} from '../../../utils/storage';
+import {
+  AddMedicine,
+  addReminder,
+  getMedicine,
+  getReminder,
+  SaveReminder,
+} from '../../../utils/storage';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import uuid from 'react-native-uuid';
 
@@ -47,7 +53,6 @@ const Reminder = ({route, navigation, props}) => {
   const [totalReminders, setTotalReminders] = useState(10);
   const [currentCount, setCurrentCount] = useState(0);
   const [time, setTime] = useState('');
-  const [color, setColor] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
   const [arr, setArr] = useState('');
@@ -55,6 +60,7 @@ const Reminder = ({route, navigation, props}) => {
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
+  const [fDateSecondary, setfDate] = useState('');
 
   const dispatch = useDispatch();
 
@@ -69,23 +75,6 @@ const Reminder = ({route, navigation, props}) => {
     (startDate.getMonth() + 1) +
     '-' +
     startDate.getDate();
-  let timePrimary =
-    startDate.getHours() + ':' + startDate.getMinutes() + ':' + '00';
-
-  const [fDateSecondary, setfDate] = useState('');
-  let timeSecondary =
-    endDate.getHours() + ':' + endDate.getMinutes() + ':' + '00';
-
-  // console.log(fDatePrimary, 'startDate');
-  // console.log(fDateSecondary, 'endDate');
-  // console.log(selecteddaysItems, 'days');
-  // console.log(title, 'reminderTitle');
-  // console.log(timearray, 'reminderTime');
-  // console.log(check1, 'everyday');
-  // console.log(noEndDate, ' no end date');native
-  // console.log(food, 'beforeAfter');
-  // console.log(totalReminders, 'totalReminders');start_date
-  // console.log(currentCount, 'currentCount');
 
   const onSelecteddaysItemsChange = selectedi => {
     slecteddaysstate(selectedi);
@@ -101,7 +90,7 @@ const Reminder = ({route, navigation, props}) => {
     time_picker_mode_state(false);
   };
 
-  const setreminderwithselecteddate = ({title, startDate, endDate}) => {
+  const setReminderWithSelectedDate = ({title, startDate, endDate}) => {
     counter = 0;
     var now = new Date();
     console.log(now, 'uo');
@@ -113,8 +102,8 @@ const Reminder = ({route, navigation, props}) => {
       now.getTime(),
       '.......................',
     );
-    console.log(new Date(now.getTime()));
-    console.log(now, 'now');
+    // console.log(new Date(now.getTime()));
+    // console.log(now, 'now');
     let sample_date = new Date();
     console.log(sample_date, 'sample date');
     var weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
@@ -136,7 +125,7 @@ const Reminder = ({route, navigation, props}) => {
           subText: 'Mark as read if you have taken', // (required)
           id: num.toString(),
           channelId: 'test1',
-          color: '#3743ab',
+          color: '#02A6AB',
           showWhen: true,
           tag: userMedicineId.toString(),
           visibility: 'public',
@@ -230,28 +219,19 @@ const Reminder = ({route, navigation, props}) => {
     });
   };
 
-  const handlePushNotification = () => {
-    PushNotification.localNotificationSchedule({
-      channelId: 'test-channel',
-      title: 'Alarm',
-      message: 'take medicine',
-      date: new Date(Date.now() + 20 * 1000),
-      allowWhileIdle: true,
-    });
-  };
+  // const handlePushNotification = () => {
+  //   PushNotification.localNotificationSchedule({
+  //     channelId: 'test-channel',
+  //     title: 'Alarm',
+  //     message: 'Take medicine',
+  //     date: new Date(Date.now() + 20 * 1000),
+  //     allowWhileIdle: true,
+  //   });
+  // };
 
   useEffect(() => {
     pushReminderChannel();
   }, []);
-
-  const onclickBreakfast = () => {
-    if (breakfastTouchable === false) {
-      setBreakfastTouchable(true);
-    } else {
-      setBreakfastTouchable(false);
-    }
-    setFrequency([...frequency, 'Breakfast']);
-  };
 
   function getEndDate(params) {
     if (params.getTime() <= startDate.getTime()) {
@@ -276,14 +256,11 @@ const Reminder = ({route, navigation, props}) => {
   };
 
   const handleConfirmfortime = date => {
-    // console.log('A time has been picked: ', date.getHours(), date.getMinutes());
-
     if (date.getHours() > 11) {
       timearray[currentIndex] =
         date.getHours() + ':' + date.getMinutes() + ' PM';
       timeings[currentIndex] = date.getHours() + ':' + date.getMinutes();
       timestate(timeings);
-      // console.log(timeings, 'time added ');
     } else {
       timearray[currentIndex] =
         date.getHours() + ':' + date.getMinutes() + ' AM';
@@ -292,6 +269,18 @@ const Reminder = ({route, navigation, props}) => {
     }
     hideDatePickerfortime();
   };
+
+  function frequencyHandler() {
+    if (breakfast) {
+      frequency.push('Breakfast');
+    }
+    if (lunch) {
+      frequency.push('Lunch');
+    }
+    if (dinner) {
+      frequency.push('Dinner');
+    }
+  }
 
   const savereminder = (
     fDatePrimary,
@@ -336,6 +325,7 @@ const Reminder = ({route, navigation, props}) => {
           time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
         }
       } else if (lunch && i == 1) {
+        setFrequency([...frequency, 'Lunch']);
         if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
           mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
         } else {
@@ -347,6 +337,7 @@ const Reminder = ({route, navigation, props}) => {
           time += mtime + ' ' + timearray[i].split(' ')[1] + ',';
         }
       } else if (dinner && i == 2) {
+        setFrequency([...frequency, 'Dinner']);
         if (parseInt(timearray[i].split(' ')[0].split(':')[1]) < 10) {
           mtime += ':0' + timearray[i].split(' ')[0].split(':')[1];
         } else {
@@ -375,10 +366,12 @@ const Reminder = ({route, navigation, props}) => {
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
 
-    // setreminderwithselecteddate(title, startDate, endDate);
+    setReminderWithSelectedDate(title, fDatePrimary, fDateSecondary);
 
-    handlePushNotification();
+    // handlePushNotification();
 
+    frequencyHandler();
+    console.log(frequency, 'freq  ');
     const frequencyTemp = frequency.toString();
 
     if (endDate === 'No End Date') {
@@ -389,17 +382,29 @@ const Reminder = ({route, navigation, props}) => {
 
     obj.days = days;
     obj.frequency = frequencyTemp;
-    obj.endDate = endDate;
+    obj.endDate = fDateSecondary;
     obj.noEndDate = noEndDate;
     obj.reminderId = uuid.v4();
-    obj.reminderStatus = reminderStatus;
+    obj.reminderStatus = true;
     obj.reminderTime = time;
-    obj.beforeAfter=food;
-    obj.everyday=false;
-    obj.reminderTitle=title;
-    obj.startDate=fDatePrimary;
+    obj.beforeAfter = food;
+    obj.everyday = check1;
+    obj.reminderTitle = title;
+    obj.startDate = fDatePrimary;
+    obj.totalReminders = totalReminders;
+    obj.currentCount = currentCount;
 
-    SaveReminder(obj);
+    getMedicine().then(data => {
+      const temp = data;
+      temp[route.params.index] = obj;
+      AddMedicine(temp);
+      console.log(temp, 'data with reminder');
+    });
+    loadstate(false);
+
+    setTimeout(() => {
+      navigation.pop();
+    }, 1000);
 
     // dispatch(
     //   saveReminderRequest(
@@ -551,7 +556,7 @@ const Reminder = ({route, navigation, props}) => {
                       : colorPalette.greyColor,
                   }}
                   onPress={() => {
-                    onclickBreakfast();
+                    setBreakfastTouchable(!breakfastTouchable);
                     setBreakfast(!breakfast);
                   }}>
                   <Text
@@ -607,7 +612,6 @@ const Reminder = ({route, navigation, props}) => {
                   onPress={() => {
                     setLunchTouchable(!lunchTouchable);
                     setLunch(!lunch);
-                    setFrequency([...frequency, 'Lunch']);
                   }}>
                   <Text
                     style={{
@@ -661,7 +665,6 @@ const Reminder = ({route, navigation, props}) => {
                   onPress={() => {
                     setDinnerTouchable(!dinnerTouchable);
                     setDinner(!dinner);
-                    setFrequency([...frequency, 'Dinner']);
                   }}>
                   <Text
                     style={{
