@@ -1,4 +1,4 @@
-import {View, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Image, TouchableOpacity, ScrollView, Text} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {styles} from '../../styles/homeScreenStyles/reminderStyles';
 import * as Animatable from 'react-native-animatable';
@@ -9,51 +9,64 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from '@fortawesome/free-regular-svg-icons';
-import {getReminder} from '../../utils/storage';
+import {getMedicine} from '../../utils/storage';
+import MedicineHistory from './medicineHistory/medicineHistory';
 
 const Reminders = ({showAlert}) => {
-  const [flag, setFlag] = useState(0);
-  let [startDate, setStartDate] = useState('');
-  startDate = startDate.split('-');
-  startDate = startDate?.map(Number);
-  let startingDate = startDate[2];
-  const [reminders, setReminders] = useState([]);
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth() + 1;
-  const currentDate = new Date().getDate();
-  // console.log(currentDate, currentMonth, currentYear, 'date');
-  // const [reminders, setReminders] = useState([
-  //   {
-  //     medName: 'Acetaminophen',
-  //     reminderTime: '10:00AM',
-  //   },
-  //   {
-  //     reminderTime: '10:00AM',
-  //     medName: 'Azithromycin',
-  //   },
-  //   {
-  //     reminderTime: '10:00AM',
-  //     medName: 'Dalcoflex',
-  //   },
-  //   {
-  //     reminderTime: '10:00AM',
-  //     medName: 'Benzhydrocodone',
-  //   },
-  //   {
-  //     reminderTime: '10:00AM',
-  //     medName: 'Acetaminophen',
-  //   },
-  //   {
-  //     reminderTime: '10:00AM',
-  //     medName: 'Diflorasone Diacetate',
-  //   },
-  // ]);
+  const [medData, setMedData] = useState([]);
+  const [reminderList, setReminderList] = useState([]);
 
+  MedicineHistory();
   useEffect(() => {
-    getReminder().then(data => setReminders(data));
+    getMedicine().then(data => {
+      if (data !== null) setMedData(data);
+    });
   }, []);
 
+  let reminder = {
+    userMedicineId: null,
+    medName: null,
+    historyId: null,
+    time: null,
+    taken: null,
+    notTaken: null,
+  };
+
+  let reminderCard = {
+    reminderTime: null,
+    medName: null,
+  };
+  function dailyReminders() {
+    medData.map(item => {
+      let temp = reminder;
+      temp.userMedicineId = item.userMedicineId;
+      temp.medName = item.medicineName;
+      item.historyList.map(r => {
+        let a = b => b.historyId == r.historyId;
+        let index = reminderList.findIndex(a);
+        if (reminderList.some(a)) {
+          reminderList[index].time = r.time;
+        } else {
+          temp.historyId = r.historyId;
+          temp.time = r.time;
+          reminderList.push(temp);
+        }
+      });
+    });
+    // console.log(reminderList, 'Reminders');
+  }
+
+  function marking() {}
+
+  function empty() {
+    reminderList.length = 0;
+  }
+  // empty();
+  // console.log(reminderList, ' <<<<<    after empty ')
+  dailyReminders();
+
   const renderItem = (item, index) => {
+    console.log(item, ' Reminder Card');
     return (
       <Animatable.View
         animation="zoomInUp"
@@ -101,7 +114,7 @@ const Reminders = ({showAlert}) => {
   return (
     <>
       <View style={styles.container}>
-        {reminders === null && flag === 0 ? (
+        {reminderList.length === 0 ? (
           <ScrollView
             style={{width: '100%'}}
             showsVerticalScrollIndicator={false}>
@@ -126,8 +139,11 @@ const Reminders = ({showAlert}) => {
               width={'100%'}
               contentContainerStyle={{alignItems: 'center'}}
               showsVerticalScrollIndicator={false}>
-              {reminders.map((i, index) => {
-                return renderItem(i, index);
+              {reminderList.map((i, index) => {
+                let obj = reminderCard;
+                obj.medName = i.medName;
+                obj.reminderTime = '7:30 PM';
+                return renderItem(obj, index);
               })}
             </ScrollView>
           </View>

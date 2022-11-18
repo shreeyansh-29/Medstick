@@ -103,7 +103,7 @@ const MedicinePanel = ({navigation}) => {
                       }}>
                       <FontAwesomeIcon
                         icon={faClock}
-                        color={colorPalette.mainColor}
+                        color={item.reminderStatus? colorPalette.mainColor:'lightgrey'}
                         size={24}
                       />
                     </TouchableOpacity>

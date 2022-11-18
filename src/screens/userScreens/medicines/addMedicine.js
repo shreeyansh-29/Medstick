@@ -206,7 +206,7 @@ const AddMedicines = ({navigation, route}) => {
     fetchPrescriptionAndMedicineId();
   }, []);
 
-  const getStock = ({data}) => {
+  const getStock = (data) => {
     setStock(data);
   };
 
@@ -295,21 +295,28 @@ const AddMedicines = ({navigation, route}) => {
         reminderStatus: null,
         frequency: null,
         beforeAfter: null,
+        totalReminders:null,
+        currentCount:null,
+        historyList:[]
       };
 
       getMedicine().then(data => {
         if (data !== null) {
+          console.log(data,  " data");
           const temp = [...data, obj];
           AddMedicine(temp);
         } else {
+
           let temp = [];
           temp.push(obj);
           AddMedicine(temp);
+          console.log(data,  " temp");
+
         }
       });
-      // setTimeout(() => {
-      //   navigation.pop();
-      // }, 3000);
+      setTimeout(() => {
+        navigation.pop();
+      }, 1000);
     }
   };
 
