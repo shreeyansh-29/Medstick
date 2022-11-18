@@ -114,6 +114,7 @@ const CareTakerRequest = () => {
                 color={colorPalette.green1}
               />
               <View style={styles.space} />
+              
               <Button
                 onPress={() => {
                   deleteRequest(item.requestId);

@@ -18,6 +18,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
 import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
 import PushNotification, {Importance} from 'react-native-push-notification';
+import { getReminder } from '../../../utils/storage';
 
 var counter = 0;
 
@@ -59,6 +60,7 @@ const Reminder = ({route, navigation, props}) => {
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
+  const [localReminder, setLocalReminder] = useState();
 
   const dispatch = useDispatch();
 
@@ -66,6 +68,16 @@ const Reminder = ({route, navigation, props}) => {
   const saveReminderResponse = saveReminderData?.data?.data?.status;
 
   const userMedicineId = route.params.id;
+
+  useEffect(()=>{
+    getReminder().then(data=>{
+      if(data != null){
+        setLocalReminder(data);
+      }
+    });
+  },[localReminder]);
+
+  console.log(localReminder, "local reminder");
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -91,6 +103,7 @@ const Reminder = ({route, navigation, props}) => {
   // console.log(totalReminders, 'totalReminders');start_date
   // console.log(currentCount, 'currentCount');
 
+  
   const onSelecteddaysItemsChange = selectedi => {
     slecteddaysstate(selectedi);
   };

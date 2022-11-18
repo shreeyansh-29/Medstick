@@ -18,3 +18,39 @@ export const getMedicine = async () => {
     console.log(error);
   }
 };
+
+export const addReminder = async data => {
+  try {
+    await AsyncStorage.setItem('AddReminder', JSON.stringify(data));
+    console.log('reminders', data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getReminder = async () => {
+  try {
+    const response = JSON.parse(await AsyncStorage.getItem('AddReminder'));
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const savePrescription = async data => {
+  try {
+    await AsyncStorage.setItem('SavePrescription', JSON.stringify(data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getPrescription = async () => {
+  try {
+    const response = JSON.parse(await AsyncStorage.getItem('SavePrescription'));
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+

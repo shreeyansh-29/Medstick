@@ -4,11 +4,12 @@ import {
   deleteCaretakerReqError,
   deleteCaretakerReqSuccess,
 } from '../../action/caretaker/deleteCaretakerReqAction';
-import deleteCaretakerReqService from '../../../network/networkServices/common/deleteRequestService';
+import DeleteRequestService from '../../../network/networkServices/common/deleteRequestService'
 
 export function* deleteCaretakerRequestSaga(data) {
   try {
-    let response = yield call(deleteCaretakerReqService.putDeleteRequest, data);
+    let response = yield call(DeleteRequestService.putDeleteRequest, data);
+    console.log(response,"del response");
     yield put(deleteCaretakerReqSuccess(response));
   } catch (error) {
     yield put(deleteCaretakerReqError(error));

@@ -18,7 +18,8 @@ const PatientRequest = () => {
   const [patients, setPatients] = useState([]);
   const [pageNo, setPageNo] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const res = useSelector(state => state.patientsRequest);
+  const res = useSelector(state => state.patientsRequest?.data);
+  console.log(res,"resss");
   const loading = useSelector(state => state.patientsRequest.isLoading);
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
@@ -30,8 +31,8 @@ const PatientRequest = () => {
   ];
 
   useEffect(() => {
-    if (res?.data !== null) {
-      setPatients([...res.data]);
+    if (res !== null) {
+      setPatients([...res]);
     } else {
       setPatients([]);
     }
@@ -146,7 +147,7 @@ const PatientRequest = () => {
               data={patients}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(index) => index.toString()}
               refreshControl={
                 <RefreshControl
                   colors={[colorPalette.mainColor]}
