@@ -408,7 +408,7 @@ const AddMedicines = ({navigation, route}) => {
         }}>
         <View style={{margin: '5%'}}>
           <TouchableOpacity
-            style={styles.backButton}
+            style={Styles.backButton}
             onPress={() => {
               setSearchModal(false);
             }}>

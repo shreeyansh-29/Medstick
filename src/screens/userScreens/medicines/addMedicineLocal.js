@@ -14,6 +14,7 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import Toast from 'react-native-toast-message';
 import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
+import CheckConnection from '../../../connectivity/checkConnection';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -30,6 +31,7 @@ const AddMedicineLocal = ({navigation}) => {
     specialization: null,
   });
   const [add, setAdd] = useState(false);
+  const [connection, setConnection] = useState(false);
 
   const getPrescriptionData = data => {
     setAdd(true);
@@ -62,6 +64,15 @@ const AddMedicineLocal = ({navigation}) => {
   useEffect(() => {
     setType();
   }, [pill]);
+
+  const checkconnection = async () => {
+    let conn = await CheckConnection();
+    setConnection(conn);
+  };
+
+  useEffect(() => {
+    checkconnection();
+  }, []);
 
   useEffect(() => {
     Animated.timing(progress, {
@@ -191,6 +202,7 @@ const AddMedicineLocal = ({navigation}) => {
                 prescriptionObject={getPrescriptionData}
                 add={add}
                 setAdd={setAdd}
+                connection={connection}
               />
             )}
           </Formik>

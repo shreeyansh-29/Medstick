@@ -18,7 +18,7 @@ import CustomButton from '../../../components/atoms/customButton';
 import Toast from 'react-native-toast-message';
 import CustomModal from '../../../components/molecules/customModal';
 import {getPrescription} from '../../../utils/storage';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 
 const AddPrescriptionPanel = ({navigation, route}) => {
   let {prescriptionObject} = route?.params;
