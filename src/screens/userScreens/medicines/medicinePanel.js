@@ -18,6 +18,8 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {RefreshControl} from 'react-native-gesture-handler';
+import {useFocusEffect} from '@react-navigation/native';
+import Loader from '../../../components/atoms/loader';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
@@ -43,7 +45,7 @@ const MedicinePanel = ({navigation}) => {
         setMedicineResponse(data);
       }
     });
-  }, [medicineResponse]);
+  }, []);
 
   const renderItemLocal = ({item, index}) => {
     return (

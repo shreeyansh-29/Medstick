@@ -12,7 +12,7 @@ import {
   faHouseMedical,
 } from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../components/atoms/colorPalette';
-import AddMedicine from '../screens/userScreens/medicines/addMedicine';
+import AddMedicineLocal from '../screens/userScreens/medicines/addMedicineLocal';
 import AccountTab from '../screens/userScreens/accountTab';
 import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
 import AddButton from '../components/atoms/addButton';
@@ -22,7 +22,7 @@ import Report from '../screens/userScreens/report/report';
 const TabBar = [
   {route: 'Home', component: HomeScreen, iconName: faHouseMedical},
   {route: 'Report', component: Report, iconName: faFileContract},
-  {route: 'Add', component: AddMedicine},
+  {route: 'Add', component: AddMedicineLocal},
   {route: 'Medicine', component: MedicinePanel, iconName: faCapsules},
   {route: 'Account', component: AccountTab, iconName: faCircleUser},
 ];
@@ -64,6 +64,7 @@ const BottomNavigator = ({navigation}) => {
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
         headerShown: false,
+        lazy: true,
       }}
       backBehavior={'none'}>
       {TabBar.map((item, index) => {

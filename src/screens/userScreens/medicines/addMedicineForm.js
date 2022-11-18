@@ -5,10 +5,10 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {Picker} from '@react-native-picker/picker';
 import {Divider, TextInput} from 'react-native-paper';
-import TotalStock from '../../../components/molecules/totalStock';
-import LeftStock from '../../../components/molecules/leftStock';
 import LottieView from 'lottie-react-native';
 import CustomButton from '../../../components/atoms/customButton';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 
 const AddMedicineForm = props => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -20,17 +20,17 @@ const AddMedicineForm = props => {
       useNativeDriver: true,
     }).start();
   }, []);
+
   return (
     <View
       style={{
-        marginTop: 6,
+        marginTop: 16,
         width: '90%',
         alignSelf: 'center',
-        // backgroundColor: 'yellow',
       }}>
-      <View style={{marginVertical: 4}}>
+      <View style={{marginVertical: 6}}>
         <InputField
-          styles={{}}
+          styles={{backgroundColor: 'white'}}
           label="Medicine Name"
           mode="outlined"
           outlineColor="lightgrey"
@@ -45,9 +45,9 @@ const AddMedicineForm = props => {
           </Text>
         )}
       </View>
-      <View style={{marginVertical: 4}}>
+      <View style={{marginVertical: 6}}>
         <InputField
-          styles={{height: 100}}
+          styles={{height: 100, backgroundColor: 'white'}}
           label="Description"
           mode="outlined"
           outlineColor="lightgrey"
@@ -55,6 +55,9 @@ const AddMedicineForm = props => {
           activeOutlineColor={colorPalette.mainColor}
           {...props}
           value={props.values.description}
+          multiline={true}
+          selectTextOnFocus={true}
+          dense={true}
         />
         {props.errors.description && props.touched.description && (
           <Text style={{color: 'red', marginTop: 4}}>
@@ -67,7 +70,7 @@ const AddMedicineForm = props => {
         <View
           style={{
             width: '48%',
-            justifyContent: 'flex-end',
+            marginTop: 6,
           }}>
           <View style={Styles.picker}>
             <Picker
@@ -75,23 +78,19 @@ const AddMedicineForm = props => {
                 color: 'black',
                 height: 56,
               }}
-              selectedValue={props.values.pill}
-              onValueChange={value => props.setPill(value)}>
-              <Picker.Item label="Tablet" value="tablet" />
-              <Picker.Item label="Inhaler" value="inhaler" />
-              <Picker.Item label="Injection" value="injection" />
-              <Picker.Item label="Syrup" value="syrup" />
+              dropdownIconColor={1}
+              selectedValue={props.pill}
+              onValueChange={val => props.setPill(val)}>
+              <Picker.Item label="Tablet" value="Tablet" />
+              <Picker.Item label="Inhaler" value="Inhaler" />
+              <Picker.Item label="Injection" value="Injection" />
+              <Picker.Item label="Syrup" value="Syrup" />
             </Picker>
           </View>
-          {props.errors.dosageQuantity && props.touched.dosageQuantity && (
-            <Text style={{color: 'white', marginTop: 4}}>
-              {props.errors.dosageQuantity}
-            </Text>
-          )}
         </View>
         <View style={{width: '50%'}}>
           <InputField
-            styles={{}}
+            styles={{backgroundColor: 'white'}}
             label="Dosage Quantity"
             mode="outlined"
             outlineColor="lightgrey"
@@ -99,6 +98,7 @@ const AddMedicineForm = props => {
             activeOutlineColor={colorPalette.mainColor}
             {...props}
             value={props.values.dosageQuantity}
+            keyboardType="numeric"
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
             <Text style={{color: 'red', marginTop: 4}}>
@@ -107,17 +107,20 @@ const AddMedicineForm = props => {
           )}
         </View>
       </View>
-      <View style={Styles.textView}>
+
+      <View style={Styles.textView1}>
         <View style={{width: '50%'}}>
-          <TextInput
-            style={{width: '97%'}}
+          <InputField
+            styles={{width: '97%', backgroundColor: 'white'}}
+            text="dosagePower"
             label="Dosage Power"
             value={props.values.dosagePower}
             mode="outlined"
-            outlineColor="#02aba6"
-            activeOutlineColor="#02aba6"
+            outlineColor="lightgrey"
             keyboardType="numeric"
             placeholderTextColor={'grey'}
+            activeOutlineColor={colorPalette.mainColor}
+            {...props}
           />
           {props.errors.dosagePower && props.touched.dosagePower && (
             <Text style={{color: 'red', marginTop: 4}}>
@@ -128,10 +131,9 @@ const AddMedicineForm = props => {
         <View style={{width: '50%'}}>
           <TextInput
             disabled
-            id="name"
-            style={{width: '97%'}}
+            style={{width: '100%', backgroundColor: 'white'}}
             label="Dose Type"
-            value={props.values.doseType}
+            value={props.doseType}
             mode="outlined"
             onChangeText={props.setDoseType}
             outlineColor="#02aba6"
@@ -140,48 +142,134 @@ const AddMedicineForm = props => {
           />
         </View>
       </View>
-      <View style={Styles.textView}>
+      <View style={Styles.textView1}>
         <View style={Styles.textbox}>
           <Text style={Styles.text}>Stock Unit</Text>
         </View>
-        <View>
-          <TotalStock onChange={() => {}} />
+        <View
+          style={{
+            width: '50%',
+            alignItems: 'center',
+          }}>
+          <InputField
+            styles={{width: '60%', backgroundColor: 'white'}}
+            label="Units"
+            mode="outlined"
+            outlineColor="lightgrey"
+            text="stocks"
+            activeOutlineColor={colorPalette.mainColor}
+            {...props}
+            value={props.values.stocks}
+            keyboardType="numeric"
+          />
+          {props.errors.stocks && props.touched.stocks && (
+            <Text style={{color: 'red', marginTop: 4}}>
+              {props.errors.stocks}
+            </Text>
+          )}
         </View>
       </View>
-      <View style={Styles.textView}>
+      <View style={Styles.textView1}>
         <View style={Styles.textbox}>
           <Text style={Styles.text}>Notify me when only </Text>
         </View>
-        <View>
-          <LeftStock onChange={() => {}} />
+        <View style={{width: '50%', alignItems: 'center'}}>
+          <InputField
+            styles={{width: '60%', backgroundColor: 'white'}}
+            label="Units"
+            mode="outlined"
+            outlineColor="lightgrey"
+            text="notify"
+            activeOutlineColor={colorPalette.mainColor}
+            {...props}
+            value={props.values.notify}
+            keyboardType="numeric"
+          />
+          {props.errors.notify && props.touched.notify && (
+            <Text style={{color: 'red', marginTop: 4}}>
+              {props.errors.notify}
+            </Text>
+          )}
         </View>
       </View>
-
       <View style={Styles.textView}>
         <View style={Styles.textbox}>
           <Text style={Styles.text}>Add Prescription Here </Text>
-          <Text>Optional</Text>
+          <Text style={{fontSize: 14, fontWeight: '500', color: 'black'}}>
+            (Optional)
+          </Text>
         </View>
 
-        <TouchableOpacity
-          style={Styles.touchableOpacity}
-          onPress={() => {
-            props.navigation.navigate('addPrescriptionPanel');
-          }}>
-          <LottieView
-            style={Styles.addPrescriptionIcon}
-            speed={0.7}
-            progress={progress}
-            source={require('../../../assets/animation/addPrescriptionButton.json')}
-          />
-        </TouchableOpacity>
+        {props.add ? (
+          <View
+            style={{
+              width: '43%',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+            }}>
+            <CustomButton
+              title={'Added'}
+              btnStyles={{
+                backgroundColor: colorPalette.mainColor,
+                paddingHorizontal: 20,
+                borderRadius: 5,
+              }}
+            />
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() => {
+                props.setAdd(false);
+              }}>
+              <FontAwesomeIcon
+                icon={faCircleXmark}
+                color={colorPalette.redPercentageColor}
+                size={20}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View
+            style={{
+              width: '50%',
+              alignItems: 'center',
+            }}>
+            <CustomButton
+              title={'Add'}
+              handleSubmit={() => {
+                props.navigation.navigate('AddPrescriptionPanel', {
+                  prescriptionObject: props.prescriptionObject,
+                });
+              }}
+              btnStyles={{
+                backgroundColor: colorPalette.mainColor,
+                paddingHorizontal: 20,
+                borderRadius: 5,
+              }}
+            />
+            {/* <TouchableOpacity
+              activeOpacity={1}
+              style={Styles.touchableOpacity}
+              onPress={() => {
+                props.navigation.navigate('AddPrescriptionPanel', {
+                  prescriptionObject: props.prescriptionObject,
+                });
+              }}>
+              <LottieView
+                style={Styles.addPrescriptionIcon}
+                speed={0.7}
+                progress={progress}
+                source={require('../../../assets/animation/addPrescriptionButton.json')}
+              />
+            </TouchableOpacity> */}
+          </View>
+        )}
       </View>
-      <Divider style={{height: 1, marginTop: 14}} />
-
+      <Divider style={{height: 1, marginTop: 8}} />
       <CustomButton
         title={'Save'}
         handleSubmit={props.handleSubmit}
-        contStyles={{alignItems: 'center', marginVertical: 40}}
+        contStyles={{alignItems: 'center', marginVertical: 24}}
         btnStyles={{
           backgroundColor: colorPalette.mainColor,
           width: '50%',

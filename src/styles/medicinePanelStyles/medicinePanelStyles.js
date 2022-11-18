@@ -188,12 +188,13 @@ const Styles = StyleSheet.create({
   textView: {
     flexDirection: 'row',
     width: '100%',
-    marginTop: 10,
+    marginVertical: 16,
+    justifyContent: 'space-between',
   },
   textView1: {
     flexDirection: 'row',
     width: '100%',
-    marginTop: 10,
+    marginVertical: 6,
     justifyContent: 'space-between',
   },
   textbox: {
@@ -204,10 +205,11 @@ const Styles = StyleSheet.create({
     width: '40%',
   },
   picker: {
-    borderColor: colorPalette.appColor,
+    borderColor: 'lightgrey',
     borderWidth: 1,
     borderRadius: 5,
-    marginTop: 6,
+    width: '100%',
+    // height: 58,
   },
   addbutton: {
     justifyContent: 'center',

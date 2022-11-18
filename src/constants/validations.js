@@ -65,7 +65,7 @@ export const addMedicineSchema = yup.object().shape({
   medicineName: yup.string().required('Medicine Name is Required*').nullable(),
   description: yup
     .string()
-    .min(20, ({min}) => `Description must be more than ${min} characters*`)
+    .min(10, ({min}) => `Description must be more than ${min} characters*`)
     .max(120, ({max}) => `Description can be only of ${max} characters*`)
     .required('Description is Required*')
     .nullable(),
