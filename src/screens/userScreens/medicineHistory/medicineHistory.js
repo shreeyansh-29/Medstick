@@ -17,8 +17,8 @@ function MedicineHistory() {
   let history = {
     historyId: null,
     date: null,
-    taken: null,
-    notTaken: null,
+    taken: '',
+    notTaken: '',
     time: null,
   };
   for (let i = 0; i < medData.length; i++) {
@@ -69,7 +69,7 @@ function MedicineHistory() {
       }
     }
 
-    // console.log('<================ FINAL DATA ================>', medData);
+    console.log('<================ FINAL DATA ================>', medData);
     AddMedicine(medData);
   }
 }

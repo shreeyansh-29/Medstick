@@ -396,6 +396,7 @@ const Reminder = ({route, navigation, props}) => {
 
     getMedicine().then(data => {
       const temp = data;
+      let a = b => b.reminderId == obj.reminderId
       temp[route.params.index] = obj;
       AddMedicine(temp);
       console.log(temp, 'data with reminder');

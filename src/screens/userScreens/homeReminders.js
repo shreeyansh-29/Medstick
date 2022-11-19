@@ -1,4 +1,11 @@
-import {View, Image, TouchableOpacity, ScrollView, Text} from 'react-native';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Text,
+  FlatList,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {styles} from '../../styles/homeScreenStyles/reminderStyles';
 import * as Animatable from 'react-native-animatable';
@@ -14,9 +21,9 @@ import MedicineHistory from './medicineHistory/medicineHistory';
 
 const Reminders = ({showAlert}) => {
   const [medData, setMedData] = useState([]);
-  const [reminderList, setReminderList] = useState([]);
+  const [reminderList, setReminderList]=useState([]);
 
-  MedicineHistory();
+  // MedicineHistory();
   useEffect(() => {
     getMedicine().then(data => {
       if (data !== null) setMedData(data);
@@ -28,58 +35,89 @@ const Reminders = ({showAlert}) => {
     medName: null,
     historyId: null,
     time: null,
-    taken: null,
-    notTaken: null,
   };
 
   let reminderCard = {
     reminderTime: null,
     medName: null,
+    userMedicineId: null,
+    historyId: null,
   };
+
   function dailyReminders() {
+    var tody_date = new Date();
+    let td_da =
+      tody_date.getDate() +
+      '-' +
+      (tody_date.getMonth() + 1) +
+      '-' +
+      tody_date.getFullYear();
+
+    console.log('data', medData);
     medData.map(item => {
+     let tempReminderList=[]
       let temp = reminder;
       temp.userMedicineId = item.userMedicineId;
       temp.medName = item.medicineName;
       item.historyList.map(r => {
-        let a = b => b.historyId == r.historyId;
-        let index = reminderList.findIndex(a);
-        if (reminderList.some(a)) {
-          reminderList[index].time = r.time;
-        } else {
-          temp.historyId = r.historyId;
-          temp.time = r.time;
-          reminderList.push(temp);
+        if (r.date === td_da) {
+            temp.historyId = r.historyId;
+            r.time.map(z => {
+              let temp1=temp;
+              temp1.time = z;
+              console.log(temp1, 'zzz ****');
+              tempReminderList.push(temp1);
+            });
+          }
         }
-      });
+      );
+      console.log(tempReminderList, 'zzz');
+      setReminderList(tempReminderList);
     });
     // console.log(reminderList, 'Reminders');
   }
-
-  function marking() {}
 
   function empty() {
     reminderList.length = 0;
   }
   // empty();
-  // console.log(reminderList, ' <<<<<    after empty ')
+  // console.log(reminderList, ' <<<<<    after empty ');
   dailyReminders();
 
+  function markingTaken(item) {
+    console.log(item.item, ' INSIDE MARKING');
+    console.log('before marking ', medData);
+    const {userMedicineId, historyId, time, medName} = item.item;
+    medData.map(item => {
+      // console.log(item, 'zzz');
+      if (
+        item.userMedicineId == userMedicineId &&
+        item.medicineName == medName
+      ) {
+        item.historyList.map(r => {
+          if (r.historyId == historyId && !r.taken.includes(time)) {
+            r.taken = r.taken + time + ',';
+          }
+        });
+        // console.log('After updating reminders ', item);
+      }
+    });
+    console.log('After updating reminders ', medData);
+  }
+
+
   const renderItem = (item, index) => {
-    console.log(item, ' Reminder Card');
+    console.log(item, 'aaa');
+    const {medName, time}= item;
     return (
-      <Animatable.View
-        animation="zoomInUp"
-        duration={400}
-        style={{width: '100%'}}
-        key={index}>
-        <View style={styles.list}>
-          <View style={styles.avatarView}>
-            <View style={styles.medNameView}>
-              <ListItem.Title style={styles.medName}>
-                {item.reminderTime}
+      <View style={{width: '100%'}} key={index}>
+        <View style={styles.list} key={index+1}>
+          <View style={styles.avatarView } key={index+2}>
+            <View style={styles.medNameView} key={index+3}>
+              <ListItem.Title key={index+4} style={styles.medName}>
+                {item.time}
               </ListItem.Title>
-              <ListItem.Subtitle style={{marginVertical: 2, fontSize: 16}}>
+              <ListItem.Subtitle key={index+5} style={{marginVertical: 2, fontSize: 16}}>
                 {item.medName}
               </ListItem.Subtitle>
             </View>
@@ -88,19 +126,28 @@ const Reminders = ({showAlert}) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-            }}>
+            }}
+            key={index+6}
+            >
             <TouchableOpacity
+            key={index+7}
               style={{padding: 8}}
               activeOpacity={1}
-              onPress={() => showAlert()}>
+              onPress={() => {
+                markingTaken(item);
+                reminderList.splice(index, 1);
+                console.log('deleting reminder ', reminderList);
+              }}>
               <FontAwesomeIcon
+              key={index+9}
                 icon={faCircleCheck}
                 color={colorPalette.mainColor}
                 size={30}
               />
             </TouchableOpacity>
-            <TouchableOpacity style={{padding: 8}} activeOpacity={1}>
+            <TouchableOpacity key={index+10} style={{padding: 8}} activeOpacity={1}>
               <FontAwesomeIcon
+              key={index+11}
                 icon={faCircleXmark}
                 color={colorPalette.redPercentageColor}
                 size={30}
@@ -108,7 +155,7 @@ const Reminders = ({showAlert}) => {
             </TouchableOpacity>
           </View>
         </View>
-      </Animatable.View>
+      </View>
     );
   };
   return (
@@ -135,17 +182,11 @@ const Reminders = ({showAlert}) => {
               borderRadius: 10,
               alignSelf: 'center',
             }}>
-            <ScrollView
-              width={'100%'}
-              contentContainerStyle={{alignItems: 'center'}}
-              showsVerticalScrollIndicator={false}>
-              {reminderList.map((i, index) => {
-                let obj = reminderCard;
-                obj.medName = i.medName;
-                obj.reminderTime = '7:30 PM';
-                return renderItem(obj, index);
-              })}
-            </ScrollView>
+            <FlatList
+              data={reminderList}
+              renderItem={renderItem}
+              keyExtractor={item => item.userMedicineId}
+            />
           </View>
         )}
       </View>
