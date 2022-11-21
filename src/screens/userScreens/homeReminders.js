@@ -16,73 +16,136 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from '@fortawesome/free-regular-svg-icons';
-import {getMedicine} from '../../utils/storage';
-import MedicineHistory from './medicineHistory/medicineHistory';
+import {AddMedicine, getMedicine} from '../../utils/storage';
+import {useIsFocused} from '@react-navigation/native';
+// import MedicineHistory from './medicineHistory/medicineHistory';
+
+function MedicineHistory(medData) {
+  let history = {
+    historyId: null,
+    date: null,
+    taken: '',
+    notTaken: '',
+    time: null,
+  };
+  for (let i = 0; i < medData.length; i++) {
+    let arr = medData[i].days.split(',');
+    let set = new Set(arr);
+    var start_date = new Date(medData[i].endDate);
+    var end_date = new Date(medData[i].endDate);
+    var tody_date = new Date();
+    let td_da =
+      tody_date.getFullYear() +
+      '-' +
+      (tody_date.getMonth() + 1) +
+      '-' +
+      tody_date.getDate();
+    if (
+      medData[i].endDate !== 'No End Date' &&
+      set.has(weeks[tody_date.getDay()]) &&
+      start_date <= tody_date <= end_date
+    ) {
+      const a = b => b.date == td_da;
+      const index = medData[i].historyList.findIndex(a);
+      if (medData[i].historyList.length === 0) {
+        history.historyId = uuid.v4();
+        history.date = td_da;
+        history.time = medData[i].reminderTime.split(',');
+        medData[i].historyList.push(history);
+      } else if (medData[i].historyList.length !== 0 && index >= 0) {
+        let obj = medData[i].historyList[index];
+        obj.time = medData[i].reminderTime.split(',');
+        // console.log(obj, 'existing reminder');
+        medData[i].historyList[index] = obj;
+      }
+    } else if (medData[i].endDate === 'No End Date') {
+      // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
+      const a = b => b.date == td_da;
+      const index = medData[i].historyList.findIndex(a);
+      if (medData[i].historyList.length === 0) {
+        history.historyId = uuid.v4();
+        history.date = td_da;
+        history.time = medData[i].reminderTime.split(',');
+        medData[i].historyList.push(history);
+      } else if (medData[i].historyList.length !== 0 && index >= 0) {
+        let obj = medData[i].historyList[index];
+        obj.time = medData[i].reminderTime.split(',');
+        // console.log(obj, 'existing reminder');
+        medData[i].historyList[index] = obj;
+      }
+    }
+
+    console.log('<================ FINAL DATA ================>', medData);
+    AddMedicine(medData);
+  }
+}
 
 const Reminders = ({showAlert}) => {
   const [medData, setMedData] = useState([]);
-  const [reminderList, setReminderList]=useState([]);
+  const [reminderList, setReminderList] = useState([]);
+  const isFocused = useIsFocused();
 
-  // MedicineHistory();
   useEffect(() => {
     getMedicine().then(data => {
-      if (data !== null) setMedData(data);
+      if (data !== null) {
+        setMedData(data);
+      }
     });
+  }, [medData]);
+
+  useEffect(() => {
+    if (isFocused) MedicineHistory(medData);
+  }, [medData]);
+
+  useEffect(() => {
+    if (isFocused) settingReminders();
   }, []);
 
-  let reminder = {
-    userMedicineId: null,
-    medName: null,
-    historyId: null,
-    time: null,
-  };
-
-  let reminderCard = {
-    reminderTime: null,
-    medName: null,
-    userMedicineId: null,
-    historyId: null,
-  };
+  let tempReminderList = [];
 
   function dailyReminders() {
     var tody_date = new Date();
     let td_da =
-      tody_date.getDate() +
+      tody_date.getFullYear() +
       '-' +
       (tody_date.getMonth() + 1) +
       '-' +
-      tody_date.getFullYear();
+      tody_date.getDate();
 
-    console.log('data', medData);
+    // console.log('data', medData);
     medData.map(item => {
-     let tempReminderList=[]
-      let temp = reminder;
-      temp.userMedicineId = item.userMedicineId;
-      temp.medName = item.medicineName;
       item.historyList.map(r => {
         if (r.date === td_da) {
+          r.time.map(z => {
+            console.log('time', z);
+            let temp = {};
+            temp.userMedicineId = item.userMedicineId;
+            temp.medName = item.medicineName;
             temp.historyId = r.historyId;
-            r.time.map(z => {
-              let temp1=temp;
-              temp1.time = z;
-              console.log(temp1, 'zzz ****');
-              tempReminderList.push(temp1);
-            });
-          }
+            temp.time = z;
+            console.log('zzz ****', tempReminderList.length);
+            tempReminderList.push(temp);
+            item.totalReminders += 1;
+
+            console.log('zzz ****', tempReminderList.length);
+          });
         }
-      );
-      console.log(tempReminderList, 'zzz');
-      setReminderList(tempReminderList);
+      });
     });
-    // console.log(reminderList, 'Reminders');
+    return tempReminderList;
   }
 
-  function empty() {
-    reminderList.length = 0;
-  }
+  // function empty() {
+  //   reminderList.length = 0;
+  // }
   // empty();
-  // console.log(reminderList, ' <<<<<    after empty ');
-  dailyReminders();
+  // console.log(reminderList.length, ' <<<<<    after empty ');
+  function settingReminders() {
+    let abc = dailyReminders();
+    if (abc.length !== null) {
+      setReminderList(abc);
+    }
+  }
 
   function markingTaken(item) {
     console.log(item.item, ' INSIDE MARKING');
@@ -97,28 +160,31 @@ const Reminders = ({showAlert}) => {
         item.historyList.map(r => {
           if (r.historyId == historyId && !r.taken.includes(time)) {
             r.taken = r.taken + time + ',';
+            item.currentCount += 1;
           }
         });
         // console.log('After updating reminders ', item);
       }
     });
     console.log('After updating reminders ', medData);
+    AddMedicine(medData);
   }
 
-
   const renderItem = (item, index) => {
-    console.log(item, 'aaa');
-    const {medName, time}= item;
+    // console.log(item.item.medName, 'aaa');
+    const {medName, time} = item.item;
     return (
       <View style={{width: '100%'}} key={index}>
-        <View style={styles.list} key={index+1}>
-          <View style={styles.avatarView } key={index+2}>
-            <View style={styles.medNameView} key={index+3}>
-              <ListItem.Title key={index+4} style={styles.medName}>
-                {item.time}
+        <View style={styles.list} key={index + 1}>
+          <View style={styles.avatarView} key={index + 2}>
+            <View style={styles.medNameView} key={index + 3}>
+              <ListItem.Title key={index + 4} style={styles.medName}>
+                {time}
               </ListItem.Title>
-              <ListItem.Subtitle key={index+5} style={{marginVertical: 2, fontSize: 16}}>
-                {item.medName}
+              <ListItem.Subtitle
+                key={index + 5}
+                style={{marginVertical: 2, fontSize: 16}}>
+                {medName}
               </ListItem.Subtitle>
             </View>
           </View>
@@ -127,10 +193,9 @@ const Reminders = ({showAlert}) => {
               flexDirection: 'row',
               alignItems: 'center',
             }}
-            key={index+6}
-            >
+            key={index + 6}>
             <TouchableOpacity
-            key={index+7}
+              key={index + 7}
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
@@ -139,15 +204,18 @@ const Reminders = ({showAlert}) => {
                 console.log('deleting reminder ', reminderList);
               }}>
               <FontAwesomeIcon
-              key={index+9}
+                key={index + 9}
                 icon={faCircleCheck}
                 color={colorPalette.mainColor}
                 size={30}
               />
             </TouchableOpacity>
-            <TouchableOpacity key={index+10} style={{padding: 8}} activeOpacity={1}>
+            <TouchableOpacity
+              key={index + 10}
+              style={{padding: 8}}
+              activeOpacity={1}>
               <FontAwesomeIcon
-              key={index+11}
+                key={index + 11}
                 icon={faCircleXmark}
                 color={colorPalette.redPercentageColor}
                 size={30}
