@@ -50,8 +50,8 @@ const Reminder = ({route, navigation, props}) => {
   const [dinnerTouchable, setDinnerTouchable] = useState(false);
   const [noEndDate, setNoEndDate] = useState(false);
   const [reminderStatus, setReminderStatus] = useState(true);
-  const [totalReminders, setTotalReminders] = useState(10);
-  const [currentCount, setCurrentCount] = useState(0);
+  const totalReminders=0;
+  const currentCount = 0;
   const [time, setTime] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);

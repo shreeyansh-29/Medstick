@@ -52,3 +52,5 @@ export const hour = {
   23: '11',
   24: '12',
 };
+
+export const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];

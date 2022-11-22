@@ -20,6 +20,8 @@ import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import CustomImage from '../../../components/atoms/customImage';
+import {week} from '../../../constants/constants';
+import uuid from 'react-native-uuid';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
@@ -47,13 +49,79 @@ const MedicinePanel = ({navigation}) => {
     });
   };
 
+  const MedicineHistory = data => {
+    var updateArray = [];
+    let history = {
+      historyId: null,
+      date: null,
+      taken: '',
+      notTaken: '',
+      time: null,
+    };
+    for (let i = 0; i < data.length; i++) {
+      // console.log('start of loop');
+      let arr = data[i].days.split(',');
+      let set = new Set(arr);
+      var start_date = new Date(data[i].endDate);
+      var end_date = new Date(data[i].endDate);
+      var tody_date = new Date();
+      let td_da =
+        tody_date.getFullYear() +
+        '-' +
+        (tody_date.getMonth() + 1) +
+        '-' +
+        tody_date.getDate();
+      if (
+        data[i].endDate !== 'No End Date' &&
+        set.has(week[tody_date.getDay()]) &&
+        start_date <= tody_date <= end_date
+      ) {
+        const a = b => b.date == td_da;
+        const index = data[i].historyList.findIndex(a);
+        if (data[i].historyList.length === 0) {
+          history.historyId = uuid.v4();
+          history.date = td_da;
+          history.time = data[i].reminderTime.split(',');
+          history.notTaken = data[i].reminderTime;
+          data[i].historyList.push(history);
+        } else if (data[i].historyList.length !== 0 && index >= 0) {
+          let obj = data[i].historyList[index];
+          obj.time = data[i].reminderTime.split(',');
+          obj.notTaken = data[i].reminderTime;
+          // console.log(obj, 'existing reminder');
+          data[i].historyList[index] = obj;
+        }
+      } else if (data[i].endDate === 'No End Date') {
+        // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
+        const a = b => b.date == td_da;
+        const index = data[i].historyList.findIndex(a);
+        if (data[i].historyList.length === 0) {
+          history.historyId = uuid.v4();
+          history.date = td_da;
+          history.time = data[i].reminderTime.split(',');
+          history.notTaken = data[i].reminderTime;
+          data[i].historyList.push(history);
+        } else if (data[i].historyList.length !== 0 && index >= 0) {
+          let obj = data[i].historyList[index];
+          obj.time = data[i].reminderTime.split(',');
+          obj.notTaken = data[i].reminderTime;
+          // console.log(obj, 'existing reminder');
+          data[i].historyList[index] = obj;
+        }
+      }
+
+      // console.log('<================ FINAL DATA ================>', data[i]);
+      updateArray.push(data[i]);
+      // console.log('end with loop');
+    }
+    AddMedicine(updateArray);
+  };
+
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
           setMedicineResponse(data);
-        } else {
-          setMedicineResponse([]);
         }
       });
     }
@@ -69,6 +137,11 @@ const MedicinePanel = ({navigation}) => {
       getUser();
     }
   }, [isFocused]);
+  useEffect(() => {
+    medicineResponse.map(item => {
+      item.reminderId !== null ? MedicineHistory(medicineResponse) : null;
+    });
+  }, [medicineResponse]);
 
   const renderItemLocal = ({item, index}) => {
     return (

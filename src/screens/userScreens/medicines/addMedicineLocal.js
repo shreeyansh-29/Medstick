@@ -106,7 +106,7 @@ const AddMedicineLocal = ({navigation}) => {
       reminderId: null,
       startDate: null,
       endDate: null,
-      days: null,
+      days: '',
       reminderTitle: null,
       reminderTime: null,
       everyday: null,
@@ -121,7 +121,9 @@ const AddMedicineLocal = ({navigation}) => {
 
     getMedicine().then(data => {
       if (data !== null) {
+        console.log(data, 'before');
         const temp = [...data, obj];
+        console.log(temp, 'after');
         AddMedicine(temp);
         Toast.show({
           text1: 'Medicine Saved Successfully',

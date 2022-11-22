@@ -65,6 +65,7 @@ const AddMedicineForm = props => {
           </Text>
         )}
         {/* {props.connection && id === null ? (
+        {props.connection && id !== null ? (
           <>
             <TouchableOpacity
               onPress={() => setVisible(true)}

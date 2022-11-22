@@ -24,6 +24,7 @@ function DayComponent({
   setModalVisible,
   history,
 }) {
+  console.log('percent %',percentage)
   return (
     <TouchableOpacity
       disabled={state === 'disabled'}
