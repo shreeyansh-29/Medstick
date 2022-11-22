@@ -17,7 +17,10 @@ import * as Animatable from 'react-native-animatable';
 import {ListItem} from 'react-native-elements';
 import {faBell, faPills} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {notifyUserRequest} from '../../../redux/action/patients/notifyUserAction';
+import {
+  notifyUserClear,
+  notifyUserRequest,
+} from '../../../redux/action/patients/notifyUserAction';
 import Ripple from 'react-native-material-ripple';
 import {style} from '../../../styles/patientStyles/viewMedicineStyles';
 
@@ -32,9 +35,11 @@ const ViewMedicines = ({navigation, route}) => {
 
   useEffect(() => {
     if (res1?.status === 'Success') {
-      ToastAndroid.show('Send successfully', ToastAndroid.LONG);
+      ToastAndroid.show('Send Successfully', ToastAndroid.LONG);
+      dispatch(notifyUserClear());
     } else if (res1?.status === 'Failed') {
       ToastAndroid.show('Error', ToastAndroid.LONG);
+      dispatch(notifyUserClear());
     }
   }, [res1]);
 
@@ -130,7 +135,7 @@ const ViewMedicines = ({navigation, route}) => {
             <View style={style.imgCont}>
               <CustomImage
                 resizeMode="contain"
-                source={require('../../../assets/images/nopatients.png')}
+                source={require('../../../assets/images/noMedicinesPatient.png')}
                 styles={{width: '70%'}}
               />
             </View>

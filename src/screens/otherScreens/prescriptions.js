@@ -87,6 +87,7 @@ const Prescriptions = ({navigation}) => {
               </ListItem.Subtitle>
             </ListItem.Content>
             <TouchableOpacity
+              activeOpacity={1}
               style={{marginRight: 12}}
               onPress={() => {
                 navigation.navigate('ViewPrescription', {item: item});

@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AddMedicine = async data => {
   try {
     await AsyncStorage.setItem('AddMedicine', JSON.stringify(data));
-    console.log('save', data);
   } catch (error) {
     console.log(error);
   }
@@ -31,6 +30,25 @@ export const addReminder = async data => {
 export const getReminder = async () => {
   try {
     const response = JSON.parse(await AsyncStorage.getItem('AddReminder'));
+
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const saveMedicine = async data => {
+  try {
+    await AsyncStorage.setItem('SaveMedicine', JSON.stringify(data));
+    console.log('savemedicine', data);
+  } catch {
+    console.log(error);
+  }
+};
+
+export const getSaveMedicine = async () => {
+  try {
+    const response = JSON.parse(await AsyncStorage.getItem('SaveMedicine'));
     return response;
   } catch (error) {
     console.log(error);

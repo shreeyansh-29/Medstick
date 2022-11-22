@@ -8,6 +8,7 @@ const InputField = props => {
       label={props.label}
       dense={props.dense}
       placeholder={props.placeholder}
+      placeholderTextColor={'black'}
       mode={props.mode}
       outlineColor={props.outlineColor}
       activeOutlineColor={props.activeOutlineColor}

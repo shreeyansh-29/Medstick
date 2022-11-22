@@ -41,13 +41,22 @@ export const prescriptionValidationSchema = yup.object().shape({
     .string()
     .required('Specialization is Required*')
     .nullable(),
-  contact: yup.string().required('Contact is Required*').nullable(),
+  contact: yup
+    .string()
+    .min(10, ({min}) => `Contact number must be ${min} characters`)
+    .max(10, ({max}) => `Contact number can be only ${max} characters`)
+    .required('Contact is Required*')
+    .nullable(),
   location: yup.string().required('Location is Required*').nullable(),
   image: yup.string().required('Image is Required*').nullable(),
 });
 
 export const updateAppointmentSchema = yup.object().shape({
-  notes: yup.string().required('Description is Required*').nullable(),
+  notes: yup
+    .string()
+    .max(100, ({max}) => `Notes can be only ${max} characters`)
+    .required('Notes is Required*')
+    .nullable(),
   date1: yup.string().required('Date is Required*').nullable(),
   time: yup.string().required('Time is Required*').nullable(),
 });
@@ -60,3 +69,19 @@ export const updateNotesSchema = yup.object().shape({
   .required('Notes is Required*')
   .nullable(),
 })
+export const addMedicineSchema = yup.object().shape({
+  medicineName: yup.string().required('Medicine Name is Required*').nullable(),
+  description: yup
+    .string()
+    .min(10, ({min}) => `Description must be more than ${min} characters*`)
+    .max(120, ({max}) => `Description can be only of ${max} characters*`)
+    .required('Description is Required*')
+    .nullable(),
+  dosageQuantity: yup
+    .string()
+    .required('Dosage Quantity is Required*')
+    .nullable(),
+  dosagePower: yup.string().required('Dosage Power is Required*').nullable(),
+  stocks: yup.string().required('Stocks are Required*').nullable(),
+  notify: yup.string().required('Notify me when is Required*').nullable(),
+});

@@ -2,7 +2,7 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
 
-const PrescriptionBox = ({doctorName, locations, contact, specialization}) => {
+const PrescriptionBox = ({doctorName,locations,contact,specialization,prescriptionUrl}) => {
   return (
     <View style={Styles.prescriptionBox}>
       <Text style={Styles.prescriptionText}>{doctorName}</Text>

@@ -9,37 +9,34 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
-import DatePicker from 'react-native-date-picker';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
 import {TextInput} from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import {horizontalScale, verticalScale} from '../atoms/constant';
-import {colorPalette} from '../atoms/colorPalette';
-import {faCalendarDays} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import SaveButton from './saveButton';
 import {Alert} from 'react-native';
 import {showInvalidMessage} from '../atoms/invaliMessage';
-import {useDispatch, useSelector} from 'react-redux';
-import {loadSaveDoctorPrescription} from '../../redux/action/doctorPrescription/saveDoctorPrescriptionAction';
+import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid'
+import { getPrescription, savePrescription } from '../../utils/storage';
+const AddPrescriptionList = ({ navigation }) => {
 
-const AddPrescriptionList = ({navigation}) => {
   const [doctorName, setDoctorName] = useState('');
   const [specialization, setSpecialization] = useState('');
   const [number, setNumber] = useState('');
   const [locations, setLocation] = useState('');
-  const [id, setId] = useState('');
-  const [token, setToken] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
-  // const [prescriptionId,setPrescriptionId]=useState('')
+  const [id, setId] = useState('')
+  const [token, setToken] = useState('')
+  const [selectedImage, setSelectedImage] = useState('')
+  const [arr, setArr] = useState('')
+  console.log('array', arr)
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    getPrescription().then(data => setArr(data))
+  }, [])
 
-  const dispatch = useDispatch();
-  const saveDoctorPrescriptiondata = useSelector(
-    state => state.saveDoctorPrescriptionReducer.data,
-  );
-  // const savePrescriptionId=useSelector(state=>state.saveDoctorPrescriptionReducer?.data?.result?.prescriptionId)
-  console.log(saveDoctorPrescriptiondata, 'data');
 
   // useEffect(() => {
   //   if (saveDoctorPrescriptiondata?.status === 'Success') {
@@ -83,40 +80,37 @@ const AddPrescriptionList = ({navigation}) => {
   };
 
   const successfullyPrescriptionAdded = () => {
-    showSuccesMessage();
-    navigation.navigate('AddMedicine');
-  };
 
-  const savePrescription = async () => {
-    if (
-      doctorName === '' ||
-      specialization === '' ||
-      number === '' ||
-      locations === '' ||
-      selectedImage === ''
-    ) {
-      showInvalidMessage();
-    } else {
-      const formdata = new FormData();
-      formdata.append('image', {
-        uri: selectedImage.path,
-        type: 'image/jpg',
-        name: 'Prescription',
-      });
-      formdata.append('doctorName', doctorName);
-      formdata.append('specialization', specialization);
-      formdata.append('contact', number);
-      formdata.append('location', locations);
-      dispatch(loadSaveDoctorPrescription(token, id, formdata));
-      if (saveDoctorPrescriptiondata?.status === 'Success') {
-        await AsyncStorage.setItem(
-          'prescription_id',
-          saveDoctorPrescriptiondata.result.prescriptionId,
-        );
-        successfullyPrescriptionAdded();
+
+    showSuccesMessage()
+    navigation.navigate('AddMedicine')
+
+  }
+
+  const savePrescriptionLocal = async () => {
+    if (doctorName === '' || specialization === '' || number === '' || locations === '' || selectedImage === '') {
+      showInvalidMessage()
+    }
+
+
+    else {
+      let obj = {
+        prescriptionId: uuid.v4(),
+        doctorName: doctorName,
+        specialization: specialization,
+        contact: number,
+        location: locations,
+        prescriptionUrl: selectedImage.path
+      }
+      if (arr !== null) {
+        setArr([...arr, obj])
       }
     }
   };
+
+  useEffect(() => {
+    savePrescription(arr)
+  }, [arr])
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -309,9 +303,7 @@ const AddPrescriptionList = ({navigation}) => {
             </View>
           </View> */}
         </KeyboardAvoidingView>
-        <TouchableOpacity
-          style={Styles.saveButtonArea}
-          onPress={() => savePrescription()}>
+        <TouchableOpacity style={Styles.saveButtonArea} onPress={() => savePrescriptionLocal()}>
           <SaveButton />
         </TouchableOpacity>
       </ScrollView>

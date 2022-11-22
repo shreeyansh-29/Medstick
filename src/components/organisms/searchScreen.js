@@ -14,16 +14,19 @@ import {colorPalette} from '../atoms/colorPalette';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import UserAvatar from 'react-native-user-avatar';
-import {ListItem} from 'react-native-elements';
+import {ListItem, SearchBar, Icon} from 'react-native-elements';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUserRequest, resetUser} from '../../redux/action/getUserAction/getUserAction';
-import {resetSend, sendReqRequest} from '../../redux/action/getUserAction/sendReqAction';
+import {
+  getUserRequest,
+  resetUser,
+} from '../../redux/action/getUserAction/getUserAction';
+import {
+  resetSend,
+  sendReqRequest,
+} from '../../redux/action/getUserAction/sendReqAction';
 import Toast from 'react-native-toast-message';
 import {useRoute} from '@react-navigation/native';
-import CustomTextInput from '../atoms/customInputText';
 
 const loginValidationSchema = yup.object().shape({
   email: yup
@@ -37,16 +40,11 @@ const SearchScreen = ({navigation}) => {
   let sentby = route.params.sentBy;
   const dispatch = useDispatch();
   const res = useSelector(state => state.getUser?.data);
-  console.log(res);
   const res1 = useSelector(state => state.sendRequest?.data);
   const [data, setData] = useState([]);
 
   const progress = useRef(new Animated.Value(0)).current;
 
-  useEffect(()=>{
-    dispatch(resetSend());
-    dispatch(resetUser());
-  },[])
   useEffect(() => {
     Animated.timing(progress, {
       toValue: 1,
@@ -61,11 +59,13 @@ const SearchScreen = ({navigation}) => {
     } else if (res?.message === 'Invitation sent to user with given email id') {
       Toast.show({
         type: 'info',
-        text1: 'Invitation sent to user with given email id',
-        position: 'bottom',
+        text1: 'No User Found',
+        text2: 'Invitation sent to user with given email id',
+        position: 'top',
       });
-    } else {
-      setData([]);
+      setTimeout(() => {
+        navigation.pop();
+      }, 2000);
     }
   }, [res]);
 
@@ -76,6 +76,9 @@ const SearchScreen = ({navigation}) => {
         text1: 'Request Send Successfully',
         position: 'bottom',
       });
+      setTimeout(() => {
+        navigation.pop();
+      }, 2000);
     } else if (res1?.status === 'Failed') {
       Toast.show({
         type: 'error',
@@ -90,6 +93,8 @@ const SearchScreen = ({navigation}) => {
         position: 'bottom',
       });
     }
+    dispatch(resetSend());
+    dispatch(resetUser());
   }, [res1]);
 
   const sendMailToUser = async email => {
@@ -105,8 +110,8 @@ const SearchScreen = ({navigation}) => {
     dispatch(getUserRequest(email));
   };
 
-  const sendReqToCaretaker = patient_id => {
-    dispatch(sendReqRequest({patient_id, sentby}));
+  const sendReqToCaretaker = (patient_id, fcmToken) => {
+    dispatch(sendReqRequest({patient_id, sentby, fcmToken}));
   };
 
   const renderItem = ({item}) => {
@@ -122,14 +127,17 @@ const SearchScreen = ({navigation}) => {
                     <ListItem.Title style={styles.font}>
                       {item.userName}
                     </ListItem.Title>
-                    <ListItem.Subtitle>{item.contact}</ListItem.Subtitle>
+                    <ListItem.Subtitle>
+                      {item?.userDetails?.contact}
+                    </ListItem.Subtitle>
                   </View>
                 </View>
               </ListItem.Content>
               <TouchableOpacity
+                activeOpacity={1}
                 style={styles.listButton}
                 onPress={() => {
-                  sendReqToCaretaker(item.id);
+                  sendReqToCaretaker(item?.id, item?.userDetails?.fcmToken);
                 }}>
                 <Text style={styles.text1}>Send Request</Text>
               </TouchableOpacity>
@@ -142,65 +150,73 @@ const SearchScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Toast />
-      <SubHeader navigation={navigation} />
+      <SubHeader navigation={navigation} title={'Search'} />
       <KeyboardAvoidingView
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS == 'ios' ? 0 : 20}
         enabled={Platform.OS === 'ios' ? true : false}>
-        <View style={styles.form}>
-          <Formik
-            validationSchema={loginValidationSchema}
-            initialValues={{email: ''}}
-            onSubmit={values => sendMailToUser(values.email)}>
-            {({handleChange, handleSubmit, values, errors, touched}) => (
-              <>
-                <View style={styles.formView}>
-                  <CustomTextInput
-                    placeholder="Search By Email"
-                    textContentType="emailAddress"
-                    placeholderTextColor={colorPalette.mainColor}
-                    mode="flat"
-                    text="email"
-                    handleChange={handleChange}
-                    styles={styles.field}
-                    value={values.email}
-                    outlineColor={colorPalette.mainColor}
-                    activeOutlineColor={colorPalette.mainColor}
-                  />
-
-                  <TouchableOpacity onPress={() => handleSubmit()}>
-                    <FontAwesomeIcon
-                      icon={faMagnifyingGlass}
+        <Formik
+          validationSchema={loginValidationSchema}
+          initialValues={{email: ''}}
+          onSubmit={values => sendMailToUser(values.email)}>
+          {({handleChange, handleSubmit, values, errors, touched}) => (
+            <>
+              <View style={{marginVertical: 10}}>
+                <SearchBar
+                  platform="default"
+                  placeholder="Search By Email"
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  containerStyle={{
+                    backgroundColor: 'rbga(225,232,238,0)',
+                  }}
+                  inputContainerStyle={{
+                    borderRadius: 30,
+                    backgroundColor: '#EFF5F5',
+                    height: 50,
+                  }}
+                  inputStyle={{
+                    fontSize: 18,
+                    color: colorPalette.mainColor,
+                  }}
+                  lightTheme="true"
+                  placeholderTextColor={colorPalette.mainColor}
+                  clearIcon={{color: colorPalette.mainColor, size: 22}}
+                  searchIcon={
+                    <Icon
                       size={22}
+                      name="search"
+                      type="font-awesome"
                       color={colorPalette.mainColor}
+                      onPress={() => handleSubmit()}
+                      containerStyle={{marginLeft: 10}}
                     />
-                  </TouchableOpacity>
-                </View>
+                  }
+                />
                 <Text style={styles.text}>{touched.email && errors.email}</Text>
-              </>
-            )}
-          </Formik>
-        </View>
-        {data.length === 0 ? (
-          <View style={styles.lottieCont}>
-            <LottieView
-              source={require('../../assets/animation/user.json')}
-              speed={0.6}
-              progress={progress}
-              style={styles.lottie}
-            />
-          </View>
-        ) : (
-          <View style={styles.flatList}>
-            <FlatList
-              data={data}
-              renderItem={renderItem}
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-        )}
+              </View>
+            </>
+          )}
+        </Formik>
       </KeyboardAvoidingView>
+
+      {data.length === 0 ? (
+        <View style={styles.lottieCont}>
+          <LottieView
+            source={require('../../assets/animation/user.json')}
+            speed={0.6}
+            progress={progress}
+            style={styles.lottie}
+          />
+        </View>
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
+      <Toast />
     </View>
   );
 };

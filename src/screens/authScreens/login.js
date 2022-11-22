@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {useIsFocused} from '@react-navigation/native';
 
-const Login = ({navigation, text}) => {
+const Login = ({navigation, connected}) => {
   const res = useSelector(state => state.signIn.data);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -29,15 +29,9 @@ const Login = ({navigation, text}) => {
         text1: 'Logged In Successfully',
       });
 
-      if (text === 'logout') {
-        setTimeout(() => {
-          navigation.pop(2);
-        }, 1000);
-      } else {
-        setTimeout(() => {
-          navigation.pop(1);
-        }, 1000);
-      }
+      setTimeout(() => {
+        navigation.pop(1);
+      }, 3000);
     } else {
       Toast.show({
         type: 'error',
@@ -60,20 +54,27 @@ const Login = ({navigation, text}) => {
   }, [isFocused, res]);
 
   const login = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const token = await messaging().getToken();
-      const {email, photo} = userInfo.user;
-      await AsyncStorage.setItem('user_photo', photo);
+    if (connected) {
+      try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        const token = await messaging().getToken();
+        const {email, photo} = userInfo.user;
+        await AsyncStorage.setItem('user_photo', photo);
 
-      dispatch(loginRequest({email, token}));
-    } catch (err) {
-      if (await GoogleSignin.isSignedIn()) {
-        await GoogleSignin.signOut();
+        dispatch(loginRequest({email, token}));
+      } catch (err) {
+        if (await GoogleSignin.isSignedIn()) {
+          await GoogleSignin.signOut();
+        }
+        Toast.show({
+          type: 'info',
+          text1: 'Something Went Wrong',
+        });
       }
+    } else {
       Toast.show({
-        type: 'info',
+        type: 'error',
         text1: 'Please connect to Internet',
       });
     }

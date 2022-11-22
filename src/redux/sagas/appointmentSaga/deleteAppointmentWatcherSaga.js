@@ -9,7 +9,6 @@ import deleteAppointmentNetworkService from '../../../network/networkServices/us
 export function* deleteAppointmentWorkerSaga(data) {
   try {
     let response = yield call(deleteAppointmentNetworkService.deleteAppointment,data);
-    console.log(response,"response")
     yield put(deleteAppointmentSuccess(response?.data));
   } catch (error) {
     yield put(deleteAppointmentError(error));

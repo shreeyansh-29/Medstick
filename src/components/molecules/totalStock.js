@@ -18,7 +18,7 @@ const TotalStock = props => {
       {cancelable: false},
     );
   };
-  const [stock, setStock] = useState('1');
+  const [stock, setStock] = useState(1);
   const valueChangePlus = () => {
     var addValue = Number(stock);
     addValue = addValue + 1;
@@ -39,7 +39,6 @@ const TotalStock = props => {
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
       }}>
       <TouchableOpacity
@@ -63,7 +62,6 @@ const TotalStock = props => {
         onChangeText={stock => setStock(Number(stock))}
         outlineColor="#02aba6"
         activeOutlineColor="#02aba6"
-        
       />
       <TouchableOpacity
         onPress={() => valueChangePlus()}

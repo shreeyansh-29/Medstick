@@ -8,6 +8,7 @@ const BellIcon = ({navigation}) => {
   return (
     <View style={styles.bellIcon}>
       <TouchableOpacity
+        activeOpacity={1}
         onPress={() =>
           navigation?.navigate('HomeStack', {screen: 'Notification'})
         }>

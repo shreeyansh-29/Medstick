@@ -2,6 +2,7 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Alert,
   RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -23,9 +24,24 @@ import {
 } from '../../redux/action/appointmentReminderAction/deleteAppointmentAction';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
+import CustomImage from '../../components/atoms/customImage';
+import {appointmentReminderRequest} from '../../redux/action/userMedicine/appointmentReminderAction';
 
 const AppointmentReminderList = ({navigation}) => {
   const dispatch = useDispatch();
+  const doctor = useSelector(appointmentReminderSelector.appointmentReminder);
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    dispatch(appointmentReminderRequest(0));
+  }, []);
+
+  useEffect(() => {
+    if (doctor !== null) {
+      setNotes(doctor);
+    }
+  }, [doctor]);
+
   const [pageNo, setPageNo] = useState(0);
   const [appointments, setAppointments] = useState([]);
   const [notes1, setNotes1] = useState('');
@@ -59,7 +75,7 @@ const AppointmentReminderList = ({navigation}) => {
 
   const renderItem = ({item}) => {
     return (
-      <View>
+      <View style={styles.top}>
         <ListItem style={styles.list}>
           <ListItem.Content>
             <View>
@@ -157,6 +173,7 @@ const AppointmentReminderList = ({navigation}) => {
         title={'Appointment Reminders'}
         navigation={navigation}
         routeName={'SaveAppointment'}
+        notes={notes}
       />
 
       <CustomModal
@@ -180,10 +197,21 @@ const AppointmentReminderList = ({navigation}) => {
       ) : (
         <>
           {appointments?.length === 0 ? (
-            <View></View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+              }}>
+              <CustomImage
+                resizeMode="contain"
+                styles={styles.img}
+                source={require('../../assets/images/noAppointments.png')}
+              />
+            </View>
           ) : (
             <FlatList
-              style={{marginTop: 6}}
               showsVerticalScrollIndicator={false}
               data={appointments}
               renderItem={renderItem}

@@ -12,14 +12,14 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import CustomModal from '../../../components/molecules/customModal';
 import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
+import {myPatientsRequest} from '../../../redux/action/patients/myPatientsAction';
 
 const PatientRequest = () => {
   const dispatch = useDispatch();
   const [patients, setPatients] = useState([]);
   const [pageNo, setPageNo] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const res = useSelector(state => state.patientsRequest?.data);
-  console.log(res,"resss");
+  const res = useSelector(state => state.patientsRequest);
   const loading = useSelector(state => state.patientsRequest.isLoading);
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
@@ -59,6 +59,7 @@ const PatientRequest = () => {
   const acceptRequest = requestId => {
     dispatch(acceptPatientReqRequest(requestId));
     setTimeout(() => {
+      dispatch(myPatientsRequest(0));
       dispatch(patientsReqRequest(pageNo));
     }, 1000);
   };
@@ -66,6 +67,7 @@ const PatientRequest = () => {
   const deleteRequest = requestId => {
     dispatch(deletePatientReqRequest(requestId));
     setTimeout(() => {
+      dispatch(myPatientsRequest(0));
       dispatch(patientsReqRequest(pageNo));
     }, 1000);
   };
@@ -139,7 +141,7 @@ const PatientRequest = () => {
               <CustomImage
                 resizeMode="contain"
                 styles={styles.img}
-                source={require('../../../assets/images/nopatientreq.png')}
+                source={require('../../../assets/images/noRequest.png')}
               />
             </View>
           ) : (

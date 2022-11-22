@@ -11,7 +11,14 @@ import ShareButton from '../../atoms/shareButton';
 import EditButton from '../../atoms/editButton';
 import DownloadButton from '../../atoms/downloadButton';
 
-const SubHeader = ({title, navigation, download, options, routeName}) => {
+const SubHeader = ({
+  title,
+  navigation,
+  download,
+  options,
+  routeName,
+  notes,
+}) => {
   const dispatch = useDispatch();
   return (
     <View style={styles.subHeader}>
@@ -19,8 +26,11 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
         style={styles.backIcon}
         onPress={() => {
           navigation.pop();
-          if (title === 'Patient Medicine') {
-            dispatch(notifyUserClear());
+          // if (title === 'Patient Medicine') {
+          //   dispatch(notifyUserClear());
+          // }
+          if (title === 'Send Snap') {
+            dispatch(sendSnapClear());
           }
         }}>
         <FontAwesomeIcon
@@ -36,7 +46,7 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
         <DownloadButton download={download} />
       )}
       {title !== 'Appointment Reminders' ? null : (
-        <AddAppointment navigation={navigation} routeName={routeName} />
+        <AddAppointment navigation={navigation} routeName={routeName} notes={notes}/>
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}
       {/* {title !== 'Patient Profile' ? null : (

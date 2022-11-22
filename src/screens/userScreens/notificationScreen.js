@@ -49,7 +49,7 @@ const NotificationScreen = ({navigation}) => {
                 <CustomImage
                   resizeMode="contain"
                   styles={{width: '70%'}}
-                  source={require('../../assets/images/nopatients.png')}
+                  source={require('../../assets/images/noNotification.png')}
                 />
               </View>
             </>

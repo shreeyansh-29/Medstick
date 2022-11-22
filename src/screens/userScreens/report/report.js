@@ -1,14 +1,18 @@
-import {View, Text, ScrollView, Modal} from 'react-native';
+import {View, Text, ScrollView, Modal, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
-import ProgressReport from '../../../components/atoms/progressCircle';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
-import MedicinePicker from '../../../components/atoms/medicinePicker';
-import {useDispatch, useSelector} from 'react-redux';
-import {loadGetMedicineHistoryByDate} from '../../../redux/action/userMedicine/getMedicineHistoryByDateAction';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
+import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
+import {useFocusEffect} from '@react-navigation/native';
+import {Alert} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import {colorPalette} from '../../../components/atoms/colorPalette';
+import ProgressCircle from 'react-native-progress-circle';
+import {getMedicine} from '../../../utils/storage';
+
 LocaleConfig.locales['en'] = {
   monthNames: [
     'January',
@@ -49,47 +53,135 @@ LocaleConfig.locales['en'] = {
   ],
   dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
 };
+const history = [
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
+    date: '2022-11-01',
+    taken: '10:00 AM,2:00 PM,8:00 PM',
+    notTaken: '',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
+    date: '2022-11-03',
+    taken: '10:00 AM,2:00 PM',
+    notTaken: '8:00 PM',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
+    date: '2022-11-05',
+    taken: '10:00 AM',
+    notTaken: '2:00 PM,8:00 PM',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
+    date: '2022-11-07',
+    taken: '10:00 AM,2:00 PM,8:00 PM',
+    notTaken: '',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
+    date: '2022-11-08',
+    taken: '10:00 AM,2:00 PM',
+    notTaken: '8:00 PM',
+  },
+  {
+    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
+    date: '2022-11-09',
+    taken: '10:00 AM',
+    notTaken: '2:00 PM,8:00 PM',
+  },
+];
 LocaleConfig.defaultLocale = 'en';
+
 const Report = ({navigation}) => {
-  const dispatch = useDispatch();
   const [medicineId, setMedicineId] = useState('');
-  // console.log(medicineId, 'mid');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
+  const [percentage, setPercentage] = useState(0);
   const [selectDate, setSelectDate] = useState('');
-  const [visible, setVisible] = useState(false);
-  const [percentage, setPercentage] = useState();
-  const [medicineName, setMedicineName] = useState('');
   const year = selectedDate?.year;
   const month = selectedDate?.month;
   const date = selectedDate?.day;
-  const medicineHistory = useSelector(
-    state => state.getMedicineHistoryByDateReducer,
-  );
-  // console.log(medicineHistory, 'medicine History');
-  // useEffect(()=>{
-  //   dispatch(loadGetMedicineHistory(medicineId))
-  // },[])
-  const fetchMedicineHistory = () => {
-    setSelectDate(year + '-' + month + '-' + date);
-    dispatch(loadGetMedicineHistoryByDate(medicineId, selectDate));
-  };
+  const [getUserMedicine, setGetUserMedicine] = useState([]);
+  const [historyData, setHistoryData] = useState({});
+
   useEffect(() => {
-    if (medicineId === null) {
-      setVisible(true);
+    getMedicine().then(data => {
+      setGetUserMedicine(data);
+    });
+  }, []);
+
+  useFocusEffect(() => {
+    const checkMeds = () => {
+      if (getUserMedicine === null) {
+        Alert.alert('Add Medicine First', 'Click Ok to proceed', [
+          {
+            text: 'Ok',
+            onPress: () => {
+              navigation.navigate('AddMedicineStack', {screen: 'AddMedicine'});
+            },
+          },
+          {
+            text: 'Cancel',
+            onPress: () => {
+              navigation.navigate('Home');
+            },
+          },
+        ]);
+      }
+    };
+    checkMeds();
+  });
+
+  const dayPercentageCalculator = (Taken, notTaken) => {
+    const nt = [];
+    const t = [];
+    if (notTaken !== '') {
+      notTaken.split(',').map(i => {
+        nt.push(i);
+      });
+    }
+    if (Taken !== '') {
+      Taken.split(',').map(i => {
+        t.push(i);
+      });
+    }
+    let totalCount = nt.length + t.length;
+    return Math.floor((t.length / totalCount) * 100);
+  };
+
+  const dateSelector = history => {
+    history.map(item => {
+      let percentage = dayPercentageCalculator(item.taken, item.notTaken);
+      dataMap.push({date: item.date, percentage: percentage});
+    });
+  };
+
+  useEffect(() => {
+    if (medicineId !== null) {
+      dateSelector(history);
     }
   }, [medicineId]);
-  console.log(selectedDate, 'date');
-  const ModalOpen = day => {
-    console.log('12345');
+
+  const ModalOpen = () => {
     setModalVisible(true);
-    // fetchMedicineHistory();
   };
-  const fetchMedicineId = data => {
-    if (data === null) {
-      setVisible(true);
-    } else setMedicineId(data);
+
+  const alertFunction = () => {
+    Alert.alert('You have no reminder of this date', '', [
+      {
+        text: 'Ok',
+        onPress: () => {},
+      },
+    ]);
   };
+
+  const getHistorydata = date => {
+    const a = b => b.date == date.dateString;
+    const historyIndex = history.findIndex(a);
+    setHistoryData(history[historyIndex]);
+  };
+
   let startDate = new Date().toDateString();
   const dayComponent = (date, state) => {
     const a = b => b.date == date.dateString;
@@ -105,17 +197,25 @@ const Report = ({navigation}) => {
             setSelectedDate={setSelectedDate}
             percentage={dataMap[index].percentage}
             setModalVisible={ModalOpen}
+            history={getHistorydata}
           />
         ) : (
-          <DayComponent
-            date={date}
-            state={state}
-            selectedDate={selectedDate}
-            initialDate={'2022-11-11'}
-            setSelectedDate={setSelectedDate}
-            percentage={0}
-            setModalVisible={ModalOpen}
-          />
+          <TouchableOpacity
+            style={{}}
+            activeOpacity={1}
+            onPress={() => alertFunction()}>
+            <ProgressCircle
+              percent={0}
+              radius={15}
+              borderWidth={3}
+              color={'grey'}
+              shadowColor={'lightgrey'}
+              bgColor={colorPalette.backgroundColor}>
+              <Text style={{fontSize: 16, color: colorPalette.blackColor}}>
+                {date.day}
+              </Text>
+            </ProgressCircle>
+          </TouchableOpacity>
         )}
       </>
     );
@@ -125,21 +225,7 @@ const Report = ({navigation}) => {
       <View style={styles.container} />
       <View style={styles.report}>
         <MainHeader title={'Reports'} navigation={navigation} />
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={visible}
-          onRequestClose={() => setVisible(!visible)}>
-          <View
-            style={{
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'rgba(52, 52, 52, 0.8)',
-            }}>
-            <Text>Add Medicine First</Text>
-          </View>
-        </Modal>
+
         <Modal
           animationType="fade"
           transparent={true}
@@ -149,13 +235,31 @@ const Report = ({navigation}) => {
           }}>
           <View style={styles.modalBox}>
             <HistoryDetail
-              data={history}
+              data={historyData}
               onPress={() => setModalVisible(false)}
             />
           </View>
         </Modal>
         <View style={{paddingHorizontal: 12, paddingTop: 10}}>
-          <MedicinePicker onChange={fetchMedicineId} />
+          <View style={styles.picker}>
+            <Picker
+              mode="dropdown"
+              id="picker1"
+              selectedValue={medicineId}
+              onValueChange={data => {
+                setMedicineId(data);
+              }}>
+              {getUserMedicine?.map((item, index) => {
+                return (
+                  <Picker.Item
+                    label={item.medicineName}
+                    value={item.userMedicineId}
+                    key={index}
+                  />
+                );
+              })}
+            </Picker>
+          </View>
         </View>
         <ScrollView>
           <View style={styles.reportContainer}>
@@ -167,11 +271,10 @@ const Report = ({navigation}) => {
                 </Text>
               </View>
               <View style={styles.progressView}>
-                <ProgressReport
-                  styles={styles}
-                  radius={42}
-                  borderWidth={6}
-                  percent={90}
+                <AnimatedProgressCircle
+                  radius={57}
+                  percentage={75}
+                  strokeWidth={12}
                 />
               </View>
             </View>
@@ -219,31 +322,7 @@ const Report = ({navigation}) => {
   );
 };
 
-const history = {
-  historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
-  date: '2022-08-30',
-  taken: '10:00 AM,14:00 PM,20:00 PM',
-  notTaken: '',
-};
-var dataMap = [
-  {date: '2022-11-01', percentage: 91},
-  {date: '2022-11-03', percentage: 91},
-  {date: '2022-11-05', percentage: 91},
-  {date: '2022-11-07', percentage: 61},
-  {date: '2022-11-08', percentage: 95},
-  {date: '2022-11-09', percentage: 91},
-  {date: '2022-11-10', percentage: 91},
-  {date: '2022-11-12', percentage: 91},
-  {date: '2022-11-13', percentage: 61},
-  {date: '2022-11-14', percentage: 95},
-  {date: '2022-11-15', percentage: 91},
-  {date: '2022-11-17', percentage: 91},
-  {date: '2022-11-18', percentage: 95},
-  {date: '2022-11-19', percentage: 91},
-  {date: '2022-11-21', percentage: 91},
-  {date: '2022-11-22', percentage: 21},
-  {date: '2022-11-24', percentage: 61},
-  {date: '2022-11-25', percentage: 11},
-];
+var dataMap = [];
 
 export default Report;
+

@@ -5,7 +5,7 @@ export const style = StyleSheet.create({
   mainCont: {flex: 1, backgroundColor: colorPalette.basicColor},
   imgCont: {
     flex: 1,
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
   },

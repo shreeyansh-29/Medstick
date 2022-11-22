@@ -5,27 +5,25 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import { faCircle} from '@fortawesome/free-solid-svg-icons';
+import {faCircle} from '@fortawesome/free-solid-svg-icons';
 import CheckBox from 'react-native-check-box';
 import {deviceWidth} from '../../../components/atoms/constant';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
-import { day_data, months } from './pushNotification/timeData';
+import {day_data, months} from './pushNotification/timeData';
 import SaveButton from '../../../components/molecules/saveButton';
+import CustomButton from '../../../components/atoms/customButton';
 
 const ReminderDuration = ({route, navigation}) => {
   const [endDate, endDateState] = useState(new Date());
-  let startDate= route.params.date;
+  let startDate = route.params.date;
   const [multiSliderValue, setMultiSliderValue] = useState([0]);
   const [check1, setCheck1] = useState(false);
   const [check2, setCheck2] = useState(false);
   const [check3, setCheck3] = useState(false);
-  const [showMulitiSlider, setShowMultiSlider] = useState(check3);
   const [picker, pickerstate] = useState(false);
-  const [finalEndDate, setFinalEnddate]= useState("");
   const [days, setDays] = useState(0);
 
-  console.log(endDate);
   const hideDatePicker = () => {
     pickerstate(false);
   };
@@ -36,20 +34,16 @@ const ReminderDuration = ({route, navigation}) => {
     endDateState(date);
   };
   const multiSliderValuesChange = values => {
-    var curr_date = new Date();
-    // console.log(curr_date);
     setDays(values);
+    let curr_date = new Date();
+    curr_date.setDate(startDate.getDate() + values[0]);
     endDateState(curr_date);
     setMultiSliderValue(values);
   };
 
-
-  
-  let previousDate = new Date();
-
-  const handleEndDate = ()=>{
-      endDateState(startDate);
-  }
+  const handleEndDate = () => {
+    endDateState(startDate);
+  };
   return (
     <>
       <SubHeader navigation={navigation} title={'Duration'} />
@@ -61,7 +55,13 @@ const ReminderDuration = ({route, navigation}) => {
               alignItems: 'flex-start',
             }}>
             <Text style={styles.dateText1}>
-              {day_data[0].children[startDate.getDay()].id+" "+startDate.getDate()+" "+ months[startDate.getMonth()]+", "+startDate.getFullYear()}
+              {day_data[0].children[startDate.getDay()].id +
+                ' ' +
+                startDate.getDate() +
+                ' ' +
+                months[startDate.getMonth()] +
+                ', ' +
+                startDate.getFullYear()}
             </Text>
           </View>
         </View>
@@ -78,7 +78,7 @@ const ReminderDuration = ({route, navigation}) => {
                   setCheck1(!check1);
                   setCheck2(false);
                   setCheck3(false);
-                  handleEndDate()
+                  handleEndDate();
                 }}
                 isChecked={check1}
                 checkBoxColor={colorPalette.appColor}
@@ -142,7 +142,8 @@ const ReminderDuration = ({route, navigation}) => {
                 <FontAwesomeIcon
                   color={colorPalette.appColor}
                   size={20}
-                  icon={faCircle}></FontAwesomeIcon>
+                  icon={faCircle}
+                />
               )}
             />
           )}
@@ -158,12 +159,34 @@ const ReminderDuration = ({route, navigation}) => {
             <Text style={styles.dateText}>End Date </Text>
           </View>
           <Text style={styles.dateText1}>
-            { check1 ? "No End Date" : (day_data[0].children[endDate.getDay()].id+" "+endDate.getDate()+" "+ months[endDate.getMonth()]+", "+endDate.getFullYear())}
+            {check1
+              ? 'No End Date'
+              : day_data[0].children[endDate.getDay()].id +
+                ' ' +
+                endDate.getDate() +
+                ' ' +
+                months[endDate.getMonth()] +
+                ', ' +
+                endDate.getFullYear()}
           </Text>
         </View>
-        <TouchableOpacity onPress={()=>{ route.params.endDate(endDate);navigation.pop()}} style={{marginTop:40}}>
-        <SaveButton/>
-        </TouchableOpacity>
+
+        <CustomButton
+          title={'Save'}
+          handleSubmit={() => {
+            route.params.endDate(endDate);
+            navigation.pop();
+          }}
+          contStyles={{
+            marginVertical: 50,
+            alignSelf: 'center',
+            width: '30%',
+          }}
+          btnStyles={{
+            backgroundColor: colorPalette.mainColor,
+            borderRadius: 5,
+          }}
+        />
       </View>
     </>
   );
