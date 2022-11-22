@@ -15,7 +15,7 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{headerShown: false, orientation:'portrait'}}
+        screenOptions={{headerShown: false, orientation: 'portrait'}}
         initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={OnboardingScreen} />
         <Stack.Screen name="Bottom" component={BottomNavigator} />

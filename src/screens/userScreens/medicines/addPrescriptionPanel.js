@@ -1,23 +1,7 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  Dimensions,
-} from 'react-native';
+import {View, Text, TouchableOpacity, FlatList, Dimensions} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import AddPrescriptionPanelHeader from '../../../components/molecules/headers/addPrescriptionPanelHeader';
-import AddNewPrescription from '../../../components/molecules/addNewPrescription';
-import ExistingPrescriptionText from '../../../components/atoms/existingPrescriptionText';
-import {useDispatch, useSelector} from 'react-redux';
-import {loadGetPrescription} from '../../../redux/action/doctorPrescription/getPrescriptionAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import NoData from '../../../components/atoms/noData';
 import {colorPalette} from '../../../components/atoms/colorPalette';
-import PrescriptionBox from '../../../components/atoms/prescriptionBox';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-import Foundation from 'react-native-vector-icons/Foundation';
 import {Divider} from 'react-native-paper';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
@@ -32,15 +16,13 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomButton from '../../../components/atoms/customButton';
 import Toast from 'react-native-toast-message';
-import {myPrescriptionsRequest} from '../../../redux/action/otherScreenAction/prescriptionsAction';
-import {useFocusEffect} from '@react-navigation/native';
 import CustomModal from '../../../components/molecules/customModal';
 import {getPrescription} from '../../../utils/storage';
+import {useIsFocused} from '@react-navigation/native';
 
-const AddPrescriptionPanel = ({navigation}) => {
-  let currentPage = 0;
-  const dispatch = useDispatch();
-  const [prescriptions, setPrescriptions] = useState([]);
+const AddPrescriptionPanel = ({navigation, route}) => {
+  let {prescriptionObject} = route?.params;
+  const isFocused = useIsFocused();
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
   const images = [
@@ -49,33 +31,17 @@ const AddPrescriptionPanel = ({navigation}) => {
     },
   ];
   const [prescriptionId, setPrescriptionId] = useState('');
-  const res = useSelector(state => state.myPrescriptions);
-  const loading = useSelector(state => state.myPrescriptions?.isLoading);
   const [prescriptionList, setPrescriptionList] = useState([]);
 
   useEffect(() => {
-    getPrescription().then(data => setPrescriptionList(data));
-  }, [prescriptionList]);
-
-  useEffect(() => {
-    if (res?.data !== null) {
-      setPrescriptions(res?.data);
+    if (isFocused) {
+      getPrescription().then(data => {
+        if (data !== null) {
+          setPrescriptionList(data);
+        }
+      });
     }
-  }, [res]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const getPrescriptions = async () => {
-        const Id = await AsyncStorage.getItem('user_id');
-        dispatch(myPrescriptionsRequest({currentPage, Id}));
-      };
-
-      getPrescriptions();
-      return () => {
-        true;
-      };
-    }, []),
-  );
+  }, [isFocused]);
 
   const renderItem = ({item, index}) => {
     return (
@@ -178,34 +144,30 @@ const AddPrescriptionPanel = ({navigation}) => {
         </Text>
       </View>
       <Divider style={{height: 1, marginVertical: 8}} />
-      {loading ? (
-        <Loader />
+
+      {prescriptionList?.length === 0 ? (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: Dimensions.get('window').height / 1.274,
+          }}>
+          <CustomImage
+            resizeMode="contain"
+            source={require('../../../assets/images/noPrescription.png')}
+            styles={{width: '70%'}}
+          />
+        </View>
       ) : (
-        <>
-          {prescriptions?.length === 0 ? (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: Dimensions.get('window').height / 1.274,
-              }}>
-              <CustomImage
-                resizeMode="contain"
-                source={require('../../../assets/images/noPrescription.png')}
-                styles={{width: '70%'}}
-              />
-            </View>
-          ) : (
-            <FlatList
-              style={{marginBottom: 50}}
-              data={prescriptions}
-              keyExtractor={(item, index) => index.toString()}
-              showsVerticalScrollIndicator={false}
-              renderItem={renderItem}
-            />
-          )}
-        </>
+        <FlatList
+          style={{marginBottom: 50}}
+          data={prescriptionList}
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+          renderItem={renderItem}
+        />
       )}
+
       <View
         style={{
           position: 'absolute',
@@ -225,9 +187,21 @@ const AddPrescriptionPanel = ({navigation}) => {
               }}
               contStyles={{alignItems: 'center', marginBottom: 8}}
               handleSubmit={() => {
-                navigation.navigate('AddMedicine', {
-                  data: prescriptionId,
-                });
+                if (prescriptionId !== null) {
+                  let a = b => b.prescriptionId === prescriptionId;
+                  let index = prescriptionList.findIndex(a);
+                  let data = prescriptionList[index];
+                  prescriptionObject(data);
+                  // setPrescriptionObj(prescriptionList[index]);
+                  // prescriptionObject(prescriptionId);
+                  Toast.show({
+                    text1: 'Prescription Uploaded',
+                    type: 'success',
+                  });
+                  setTimeout(() => {
+                    navigation.pop();
+                  }, 4000);
+                }
               }}
             />
           </>
@@ -249,7 +223,7 @@ const AddPrescriptionPanel = ({navigation}) => {
           </>
         )}
       </View>
-      <Toast />
+      <Toast visibilityTime={2000} />
     </View>
   );
 };

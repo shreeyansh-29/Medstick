@@ -3,12 +3,10 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Text,
   FlatList,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {styles} from '../../styles/homeScreenStyles/reminderStyles';
-import * as Animatable from 'react-native-animatable';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../components/atoms/colorPalette';
@@ -18,67 +16,6 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import {AddMedicine, getMedicine} from '../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
-// import MedicineHistory from './medicineHistory/medicineHistory';
-
-function MedicineHistory(medData) {
-  let history = {
-    historyId: null,
-    date: null,
-    taken: '',
-    notTaken: '',
-    time: null,
-  };
-  for (let i = 0; i < medData.length; i++) {
-    let arr = medData[i].days.split(',');
-    let set = new Set(arr);
-    var start_date = new Date(medData[i].endDate);
-    var end_date = new Date(medData[i].endDate);
-    var tody_date = new Date();
-    let td_da =
-      tody_date.getFullYear() +
-      '-' +
-      (tody_date.getMonth() + 1) +
-      '-' +
-      tody_date.getDate();
-    if (
-      medData[i].endDate !== 'No End Date' &&
-      set.has(weeks[tody_date.getDay()]) &&
-      start_date <= tody_date <= end_date
-    ) {
-      const a = b => b.date == td_da;
-      const index = medData[i].historyList.findIndex(a);
-      if (medData[i].historyList.length === 0) {
-        history.historyId = uuid.v4();
-        history.date = td_da;
-        history.time = medData[i].reminderTime.split(',');
-        medData[i].historyList.push(history);
-      } else if (medData[i].historyList.length !== 0 && index >= 0) {
-        let obj = medData[i].historyList[index];
-        obj.time = medData[i].reminderTime.split(',');
-        // console.log(obj, 'existing reminder');
-        medData[i].historyList[index] = obj;
-      }
-    } else if (medData[i].endDate === 'No End Date') {
-      // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
-      const a = b => b.date == td_da;
-      const index = medData[i].historyList.findIndex(a);
-      if (medData[i].historyList.length === 0) {
-        history.historyId = uuid.v4();
-        history.date = td_da;
-        history.time = medData[i].reminderTime.split(',');
-        medData[i].historyList.push(history);
-      } else if (medData[i].historyList.length !== 0 && index >= 0) {
-        let obj = medData[i].historyList[index];
-        obj.time = medData[i].reminderTime.split(',');
-        // console.log(obj, 'existing reminder');
-        medData[i].historyList[index] = obj;
-      }
-    }
-
-    console.log('<================ FINAL DATA ================>', medData);
-    AddMedicine(medData);
-  }
-}
 
 const Reminders = ({showAlert}) => {
   const [medData, setMedData] = useState([]);
@@ -86,24 +23,30 @@ const Reminders = ({showAlert}) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    getMedicine().then(data => {
-      if (data !== null) {
-        setMedData(data);
-      }
-    });
-  }, [medData]);
+    if (isFocused) {
+      getMedicine().then(data => {
+        if (data !== null) {
+          console.log('abc', data);
+          setMedData(data);
+        }
+      });
+    }
+  }, [isFocused]);
 
-  useEffect(() => {
-    if (isFocused) MedicineHistory(medData);
-  }, [medData]);
+  // console.log('data', medData);
 
   useEffect(() => {
     if (isFocused) settingReminders();
-  }, []);
+
+   let t = false;
+    return ()=> {
+  t = true     
+    }
+  }, [isFocused, medData]);
 
   let tempReminderList = [];
 
-  function dailyReminders() {
+  function dailyReminders(medicine) {
     var tody_date = new Date();
     let td_da =
       tody_date.getFullYear() +
@@ -112,22 +55,19 @@ const Reminders = ({showAlert}) => {
       '-' +
       tody_date.getDate();
 
-    // console.log('data', medData);
-    medData.map(item => {
+    medicine.map(item => {
       item.historyList.map(r => {
         if (r.date === td_da) {
           r.time.map(z => {
-            console.log('time', z);
-            let temp = {};
-            temp.userMedicineId = item.userMedicineId;
-            temp.medName = item.medicineName;
-            temp.historyId = r.historyId;
-            temp.time = z;
-            console.log('zzz ****', tempReminderList.length);
-            tempReminderList.push(temp);
-            item.totalReminders += 1;
-
-            console.log('zzz ****', tempReminderList.length);
+            if (!r.taken.includes(z)) {
+              let temp = {};
+              temp.userMedicineId = item.userMedicineId;
+              temp.medName = item.medicineName;
+              temp.historyId = r.historyId;
+              temp.time = z;
+              tempReminderList.push(temp);
+              item.totalReminders += 1;
+            }
           });
         }
       });
@@ -135,13 +75,10 @@ const Reminders = ({showAlert}) => {
     return tempReminderList;
   }
 
-  // function empty() {
-  //   reminderList.length = 0;
-  // }
-  // empty();
   // console.log(reminderList.length, ' <<<<<    after empty ');
   function settingReminders() {
-    let abc = dailyReminders();
+    console.log('data', medData);
+    let abc = dailyReminders(medData);
     if (abc.length !== null) {
       setReminderList(abc);
     }
@@ -151,19 +88,27 @@ const Reminders = ({showAlert}) => {
     console.log(item.item, ' INSIDE MARKING');
     console.log('before marking ', medData);
     const {userMedicineId, historyId, time, medName} = item.item;
-    medData.map(item => {
-      // console.log(item, 'zzz');
+    let arr = medData.forEach(item => {
       if (
         item.userMedicineId == userMedicineId &&
         item.medicineName == medName
       ) {
         item.historyList.map(r => {
           if (r.historyId == historyId && !r.taken.includes(time)) {
+            // console.log('abcd',r.notTaken);
             r.taken = r.taken + time + ',';
+            let arr= r.notTaken.split(',');
+            // console.log(' arr', arr);
+            // console.log(arr.indexOf(time));
+            arr.splice(arr.indexOf(time),1);
+
+            r.notTaken=arr.toString();
+            // console.log(r, 'after updating notTaken');
             item.currentCount += 1;
           }
         });
         // console.log('After updating reminders ', item);
+        return item;
       }
     });
     console.log('After updating reminders ', medData);
@@ -201,6 +146,7 @@ const Reminders = ({showAlert}) => {
               onPress={() => {
                 markingTaken(item);
                 reminderList.splice(index, 1);
+                setReminderList(reminderList);
                 console.log('deleting reminder ', reminderList);
               }}>
               <FontAwesomeIcon
@@ -213,6 +159,10 @@ const Reminders = ({showAlert}) => {
             <TouchableOpacity
               key={index + 10}
               style={{padding: 8}}
+              onPress={()=>{
+                reminderList.splice(index, 1);
+                setReminderList(reminderList);
+              }}
               activeOpacity={1}>
               <FontAwesomeIcon
                 key={index + 11}
@@ -251,9 +201,10 @@ const Reminders = ({showAlert}) => {
               alignSelf: 'center',
             }}>
             <FlatList
+              showsVerticalScrollIndicator={false}
               data={reminderList}
               renderItem={renderItem}
-              keyExtractor={item => item.userMedicineId}
+              keyExtractor={(item, index) => index.toString()}
             />
           </View>
         )}

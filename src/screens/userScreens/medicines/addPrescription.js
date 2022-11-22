@@ -17,8 +17,9 @@ import CustomModal from '../../../components/molecules/customModal';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import {savePrescription} from '../../../utils/storage';
+import {getPrescription, savePrescription} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
+import Toast from 'react-native-toast-message';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -48,9 +49,35 @@ const AddPrescription = ({navigation}) => {
       specialization: values.specialization,
       contact: values.contact,
       location: values.location,
+      prescriptionUrl: values.image,
     };
 
-    if (obj !== null) savePrescription(obj);
+    getPrescription().then(data => {
+      if (data !== null) {
+        const temp = [...data, obj];
+        savePrescription(temp);
+        Toast.show({
+          text1: 'Prescription Added Successfully',
+          type: 'success',
+        });
+      } else if (data === null || data === undefined) {
+        let temp = [];
+        temp.push(obj);
+        savePrescription(temp);
+        Toast.show({
+          text1: 'Prescription Added Successfully',
+          type: 'success',
+        });
+      } else {
+        Toast.show({
+          text1: 'Something Went Wrong',
+          type: 'error',
+        });
+      }
+    });
+    setTimeout(() => {
+      navigation.pop();
+    }, 4000);
   };
 
   return (
@@ -128,6 +155,7 @@ const AddPrescription = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
+      <Toast visibilityTime={2000} />
     </View>
   );
 };

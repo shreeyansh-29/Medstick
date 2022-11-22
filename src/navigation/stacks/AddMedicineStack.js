@@ -1,6 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import AddMedicine from '../../screens/userScreens/medicines/addMedicine';
+import AddMedicineLocal from '../../screens/userScreens/medicines/addMedicineLocal';
 import AddPrescription from '../../screens/userScreens/medicines/addPrescription';
 import AddPrescriptionPanel from '../../screens/userScreens/medicines/addPrescriptionPanel';
 
@@ -11,10 +11,10 @@ const AddMedicineStack = () => {
     <Stack.Navigator
       initialRouteName="AddMedicine"
       screenOptions={{headerShown: false, orientation:'portrait'}}>
-      <Stack.Screen name="AddMedicine" component={AddMedicine} />
+      <Stack.Screen name="AddMedicine" component={AddMedicineLocal} />
       <Stack.Screen name="Prescription" component={AddPrescription} />
       <Stack.Screen
-        name="addPrescriptionPanel"
+        name="AddPrescriptionPanel"
         component={AddPrescriptionPanel}
       />
     </Stack.Navigator>

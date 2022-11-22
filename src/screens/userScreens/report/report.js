@@ -6,7 +6,7 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -68,15 +68,20 @@ const Report = ({navigation}) => {
   const [getUserMedicine, setGetUserMedicine] = useState([]);
   const [historyData, setHistoryData] = useState({});
   const [historyListData, setHistoryListData] = useState([]);
+  const isFocused = useIsFocused();
+
 
   useEffect(() => {
-    getMedicine().then(data => {
-      setGetUserMedicine(data);
-    });
-  }, []);
+    if(isFocused){
+      getMedicine().then(data => {
+        console.log('zzz', data);
+        setGetUserMedicine(data);
+      });
+    }
+  }, [isFocused]);
 
   function getHistory() {
-    let histories=[]
+    let histories = [];
     getUserMedicine.map(data => {
       if (data.userMedicineId == medicineId) {
         data.historyList.map(i => {
@@ -87,34 +92,34 @@ const Report = ({navigation}) => {
           his.notTaken = i.notTaken;
           his.date = i.date;
           histories.push(his);
-          console.log('222',histories);
+          console.log('222', histories);
           setHistoryListData(histories);
           overallPecentage(data.totalReminders, data.currentCount);
         });
       }
     });
   }
-  useFocusEffect(() => {
-    const checkMeds = () => {
-      if (getUserMedicine === null) {
-        Alert.alert('Add Medicine First', 'Click Ok to proceed', [
-          {
-            text: 'Ok',
-            onPress: () => {
-              navigation.navigate('AddMedicineStack', {screen: 'AddMedicine'});
-            },
-          },
-          {
-            text: 'Cancel',
-            onPress: () => {
-              navigation.navigate('Home');
-            },
-          },
-        ]);
-      }
-    };
-    checkMeds();
-  });
+  // useFocusEffect(() => {
+  //   const checkMeds = () => {
+  //     if (getUserMedicine === null || getUserMedicine.length === 0) {
+  //       Alert.alert('Add Medicine First', 'Click Ok to proceed', [
+  //         {
+  //           text: 'Ok',
+  //           onPress: () => {
+  //             navigation.navigate('AddMedicineStack', {screen: 'AddMedicine'});
+  //           },
+  //         },
+  //         {
+  //           text: 'Cancel',
+  //           onPress: () => {
+  //             navigation.navigate('Home');
+  //           },
+  //         },
+  //       ]);
+  //     }
+  //   };
+  //   checkMeds();
+  // });
 
   const dayPercentageCalculator = (Taken, notTaken) => {
     const nt = [];
@@ -171,7 +176,7 @@ const Report = ({navigation}) => {
   const getHistorydata = date => {
     const a = b => b.date == date.dateString;
     const historyIndex = historyListData.findIndex(a);
-    console.log('12345',historyListData)
+    console.log('12345', historyListData);
     console.log('z', historyListData[historyIndex]);
     setHistoryData(historyListData[historyIndex]);
     console.log(historyData, 'his');

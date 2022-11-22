@@ -26,11 +26,11 @@ import {
 } from '../../../utils/storage';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import uuid from 'react-native-uuid';
+import {hour} from '../../../constants/constants';
 
 var counter = 0;
 
 const Reminder = ({route, navigation, props}) => {
-  console.log(route.params);
   const [medicineInfo, setMedicineInfo] = useState(route.params.data);
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
@@ -50,8 +50,8 @@ const Reminder = ({route, navigation, props}) => {
   const [dinnerTouchable, setDinnerTouchable] = useState(false);
   const [noEndDate, setNoEndDate] = useState(false);
   const [reminderStatus, setReminderStatus] = useState(true);
-  const [totalReminders, setTotalReminders] = useState(0);
-  const [currentCount, setCurrentCount] = useState(0);
+  const totalReminders=0;
+  const currentCount = 0;
   const [time, setTime] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
@@ -256,10 +256,13 @@ const Reminder = ({route, navigation, props}) => {
   };
 
   const handleConfirmfortime = date => {
+    // let minutes =
+    //   date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+
     if (date.getHours() > 11) {
       timearray[currentIndex] =
-        date.getHours() + ':' + date.getMinutes() + ' PM';
-      timeings[currentIndex] = date.getHours() + ':' + date.getMinutes();
+        hour[date.getHours()] + ':' + date.getMinutes() + ' PM';
+      timeings[currentIndex] = hour[date.getHours()] + ':' + date.getMinutes();
       timestate(timeings);
     } else {
       timearray[currentIndex] =
@@ -366,7 +369,7 @@ const Reminder = ({route, navigation, props}) => {
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
 
-    setReminderWithSelectedDate(title, fDatePrimary, fDateSecondary);
+    // setReminderWithSelectedDate(title, fDatePrimary, fDateSecondary);
 
     // handlePushNotification();
 
@@ -384,7 +387,6 @@ const Reminder = ({route, navigation, props}) => {
     obj.frequency = frequencyTemp;
     obj.endDate = fDateSecondary;
     obj.noEndDate = noEndDate;
-    obj.reminderId = uuid.v4();
     obj.reminderStatus = true;
     obj.reminderTime = time;
     obj.beforeAfter = food;
@@ -396,8 +398,12 @@ const Reminder = ({route, navigation, props}) => {
 
     getMedicine().then(data => {
       const temp = data;
-      let a = b => b.reminderId == obj.reminderId
-      temp[route.params.index] = obj;
+      if (temp[route.params.index].reminderId !== null) {
+        temp[route.params.index] = obj;
+      } else {
+        obj.reminderId = uuid.v4();
+        temp[route.params.index] = obj;
+      }
       AddMedicine(temp);
       console.log(temp, 'data with reminder');
     });
