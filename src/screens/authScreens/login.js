@@ -31,7 +31,7 @@ const Login = ({navigation, connected}) => {
 
       setTimeout(() => {
         navigation.pop(1);
-      }, 3000);
+      }, 500);
     } else {
       Toast.show({
         type: 'error',

@@ -27,7 +27,7 @@ const SignUp = ({navigation, connected}) => {
 
     setTimeout(() => {
       navigation.pop(1);
-    }, 3000);
+    }, 1000);
   };
 
   useEffect(() => {

@@ -49,7 +49,22 @@ const AddMedicineForm = props => {
         customStyles={{height: '100%'}}
       />
       <View style={{marginVertical: 6}}>
-        {props.connection && id === null ? (
+        <InputField
+          styles={{backgroundColor: 'white'}}
+          label="Medicine Name"
+          mode="outlined"
+          outlineColor="lightgrey"
+          text="medicineName"
+          activeOutlineColor={colorPalette.mainColor}
+          {...props}
+          value={props.values.medicineName}
+        />
+        {props.errors.medicineName && props.touched.medicineName && (
+          <Text style={{color: 'red', marginTop: 4}}>
+            {props.errors.medicineName}
+          </Text>
+        )}
+        {/* {props.connection && id === null ? (
           <>
             <TouchableOpacity
               onPress={() => setVisible(true)}
@@ -85,7 +100,7 @@ const AddMedicineForm = props => {
               </Text>
             )}
           </>
-        )}
+        )} */}
       </View>
       <View style={{marginVertical: 6}}>
         <InputField

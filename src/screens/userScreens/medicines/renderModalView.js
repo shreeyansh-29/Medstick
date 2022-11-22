@@ -16,6 +16,7 @@ import {searchMedicineRequest} from '../../../redux/action/userMedicine/searchMe
 const RenderModalView = props => {
   const dispatch = useDispatch();
   const searchMedicine = useSelector(state => state.searchMedicine?.data);
+  // console.log(searchMedicine);
   const loading = useSelector(state => state.searchMedicine?.isLoading);
 
   const activityIndicator = () => {
@@ -27,9 +28,9 @@ const RenderModalView = props => {
   };
 
   useEffect(() => {
-    if (searchMedicine.data !== null) {
-      setTempSearch(searchMedicine.data);
-    }
+    // if (searchMedicine.data !== null) {
+    //   setTempSearch(searchMedicine.data);
+    // }
   }, [searchMedicine]);
 
   const search = data => {
@@ -96,8 +97,12 @@ const RenderModalView = props => {
         <SearchBar
           platform="default"
           placeholder="Search Medicine"
-          // value={props.values.medicineName}
-          onChangeText={text => search(text)}
+          value={props.values.medicineName}
+          onChangeText={text => {
+            console.log(text);
+            props.handleChange(text);
+            search(text);
+          }}
           containerStyle={{
             backgroundColor: 'rbga(225,232,238,0)',
           }}
@@ -129,7 +134,7 @@ const RenderModalView = props => {
         activityIndicator()
       ) : (
         <>
-          {searchMedicine.length !== 0 ? (
+          {searchMedicine ? (
             <></>
           ) : (
             <FlatList
