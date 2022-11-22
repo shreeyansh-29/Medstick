@@ -5,13 +5,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../atoms/colorPalette';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import AddAppointment from '../../atoms/addAppointment';
-import {useDispatch} from 'react-redux';
-import {notifyUserClear} from '../../../redux/action/patients/notifyUserAction';
 import ShareButton from '../../atoms/shareButton';
 import DownloadButton from '../../atoms/downloadButton';
-import {resetSend} from '../../../redux/action/getUserAction/sendReqAction';
-import {resetUser} from '../../../redux/action/getUserAction/getUserAction';
-import {sendSnapClear} from '../../../redux/action/otherScreenAction/sendSnapAction';
 
 const SubHeader = ({
   title,
@@ -21,7 +16,6 @@ const SubHeader = ({
   routeName,
   notes,
 }) => {
-  const dispatch = useDispatch();
   return (
     <View style={styles.subHeader}>
       <TouchableOpacity
@@ -29,12 +23,6 @@ const SubHeader = ({
         style={styles.backIcon}
         onPress={() => {
           navigation.pop();
-          // if (title === 'Patient Medicine') {
-          //   dispatch(notifyUserClear());
-          // }
-          if (title === 'Send Snap') {
-            dispatch(sendSnapClear());
-          }
         }}>
         <FontAwesomeIcon
           icon={faArrowLeft}
@@ -49,7 +37,11 @@ const SubHeader = ({
         <DownloadButton download={download} />
       )}
       {title !== 'Appointment Reminders' ? null : (
-        <AddAppointment navigation={navigation} routeName={routeName} notes={notes}/>
+        <AddAppointment
+          navigation={navigation}
+          routeName={routeName}
+          notes={notes}
+        />
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}
       {/* {title !== 'Patient Profile' ? null : (

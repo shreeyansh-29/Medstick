@@ -28,7 +28,6 @@ const SendSnapToCaretaker = ({navigation}) => {
   let res = useSelector(state => state.myCaretaker);
   let meds = useSelector(state => state.medicineList);
   let res1 = useSelector(state => state.sendSnap?.data);
-  console.log(res1);
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');
@@ -46,7 +45,6 @@ const SendSnapToCaretaker = ({navigation}) => {
       height: 400,
       cropping: true,
     }).then(image => {
-      console.log(image, 'image');
       setImage(image.path);
     });
   };
@@ -64,7 +62,7 @@ const SendSnapToCaretaker = ({navigation}) => {
       dispatch(sendSnapClear());
       setTimeout(() => {
         navigation.pop();
-      }, 3000);
+      }, 1000);
     }
     if (res1?.status === 'Failed') {
       Toast.show({
@@ -72,9 +70,7 @@ const SendSnapToCaretaker = ({navigation}) => {
         text1: 'Something Went Wrong',
         text2: 'Try Again',
       });
-      setTimeout(() => {
-        dispatch(sendSnapClear());
-      }, 200);
+      dispatch(sendSnapClear());
     }
   }, [res1]);
 
@@ -265,7 +261,7 @@ const SendSnapToCaretaker = ({navigation}) => {
           />
         </ScrollView>
       </View>
-      <Toast visibilityTime={2000} />
+      <Toast visibilityTime={500} />
     </View>
   );
 };
