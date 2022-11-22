@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, TouchableOpacity, Alert, BackHandler} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
@@ -16,12 +16,29 @@ import {verticalScale} from '../../components/atoms/constant';
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const [connected, connectedstate] = useState(false);
-  const [percentage , setPercentage ] = useState(0);
+  const [percentage, setPercentage] = useState(0);
 
   const checkconnection = async () => {
     let conn = await CheckConnection();
     connectedstate(conn);
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold On!', 'Are you sure you want to exit?', [
+        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
+        {text: 'Yes', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+    return () => backHandler.remove();
+  }, []);
+
   useEffect(() => {
     checkconnection();
   }, []);
@@ -127,7 +144,7 @@ const HomeScreen = ({navigation}) => {
           </View>
         </View>
         <View style={{width: '100%', height: '44%'}}>
-          <Reminders showAlert={showAlert} setPercentage={setPercentage}/>
+          <Reminders showAlert={showAlert} setPercentage={setPercentage} />
         </View>
       </View>
     </>
