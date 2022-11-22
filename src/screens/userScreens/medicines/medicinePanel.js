@@ -17,13 +17,14 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
-import {RefreshControl} from 'react-native-gesture-handler';
 import {useIsFocused} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import CustomImage from '../../../components/atoms/customImage';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const isFocused = useIsFocused();
+  const [name, setName] = useState('');
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -35,21 +36,37 @@ const MedicinePanel = ({navigation}) => {
   }, []);
 
   const deleteMedicineLocal = async index => {
-    medicineResponse.splice(medicineResponse.indexOf(index), 1);
-    setTimeout(() => {
-      AddMedicine(medicineResponse);
-    }, 200);
+    medicineResponse.splice(index, 1);
+    AddMedicine(medicineResponse);
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        setMedicineResponse(data);
+      } else {
+        setMedicineResponse([]);
+      }
+    });
   };
 
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
-        if (data !== null) {
+        if (data !== null && data.length !== 0) {
           setMedicineResponse(data);
         } else {
           setMedicineResponse([]);
         }
       });
+    }
+  }, [isFocused]);
+
+  const getUser = async () => {
+    const user = await GoogleSignin.getCurrentUser();
+    setName(user);
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      getUser();
     }
   }, [isFocused]);
 
@@ -60,13 +77,15 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('MedicinePanelStack', {
-                screen: 'MedicineList',
-                params: {
-                  data: medicineResponse,
-                  index: index,
-                },
-              });
+              if (name !== null) {
+                navigation.navigate('MedicinePanelStack', {
+                  screen: 'MedicineList',
+                  params: {
+                    data: medicineResponse,
+                    index: index,
+                  },
+                });
+              }
             }}>
             <Card style={Styles.card}>
               <View style={Styles.listView}>
@@ -99,6 +118,7 @@ const MedicinePanel = ({navigation}) => {
                   </ListItem.Content>
                   <View style={Styles.icon}>
                     <TouchableOpacity
+                      activeOpacity={1}
                       style={Styles.rem}
                       onPress={() => {
                         navigation.navigate('MedicinePanelStack', {
@@ -120,6 +140,8 @@ const MedicinePanel = ({navigation}) => {
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
+                      style={Styles.rem}
+                      activeOpacity={1}
                       onPress={() => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
@@ -150,15 +172,14 @@ const MedicinePanel = ({navigation}) => {
   return (
     <>
       <View style={Styles.container}>
-        <View style={Styles.background} />
+        {/* <View style={Styles.background} /> */}
         <MainHeader title={'Medicine'} navigation={navigation} />
         {medicineResponse.length === 0 ? (
           <View style={Styles.lottie}>
-            <LottieView
-              style={{width: '60%'}}
-              speed={0.8}
-              source={require('../../../assets/animation/noMed1.json')}
-              progress={progress}
+            <CustomImage
+              resizeMode="contain"
+              source={require('../../../assets/images/nomeds.png')}
+              styles={{width: '70%'}}
             />
           </View>
         ) : (
@@ -167,19 +188,6 @@ const MedicinePanel = ({navigation}) => {
               data={medicineResponse}
               renderItem={renderItemLocal}
               showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    getMedicine().then(data => {
-                      setMedicineResponse(data);
-                    });
-                    setRefresh(false);
-                  }}
-                />
-              }
             />
           </>
         )}

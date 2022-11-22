@@ -17,7 +17,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 const MedicineList = ({route, navigation}) => {
   const data = route.params?.data;
-  console.log(route,"data")
   const [index, setIndex] = useState(route.params?.index);
   const isCarousel = useRef(null);
 

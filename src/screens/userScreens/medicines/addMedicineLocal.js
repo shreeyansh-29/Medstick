@@ -126,6 +126,7 @@ const AddMedicineLocal = ({navigation}) => {
         Toast.show({
           text1: 'Medicine Saved Successfully',
           type: 'success',
+          position: 'bottom',
         });
       } else if (data === null || data === undefined) {
         let temp = [];
@@ -134,17 +135,19 @@ const AddMedicineLocal = ({navigation}) => {
         Toast.show({
           text1: 'Medicine Saved Successfully',
           type: 'success',
+          position: 'bottom',
         });
       } else {
         Toast.show({
           text1: 'Something Went Wrong',
           type: 'error',
+          position: 'bottom',
         });
       }
     });
     setTimeout(() => {
-      navigation.pop();
-    }, 5000);
+      navigation.navigate('Home');
+    }, 1000);
   };
 
   return (
@@ -208,7 +211,7 @@ const AddMedicineLocal = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={2000} />
+      <Toast visibilityTime={500} />
     </View>
   );
 };

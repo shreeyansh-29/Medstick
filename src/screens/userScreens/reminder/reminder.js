@@ -438,6 +438,7 @@ const Reminder = ({route, navigation, props}) => {
       <View style={styles.top}>
         <View style={styles.container1}>
           <TouchableOpacity
+            activeOpacity={1}
             onPress={() => {
               pickerstate(true);
             }}
@@ -479,6 +480,7 @@ const Reminder = ({route, navigation, props}) => {
           </TouchableOpacity>
           <Divider></Divider>
           <TouchableOpacity
+            activeOpacity={1}
             onPress={() => {
               navigation.navigate('ReminderDuration', {
                 date: startDate,
@@ -554,6 +556,7 @@ const Reminder = ({route, navigation, props}) => {
               }}>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
+                  activeOpacity={1}
                   style={{
                     borderRadius: breakfast ? 3 : 0,
                     alignItems: 'center',
@@ -577,6 +580,7 @@ const Reminder = ({route, navigation, props}) => {
                 </TouchableOpacity>
                 {breakfastTouchable ? (
                   <TouchableOpacity
+                    activeOpacity={1}
                     style={{
                       borderRadius: 3,
                       alignItems: 'center',
@@ -608,6 +612,7 @@ const Reminder = ({route, navigation, props}) => {
 
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
+                  activeOpacity={1}
                   style={{
                     borderRadius: lunch ? 3 : 0,
                     alignItems: 'center',
@@ -631,6 +636,7 @@ const Reminder = ({route, navigation, props}) => {
                 </TouchableOpacity>
                 {lunchTouchable ? (
                   <TouchableOpacity
+                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -661,6 +667,7 @@ const Reminder = ({route, navigation, props}) => {
               </View>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
+                  activeOpacity={1}
                   style={{
                     borderRadius: dinner ? 3 : 0,
                     alignItems: 'center',
@@ -684,6 +691,7 @@ const Reminder = ({route, navigation, props}) => {
                 </TouchableOpacity>
                 {dinnerTouchable ? (
                   <TouchableOpacity
+                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -743,6 +751,7 @@ const Reminder = ({route, navigation, props}) => {
                 alignSelf: 'center',
               }}>
               <TouchableOpacity
+                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,
@@ -770,6 +779,7 @@ const Reminder = ({route, navigation, props}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,

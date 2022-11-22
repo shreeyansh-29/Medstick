@@ -192,15 +192,13 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   let index = prescriptionList.findIndex(a);
                   let data = prescriptionList[index];
                   prescriptionObject(data);
-                  // setPrescriptionObj(prescriptionList[index]);
-                  // prescriptionObject(prescriptionId);
                   Toast.show({
                     text1: 'Prescription Uploaded',
                     type: 'success',
                   });
                   setTimeout(() => {
                     navigation.pop();
-                  }, 4000);
+                  }, 1000);
                 }
               }}
             />
@@ -223,7 +221,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
           </>
         )}
       </View>
-      <Toast visibilityTime={2000} />
+      <Toast visibilityTime={500} />
     </View>
   );
 };

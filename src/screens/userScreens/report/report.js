@@ -6,7 +6,7 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {useFocusEffect} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -26,7 +26,7 @@ LocaleConfig.locales['en'] = {
     'September',
     'October',
     'November',
-    'Décember',
+    'December',
   ],
   monthNamesShort: [
     'Jan',
@@ -35,7 +35,7 @@ LocaleConfig.locales['en'] = {
     'Apr',
     'May',
     'Jun',
-    'Jul.',
+    'Jul',
     'Aug',
     'Sept',
     'Oct',
@@ -97,41 +97,40 @@ const Report = ({navigation}) => {
   const [medicineId, setMedicineId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
-  const [percentage, setPercentage] = useState(0);
-  const [selectDate, setSelectDate] = useState('');
-  const year = selectedDate?.year;
-  const month = selectedDate?.month;
-  const date = selectedDate?.day;
+  const isFocused = useIsFocused();
   const [getUserMedicine, setGetUserMedicine] = useState([]);
   const [historyData, setHistoryData] = useState({});
 
   useEffect(() => {
-    getMedicine().then(data => {
-      setGetUserMedicine(data);
-    });
-  }, []);
+    if (isFocused)
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          setGetUserMedicine(data);
+        } else {
+          setGetUserMedicine([]);
+          showAlert();
+        }
+      });
+  }, [isFocused]);
 
-  useFocusEffect(() => {
-    const checkMeds = () => {
-      if (getUserMedicine === null) {
-        Alert.alert('Add Medicine First', 'Click Ok to proceed', [
-          {
-            text: 'Ok',
-            onPress: () => {
-              navigation.navigate('AddMedicineStack', {screen: 'AddMedicine'});
-            },
-          },
-          {
-            text: 'Cancel',
-            onPress: () => {
-              navigation.navigate('Home');
-            },
-          },
-        ]);
-      }
-    };
-    checkMeds();
-  });
+  const showAlert = () => {
+    Alert.alert('Add Medicine First', 'Click Ok to proceed', [
+      {
+        text: 'Ok',
+        onPress: () => {
+          navigation.navigate('AddMedicineStack', {
+            screen: 'AddMedicine',
+          });
+        },
+      },
+      {
+        text: 'Cancel',
+        onPress: () => {
+          navigation.navigate('Home');
+        },
+      },
+    ]);
+  };
 
   const dayPercentageCalculator = (Taken, notTaken) => {
     const nt = [];
