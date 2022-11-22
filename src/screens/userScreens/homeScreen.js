@@ -16,6 +16,7 @@ import {verticalScale} from '../../components/atoms/constant';
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const [connected, connectedstate] = useState(false);
+  const [percentage , setPercentage ] = useState(0);
 
   const checkconnection = async () => {
     let conn = await CheckConnection();
@@ -83,7 +84,7 @@ const HomeScreen = ({navigation}) => {
           <View style={styles.progressCircleContainer}>
             <AnimatedProgressCircle
               radius={verticalScale(50)}
-              percentage={95}
+              percentage={percentage}
               strokeWidth={verticalScale(10)}
             />
             <Text style={styles.progressText}>Today's Overall Performance</Text>
@@ -126,7 +127,7 @@ const HomeScreen = ({navigation}) => {
           </View>
         </View>
         <View style={{width: '100%', height: '44%'}}>
-          <Reminders showAlert={showAlert} />
+          <Reminders showAlert={showAlert} setPercentage={setPercentage}/>
         </View>
       </View>
     </>

@@ -22,6 +22,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import CustomImage from '../../../components/atoms/customImage';
 import {week} from '../../../constants/constants';
 import uuid from 'react-native-uuid';
+import { hitSlop } from 'deprecated-react-native-prop-types/DeprecatedViewPropTypes';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
@@ -76,21 +77,14 @@ const MedicinePanel = ({navigation}) => {
         set.has(week[tody_date.getDay()]) &&
         start_date <= tody_date <= end_date
       ) {
-        const a = b => b.date == td_da;
-        const index = data[i].historyList.findIndex(a);
         if (data[i].historyList.length === 0) {
           history.historyId = uuid.v4();
           history.date = td_da;
           history.time = data[i].reminderTime.split(',');
           history.notTaken = data[i].reminderTime;
+          history.taken='';
           data[i].historyList.push(history);
-        } else if (data[i].historyList.length !== 0 && index >= 0) {
-          let obj = data[i].historyList[index];
-          obj.time = data[i].reminderTime.split(',');
-          obj.notTaken = data[i].reminderTime;
-          // console.log(obj, 'existing reminder');
-          data[i].historyList[index] = obj;
-        }
+        } 
       } else if (data[i].endDate === 'No End Date') {
         // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
         const a = b => b.date == td_da;
@@ -101,12 +95,6 @@ const MedicinePanel = ({navigation}) => {
           history.time = data[i].reminderTime.split(',');
           history.notTaken = data[i].reminderTime;
           data[i].historyList.push(history);
-        } else if (data[i].historyList.length !== 0 && index >= 0) {
-          let obj = data[i].historyList[index];
-          obj.time = data[i].reminderTime.split(',');
-          obj.notTaken = data[i].reminderTime;
-          // console.log(obj, 'existing reminder');
-          data[i].historyList[index] = obj;
         }
       }
 

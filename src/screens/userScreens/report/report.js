@@ -64,6 +64,7 @@ const Report = ({navigation}) => {
   const [getUserMedicine, setGetUserMedicine] = useState([]);
   const [historyData, setHistoryData] = useState({});
   const [historyListData, setHistoryListData] = useState([]);
+  const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
     if (isFocused)
@@ -115,27 +116,6 @@ const Report = ({navigation}) => {
       }
     });
   }
-  // useFocusEffect(() => {
-  //   const checkMeds = () => {
-  //     if (getUserMedicine === null || getUserMedicine.length === 0) {
-  //       Alert.alert('Add Medicine First', 'Click Ok to proceed', [
-  //         {
-  //           text: 'Ok',
-  //           onPress: () => {
-  //             navigation.navigate('AddMedicineStack', {screen: 'AddMedicine'});
-  //           },
-  //         },
-  //         {
-  //           text: 'Cancel',
-  //           onPress: () => {
-  //             navigation.navigate('Home');
-  //           },
-  //         },
-  //       ]);
-  //     }
-  //   };
-  //   checkMeds();
-  // });
 
   const dayPercentageCalculator = (Taken, notTaken) => {
     const nt = [];
@@ -160,7 +140,7 @@ const Report = ({navigation}) => {
 
   const [dataMap, setDataMap] = useState([]);
   const dateSelector = history => {
-    console.log('zzz', history);
+    console.log('zzz history', history);
     var data = [];
     history.map(item => {
       let percentage = dayPercentageCalculator(item.taken, item.notTaken);
