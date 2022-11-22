@@ -6,7 +6,7 @@ export const AddMedicine = async data => {
   try {
     await AsyncStorage.setItem('AddMedicine', JSON.stringify(data));
     const res=JSON.parse(await AsyncStorage.getItem('AddMedicine'));
-    console.log(res);
+    console.log( 'storage',res);
   } catch (error) {
     console.log(error);
   }

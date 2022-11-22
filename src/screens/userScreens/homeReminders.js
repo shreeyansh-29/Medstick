@@ -17,11 +17,12 @@ import {
 import {AddMedicine, getMedicine} from '../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
 
-const Reminders = ({showAlert}) => {
+const Reminders = ({showAlert, setPercentage}) => {
   const [medData, setMedData] = useState([]);
   const [reminderList, setReminderList] = useState([]);
   const isFocused = useIsFocused();
-
+  const [totalReminders, setTotalReminders] = useState(0);
+  let currentCount = 0;
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
@@ -33,15 +34,13 @@ const Reminders = ({showAlert}) => {
     }
   }, [isFocused]);
 
-  // console.log('data', medData);
-
   useEffect(() => {
     if (isFocused) settingReminders();
 
-   let t = false;
-    return ()=> {
-  t = true     
-    }
+    let t = false;
+    return () => {
+      t = true;
+    };
   }, [isFocused, medData]);
 
   let tempReminderList = [];
@@ -79,7 +78,9 @@ const Reminders = ({showAlert}) => {
   function settingReminders() {
     console.log('data', medData);
     let abc = dailyReminders(medData);
-    if (abc.length !== null) {
+    if (abc.length !== 0) {
+      console.log(abc.length);
+      setTotalReminders(abc.length);
       setReminderList(abc);
     }
   }
@@ -87,6 +88,7 @@ const Reminders = ({showAlert}) => {
   function markingTaken(item) {
     console.log(item.item, ' INSIDE MARKING');
     console.log('before marking ', medData);
+
     const {userMedicineId, historyId, time, medName} = item.item;
     let arr = medData.forEach(item => {
       if (
@@ -97,12 +99,12 @@ const Reminders = ({showAlert}) => {
           if (r.historyId == historyId && !r.taken.includes(time)) {
             // console.log('abcd',r.notTaken);
             r.taken = r.taken + time + ',';
-            let arr= r.notTaken.split(',');
+            let arr = r.notTaken.split(',');
             // console.log(' arr', arr);
             // console.log(arr.indexOf(time));
-            arr.splice(arr.indexOf(time),1);
+            arr.splice(arr.indexOf(time), 1);
 
-            r.notTaken=arr.toString();
+            r.notTaken = arr.toString();
             // console.log(r, 'after updating notTaken');
             item.currentCount += 1;
           }
@@ -111,6 +113,11 @@ const Reminders = ({showAlert}) => {
         return item;
       }
     });
+    currentCount+=1;
+    let percentage = Math.floor((currentCount / totalReminders) * 100);
+    console.log('percentage', currentCount);
+    setPercentage(percentage);
+
     console.log('After updating reminders ', medData);
     AddMedicine(medData);
   }
@@ -159,7 +166,7 @@ const Reminders = ({showAlert}) => {
             <TouchableOpacity
               key={index + 10}
               style={{padding: 8}}
-              onPress={()=>{
+              onPress={() => {
                 reminderList.splice(index, 1);
                 setReminderList(reminderList);
               }}

@@ -144,7 +144,7 @@ const Report = ({navigation}) => {
 
   const [dataMap, setDataMap] = useState([]);
   const dateSelector = history => {
-    console.log('zzz', history);
+    console.log('zzz history', history);
     var data = [];
     history.map(item => {
       let percentage = dayPercentageCalculator(item.taken, item.notTaken);
@@ -324,43 +324,5 @@ const Report = ({navigation}) => {
   );
 };
 
-const history = [
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
-    date: '2022-11-01',
-    taken: '10:00 AM,2:00 PM,8:00 PM',
-    notTaken: '',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
-    date: '2022-11-03',
-    taken: '10:00 AM,2:00 PM',
-    notTaken: '8:00 PM',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
-    date: '2022-11-05',
-    taken: '10:00 AM',
-    notTaken: '2:00 PM,8:00 PM',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
-    date: '2022-11-07',
-    taken: '10:00 AM,2:00 PM,8:00 PM',
-    notTaken: '',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
-    date: '2022-11-08',
-    taken: '10:00 AM,2:00 PM',
-    notTaken: '8:00 PM',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
-    date: '2022-11-09',
-    taken: '10:00 AM',
-    notTaken: '2:00 PM,8:00 PM',
-  },
-];
 
 export default Report;
