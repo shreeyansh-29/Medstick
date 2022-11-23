@@ -18,8 +18,9 @@ import {
 } from '../../redux/action/otherScreenAction/sendSnapAction';
 import CustomButton from '../../components/atoms/customButton';
 import CustomModal from '../../components/molecules/customModal';
+import ImagePicker from 'react-native-image-crop-picker';
 
-const SendSnapToCaretaker = ({navigation, route}) => {
+const SendSnapToCaretaker = ({navigation}) => {
   const progress = useRef(new Animated.Value(0)).current;
   const [mycaretakers, mycaretakerstate] = useState([]);
   const [medsArray, medsArrayState] = useState([]);
@@ -27,7 +28,6 @@ const SendSnapToCaretaker = ({navigation, route}) => {
   let res = useSelector(state => state.myCaretaker);
   let meds = useSelector(state => state.medicineList);
   let res1 = useSelector(state => state.sendSnap?.data);
-  console.log(res1);
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');
@@ -37,6 +37,22 @@ const SendSnapToCaretaker = ({navigation, route}) => {
     dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
   };
 
+  const [image, setImage] = useState('');
+
+  const openCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      setImage(image.path);
+    });
+  };
+
+  useEffect(() => {
+    openCamera();
+  }, []);
+
   useEffect(() => {
     if (res1?.status === 'Success') {
       Toast.show({
@@ -45,8 +61,8 @@ const SendSnapToCaretaker = ({navigation, route}) => {
       });
       dispatch(sendSnapClear());
       setTimeout(() => {
-        navigation.popToTop();
-      }, 3000);
+        navigation.pop();
+      }, 1000);
     }
     if (res1?.status === 'Failed') {
       Toast.show({
@@ -54,9 +70,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
         text1: 'Something Went Wrong',
         text2: 'Try Again',
       });
-      setTimeout(() => {
-        navigation.pop(2);
-      }, 2000);
+      dispatch(sendSnapClear());
     }
   }, [res1]);
 
@@ -96,11 +110,10 @@ const SendSnapToCaretaker = ({navigation, route}) => {
     }).start();
   }, []);
 
-  const {image_uri} = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const images = [
     {
-      url: image_uri,
+      url: image,
     },
   ];
 
@@ -144,7 +157,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
 
     formdata.append('image', {
       name: 'care',
-      uri: image_uri,
+      uri: image,
       type: 'image/jpg',
     });
     formdata.append('name', file_name);
@@ -236,7 +249,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
             <Text style={styles.dividerText}>Or</Text>
             <Divider style={styles.divider} />
           </View>
-          <TouchableOpacity activeOpacity={1} onPress={() => navigation.pop()}>
+          <TouchableOpacity activeOpacity={1} onPress={() => openCamera()}>
             <Text style={styles.imgText}>Re-Take</Text>
           </TouchableOpacity>
 
@@ -248,7 +261,7 @@ const SendSnapToCaretaker = ({navigation, route}) => {
           />
         </ScrollView>
       </View>
-      <Toast visibilityTime={2000} />
+      <Toast visibilityTime={500} />
     </View>
   );
 };

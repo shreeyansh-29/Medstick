@@ -3,7 +3,7 @@ import * as types from '../../actionTypes';
 export const deleteAppointmentRequest = payload => {
   return {
     type: types.DELETE_APPOINTMENT_REQUEST,
-    payload: payload
+    payload: payload,
   };
 };
 export const deleteAppointmentSuccess = data => {
@@ -18,4 +18,8 @@ export const deleteAppointmentError = err => {
     payload: err,
   };
 };
-
+export const deleteAppointmentClear = () => {
+  return {
+    type: types.DELETE_APPOINTMENT_CLEAR,
+  };
+};

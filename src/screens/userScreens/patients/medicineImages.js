@@ -115,7 +115,7 @@ const MedicineImages = ({navigation, route}) => {
   );
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <SubHeader navigation={navigation} title={'Medicine Images'} />
       {loading ? (
         <Loader />
@@ -125,14 +125,14 @@ const MedicineImages = ({navigation, route}) => {
             <View
               style={{
                 flex: 1,
-                backgroundColor: colorPalette.backgroundColor,
+                backgroundColor: 'white',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
               <CustomImage
-                styles={{width: '70%'}}
-                resizeMode="center"
-                source={require('../../../assets/images/noPrescription.png')}
+                styles={{width: '80%'}}
+                resizeMode="contain"
+                source={require('../../../assets/images/noImagesPatient.png')}
               />
             </View>
           ) : (

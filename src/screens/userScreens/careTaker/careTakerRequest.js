@@ -1,11 +1,13 @@
 import {FlatList, RefreshControl, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
-import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {caretakerReqRequest} from '../../../redux/action/caretaker/caretakerRequestAction';
+import {
+  caretakerReqClear,
+  caretakerReqRequest,
+} from '../../../redux/action/caretaker/caretakerRequestAction';
 import {acceptCaretakerReqRequest} from '../../../redux/action/caretaker/acceptCaretakerReqAction';
 import {deleteCaretakerReqRequest} from '../../../redux/action/caretaker/deleteCaretakerReqAction';
 import Loader from '../../../components/atoms/loader';
@@ -13,16 +15,18 @@ import CustomImage from '../../../components/atoms/customImage';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomModal from '../../../components/molecules/customModal';
+import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAction';
 
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.caretakerRequest);
-  console.log('caretakerReq', res);
+  console.log(res);
   const [pageNo, setPageNo] = useState(0);
   const [caretakers, setCaretakers] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [visible, setVisible] = useState(false);
   const [uri, setUri] = useState('');
+  const loading = useSelector(state => state.caretakerRequest.isLoading);
 
   const images = [
     {
@@ -32,9 +36,7 @@ const CareTakerRequest = () => {
 
   useEffect(() => {
     if (res?.data !== null) {
-      setCaretakers([...res.data]);
-    } else if (res?.data === null) {
-      setCaretakers([]);
+      setCaretakers(res.data);
     }
   }, [res]);
 
@@ -54,26 +56,30 @@ const CareTakerRequest = () => {
   //   dispatch(caretakerReqRequest(pageNo));
   // };
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     fetchCaretakerReq();
-
-  //     return () => {};
-  //   }, []),
-  // );
-
   const acceptRequest = requestId => {
+    let a = b => b.requestId == requestId;
+    let index = caretakers.findIndex(a);
+    caretakers.splice(index, 1);
     dispatch(acceptCaretakerReqRequest(requestId));
+    dispatch(caretakerReqClear());
+
     setTimeout(() => {
-      dispatch(caretakerReqRequest(pageNo));
-    }, 1000);
+      dispatch(caretakerReqRequest(0));
+      dispatch(myCaretakerRequest(0));
+    }, 500);
   };
 
   const deleteRequest = requestId => {
+    let a = b => b.requestId == requestId;
+    let index = caretakers.findIndex(a);
+    caretakers.splice(index, 1);
     dispatch(deleteCaretakerReqRequest(requestId));
+    dispatch(caretakerReqClear());
+
     setTimeout(() => {
-      dispatch(caretakerReqRequest(pageNo));
-    }, 1000);
+      dispatch(caretakerReqRequest(0));
+      dispatch(myCaretakerRequest(0));
+    }, 500);
   };
 
   const renderItem = ({item}) => {
@@ -138,7 +144,7 @@ const CareTakerRequest = () => {
         onRequestClose={() => setVisible(!visible)}
         modalView={<ImageViewer imageUrls={images} />}
       />
-      {res?.isLoading ? (
+      {loading ? (
         <Loader />
       ) : (
         <>
@@ -147,7 +153,7 @@ const CareTakerRequest = () => {
               <CustomImage
                 resizeMode="contain"
                 styles={styles.img}
-                source={require('../../../assets/images/nocaretakers.jpg')}
+                source={require('../../../assets/images/noRequest.png')}
               />
             </View>
           ) : (

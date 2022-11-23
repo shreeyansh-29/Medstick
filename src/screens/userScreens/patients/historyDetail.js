@@ -12,6 +12,7 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 
 const HistoryDetail = ({data, onPress}) => {
+  console.log('aaaaaaa', data);
   const [filterData, setfilterData] = useState([]);
 
   function findTime(ele) {
@@ -19,11 +20,11 @@ const HistoryDetail = ({data, onPress}) => {
       period = ele.split(' ')[1],
       mtitle;
 
-    if (time >= 6 && time <= 12 && period === 'AM') {
+    if (time >= 0 && time <= 12 && period === 'AM') {
       mtitle = 'Morning';
-    } else if (time >= 12 && time <= 18 && period === 'PM') {
+    } else if (time >= 0 && time <= 6 && period === 'PM') {
       mtitle = 'Afternoon';
-    } else if (time >= 18 && time <= 24 && period === 'PM') {
+    } else if (time >= 7 && time <= 12 && period === 'PM') {
       mtitle = 'Night';
     }
 

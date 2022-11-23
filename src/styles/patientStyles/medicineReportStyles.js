@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
   percentage: {fontSize: 18, color: colorPalette.redPercentageColor},
   performance: {
     color: 'white',
-    marginTop: verticalScale(8),
-    marginBottom: verticalScale(4),
-    fontSize: 20,
+    fontSize: 24,
     width: '80%',
     textAlign: 'center',
+    margin:2,
+    fontWeight:'600'
   },
   color: colorPalette.redPercentageColor,
   shadowColor: colorPalette.restPercentageColor,

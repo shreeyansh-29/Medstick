@@ -1,51 +1,48 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {
-  horizontalScale,
-  moderateScale,
-  verticalScale,
-} from '../../components/atoms/constant';
+import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: verticalScale(6),
-    width: '82%',
-    alignItems: 'flex-start',
-    marginBottom: verticalScale(6),
-  },
-  font: {
-    color: colorPalette.mainColor,
-    fontSize: 24,
+    flex: 1,
+    marginVertical: verticalScale(6),
+    alignItems: 'center',
+    // backgroundColor:'red',
+    paddingHorizontal: horizontalScale(13),
   },
   imgContainer: {
     backgroundColor: colorPalette.basicColor,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '92%',
-    marginTop: verticalScale(10),
+    width: '100%',
+    marginVertical: verticalScale(5),
     borderRadius: 20,
-    shadowColor: 'black',
-    elevation: 4,
+    elevation: 3,
+    height: 300,
   },
   flatList: {
     flex: 1,
     width: '100%',
+    height: verticalScale(200),
   },
-  img: {height: 290, width: 192},
-  card: {
-    borderRadius: 20,
-    borderColor: 'lightgrey',
+  list: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colorPalette.backgroundColor,
+    marginHorizontal: 8,
+    marginVertical: 6,
     elevation: 3,
-    shadowColor: 'black',
-    marginVertical: verticalScale(6),
-    marginHorizontal: horizontalScale(14),
+    borderRadius: 20,
+    padding: 10,
+    paddingHorizontal: 20,
+    borderWidth: 2,
+    borderColor: 'white',
   },
-  listView: {
-    marginVertical: moderateScale(5),
-    marginHorizontal: horizontalScale(2),
+  img: {width: '60%'},
+  avatarView: {
+    flexDirection: 'row',
+    backgroundColor: colorPalette.backgroundColor,
   },
-  list: {marginHorizontal: moderateScale(16)},
-  avatarView: {flexDirection: 'row'},
   medNameView: {flexDirection: 'column'},
   medName: {fontWeight: '600', fontSize: 20},
 });

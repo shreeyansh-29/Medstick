@@ -7,7 +7,6 @@ class DeleteAppointmentNetworkService {
     const appointmentId= payload.payload;
     const token = await AsyncStorage.getItem('accessToken');
     const id = await AsyncStorage.getItem('user_id');
-    console.log(payload,"payload");
 
     return RequestService.putRequest(
       `${DELETE_APPOINTMENT}?appointmentId=${appointmentId}&Id=${id}`,

@@ -5,16 +5,21 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../atoms/colorPalette';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import AddAppointment from '../../atoms/addAppointment';
-import {useDispatch} from 'react-redux';
-import {notifyUserClear} from '../../../redux/action/patients/notifyUserAction';
 import ShareButton from '../../atoms/shareButton';
 import DownloadButton from '../../atoms/downloadButton';
-import {resetSend} from '../../../redux/action/getUserAction/sendReqAction';
-import {resetUser} from '../../../redux/action/getUserAction/getUserAction';
-import {sendSnapClear} from '../../../redux/action/otherScreenAction/sendSnapAction';
+import DeletePrescription from '../../atoms/deletePrescription';
 
-const SubHeader = ({title, navigation, download, options, routeName}) => {
-  const dispatch = useDispatch();
+const SubHeader = ({
+  title,
+  navigation,
+  download,
+  options,
+  routeName,
+  notes,
+  deleteBtn,
+  deletePrescription,
+  prescriptionId,
+}) => {
   return (
     <View style={styles.subHeader}>
       <TouchableOpacity
@@ -22,16 +27,6 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
         style={styles.backIcon}
         onPress={() => {
           navigation.pop();
-          if (title === 'Patient Medicine') {
-            dispatch(notifyUserClear());
-          }
-          if (title === 'Search') {
-            dispatch(resetSend());
-            dispatch(resetUser());
-          }
-          if (title === 'Send Snap') {
-            dispatch(sendSnapClear());
-          }
         }}>
         <FontAwesomeIcon
           icon={faArrowLeft}
@@ -46,12 +41,23 @@ const SubHeader = ({title, navigation, download, options, routeName}) => {
         <DownloadButton download={download} />
       )}
       {title !== 'Appointment Reminders' ? null : (
-        <AddAppointment navigation={navigation} routeName={routeName} />
+        <AddAppointment
+          navigation={navigation}
+          routeName={routeName}
+          notes={notes}
+        />
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}
       {/* {title !== 'Patient Profile' ? null : (
         <EditButton navigation={navigation} />
       )} */}
+      {title !== 'Add Prescription' ? null : (
+        <DeletePrescription
+          deleteBtn={deleteBtn}
+          deletePrescription={deletePrescription}
+          prescriptionId={prescriptionId}
+        />
+      )}
     </View>
   );
 };

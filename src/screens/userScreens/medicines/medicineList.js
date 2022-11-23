@@ -10,7 +10,6 @@ import React, {useState, useRef} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-// import MedicineDetailCard from './medicineDetailCard';
 import {faPencil} from '@fortawesome/free-solid-svg-icons';
 import {faNoteSticky} from '@fortawesome/free-regular-svg-icons';
 import {deviceWidth} from '../../../components/atoms/constant';
@@ -18,7 +17,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 const MedicineList = ({route, navigation}) => {
   const data = route.params?.data;
-  console.log(route,"data")
   const [index, setIndex] = useState(route.params?.index);
   const isCarousel = useRef(null);
 

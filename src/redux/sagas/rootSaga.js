@@ -17,7 +17,6 @@ import {getAppointmentWatcherSaga} from './appointmentSaga/getAppointmentWatcher
 import {watchMyPrescriptionsSaga} from './otherScreenSaga/myPrescriptionsSaga';
 import {watchGetUserProfileSaga} from './profileSaga/getUserProfileSaga';
 import {saveAppointmentWatcherSaga} from './appointmentSaga/saveAppointmentReminderWatcherSaga';
-import {updateAppointmentWatcherSaga} from './appointmentSaga/updateAppointmentWatcherSaga';
 import {deleteAppointmentWatcherSaga} from './appointmentSaga/deleteAppointmentWatcherSaga';
 import {getAllNotificationWatcherSaga} from './notification/getAllNotificationWatcherSaga';
 import {deleteNotificationWatcherSaga} from './notification/deleteNotificationWatcherSaga';
@@ -37,6 +36,8 @@ import {getMedicineHistoryByDateWatcherSaga} from './userMedicine/getMedicineHis
 import {searchMedicineWatcherSaga} from './userMedicine/searchMedicineWatcherSaga';
 import {saveReminderWatcherSaga} from './saveReminder/saveReminderWatcherSaga';
 import {getReminderWatcherSaga} from './saveReminder/getReminderWatcherSaga';
+import {watchUpdateAppointmentSaga} from './appointmentSaga/updateAppointmentWatcherSaga';
+import {watchDeletePatientReqSaga} from './patients/deletePatientReqSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -46,6 +47,7 @@ export default function* RootSaga() {
     watchEditProfileSaga(),
     watchPatientsRequestSaga(),
     watchAcceptPatientReqSaga(),
+    watchDeletePatientReqSaga(),
     addMedicineWatcherSaga(),
     getPrescriptionWatcherSaga(),
     saveDoctorPrescriptionWatcherSaga(),
@@ -63,7 +65,6 @@ export default function* RootSaga() {
     watchAcceptCaretakerReqSaga(),
     watchDeleteCaretakerReqSaga(),
     saveAppointmentWatcherSaga(),
-    updateAppointmentWatcherSaga(),
     deleteAppointmentWatcherSaga(),
     watchGetUserSaga(),
     watchSendReqSaga(),
@@ -79,5 +80,6 @@ export default function* RootSaga() {
     searchMedicineWatcherSaga(),
     saveReminderWatcherSaga(),
     getReminderWatcherSaga(),
+    watchUpdateAppointmentSaga(),
   ]);
 }

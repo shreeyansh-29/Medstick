@@ -15,8 +15,21 @@ const styles = StyleSheet.create({
     margin: 6,
     minHeight: 80,
     width: '96.5%',
-    // backgroundColor: 'lightblue',
-    // borderRadius: 18,
+  },
+  dobTouch: {
+    height: 48,
+    borderWidth: 1.1,
+    borderRadius: 3.5,
+    borderColor: 'lightgrey',
+    justifyContent: 'center',
+  },
+  dobView: {
+    backgroundColor: 'blue',
+  },
+  dobText: {
+    color: 'black',
+    fontSize: 16,
+    marginLeft: 13,
   },
   subView1: {
     flexDirection: 'row',
@@ -110,7 +123,7 @@ const styles = StyleSheet.create({
   editText: {color: 'white', marginRight: 6, fontSize: 16},
 
   //inputField
-  field: {height: 50, backgroundColor: 'white'},
+  field: {height: 48, backgroundColor: 'white'},
   bio: {height: 120, backgroundColor: 'white', color: 'green'},
   inputForm: {
     marginHorizontal: 20,
@@ -129,14 +142,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'red',
     alignSelf: 'flex-start',
-    marginLeft: 14,
+    // marginLeft: 14,
     marginTop: 1,
   },
   errorText1: {
     fontSize: 15,
     color: 'red',
     alignSelf: 'flex-start',
-    marginLeft: 14,
+    // marginLeft: 14,
     marginTop: 1,
   },
   inputGroup: {

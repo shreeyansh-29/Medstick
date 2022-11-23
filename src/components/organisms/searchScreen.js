@@ -17,8 +17,14 @@ import UserAvatar from 'react-native-user-avatar';
 import {ListItem, SearchBar, Icon} from 'react-native-elements';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUserRequest} from '../../redux/action/getUserAction/getUserAction';
-import {sendReqRequest} from '../../redux/action/getUserAction/sendReqAction';
+import {
+  getUserRequest,
+  resetUser,
+} from '../../redux/action/getUserAction/getUserAction';
+import {
+  resetSend,
+  sendReqRequest,
+} from '../../redux/action/getUserAction/sendReqAction';
 import Toast from 'react-native-toast-message';
 import {useRoute} from '@react-navigation/native';
 
@@ -55,9 +61,14 @@ const SearchScreen = ({navigation}) => {
         type: 'info',
         text1: 'No User Found',
         text2: 'Invitation sent to user with given email id',
-        position: 'top',
+        position: 'bottom',
       });
+      setTimeout(() => {
+        navigation.pop();
+      }, 2000);
     }
+    dispatch(resetSend());
+    dispatch(resetUser());
   }, [res]);
 
   useEffect(() => {
@@ -67,6 +78,9 @@ const SearchScreen = ({navigation}) => {
         text1: 'Request Send Successfully',
         position: 'bottom',
       });
+      setTimeout(() => {
+        navigation.pop();
+      }, 2000);
     } else if (res1?.status === 'Failed') {
       Toast.show({
         type: 'error',
@@ -81,6 +95,8 @@ const SearchScreen = ({navigation}) => {
         position: 'bottom',
       });
     }
+    dispatch(resetSend());
+    dispatch(resetUser());
   }, [res1]);
 
   const sendMailToUser = async email => {
@@ -96,8 +112,8 @@ const SearchScreen = ({navigation}) => {
     dispatch(getUserRequest(email));
   };
 
-  const sendReqToCaretaker = patient_id => {
-    dispatch(sendReqRequest({patient_id, sentby}));
+  const sendReqToCaretaker = (patient_id, fcmToken) => {
+    dispatch(sendReqRequest({patient_id, sentby, fcmToken}));
   };
 
   const renderItem = ({item}) => {
@@ -123,7 +139,7 @@ const SearchScreen = ({navigation}) => {
                 activeOpacity={1}
                 style={styles.listButton}
                 onPress={() => {
-                  sendReqToCaretaker(item.id);
+                  sendReqToCaretaker(item?.id, item?.userDetails?.fcmToken);
                 }}>
                 <Text style={styles.text1}>Send Request</Text>
               </TouchableOpacity>
@@ -158,24 +174,24 @@ const SearchScreen = ({navigation}) => {
                   }}
                   inputContainerStyle={{
                     borderRadius: 30,
-                    backgroundColor: 'lightgrey',
+                    backgroundColor: '#EFF5F5',
+                    height: 50,
                   }}
                   inputStyle={{
                     fontSize: 18,
                     color: colorPalette.mainColor,
-                    marginLeft: -4,
                   }}
                   lightTheme="true"
                   placeholderTextColor={colorPalette.mainColor}
                   clearIcon={{color: colorPalette.mainColor, size: 22}}
                   searchIcon={
                     <Icon
-                      size={20}
+                      size={22}
                       name="search"
                       type="font-awesome"
                       color={colorPalette.mainColor}
                       onPress={() => handleSubmit()}
-                      containerStyle={{padding: 10}}
+                      containerStyle={{marginLeft: 10}}
                     />
                   }
                 />

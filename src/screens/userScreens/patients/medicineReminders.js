@@ -32,10 +32,9 @@ const Reminder = ({item, index}) => {
             radius={20}
             borderWidth={3}
             styles={{
-              color: colorPalette.mainColor,
               shadowColor: colorPalette.restPercentageColor,
               bgColor: colorPalette.basicColor,
-              percentage: {fontSize: 10, color: colorPalette.mainColor},
+              percentage: {fontSize: 10},
             }}
             text={Math.round((tl / (tl + nt)) * 100) + '%'}
           />

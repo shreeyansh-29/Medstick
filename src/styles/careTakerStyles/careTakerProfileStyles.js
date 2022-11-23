@@ -38,8 +38,8 @@ export const styles = StyleSheet.create({
     width: 140,
     height: 140,
     borderRadius: 82,
-    borderWidth: 4,
-    borderColor: 'white',
+    borderWidth: 3,
+    borderColor: 'lightgrey',
   },
   userDetialsCont: {
     marginVertical: 4,

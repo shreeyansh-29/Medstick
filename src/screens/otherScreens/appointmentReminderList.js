@@ -1,109 +1,93 @@
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Modal,
-  Alert,
-  RefreshControl,
-} from 'react-native';
+import {View, FlatList, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {appointmentReminderSelector} from '../../constants/Selector/appointmentReminderSelector';
 import SubHeader from '../../components/molecules/headers/subHeader';
-import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../styles/patientStyles/myPatientsStyles';
-import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {TextInput} from 'react-native-paper';
-import AddButton from '../../components/atoms/addButton';
-import {getAppointmentRequest} from '../../redux/action/appointmentReminderAction/getAppointmentAction';
 import CustomImage from '../../components/atoms/customImage';
-import {
-  faCalendarDays,
-  faPenToSquare,
-  faTrash,
-  faXmark,
-} from '@fortawesome/free-solid-svg-icons';
+import {faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import Loader from '../../components/atoms/loader';
-import {deleteAppointmentRequest} from '../../redux/action/appointmentReminderAction/deleteAppointmentAction';
-import DateTime from '../../components/organisms/dateTime';
-import {updateAppointmentRequest} from '../../redux/action/appointmentReminderAction/updateAppointmentAction';
-import DatePicker from 'react-native-date-picker';
-import {color} from 'react-native-reanimated';
+import CustomModal from '../../components/molecules/customModal';
+import UpdateAppointment from './updateAppointment';
+import {useIsFocused} from '@react-navigation/native';
+import {getPrescription, savePrescription} from '../../utils/storage';
 
 const AppointmentReminderList = ({navigation}) => {
-  const dispatch = useDispatch();
-  const [pageNo, setPageNo] = useState(0);
+  const isFocused = useIsFocused();
   const [appointments, setAppointments] = useState([]);
   const [notes1, setNotes1] = useState('');
   const [appointmentId, setAppointmentId] = useState('');
-  const [open, setOpen] = useState(false);
   const [temp, setTemp] = useState('');
   const [time1, setTime1] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [refresh, setRefresh] = useState(false);
-  const getdoctor = useSelector(appointmentReminderSelector.getAppointment);
-  console.log(getdoctor, 'get doctor');
   const [modalVisible, setModalVisible] = useState(false);
-  const getDoctorLoading = useSelector(
-    appointmentReminderSelector.getAppointmentLoading,
-  );
+  const [doctorName, setDoctorName] = useState([]);
 
-  const updateAppointmentData = useSelector(
-    appointmentReminderSelector.updateAppointment,
-  );
-
-  let fDate =
-    date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-  let time = date.getHours() + ':' + date.getMinutes() + ':' + '00';
-
-  const updateAppointment1 = useSelector(
-    appointmentReminderSelector.updateAppointmentLoading,
-  );
-
-  const getAppointmentLoader = useSelector(
-    appointmentReminderSelector.getAppointmentLoading,
-  );
-
-  const deleteAppointment = useSelector(
-    appointmentReminderSelector.deleteAppointment,
-  );
-
-  useEffect(() => {
-    if (getdoctor?.data !== null) {
-      setAppointments(getdoctor.data);
-    }
-  }, [getdoctor]);
-
-  useEffect(() => {
-    dispatch(getAppointmentRequest(pageNo));
-  }, []);
-
-  const onClickDeleteAppointment = deleteId => {
-    dispatch(deleteAppointmentRequest(deleteId));
-
-    setTimeout(() => {
-      dispatch(getAppointmentRequest(pageNo));
-    }, 1000);
+  const showAlert = () => {
+    Alert.alert('Add Some Precription First', '', [
+      {
+        text: 'Ok',
+        onPress: () => {},
+      },
+    ]);
   };
 
-  const updateAppointment = (fDate, time, notes1, appointmentId) => {
-    if (notes1) {
-      dispatch(updateAppointmentRequest(fDate, time, notes1, appointmentId));
-      if (updateAppointmentData?.data?.status === 'Success') {
-        setModalVisible(false);
-      }
-      dispatch(getAppointmentRequest(pageNo));
-    } else {
-      Alert.alert('Empty fields are not required');
+  useEffect(() => {
+    if (isFocused) {
+      getPrescription().then(data => {
+        if (data !== null && data.length !== 0) {
+          setDoctorName(data);
+          let reminderList = [];
+          data.map(item => {
+            if (item.appointmentList.length !== 0) {
+              item.appointmentList.map(ele => {
+                reminderList.push(ele);
+              });
+            }
+          });
+          setAppointments(reminderList);
+        } else {
+          setAppointments([]);
+        }
+      });
     }
+  }, [isFocused]);
+
+  const onClickDeleteAppointment = deleteId => {
+    getPrescription().then(data => {
+      let updatedList = data;
+      updatedList.map(a => {
+        if (a.appointmentList.length !== 0) {
+          a.appointmentList.map((r, index) => {
+            if (r.appointmentId === deleteId) {
+              a.appointmentList.splice(index, 1);
+            }
+          });
+        }
+      });
+      savePrescription(updatedList);
+      getPrescription().then(data => {
+        if (data !== null && data.length !== 0) {
+          setDoctorName(data);
+          let reminderList = [];
+          data.map(item => {
+            if (item.appointmentList.length !== 0) {
+              item.appointmentList.map(ele => {
+                reminderList.push(ele);
+              });
+            }
+          });
+          setAppointments(reminderList);
+        } else {
+          setAppointments([]);
+          showAlert();
+        }
+      });
+    });
   };
 
   const renderItem = ({item}) => {
     return (
-      <View>
+      <View style={styles.top}>
         <ListItem style={styles.list}>
           <ListItem.Content>
             <View>
@@ -117,8 +101,7 @@ const AppointmentReminderList = ({navigation}) => {
                     fontSize: 15,
                     color: colorPalette.mainColor,
                   }}>
-                  {' '}
-                  {`${item.localDate}`}
+                  {item.date}
                 </ListItem.Subtitle>
               </View>
 
@@ -132,7 +115,7 @@ const AppointmentReminderList = ({navigation}) => {
                     fontSize: 15,
                     color: colorPalette.mainColor,
                   }}>
-                  {`${item.localTime}`}
+                  {item.time}
                 </ListItem.Subtitle>
               </View>
 
@@ -146,19 +129,20 @@ const AppointmentReminderList = ({navigation}) => {
                     fontSize: 15,
                     color: colorPalette.mainColor,
                   }}>
-                  {`${item.notes}`}
+                  {item.notes}
                 </ListItem.Subtitle>
               </View>
             </View>
           </ListItem.Content>
           <View style={{flexDirection: 'row', left: 55, padding: '6%'}}>
             <TouchableOpacity
+              activeOpacity={1}
               onPress={() => {
                 setModalVisible(true);
-                setTemp(item.localDate);
-                setTime1(item.localTime);
+                setTemp(item.date);
+                setTime1(item.time);
                 setNotes1(item.notes);
-                setAppointmentId(item.appointmentId);
+                setAppointmentId(item?.appointmentId);
               }}>
               <FontAwesomeIcon
                 icon={faPenToSquare}
@@ -167,9 +151,21 @@ const AppointmentReminderList = ({navigation}) => {
               />
             </TouchableOpacity>
             <TouchableOpacity
+              activeOpacity={1}
               style={{marginLeft: '10%', marginRight: '10%'}}
               onPress={() => {
-                onClickDeleteAppointment(item.appointmentId);
+                Alert.alert('Are you sure', 'Click ok to proceed', [
+                  {
+                    text: 'Ok',
+                    onPress: () => {
+                      onClickDeleteAppointment(item?.appointmentId);
+                    },
+                  },
+                  {
+                    text: 'Cancel',
+                    onPress: () => {},
+                  },
+                ]);
               }}>
               <FontAwesomeIcon
                 icon={faTrash}
@@ -188,184 +184,47 @@ const AppointmentReminderList = ({navigation}) => {
       <SubHeader
         title={'Appointment Reminders'}
         navigation={navigation}
-        routeName={'AppointmentReminders'}
+        routeName={'SaveAppointment'}
+        notes={doctorName}
       />
-      <Modal
+
+      <CustomModal
         onRequestClose={() => setModalVisible(false)}
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}>
+        type="fade"
+        modalVisible={modalVisible}
+        modalView={
+          <UpdateAppointment
+            setModalVisible={setModalVisible}
+            notes1={notes1}
+            time1={time1}
+            temp={temp}
+            appointmentId={appointmentId}
+            setAppointments={setAppointments}
+          />
+        }
+      />
+
+      {appointments.length === 0 ? (
         <View
           style={{
-            height: '100%',
-            alignItems: 'center',
+            flex: 1,
             justifyContent: 'center',
-            backgroundColor: 'rgba(52, 52, 52, 0.8)',
+            alignItems: 'center',
+            backgroundColor: 'white',
           }}>
-          <View
-            style={{
-              height: 310,
-              width: 340,
-              backgroundColor: '#fff',
-              borderRadius: 10,
-            }}>
-            <View
-              style={{
-                backgroundColor: colorPalette.mainColor,
-                borderTopStartRadius: 10,
-                borderTopRightRadius: 10,
-              }}>
-              <Text
-                style={{
-                  fontSize: 22,
-                  margin: '4%',
-                  fontWeight: '400',
-                  color: '#ffffff',
-                }}>
-                Update Appointment
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => setModalVisible(!modalVisible)}
-              style={{
-                position: 'absolute',
-                right: 10,
-                marginTop: '3%',
-                marginLeft: '3%',
-              }}>
-              <FontAwesomeIcon
-                icon={faXmark}
-                size={30}
-                color={colorPalette.GREY}
-              />
-            </TouchableOpacity>
-            <View style={{margin: '1%'}}>
-              {/* <DateTime temp={temp} time1={time1} /> */}
-              <View
-                style={{
-                  flexDirection: 'row',
-                  paddingTop: 5,
-                  marginTop: '3%',
-                  marginRight: '20%',
-                  marginLeft: '7%',
-                }}>
-                <TouchableOpacity onPress={() => setOpen(true)}>
-                  <View style={Styles.box1}>
-                    <Text style={[Styles.text, {fontSize: 15}]}>DateTime</Text>
-                    <FontAwesomeIcon
-                      icon={faCalendarDays}
-                      size={28}
-                      color={colorPalette.mainColor}
-                    />
-                    <DatePicker
-                      modal
-                      open={open}
-                      date={date}
-                      value={date}
-                      mode="datetime"
-                      onConfirm={date => {
-                        setOpen(false);
-                        setDate(date);
-                      }}
-                      onCancel={() => {
-                        setOpen(false);
-                      }}
-                    />
-                  </View>
-                </TouchableOpacity>
-                {date == Date() ? (
-                  <View style={Styles.box2}>
-                    <Text>-----------------------</Text>
-                  </View>
-                ) : (
-                  <View style={Styles.box2}>
-                    <Text style={{fontSize: 17}}>
-                      {date?.getFullYear() +
-                        '/' +
-                        (date.getMonth() + 1) +
-                        '/' +
-                        date.getDate() +
-                        '  ' +
-                        date.getHours() +
-                        ':' +
-                        date.getMinutes() +
-                        ':' +
-                        date.getSeconds()}
-                    </Text>
-                  </View>
-                )}
-              </View>
-              <TextInput
-                id="Notes"
-                style={{width: '82%', marginLeft: '8%', marginTop: '4%'}}
-                label="Notes"
-                value={notes1}
-                mode="outlined"
-                onChangeText={text => setNotes1(text)}
-                outlineColor="#02ABA6"
-                activeOutlineColor="#02ABA6"
-              />
-              <View
-                style={{
-                  borderWidth: 1.5,
-                  marginTop: '6%',
-                  marginLeft: '8%',
-                  marginRight: '9.6%',
-                  borderRadius: 7,
-                  borderColor: colorPalette.mainColor,
-                }}>
-                <TouchableOpacity
-                  onPress={() =>
-                    updateAppointment(fDate, time, notes1, appointmentId)
-                  }
-                  style={{
-                    margin: '1%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 17,
-                      padding: '1%',
-                      borderColor: colorPalette.mainColor,
-                      borderRadius: 7,
-                    }}>
-                    Update
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
+          <CustomImage
+            resizeMode="contain"
+            styles={styles.img}
+            source={require('../../assets/images/noAppointments.png')}
+          />
         </View>
-      </Modal>
-      {getDoctorLoading ? (
-        <Loader />
       ) : (
-        <>
-          {appointments?.length === 0 ? (
-            <View></View>
-          ) : (
-            <View>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={appointments}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                refreshControl={
-                  <RefreshControl
-                    colors={[colorPalette.mainColor]}
-                    tintColor={[colorPalette.mainColor]}
-                    refreshing={refresh}
-                    onRefresh={() => {
-                      dispatch(getAppointmentRequest(pageNo));
-                      setRefresh(false);
-                    }}
-                  />
-                }
-              />
-            </View>
-          )}
-        </>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={appointments}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
       )}
     </View>
   );

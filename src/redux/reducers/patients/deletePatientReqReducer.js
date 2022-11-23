@@ -8,7 +8,7 @@ import {
 const initialState = {
   data: null,
   isLoading: false,
-  error: '',
+  error: null,
 };
 export const deletePatientReqReducer = (state = initialState, action) => {
   switch (action.type) {

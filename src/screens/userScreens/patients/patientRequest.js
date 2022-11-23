@@ -1,22 +1,21 @@
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
+import {View, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
-import {patientsReqRequest} from '../../../redux/action/patients/patientsRequestAction';
+import {
+  patientsReqClear,
+  patientsReqRequest,
+} from '../../../redux/action/patients/patientsRequestAction';
 import {acceptPatientReqRequest} from '../../../redux/action/patients/acceptPatientReqAction';
 import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import CustomModal from '../../../components/molecules/customModal';
+import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
+import {myPatientsRequest} from '../../../redux/action/patients/myPatientsAction';
 
 const PatientRequest = () => {
   const dispatch = useDispatch();
@@ -24,7 +23,6 @@ const PatientRequest = () => {
   const [pageNo, setPageNo] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.patientsRequest);
-  console.log(res);
   const loading = useSelector(state => state.patientsRequest.isLoading);
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
@@ -37,7 +35,7 @@ const PatientRequest = () => {
 
   useEffect(() => {
     if (res?.data !== null) {
-      setPatients([...res.data]);
+      setPatients(res.data);
     } else {
       setPatients([]);
     }
@@ -62,17 +60,29 @@ const PatientRequest = () => {
   // };
 
   const acceptRequest = requestId => {
+    let a = b => b.requestId == requestId;
+    let index = patients.findIndex(a);
+    patients.splice(index, 1);
     dispatch(acceptPatientReqRequest(requestId));
+    dispatch(patientsReqClear());
+
     setTimeout(() => {
-      dispatch(patientsReqRequest(pageNo));
-    }, 1000);
+      dispatch(patientsReqRequest(0));
+      dispatch(myPatientsRequest(0));
+    }, 500);
   };
 
   const deleteRequest = requestId => {
-    dispatch(acceptPatientReqRequest(requestId));
+    let a = b => b.requestId == requestId;
+    let index = patients.findIndex(a);
+    patients.splice(index, 1);
+    dispatch(deletePatientReqRequest(requestId));
+    dispatch(patientsReqClear());
+
     setTimeout(() => {
-      dispatch(patientsReqRequest(pageNo));
-    }, 1000);
+      dispatch(patientsReqRequest(0));
+      dispatch(myPatientsRequest(pageNo));
+    }, 500);
   };
 
   const renderItem = ({item}) => {
@@ -84,7 +94,7 @@ const PatientRequest = () => {
               activeOpacity={1}
               onPress={() => {
                 setVisible(true);
-                setUri(item.picPath);
+                setUri(item?.picPath);
               }}>
               <Avatar size={80} rounded source={{uri: item.picPath}} />
             </TouchableOpacity>
@@ -144,7 +154,7 @@ const PatientRequest = () => {
               <CustomImage
                 resizeMode="contain"
                 styles={styles.img}
-                source={require('../../../assets/images/nopatientreq.png')}
+                source={require('../../../assets/images/noRequest.png')}
               />
             </View>
           ) : (

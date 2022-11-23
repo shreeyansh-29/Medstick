@@ -13,6 +13,7 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+    backgroundColor: 'white',
   },
   lottieView: {width: '70%'},
   flatlist: {
@@ -40,11 +41,12 @@ const Styles = StyleSheet.create({
   },
   camera: {height: '100%'},
   listView: {margin: moderateScale(4)},
-  list: {marginHorizontal: moderateScale(16)},
+  list: {marginHorizontal: moderateScale(10)},
   avatarView: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
   },
   medNameView: {
     flexDirection: 'column',
@@ -55,7 +57,7 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  rem: {padding: 8},
+  rem: {padding: 10},
   background: {
     position: 'absolute',
     backgroundColor: colorPalette.mainColor,
@@ -114,7 +116,6 @@ const Styles = StyleSheet.create({
   touchableOpacity: {
     width: '100%',
     height: '100%',
-    marginTop: 30,
   },
   addPrescriptionHeader: {
     flex: 1,
@@ -189,29 +190,28 @@ const Styles = StyleSheet.create({
   textView: {
     flexDirection: 'row',
     width: '100%',
-    marginTop: 10,
+    marginVertical: 16,
+    justifyContent: 'space-between',
   },
-  textView1:{
-    flexDirection:'row',
-    width:'100%',
-    marginTop:10,
-    justifyContent:'space-between'
-    
+  textView1: {
+    flexDirection: 'row',
+    width: '100%',
+    marginVertical: 6,
+    justifyContent: 'space-between',
   },
-  textbox:{
-    width:'50%',
-    justifyContent:'center',
-    alignItems:'center',
+  textbox: {
+    width: '50%',
+    justifyContent: 'center',
   },
   stockbox: {
-    width: '30%',
+    width: '40%',
   },
-  picker:{
-    borderColor:colorPalette.appColor,
-    borderWidth:1,
-    borderRadius:5,
-    marginTop:6,
-   
+  picker: {
+    borderColor: 'lightgrey',
+    borderWidth: 1,
+    borderRadius: 5,
+    width: '100%',
+    // height: 58,
   },
   addbutton: {
     justifyContent: 'center',
@@ -256,8 +256,6 @@ const Styles = StyleSheet.create({
   },
   text: {
     fontSize: 17,
-    margin: '3%',
-    paddingHorizontal: 3,
     color: 'black',
   },
   box2: {
@@ -318,10 +316,9 @@ const Styles = StyleSheet.create({
   prescriptionBox: {
     width: '98%',
     padding: 5,
-    elevation:2,
-    marginTop:5,
+    elevation: 2,
+    marginTop: 5,
     borderColor: colorPalette.appColor,
-
     borderStartWidth: 4,
   },
   prescriptionText1: {

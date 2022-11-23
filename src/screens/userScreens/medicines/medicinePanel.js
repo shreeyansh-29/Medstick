@@ -16,50 +16,18 @@ import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
-import {useDispatch, useSelector} from 'react-redux';
-import {loadMedicineList} from '../../../redux/action/userMedicine/medicineListAction';
-import {useIsFocused} from '@react-navigation/native';
-import {deleteMedicineRequest} from '../../../redux/action/userMedicine/deleteMedicine';
-import Loader from '../../../components/atoms/loader';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
+import {useIsFocused} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import CustomImage from '../../../components/atoms/customImage';
+import {week} from '../../../constants/constants';
+import uuid from 'react-native-uuid';
+import { hitSlop } from 'deprecated-react-native-prop-types/DeprecatedViewPropTypes';
 
 const MedicinePanel = ({navigation}) => {
-  const [flag, setFlag] = useState('');
-  console.log(flag,'flag')
-  const [medicineResponse, setMedicineResponse] = useState();
-  console.log(medicineResponse,"medicineresponse")
-  const dispatch = useDispatch();
+  const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
-  const [id, setId] = useState('');
-  console.log('id', id);
-  const [medicines, setMedicines] = useState([]);
-  const res = useSelector(state => state.medicineList);
-  console.log(res);
-  const loading = useSelector(state => state.medicineList?.isLoading);
-  const res1 = useSelector(state => state.deleteMedicine);
-  const [isActive, setIsActive] = useState(false);
-  const [color, setColor] = useState(false);
-  const [clockActive, setClockActive] = useState(false);
-
-  // const saveReminderData = useSelector(saveReminderSelector.saveReminder);
-  // console.log(saveReminderData.data.data,"dataaaaaa");
-
-  const onClickTouchable = saveReminder => {
-    if (saveReminderData.data.data.status === 'Success') {
-      setIsActive(true);
-    }
-  };
-
-  const clockColorChange = item => {
-    if (item.userMedicineId && color) {
-      setClockActive(true);
-    }
-  };
-
-  const getStatus = () => {
-    setColor(true);
-  };
+  const [name, setName] = useState('');
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -70,48 +38,98 @@ const MedicinePanel = ({navigation}) => {
     }).start();
   }, []);
 
-  useEffect(() => {
-    if (res?.data !== null) {
-      console.log(res);
-      setMedicines(res?.data);
-    } else {
-      setMedicines([]);
-    }
-  }, [res]);
+  const deleteMedicineLocal = async index => {
+    medicineResponse.splice(index, 1);
+    AddMedicine(medicineResponse);
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        setMedicineResponse(data);
+      } else {
+        setMedicineResponse([]);
+      }
+    });
+  };
 
-  const userMeds = async () => {
-    dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
+  const MedicineHistory = data => {
+    var updateArray = [];
+    let history = {
+      historyId: null,
+      date: null,
+      taken: '',
+      notTaken: '',
+      time: null,
+    };
+    for (let i = 0; i < data.length; i++) {
+      // console.log('start of loop');
+      let arr = data[i].days.split(',');
+      let set = new Set(arr);
+      var start_date = new Date(data[i].endDate);
+      var end_date = new Date(data[i].endDate);
+      var tody_date = new Date();
+      let td_da =
+        tody_date.getFullYear() +
+        '-' +
+        (tody_date.getMonth() + 1) +
+        '-' +
+        tody_date.getDate();
+      if (
+        data[i].endDate !== 'No End Date' &&
+        set.has(week[tody_date.getDay()]) &&
+        start_date <= tody_date <= end_date
+      ) {
+        if (data[i].historyList.length === 0) {
+          history.historyId = uuid.v4();
+          history.date = td_da;
+          history.time = data[i].reminderTime.split(',');
+          history.notTaken = data[i].reminderTime;
+          history.taken='';
+          data[i].historyList.push(history);
+        } 
+      } else if (data[i].endDate === 'No End Date') {
+        // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
+        const a = b => b.date == td_da;
+        const index = data[i].historyList.findIndex(a);
+        if (data[i].historyList.length === 0) {
+          history.historyId = uuid.v4();
+          history.date = td_da;
+          history.time = data[i].reminderTime.split(',');
+          history.notTaken = data[i].reminderTime;
+          data[i].historyList.push(history);
+        }
+      }
+
+      // console.log('<================ FINAL DATA ================>', data[i]);
+      updateArray.push(data[i]);
+      // console.log('end with loop');
+    }
+    AddMedicine(updateArray);
   };
 
   useEffect(() => {
     if (isFocused) {
-      userMeds();
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          setMedicineResponse(data);
+        }
+      });
     }
   }, [isFocused]);
 
-  const deleteMedicineLocal = async index => {
-    medicineResponse.splice(medicineResponse.indexOf(index), 1);
-    AddMedicine(medicineResponse);
-    navigation.navigate('Medicine');
-  };
-
-  const deleteMedicine = userMedicineId => {
-    dispatch(deleteMedicineRequest(userMedicineId));
-    setTimeout(async () => {
-      dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
-    }, 300);
+  const getUser = async () => {
+    const user = await GoogleSignin.getCurrentUser();
+    setName(user);
   };
 
   useEffect(() => {
-    getMedicine().then(data => {
-      setMedicineResponse(data);
-    })
-  }, []);
-
-  const getTokenId = async () => {
-    const tempId = await AsyncStorage.getItem('user_id');
-    setId(tempId);
-  };
+    if (isFocused) {
+      getUser();
+    }
+  }, [isFocused]);
+  useEffect(() => {
+    medicineResponse.map(item => {
+      item.reminderId !== null ? MedicineHistory(medicineResponse) : null;
+    });
+  }, [medicineResponse]);
 
   const renderItemLocal = ({item, index}) => {
     return (
@@ -120,13 +138,15 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('MedicinePanelStack', {
-                screen: 'MedicineList',
-                params: {
-                  data: medicineResponse,
-                  index: index,
-                },
-              });
+              if (name !== null) {
+                navigation.navigate('MedicinePanelStack', {
+                  screen: 'MedicineList',
+                  params: {
+                    data: medicineResponse,
+                    index: index,
+                  },
+                });
+              }
             }}>
             <Card style={Styles.card}>
               <View style={Styles.listView}>
@@ -159,23 +179,30 @@ const MedicinePanel = ({navigation}) => {
                   </ListItem.Content>
                   <View style={Styles.icon}>
                     <TouchableOpacity
+                      activeOpacity={1}
                       style={Styles.rem}
                       onPress={() => {
                         navigation.navigate('MedicinePanelStack', {
-                screen: 'Reminder',
-                params: {
-                  data: item,
-                  index: index,
-                },
-              });
+                          screen: 'Reminder',
+                          params: {
+                            data: item,
+                            index: index,
+                          },
+                        });
                       }}>
                       <FontAwesomeIcon
                         icon={faClock}
-                        color={colorPalette.mainColor}
+                        color={
+                          item.reminderStatus
+                            ? colorPalette.mainColor
+                            : 'lightgrey'
+                        }
                         size={24}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
+                      style={Styles.rem}
+                      activeOpacity={1}
                       onPress={() => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
@@ -203,143 +230,30 @@ const MedicinePanel = ({navigation}) => {
     );
   };
 
-  const renderItem = ({item, index}) => {
-    return (
-      <>
-        <Animatable.View animation="zoomInUp" duration={400}>
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              navigation.navigate('MedicinePanelStack', {
-                screen: 'MedicineList',
-                params: {
-                  data: medicines,
-                  index: index,
-                },
-              });
-            }}>
-            <Card style={Styles.card}>
-              <View style={Styles.listView}>
-                <ListItem style={Styles.list}>
-                  <ListItem.Content>
-                    <View style={Styles.avatarView}>
-                      <FontAwesomeIcon
-                        icon={faPills}
-                        size={36}
-                        color={colorPalette.mainColor}
-                      />
-                      <View style={Styles.medNameView}>
-                        <ListItem.Title style={Styles.medName}>
-                          {item.medicineName}
-                        </ListItem.Title>
-                        {/* <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Type: </Text>
-                          {item.dosageType}
-                        </ListItem.Subtitle> */}
-                        <ListItem.Subtitle>
-                          <Text style={{color: 'grey'}}>Dosage Quantity: </Text>
-                          {item.dosageQuantity}
-                        </ListItem.Subtitle>
-                        {/* <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Dosage Unit: </Text>
-                          {item.dosageUnit}
-                        </ListItem.Subtitle> */}
-                        <ListItem.Subtitle>
-                          <Text style={{color: 'grey'}}>Total Stock: </Text>
-                          {item.stock}
-                        </ListItem.Subtitle>
-                      </View>
-                    </View>
-                  </ListItem.Content>
-                  <View style={Styles.icon}>
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      id="touch1"
-                      style={Styles.rem}
-                      onPress={() => {
-                        navigation.navigate('MedicinePanelStack', {
-                          screen: 'Reminder',
-                          params: {
-                            id: item.userMedicineId,
-                            fetchStatus: getStatus(),
-                          },
-                        });
-                        clockColorChange(item);
-                      }}>
-                      <FontAwesomeIcon
-                        icon={faClock}
-                        color={
-                          clockActive && item.userMedicineId
-                            ? colorPalette.mainColor
-                            : 'grey'
-                        }
-                        size={22}
-                      />
-
-                      {console.log(color, 'colorrrrrrrrrr')}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{padding: 8}}
-                      activeOpacity={1}
-                      onPress={() => {
-                        Alert.alert('Delete it!', 'Sure you want delete it', [
-                          {
-                            text: 'Delete',
-                            onPress: () => deleteMedicine(item.userMedicineId),
-                          },
-                          {
-                            text: 'Cancel',
-                          },
-                        ]);
-                      }}>
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        color={colorPalette.mainColor}
-                        size={22}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </ListItem>
-              </View>
-            </Card>
-          </TouchableOpacity>
-        </Animatable.View>
-      </>
-    );
-  };
-
   return (
     <>
-      
-        <View style={Styles.container}>
-          <View style={Styles.background} />
-          <MainHeader title={'Medicine'} navigation={navigation} />
-          {loading ? (
-            <Loader />
-          ) : (
-            <>
-              {medicineResponse?.length === 0 ? (
-                <View style={Styles.lottie}>
-                  <LottieView
-                    style={{width: '60%'}}
-                    speed={0.8}
-                    source={require('../../../assets/animation/noMed1.json')}
-                    progress={progress}
-                  />
-                </View>
-              ) : (
-                <View style={{flex: 1}}>
-                  <FlatList
-                    data={medicineResponse}
-                    renderItem={renderItemLocal}
-                    showsVerticalScrollIndicator={false}
-                  />
-                </View>
-              )}
-            </>
-          )}
-        </View>
-      </>
-  )
-              }
+      <View style={Styles.container}>
+        {/* <View style={Styles.background} /> */}
+        <MainHeader title={'Medicine'} navigation={navigation} />
+        {medicineResponse.length === 0 ? (
+          <View style={Styles.lottie}>
+            <CustomImage
+              resizeMode="contain"
+              source={require('../../../assets/images/nomeds.png')}
+              styles={{width: '70%'}}
+            />
+          </View>
+        ) : (
+          <>
+            <FlatList
+              data={medicineResponse}
+              renderItem={renderItemLocal}
+              showsVerticalScrollIndicator={false}
+            />
+          </>
+        )}
+      </View>
+    </>
+  );
+};
 export default MedicinePanel;
