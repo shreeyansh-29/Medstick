@@ -25,13 +25,23 @@ class Notifications {
     });
   }
 
-  schduleNotification(date) {
-    PushNotification.localNotificationSchedule({
-      channelId: 'reminders',
-      title: 'Reminder!',
-      message: 'You have set this reminder',
-      date,
-    });
+  schduleNotification(date, check1, name) {
+    if (check1) {
+      PushNotification.localNotificationSchedule({
+        channelId: 'reminders',
+        title: 'Reminder!',
+        message: 'Take ' + name,
+        date: date,
+        repeatType: 'day',
+      });
+    } else {
+      PushNotification.localNotificationSchedule({
+        channelId: 'reminders',
+        title: 'Reminder!',
+        message: 'Take ' + name,
+        date: date,
+      });
+    }
   }
 }
 

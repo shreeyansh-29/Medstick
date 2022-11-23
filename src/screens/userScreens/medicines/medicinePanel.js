@@ -19,6 +19,7 @@ import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {useIsFocused} from '@react-navigation/native';
+import PushNotification from 'react-native-push-notification';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
@@ -34,11 +35,12 @@ const MedicinePanel = ({navigation}) => {
     }).start();
   }, []);
 
-  const deleteMedicineLocal = async index => {
+  const deleteMedicineLocal = async (index,name) => {
     medicineResponse.splice(medicineResponse.indexOf(index), 1);
     setTimeout(() => {
       AddMedicine(medicineResponse);
     }, 200);
+    deleteRem(name);
   };
 
   useEffect(() => {
@@ -52,6 +54,16 @@ const MedicinePanel = ({navigation}) => {
       });
     }
   }, [isFocused]);
+
+  const deleteRem = name => {
+    PushNotification.getScheduledLocalNotifications(rn => {
+      for (let i = 0; i < rn.length; i++) {
+        if ('Take ' + name === rn[i].message) {
+          PushNotification.cancelLocalNotification({id: rn[i].id});
+        }
+      }
+    });
+  };
 
   const renderItemLocal = ({item, index}) => {
     return (
@@ -77,7 +89,7 @@ const MedicinePanel = ({navigation}) => {
                       />
                       <View style={Styles.medNameView}>
                         <ListItem.Title style={Styles.medName}>
-                          {item.MedicineName}
+                          {item.medicineName}
                         </ListItem.Title>
                         <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Type: </Text>
@@ -121,7 +133,7 @@ const MedicinePanel = ({navigation}) => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
                             text: 'Delete',
-                            onPress: () => deleteMedicineLocal(index),
+                            onPress: () => deleteMedicineLocal(index, item.medicineName),
                           },
                           {
                             text: 'Cancel',
