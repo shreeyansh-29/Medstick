@@ -36,37 +36,38 @@ const AccountTab = ({navigation}) => {
   const [name, setName] = useState('Please Login First');
   const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
 
-  useFocusEffect(() => {
-    async function checkforlog() {
-      const checkforlogin = await AsyncStorage.getItem('user_id');
+  // useFocusEffect(() => {
+  //   async function checkforlog() {
+  //     const checkforlogin = await AsyncStorage.getItem('user_id');
 
-      if (checkforlogin === null) {
-        Alert.alert(
-          'Sign in first to use this feature',
-          'Click ok to proceed',
-          [
-            {
-              text: 'Ok',
-              onPress: () => {
-                navigation.navigate('AuthScreen');
-              },
-            },
-            {
-              text: 'Cancel',
-              onPress: () => {
-                navigation.navigate('Home');
-              },
-            },
-          ],
-        );
-      } else {
-        setName(await AsyncStorage.getItem('user_name'));
-        imgstate(await AsyncStorage.getItem('user_photo'));
-        setIsLoggedIn(true);
-      }
-    }
-    checkforlog();
-  });
+  //     if (checkforlogin === null) {
+  //       Alert.alert(
+  //         'Sign in first to use this feature',
+  //         'Click ok to proceed',
+  //         [
+  //           {
+  //             text: 'Ok',
+  //             onPress: () => {
+  //               navigation.navigate('AuthScreen');
+  //             },
+  //           },
+  //           {
+  //             text: 'Cancel',
+  //             onPress: () => {
+  //               navigation.navigate('Home');
+  //             },
+  //           },
+  //         ],
+  //       );
+  //     } else {
+  //       setName(await AsyncStorage.getItem('user_name'));
+  //       imgstate(await AsyncStorage.getItem('user_photo'));
+  //       setIsLoggedIn(true);
+  //     }
+  //   }
+  //   checkforlog();
+  // });
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
@@ -78,9 +79,13 @@ const AccountTab = ({navigation}) => {
       <MainHeader title={'Account'} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity
-          activeOpacity={0.5}
+          activeOpacity={0.8}
           onPress={() => {
-            navigation.navigate('AccountStack', {screen: 'EditProfile'});
+            isLoggedIn
+              ? () => {
+                  navigation.navigate('AccountStack', {screen: 'EditProfile'});
+                }
+              : navigation.navigate('AuthScreen');
           }}>
           {isLoggedIn ? (
             <View style={styles.profile}>
@@ -140,12 +145,12 @@ const AccountTab = ({navigation}) => {
           />
           <Divider style={styles.divider} />
 
-          <TwoTouchable
+          {/* <TwoTouchable
             icon={faCameraRetro}
             title="Send Snap"
             navigation={navigation}
             navigationTitle="SendSnapToCaretaker"
-          />
+          /> */}
         </View>
 
         {isLoggedIn ? (

@@ -6,7 +6,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
@@ -17,14 +17,9 @@ import InputField from '../../components/atoms/inputField';
 import CustomButton from '../../components/atoms/customButton';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  updateAppointmentClear,
-  updateAppointmentRequest,
-} from '../../redux/action/appointmentReminderAction/updateAppointmentAction';
-import {appointmentReminderSelector} from '../../constants/Selector/appointmentReminderSelector';
 import Toast from 'react-native-toast-message';
-import {getAppointmentRequest} from '../../redux/action/appointmentReminderAction/getAppointmentAction';
+import {hour} from '../../constants/constants';
+import {getPrescription, savePrescription} from '../../utils/storage';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -34,28 +29,54 @@ const UpdateAppointment = ({
   time1,
   temp,
   appointmentId,
-  pageNo,
+  setAppointments,
 }) => {
-  const dispatch = useDispatch();
   const [dateOpen, setDateOpen] = useState(false);
   const [timeOpen, setTimeOpen] = useState(false);
 
-  const res = useSelector(appointmentReminderSelector.updateAppointment);
+  const updateAppointment = values => {
+    let obj = {
+      notes: values.notes,
+      date: values.date1,
+      time: values.time,
+      appointmentId: appointmentId,
+    };
+    getPrescription().then(data => {
+      let updatedList = data;
+      updatedList.map(item => {
+        if (item.appointmentList.length !== 0) {
+          item.appointmentList.map((ele, index) => {
+            if (ele.appointmentId === appointmentId) {
+              item.appointmentList[index] = obj;
+            }
+          });
+        }
+        savePrescription(updatedList);
+        Toast.show({
+          type: 'success',
+          text1: 'Updated Successfully',
+        });
 
-  useEffect(() => {
-    if (res?.status === 'Success') {
-      Toast.show({
-        type: 'success',
-        text1: 'Updated Successfully',
+        getPrescription().then(data => {
+          if (data !== null && data.length !== 0) {
+            let reminderList = [];
+            data.map(item => {
+              if (item.appointmentList.length !== 0) {
+                item.appointmentList.map(ele => {
+                  reminderList.push(ele);
+                });
+              }
+            });
+            setAppointments(reminderList);
+          }
+        });
+
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 1000);
       });
-
-      setTimeout(() => {
-        dispatch(updateAppointmentClear());
-        dispatch(getAppointmentRequest(pageNo));
-        setModalVisible(false);
-      }, 3000);
-    }
-  }, [res]);
+    });
+  };
 
   return (
     <View style={styles.mainHead}>
@@ -90,13 +111,7 @@ const UpdateAppointment = ({
             }}
             validationSchema={updateAppointmentSchema}
             onSubmit={values => {
-              const fDate = values.date1;
-              const notes1 = values.notes;
-              const time = values.time;
-
-              dispatch(
-                updateAppointmentRequest({fDate, notes1, time, appointmentId}),
-              );
+              updateAppointment(values);
             }}>
             {({
               handleChange,
@@ -213,7 +228,12 @@ const UpdateAppointment = ({
                       date.getMinutes() < 10
                         ? '0' + date.getMinutes()
                         : date.getMinutes();
-                    let newTime = date.getHours() + ':' + minutes + ':' + '00';
+
+                    let newTime =
+                      date.getHours() > 12
+                        ? hour[date.getHours()] + ':' + minutes + ' ' + 'PM'
+                        : date.getHours() + ':' + minutes + ' ' + 'AM';
+
                     setFieldValue('time', newTime);
                     setTimeOpen(false);
                   }}
@@ -236,7 +256,7 @@ const UpdateAppointment = ({
           </Formik>
         </KeyboardAvoidingView>
       </View>
-      <Toast />
+      <Toast visibilityTime={500} />
     </View>
   );
 };

@@ -1,12 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AddMedicine = async data => {
-  console.log(data,
-    "data")
+  console.log(data, 'data');
   try {
     await AsyncStorage.setItem('AddMedicine', JSON.stringify(data));
-    const res=JSON.parse(await AsyncStorage.getItem('AddMedicine'));
-    console.log( 'storage',res);
+    const res = JSON.parse(await AsyncStorage.getItem('AddMedicine'));
+    console.log('storage', res);
   } catch (error) {
     console.log(error);
   }

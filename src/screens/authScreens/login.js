@@ -30,7 +30,7 @@ const Login = ({navigation, connected}) => {
       });
 
       setTimeout(() => {
-        navigation.pop(1);
+        navigation.navigate('Home');
       }, 500);
     } else {
       Toast.show({

@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, Alert, BackHandler} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
@@ -22,22 +22,6 @@ const HomeScreen = ({navigation}) => {
     let conn = await CheckConnection();
     connectedstate(conn);
   };
-
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert('Hold On!', 'Are you sure you want to exit?', [
-        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-        {text: 'Yes', onPress: () => BackHandler.exitApp()},
-      ]);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-    return () => backHandler.remove();
-  }, []);
 
   useEffect(() => {
     checkconnection();

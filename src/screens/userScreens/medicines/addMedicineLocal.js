@@ -29,6 +29,7 @@ const AddMedicineLocal = ({navigation}) => {
     prescriptionUrl: null,
     location: null,
     specialization: null,
+    appointmentList: [],
   });
   const [add, setAdd] = useState(false);
   const [connection, setConnection] = useState(false);
@@ -117,6 +118,7 @@ const AddMedicineLocal = ({navigation}) => {
       totalReminders: null,
       currentCount: null,
       historyList: [],
+      appointmentList: prescriptionObj.appointmentList,
     };
 
     getMedicine().then(data => {

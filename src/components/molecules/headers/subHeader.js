@@ -7,6 +7,7 @@ import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import AddAppointment from '../../atoms/addAppointment';
 import ShareButton from '../../atoms/shareButton';
 import DownloadButton from '../../atoms/downloadButton';
+import DeletePrescription from '../../atoms/deletePrescription';
 
 const SubHeader = ({
   title,
@@ -15,6 +16,9 @@ const SubHeader = ({
   options,
   routeName,
   notes,
+  deleteBtn,
+  deletePrescription,
+  prescriptionId,
 }) => {
   return (
     <View style={styles.subHeader}>
@@ -47,6 +51,13 @@ const SubHeader = ({
       {/* {title !== 'Patient Profile' ? null : (
         <EditButton navigation={navigation} />
       )} */}
+      {title !== 'Add Prescription' ? null : (
+        <DeletePrescription
+          deleteBtn={deleteBtn}
+          deletePrescription={deletePrescription}
+          prescriptionId={prescriptionId}
+        />
+      )}
     </View>
   );
 };
