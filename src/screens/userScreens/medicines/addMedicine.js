@@ -10,11 +10,10 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import AddMedicinesHeader from '../../../components/molecules/headers/addMedicinesHeader';
 import {styles} from '../../../styles/homeScreenStyles/headerStyles';
 
 import {colorPalette} from '../../../components/atoms/colorPalette';
-import {faArrowLeft, faSearch} from '@fortawesome/free-solid-svg-icons';
+import {faSearch, faXmark} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {Divider, TextInput} from 'react-native-paper';
@@ -28,11 +27,12 @@ import ModalHeader from '../../../components/molecules/headers/modalHeader';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {loadAddMedicine} from '../../../redux/action/userMedicine/addMedicineAction';
-import {showSuccessMessage} from '../../../components/atoms/successMessage';
 import Toast from 'react-native-toast-message';
-import AddMedicineButton from '../../../components/atoms/addMedicineButton';
 import {loadSaveUserMedicine} from '../../../redux/action/userMedicine/saveUserMedicineAction';
-import {searchMedicineRequest} from '../../../redux/action/userMedicine/searchMedicineAction';
+import {
+  searchMedicineClear,
+  searchMedicineRequest,
+} from '../../../redux/action/userMedicine/searchMedicineAction';
 import {ListItem} from 'react-native-elements';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {openDatabase} from 'react-native-sqlite-storage';
@@ -62,6 +62,7 @@ const AddMedicines = ({navigation, route}) => {
   const [prescriptionId, setPrescriptionId] = useState('');
   const [doseType, setDoseType] = useState('');
   const dispatch = useDispatch();
+
   const [arr, setArr] = useState('');
   const [array, setArray] = useState('');
   const [flag, setFlag] = useState('');
@@ -79,7 +80,7 @@ const AddMedicines = ({navigation, route}) => {
 
   useEffect(() => {
     if (searchMedicine.data !== null) {
-      setTempSearch(searchMedicine.data);
+      setTempSearch(searchMedicine?.data?.result);
     }
   }, [searchMedicine]);
 
@@ -149,7 +150,7 @@ const AddMedicines = ({navigation, route}) => {
   };
 
   const showMedicineAlert = () => {
-    Alert.alert('Warning', 'select the medicine', [{text: 'OK'}], {
+    Alert.alert('Warning', 'select the medicine name', [{text: 'OK'}], {
       cancelable: false,
     });
   };
@@ -225,7 +226,12 @@ const AddMedicines = ({navigation, route}) => {
         <ListItem style={styles.list}>
           <ListItem.Content>
             <View style={{padding: 2}}>
-              <TouchableOpacity onPress={() => setdata(item)}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => {
+                  setdata(item);
+                  dispatch(searchMedicineClear());
+                }}>
                 <View style={{flexDirection: 'row'}}>
                   <ListItem.Subtitle>
                     <Text
@@ -425,12 +431,36 @@ const AddMedicines = ({navigation, route}) => {
               activeOutlineColor={colorPalette.mainColor}
             />
           </View>
-          {tempSearch?.result?.content?.length === 0 ? (
+        </View>
+        <View style={{marginVertical: 10}}>
+          <TextInput
+            label="Search Medicine"
+            mode="outlined"
+            onChangeText={text => search(text)}
+            outlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPalette.mainColor}
+            style={{width: '90%', alignSelf: 'center'}}
+            right={
+              <TextInput.Icon
+                onPress={() => {}}
+                name={() => (
+                  <FontAwesomeIcon
+                    size={20}
+                    icon={faXmark}
+                    color={colorPalette.mainColor}
+                  />
+                )}
+              />
+            }
+          />
+        </View>
+        <View style={{flex: 1}}>
+          {tempSearch.length === 0 ? (
             <></>
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={tempSearch?.result?.content}
+              data={tempSearch?.content}
               renderItem={renderItem}
               numColumns={1}
             />
@@ -537,7 +567,7 @@ const AddMedicines = ({navigation, route}) => {
                   label="Dosage Power"
                   value={dose}
                   mode="outlined"
-                  onChangeText={text => setDose(text)}
+                  onChangeText={text => setDosageQuantity(text)}
                   outlineColor="#02aba6"
                   activeOutlineColor="#02aba6"
                   keyboardType="numeric"
@@ -546,6 +576,7 @@ const AddMedicines = ({navigation, route}) => {
               </View>
               <View style={{width: '50%'}}>
                 <TextInput
+                  disabled
                   id="name"
                   style={{width: '97%'}}
                   label="Dose Type"

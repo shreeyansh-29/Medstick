@@ -23,10 +23,40 @@ const AccountTab = ({navigation}) => {
   const [name, setName] = useState('Please Login First');
   const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
 
-  useFocusEffect(() => {
-    async function checkforlog() {
-      const checkforlogin = await AsyncStorage.getItem('user_id');
+  // useFocusEffect(() => {
+  //   async function checkforlog() {
+  //     const checkforlogin = await AsyncStorage.getItem('user_id');
 
+  //     if (checkforlogin === null) {
+  //       Alert.alert(
+  //         'Sign in first to use this feature',
+  //         'Click ok to proceed',
+  //         [
+  //           {
+  //             text: 'Ok',
+  //             onPress: () => {
+  //               navigation.navigate('AuthScreen');
+  //             },
+  //           },
+  //           {
+  //             text: 'Cancel',
+  //             onPress: () => {
+  //               navigation.navigate('Home');
+  //             },
+  //           },
+  //         ],
+  //       );
+  //     } else {
+  //       setName(await AsyncStorage.getItem('user_name'));
+  //       imgstate(await AsyncStorage.getItem('user_photo'));
+  //       setIsLoggedIn(true);
+  //     }
+  //   }
+  //   checkforlog();
+  // });
+  useFocusEffect(() => {
+      async function checkforlog() {
+        const checkforlogin = await AsyncStorage.getItem('user_id'); 
       if (checkforlogin !== null) {
         setName(await AsyncStorage.getItem('user_name'));
         imgstate(await AsyncStorage.getItem('user_photo'));

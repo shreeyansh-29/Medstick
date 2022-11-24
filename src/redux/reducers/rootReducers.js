@@ -39,6 +39,7 @@ import {downloadPdfReducer} from './otherScreenReducer/downloadPdfReducer';
 import { saveReminderReducer } from './Reminder/saveReminderReducer';
 import { getReminderReducer } from './Reminder/getReminderReducer';
 import getUserMedicineReducer from './userMedicine/getUserMedicineReducer';
+import { MedicineNotesReducer } from './medicineNotesReducer/medicineNotesReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -75,12 +76,12 @@ const rootReducer = combineReducers({
   sendRequest: sendRequestReducer,
   notifyUser: notifyUserReducer,
   medicineImages: medicineImagesReducer,
-  getMedicineHistoryReducer: getMedicineHistoryReducer,
   getMedicineHistoryByDateReducer:getMedicineHistoryByDateReducer,
   downloadPdf: downloadPdfReducer,
   saveReminder: saveReminderReducer,
   getReminder: getReminderReducer,
-  getUserMedicineReducer:getUserMedicineReducer
+  getUserMedicineReducer:getUserMedicineReducer,
+  medicineNotes: MedicineNotesReducer,
 });
 
 export default rootReducer;

@@ -17,9 +17,12 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import CustomImage from '../../../components/atoms/customImage';
 import {week} from '../../../constants/constants';
 import uuid from 'react-native-uuid';
+import PushNotification from 'react-native-push-notification';
+
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
@@ -34,9 +37,12 @@ const MedicinePanel = ({navigation}) => {
     }).start();
   }, []);
 
-  const deleteMedicineLocal = async index => {
+
+    
+  const deleteMedicineLocal = (index,name) => {
     medicineResponse.splice(index, 1);
     AddMedicine(medicineResponse);
+    deleteRem(name);
     getMedicine().then(data => {
       if (data !== null && data.length !== 0) {
         setMedicineResponse(data);
@@ -57,7 +63,7 @@ const MedicinePanel = ({navigation}) => {
     };
     for (let i = 0; i < data.length; i++) {
       // console.log('start of loop');
-      let arr = data[i].days.split(',');
+      let arr = data[i].days?.split(',');
       let set = new Set(arr);
       var start_date = new Date(data[i].endDate);
       var end_date = new Date(data[i].endDate);
@@ -105,13 +111,31 @@ const MedicinePanel = ({navigation}) => {
     if (isFocused) {
       getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
-          console.log(data);
           setMedicineResponse(data);
         }
       });
     }
   }, [isFocused]);
 
+  const deleteRem = name => {
+    PushNotification.getScheduledLocalNotifications(rn => {
+      for (let i = 0; i < rn.length; i++) {
+        if ('Take ' + name === rn[i].message) {
+          PushNotification.cancelLocalNotification({id: rn[i].id});
+        }
+      }
+    });
+  };
+  const getUser = async () => {
+    const user = await GoogleSignin.getCurrentUser();
+    setName(user);
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      getUser();
+    }
+  }, [isFocused]);
   useEffect(() => {
     medicineResponse.map(item => {
       item.reminderId !== null ? MedicineHistory(medicineResponse) : null;
@@ -125,13 +149,15 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('MedicinePanelStack', {
-                screen: 'MedicineList',
-                params: {
-                  data: medicineResponse,
-                  index: index,
-                },
-              });
+              if (name !== null) {
+                navigation.navigate('MedicinePanelStack', {
+                  screen: 'MedicineList',
+                  params: {
+                    data: medicineResponse,
+                    index: index,
+                  },
+                });
+              }
             }}>
             <Card style={Styles.card}>
               <View style={Styles.listView}>
@@ -152,8 +178,8 @@ const MedicinePanel = ({navigation}) => {
                           {item.dosageType}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Dosage Power: </Text>
-                          {item.dosagePower}
+                          <Text style={{color: 'black'}}>Dosage: </Text>
+                          {item.dosageUnit + item.dosageQuantity}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Stock: </Text>
@@ -192,7 +218,7 @@ const MedicinePanel = ({navigation}) => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
                             text: 'Delete',
-                            onPress: () => deleteMedicineLocal(index),
+                            onPress: () => deleteMedicineLocal(index, item.medicineName),
                           },
                           {
                             text: 'Cancel',

@@ -13,12 +13,15 @@ import {
   Pushnotificationforeground,
 } from './src/screens/userScreens/reminder/alarm/pushNotificationConfig.js';
 
+<<<<<<< HEAD
 // PushNotification.configure({
 //     onNotification: function (notification) {
 //         console.log("NOTIFICATION:", notification);
 //         notification.finish(PushNotificationIOS.FetchResult.NoData);
 //       },
 // });
+=======
+>>>>>>> b37d56d17b2ae80d6401a7b71467e4af94b2a975
 
 PushNotification.configure({
   onAction: function (notification) {
@@ -56,12 +59,21 @@ messaging().onNotificationOpenedApp(mss => {
   }
 });
 
+<<<<<<< HEAD
 messaging()
   .getInitialNotification()
   .then(mssg => {
     if (mssg) {
     }
   });
+=======
+// messaging()
+//   .getInitialNotification()
+//   .then(mssg => {
+//     if (mssg) {
+//     }
+//   });
+>>>>>>> b37d56d17b2ae80d6401a7b71467e4af94b2a975
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   if (remoteMessage.notification.title === 'caretaker') {

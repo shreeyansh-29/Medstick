@@ -6,15 +6,17 @@ import {
 } from '../../actionTypes';
 
 const initialState = {
-  data: null,
+  data: '',
   isLoading: false,
   error: null,
 };
 export const deleteCaretakerReqReducer = (state = initialState, action) => {
   switch (action.type) {
     case DELETE_CARETAKER_REQ_REQUEST:
+      console.log(action);
       return {...state, isLoading: true};
     case DELETE_CARETAKER_REQ_SUCCESS:
+      console.log(action);
       return {...state, data: action.payload, isLoading: false};
     case DELETE_CARETAKER_REQ_ERROR:
       return {...state, error: action.payload, isLoading: false};

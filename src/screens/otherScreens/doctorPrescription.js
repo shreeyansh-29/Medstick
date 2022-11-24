@@ -1,4 +1,4 @@
-import {View, Text, Modal, Animated, ScrollView} from 'react-native';
+import {View, Text, Animated, ScrollView} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import SubHeader from '../../components/molecules/headers/subHeader';

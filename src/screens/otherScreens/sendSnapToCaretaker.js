@@ -59,7 +59,6 @@ const SendSnapToCaretaker = ({navigation}) => {
         type: 'success',
         text1: 'Image Sent Successfully',
       });
-      dispatch(sendSnapClear());
       setTimeout(() => {
         navigation.pop();
       }, 1000);

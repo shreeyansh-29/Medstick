@@ -52,7 +52,7 @@ const Styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: verticalScale(16),
   },
-  medName: {fontWeight: '600', fontSize: 17},
+  medName: {fontWeight: '600', fontSize: 17, },
   icon: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -6,9 +6,17 @@ export const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
   form: {
     backgroundColor: colorPalette.backgroundColor,
+    width: '100%',
+    alignItems: 'center',
   },
   formView: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '90%',
+    marginTop: 20,
+    borderWidth: 0.6,
+    borderRadius: 5,
+    borderColor: colorPalette.mainColor,
   },
   field: {
     marginLeft: 10,
@@ -20,8 +28,7 @@ export const styles = StyleSheet.create({
   lottieCont: {
     height: '80%',
     alignItems: 'center',
-    marginVertical: verticalScale(124),
-    // justifyContent: 'center',
+    marginVertical: verticalScale(120),
   },
   lottie: {
     width: 300,
@@ -35,6 +42,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 33,
   },
+  flatList: {width: '100%'},
   listButton: {
     backgroundColor: colorPalette.mainColor,
     padding: 10,
@@ -46,8 +54,8 @@ export const styles = StyleSheet.create({
     borderColor: 'lightgrey',
     elevation: 3,
     shadowColor: 'black',
-    marginBottom: verticalScale(5),
-    marginHorizontal: horizontalScale(8),
+    marginVertical: verticalScale(5),
+    marginHorizontal: horizontalScale(17),
     backgroundColor: colorPalette.basicColor,
   },
   mainView: {margin: 3},
@@ -58,5 +66,5 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cardTitle: {flexDirection: 'column', marginLeft: 10},
-  font: {fontWeight: '600', fontSize: 18},
+  font: {fontWeight: '600'},
 });
