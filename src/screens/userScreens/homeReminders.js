@@ -27,6 +27,7 @@ const Reminders = ({showAlert, setPercentage}) => {
     if (isFocused) {
       getMedicine().then(data => {
         if (data !== null) {
+          console.log('abc', data);
           setMedData(data);
         }
       });
@@ -53,10 +54,10 @@ const Reminders = ({showAlert, setPercentage}) => {
       '-' +
       tody_date.getDate();
 
-    medicine?.map(item => {
+    medicine.map(item => {
       item.historyList.map(r => {
         if (r.date === td_da) {
-          r.time?.map(z => {
+          r.time.map(z => {
             if (!r.taken.includes(z)) {
               let temp = {};
               temp.userMedicineId = item.userMedicineId;
@@ -75,6 +76,7 @@ const Reminders = ({showAlert, setPercentage}) => {
 
   // console.log(reminderList.length, ' <<<<<    after empty ');
   function settingReminders() {
+    console.log('data', medData);
     let abc = dailyReminders(medData);
     if (abc.length !== 0) {
       console.log(abc.length);
@@ -184,7 +186,7 @@ const Reminders = ({showAlert, setPercentage}) => {
   return (
     <>
       <View style={styles.container}>
-        {reminderList?.length === 0 ? (
+        {reminderList.length === 0 ? (
           <ScrollView
             style={{width: '100%'}}
             showsVerticalScrollIndicator={false}>

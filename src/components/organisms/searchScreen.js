@@ -61,12 +61,14 @@ const SearchScreen = ({navigation}) => {
         type: 'info',
         text1: 'No User Found',
         text2: 'Invitation sent to user with given email id',
-        position: 'top',
+        position: 'bottom',
       });
       setTimeout(() => {
         navigation.pop();
       }, 2000);
     }
+    dispatch(resetSend());
+    dispatch(resetUser());
   }, [res]);
 
   useEffect(() => {

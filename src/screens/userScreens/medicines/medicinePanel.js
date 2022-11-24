@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React, {useRef, useEffect, useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
-import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import {Card} from 'react-native-paper';
 import {ListItem} from 'react-native-elements';
@@ -17,14 +16,18 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
-import {RefreshControl} from 'react-native-gesture-handler';
 import {useIsFocused} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import CustomImage from '../../../components/atoms/customImage';
+import {week} from '../../../constants/constants';
+import uuid from 'react-native-uuid';
 import PushNotification from 'react-native-push-notification';
+
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const isFocused = useIsFocused();
+  const [name, setName] = useState('');
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -35,21 +38,81 @@ const MedicinePanel = ({navigation}) => {
     }).start();
   }, []);
 
-  const deleteMedicineLocal = async (index,name) => {
-    medicineResponse.splice(medicineResponse.indexOf(index), 1);
-    setTimeout(() => {
-      AddMedicine(medicineResponse);
-    }, 200);
+
+    
+  const deleteMedicineLocal = (index,name) => {
+    medicineResponse.splice(index, 1);
+    AddMedicine(medicineResponse);
     deleteRem(name);
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        setMedicineResponse(data);
+      } else {
+        setMedicineResponse([]);
+      }
+    });
+  };
+
+  const MedicineHistory = data => {
+    var updateArray = [];
+    let history = {
+      historyId: null,
+      date: null,
+      taken: '',
+      notTaken: '',
+      time: null,
+    };
+    for (let i = 0; i < data.length; i++) {
+      // console.log('start of loop');
+      let arr = data[i].days?.split(',');
+      let set = new Set(arr);
+      var start_date = new Date(data[i].endDate);
+      var end_date = new Date(data[i].endDate);
+      var tody_date = new Date();
+      let td_da =
+        tody_date.getFullYear() +
+        '-' +
+        (tody_date.getMonth() + 1) +
+        '-' +
+        tody_date.getDate();
+      if (
+        data[i].endDate !== 'No End Date' &&
+        set.has(week[tody_date.getDay()]) &&
+        start_date <= tody_date <= end_date
+      ) {
+        if (data[i].historyList.length === 0) {
+          history.historyId = uuid.v4();
+          history.date = td_da;
+          history.time = data[i].reminderTime.split(',');
+          history.notTaken = data[i].reminderTime;
+          history.taken='';
+          data[i].historyList.push(history);
+        } 
+      } else if (data[i].endDate === 'No End Date') {
+        // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
+        const a = b => b.date == td_da;
+        const index = data[i].historyList.findIndex(a);
+        if (data[i].historyList.length === 0) {
+          history.historyId = uuid.v4();
+          history.date = td_da;
+          history.time = data[i].reminderTime.split(',');
+          history.notTaken = data[i].reminderTime;
+          data[i].historyList.push(history);
+        }
+      }
+
+      // console.log('<================ FINAL DATA ================>', data[i]);
+      updateArray.push(data[i]);
+      // console.log('end with loop');
+    }
+    AddMedicine(updateArray);
   };
 
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
-        if (data !== null) {
+        if (data !== null && data.length !== 0) {
           setMedicineResponse(data);
-        } else {
-          setMedicineResponse([]);
         }
       });
     }
@@ -64,6 +127,21 @@ const MedicinePanel = ({navigation}) => {
       }
     });
   };
+  const getUser = async () => {
+    const user = await GoogleSignin.getCurrentUser();
+    setName(user);
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      getUser();
+    }
+  }, [isFocused]);
+  useEffect(() => {
+    medicineResponse.map(item => {
+      item.reminderId !== null ? MedicineHistory(medicineResponse) : null;
+    });
+  }, [medicineResponse]);
 
   const renderItemLocal = ({item, index}) => {
     return (
@@ -72,10 +150,15 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('MedicineList', {
-                data: medicines,
-                index: index,
-              });
+              if (name !== null) {
+                navigation.navigate('MedicinePanelStack', {
+                  screen: 'MedicineList',
+                  params: {
+                    data: medicineResponse,
+                    index: index,
+                  },
+                });
+              }
             }}>
             <Card style={Styles.card}>
               <View style={Styles.listView}>
@@ -108,6 +191,7 @@ const MedicinePanel = ({navigation}) => {
                   </ListItem.Content>
                   <View style={Styles.icon}>
                     <TouchableOpacity
+                      activeOpacity={1}
                       style={Styles.rem}
                       onPress={() => {
                         navigation.navigate('MedicinePanelStack', {
@@ -129,6 +213,8 @@ const MedicinePanel = ({navigation}) => {
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
+                      style={Styles.rem}
+                      activeOpacity={1}
                       onPress={() => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
@@ -159,15 +245,14 @@ const MedicinePanel = ({navigation}) => {
   return (
     <>
       <View style={Styles.container}>
-        <View style={Styles.background} />
+        {/* <View style={Styles.background} /> */}
         <MainHeader title={'Medicine'} navigation={navigation} />
         {medicineResponse.length === 0 ? (
           <View style={Styles.lottie}>
-            <LottieView
-              style={{width: '60%'}}
-              speed={0.8}
-              source={require('../../../assets/animation/noMed1.json')}
-              progress={progress}
+            <CustomImage
+              resizeMode="contain"
+              source={require('../../../assets/images/nomeds.png')}
+              styles={{width: '70%'}}
             />
           </View>
         ) : (
@@ -176,19 +261,6 @@ const MedicinePanel = ({navigation}) => {
               data={medicineResponse}
               renderItem={renderItemLocal}
               showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    getMedicine().then(data => {
-                      setMedicineResponse(data);
-                    });
-                    setRefresh(false);
-                  }}
-                />
-              }
             />
           </>
         )}

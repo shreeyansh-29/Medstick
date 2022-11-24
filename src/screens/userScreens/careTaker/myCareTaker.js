@@ -9,6 +9,7 @@ import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAct
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
 import {colorPalette} from '../../../components/atoms/colorPalette';
+import {useIsFocused} from '@react-navigation/native';
 
 const MyCareTaker = ({navigation}) => {
   const dispatch = useDispatch();
@@ -16,18 +17,21 @@ const MyCareTaker = ({navigation}) => {
   const [pageNo, setPageNo] = useState(0);
   const [caretaker, setCaretaker] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     if (res?.data !== null) {
-      setCaretaker([...res.data]);
+      setCaretaker(res.data);
     } else if (res?.data === null) {
       setCaretaker([]);
     }
   }, [res]);
 
   useEffect(() => {
-    dispatch(myCaretakerRequest(pageNo));
-  }, []);
+    if (isFocused) {
+      dispatch(myCaretakerRequest(pageNo));
+    }
+  }, [isFocused]);
 
   // const fetchCaretaker = () => {
   //   dispatch(myCaretakerRequest(pageNo));

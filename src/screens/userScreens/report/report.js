@@ -6,7 +6,7 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {useFocusEffect} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -26,7 +26,7 @@ LocaleConfig.locales['en'] = {
     'September',
     'October',
     'November',
-    'Décember',
+    'December',
   ],
   monthNamesShort: [
     'Jan',
@@ -35,7 +35,7 @@ LocaleConfig.locales['en'] = {
     'Apr',
     'May',
     'Jun',
-    'Jul.',
+    'Jul',
     'Aug',
     'Sept',
     'Oct',
@@ -53,85 +53,68 @@ LocaleConfig.locales['en'] = {
   ],
   dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
 };
-const history = [
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
-    date: '2022-11-01',
-    taken: '10:00 AM,2:00 PM,8:00 PM',
-    notTaken: '',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
-    date: '2022-11-03',
-    taken: '10:00 AM,2:00 PM',
-    notTaken: '8:00 PM',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
-    date: '2022-11-05',
-    taken: '10:00 AM',
-    notTaken: '2:00 PM,8:00 PM',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d0',
-    date: '2022-11-07',
-    taken: '10:00 AM,2:00 PM,8:00 PM',
-    notTaken: '',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
-    date: '2022-11-08',
-    taken: '10:00 AM,2:00 PM',
-    notTaken: '8:00 PM',
-  },
-  {
-    historyId: '39e58fff-8f55-47c7-9698-ed693cdf05d1',
-    date: '2022-11-09',
-    taken: '10:00 AM',
-    notTaken: '2:00 PM,8:00 PM',
-  },
-];
 LocaleConfig.defaultLocale = 'en';
 
 const Report = ({navigation}) => {
   const [medicineId, setMedicineId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
-  const [percentage, setPercentage] = useState(0);
-  const [selectDate, setSelectDate] = useState('');
-  const year = selectedDate?.year;
-  const month = selectedDate?.month;
-  const date = selectedDate?.day;
+  const isFocused = useIsFocused();
   const [getUserMedicine, setGetUserMedicine] = useState([]);
   const [historyData, setHistoryData] = useState({});
+  const [historyListData, setHistoryListData] = useState([]);
+  const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
-    getMedicine().then(data => {
-      setGetUserMedicine(data);
-    });
-  }, []);
+    if (isFocused)
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          setGetUserMedicine(data);
+        } else {
+          setGetUserMedicine([]);
+          showAlert();
+        }
+      });
+  }, [isFocused]);
 
-  useFocusEffect(() => {
-    const checkMeds = () => {
-      if (getUserMedicine === null) {
-        Alert.alert('Add Medicine First', 'Click Ok to proceed', [
-          {
-            text: 'Ok',
-            onPress: () => {
-              navigation.navigate('AddMedicineStack', {screen: 'AddMedicine'});
-            },
-          },
-          {
-            text: 'Cancel',
-            onPress: () => {
-              navigation.navigate('Home');
-            },
-          },
-        ]);
+  const showAlert = () => {
+    Alert.alert('Add Medicine First', 'Click Ok to proceed', [
+      {
+        text: 'Ok',
+        onPress: () => {
+          navigation.navigate('AddMedicineStack', {
+            screen: 'AddMedicine',
+          });
+        },
+      },
+      {
+        text: 'Cancel',
+        onPress: () => {
+          navigation.navigate('Home');
+        },
+      },
+    ]);
+  };
+
+  function getHistory() {
+    let histories = [];
+    getUserMedicine.map(data => {
+      if (data.userMedicineId == medicineId) {
+        data.historyList.map(i => {
+          let his = {};
+          console.log(i, 'his');
+          his.historyId = i.historyId;
+          his.taken = i.taken;
+          his.notTaken = i.notTaken;
+          his.date = i.date;
+          histories.push(his);
+          console.log('222', histories);
+          setHistoryListData(histories);
+          overallPecentage(data.totalReminders, data.currentCount);
+        });
       }
-    };
-    checkMeds();
-  });
+    });
+  }
 
   const dayPercentageCalculator = (Taken, notTaken) => {
     const nt = [];
@@ -150,16 +133,25 @@ const Report = ({navigation}) => {
     return Math.floor((t.length / totalCount) * 100);
   };
 
+  function overallPecentage(totalReminders, currentCount) {
+    setPercentage(Math.floor((currentCount / totalReminders) * 100));
+  }
+
+  const [dataMap, setDataMap] = useState([]);
   const dateSelector = history => {
+    console.log('zzz history', history);
+    var data = [];
     history.map(item => {
       let percentage = dayPercentageCalculator(item.taken, item.notTaken);
-      dataMap.push({date: item.date, percentage: percentage});
+      data.push({date: item.date, percentage: percentage});
     });
+    setDataMap(data);
   };
 
   useEffect(() => {
     if (medicineId !== null) {
-      dateSelector(history);
+      getHistory();
+      dateSelector(historyListData);
     }
   }, [medicineId]);
 
@@ -178,14 +170,19 @@ const Report = ({navigation}) => {
 
   const getHistorydata = date => {
     const a = b => b.date == date.dateString;
-    const historyIndex = history.findIndex(a);
-    setHistoryData(history[historyIndex]);
+    const historyIndex = historyListData.findIndex(a);
+    console.log('12345', historyListData);
+    console.log('z', historyListData[historyIndex]);
+    setHistoryData(historyListData[historyIndex]);
+    console.log(historyData, 'his');
   };
 
   let startDate = new Date().toDateString();
   const dayComponent = (date, state) => {
+    // console.log('date', date.dateString);
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
+    // console.log('1234', index);
     return (
       <>
         {dataMap.some(a) ? (
@@ -273,7 +270,7 @@ const Report = ({navigation}) => {
               <View style={styles.progressView}>
                 <AnimatedProgressCircle
                   radius={57}
-                  percentage={75}
+                  percentage={percentage}
                   strokeWidth={12}
                 />
               </View>
@@ -321,8 +318,6 @@ const Report = ({navigation}) => {
     </>
   );
 };
-
-var dataMap = [];
 
 export default Report;
 

@@ -115,7 +115,7 @@ const MedicineImages = ({navigation, route}) => {
   );
 
   return (
-    <View style={{flex: 1, backgroundColor: 'red'}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <SubHeader navigation={navigation} title={'Medicine Images'} />
       {loading ? (
         <Loader />

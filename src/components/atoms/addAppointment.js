@@ -1,15 +1,28 @@
-import {View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, Alert} from 'react-native';
 import React from 'react';
 import {styles} from '../../styles/homeScreenStyles/subHeaderStyles';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const AddAppointment = ({navigation, routeName, notes}) => {
+  const showAlert = () => {
+    Alert.alert('Add Some Precription First', '', [
+      {
+        text: 'Ok',
+        onPress: () => {},
+      },
+    ]);
+  };
+
   return (
     <View style={styles.bellIcon}>
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          navigation.navigate(routeName, {notes: notes});
+          if (notes !== null && notes.length !== 0) {
+            navigation.navigate(routeName, {notes: notes});
+          } else {
+            showAlert();
+          }
         }}>
         <EvilIcons name="plus" color={'white'} size={32} />
       </TouchableOpacity>

@@ -1,76 +1,88 @@
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  Alert,
-  RefreshControl,
-} from 'react-native';
+import {View, FlatList, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {appointmentReminderSelector} from '../../constants/Selector/appointmentReminderSelector';
 import SubHeader from '../../components/molecules/headers/subHeader';
-import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../styles/patientStyles/myPatientsStyles';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {getAppointmentRequest} from '../../redux/action/appointmentReminderAction/getAppointmentAction';
-import {
-  faPenToSquare,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import CustomImage from '../../components/atoms/customImage';
+import {faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import Loader from '../../components/atoms/loader';
-import {
-  deleteAppointmentRequest,
-} from '../../redux/action/appointmentReminderAction/deleteAppointmentAction';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
-import CustomImage from '../../components/atoms/customImage';
-import {appointmentReminderRequest} from '../../redux/action/userMedicine/appointmentReminderAction';
+import {useIsFocused} from '@react-navigation/native';
+import {getPrescription, savePrescription} from '../../utils/storage';
 
 const AppointmentReminderList = ({navigation}) => {
-  const dispatch = useDispatch();
-  const doctor = useSelector(appointmentReminderSelector.appointmentReminder);
-  const [notes, setNotes] = useState([]);
-
-  useEffect(() => {
-    dispatch(appointmentReminderRequest(0));
-  }, []);
-
-  useEffect(() => {
-    if (doctor !== null) {
-      setNotes(doctor);
-    }
-  }, [doctor]);
-
-  const [pageNo, setPageNo] = useState(0);
+  const isFocused = useIsFocused();
   const [appointments, setAppointments] = useState([]);
   const [notes1, setNotes1] = useState('');
   const [appointmentId, setAppointmentId] = useState('');
   const [temp, setTemp] = useState('');
   const [time1, setTime1] = useState('');
-  const [refresh, setRefresh] = useState(false);
-  const getdoctor = useSelector(appointmentReminderSelector.getAppointment);
   const [modalVisible, setModalVisible] = useState(false);
-  const getDoctorLoading = useSelector(
-    appointmentReminderSelector.getAppointmentLoading,
-  );
+  const [doctorName, setDoctorName] = useState([]);
+
+  const showAlert = () => {
+    Alert.alert('Add Some Precription First', '', [
+      {
+        text: 'Ok',
+        onPress: () => {},
+      },
+    ]);
+  };
 
   useEffect(() => {
-    if (getdoctor?.data !== null) {
-      setAppointments(getdoctor.data);
+    if (isFocused) {
+      getPrescription().then(data => {
+        if (data !== null && data.length !== 0) {
+          setDoctorName(data);
+          let reminderList = [];
+          data.map(item => {
+            if (item.appointmentList.length !== 0) {
+              item.appointmentList.map(ele => {
+                reminderList.push(ele);
+              });
+            }
+          });
+          setAppointments(reminderList);
+        } else {
+          setAppointments([]);
+        }
+      });
     }
-  }, [getdoctor]);
-
-  useEffect(() => {
-    dispatch(getAppointmentRequest(pageNo));
-  }, []);
+  }, [isFocused]);
 
   const onClickDeleteAppointment = deleteId => {
-    dispatch(deleteAppointmentRequest(deleteId));
-
-    setTimeout(() => {
-      dispatch(getAppointmentRequest(pageNo));
-    }, 1000);
+    getPrescription().then(data => {
+      let updatedList = data;
+      updatedList.map(a => {
+        if (a.appointmentList.length !== 0) {
+          a.appointmentList.map((r, index) => {
+            if (r.appointmentId === deleteId) {
+              a.appointmentList.splice(index, 1);
+            }
+          });
+        }
+      });
+      savePrescription(updatedList);
+      getPrescription().then(data => {
+        if (data !== null && data.length !== 0) {
+          setDoctorName(data);
+          let reminderList = [];
+          data.map(item => {
+            if (item.appointmentList.length !== 0) {
+              item.appointmentList.map(ele => {
+                reminderList.push(ele);
+              });
+            }
+          });
+          setAppointments(reminderList);
+        } else {
+          setAppointments([]);
+          showAlert();
+        }
+      });
+    });
   };
 
   const renderItem = ({item}) => {
@@ -89,7 +101,7 @@ const AppointmentReminderList = ({navigation}) => {
                     fontSize: 15,
                     color: colorPalette.mainColor,
                   }}>
-                  {`${item.localDate}`}
+                  {item.date}
                 </ListItem.Subtitle>
               </View>
 
@@ -103,7 +115,7 @@ const AppointmentReminderList = ({navigation}) => {
                     fontSize: 15,
                     color: colorPalette.mainColor,
                   }}>
-                  {`${item.localTime}`}
+                  {item.time}
                 </ListItem.Subtitle>
               </View>
 
@@ -117,7 +129,7 @@ const AppointmentReminderList = ({navigation}) => {
                     fontSize: 15,
                     color: colorPalette.mainColor,
                   }}>
-                  {`${item.notes}`}
+                  {item.notes}
                 </ListItem.Subtitle>
               </View>
             </View>
@@ -127,10 +139,10 @@ const AppointmentReminderList = ({navigation}) => {
               activeOpacity={1}
               onPress={() => {
                 setModalVisible(true);
-                setTemp(item.localDate);
-                setTime1(item.localTime);
+                setTemp(item.date);
+                setTime1(item.time);
                 setNotes1(item.notes);
-                setAppointmentId(item.appointmentId);
+                setAppointmentId(item?.appointmentId);
               }}>
               <FontAwesomeIcon
                 icon={faPenToSquare}
@@ -173,7 +185,7 @@ const AppointmentReminderList = ({navigation}) => {
         title={'Appointment Reminders'}
         navigation={navigation}
         routeName={'SaveAppointment'}
-        notes={notes}
+        notes={doctorName}
       />
 
       <CustomModal
@@ -187,49 +199,32 @@ const AppointmentReminderList = ({navigation}) => {
             time1={time1}
             temp={temp}
             appointmentId={appointmentId}
-            pageNo={pageNo}
+            setAppointments={setAppointments}
           />
         }
       />
 
-      {getDoctorLoading ? (
-        <Loader />
+      {appointments.length === 0 ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'white',
+          }}>
+          <CustomImage
+            resizeMode="contain"
+            styles={styles.img}
+            source={require('../../assets/images/noAppointments.png')}
+          />
+        </View>
       ) : (
-        <>
-          {appointments?.length === 0 ? (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white',
-              }}>
-              <CustomImage
-                resizeMode="contain"
-                styles={styles.img}
-                source={require('../../assets/images/noAppointments.png')}
-              />
-            </View>
-          ) : (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={appointments}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(getAppointmentRequest(pageNo));
-                    setRefresh(false);
-                  }}
-                />
-              }
-            />
-          )}
-        </>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={appointments}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
       )}
     </View>
   );

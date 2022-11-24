@@ -14,6 +14,7 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import Toast from 'react-native-toast-message';
 import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
+import CheckConnection from '../../../connectivity/checkConnection';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -28,8 +29,10 @@ const AddMedicineLocal = ({navigation}) => {
     prescriptionUrl: null,
     location: null,
     specialization: null,
+    appointmentList: [],
   });
   const [add, setAdd] = useState(false);
+  const [connection, setConnection] = useState(false);
 
   const getPrescriptionData = data => {
     setAdd(true);
@@ -63,6 +66,15 @@ const AddMedicineLocal = ({navigation}) => {
     setType();
   }, [pill]);
 
+  const checkconnection = async () => {
+    let conn = await CheckConnection();
+    setConnection(conn);
+  };
+
+  useEffect(() => {
+    checkconnection();
+  }, []);
+
   useEffect(() => {
     Animated.timing(progress, {
       toValue: 1,
@@ -95,7 +107,7 @@ const AddMedicineLocal = ({navigation}) => {
       reminderId: null,
       startDate: null,
       endDate: null,
-      days: null,
+      days: '',
       reminderTitle: null,
       reminderTime: null,
       everyday: null,
@@ -106,15 +118,19 @@ const AddMedicineLocal = ({navigation}) => {
       totalReminders: null,
       currentCount: null,
       historyList: [],
+      appointmentList: prescriptionObj.appointmentList,
     };
 
     getMedicine().then(data => {
       if (data !== null) {
+        console.log(data, 'before');
         const temp = [...data, obj];
+        console.log(temp, 'after');
         AddMedicine(temp);
         Toast.show({
           text1: 'Medicine Saved Successfully',
           type: 'success',
+          position: 'bottom',
         });
       } else if (data === null || data === undefined) {
         let temp = [];
@@ -123,17 +139,19 @@ const AddMedicineLocal = ({navigation}) => {
         Toast.show({
           text1: 'Medicine Saved Successfully',
           type: 'success',
+          position: 'bottom',
         });
       } else {
         Toast.show({
           text1: 'Something Went Wrong',
           type: 'error',
+          position: 'bottom',
         });
       }
     });
     setTimeout(() => {
-      navigation.pop();
-    }, 5000);
+      navigation.navigate('Home');
+    }, 1000);
   };
 
   return (
@@ -191,12 +209,13 @@ const AddMedicineLocal = ({navigation}) => {
                 prescriptionObject={getPrescriptionData}
                 add={add}
                 setAdd={setAdd}
+                connection={connection}
               />
             )}
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={2000} />
+      <Toast visibilityTime={500} />
     </View>
   );
 };

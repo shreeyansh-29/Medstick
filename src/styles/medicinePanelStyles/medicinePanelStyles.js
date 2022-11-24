@@ -13,6 +13,7 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+    backgroundColor: 'white',
   },
   lottieView: {width: '70%'},
   flatlist: {
@@ -40,11 +41,12 @@ const Styles = StyleSheet.create({
   },
   camera: {height: '100%'},
   listView: {margin: moderateScale(4)},
-  list: {marginHorizontal: moderateScale(16)},
+  list: {marginHorizontal: moderateScale(10)},
   avatarView: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
   },
   medNameView: {
     flexDirection: 'column',
@@ -55,7 +57,7 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  rem: {padding: 8},
+  rem: {padding: 10},
   background: {
     position: 'absolute',
     backgroundColor: colorPalette.mainColor,

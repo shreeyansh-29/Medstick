@@ -9,6 +9,9 @@ import {faUserFriends, faHospitalUser} from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../../styles/patientStyles/patientsStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
+import {useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Alert} from 'react-native';
 
 const Patients = ({navigation}) => {
   const [index, setIndex] = useState(0);
@@ -31,6 +34,33 @@ const Patients = ({navigation}) => {
       />
     );
   };
+  useFocusEffect(() => {
+    async function checkforlog() {
+      const checkforlogin = await AsyncStorage.getItem('user_id');
+
+      if (checkforlogin === null) {
+        Alert.alert(
+          'Sign in first to use this feature',
+          'Click ok to proceed',
+          [
+            {
+              text: 'Ok',
+              onPress: () => {
+                navigation.navigate('AuthScreen');
+              },
+            },
+            {
+              text: 'Cancel',
+              onPress: () => {
+                navigation.navigate('Account');
+              },
+            },
+          ],
+        );
+      }
+    }
+    checkforlog();
+  });
 
   return (
     <View style={{flex: 1}}>

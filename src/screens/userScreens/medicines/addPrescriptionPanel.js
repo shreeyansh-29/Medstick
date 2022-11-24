@@ -17,8 +17,8 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomButton from '../../../components/atoms/customButton';
 import Toast from 'react-native-toast-message';
 import CustomModal from '../../../components/molecules/customModal';
-import {getPrescription} from '../../../utils/storage';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {getMedicine, getPrescription} from '../../../utils/storage';
+import {useIsFocused} from '@react-navigation/native';
 
 const AddPrescriptionPanel = ({navigation, route}) => {
   let {prescriptionObject} = route?.params;
@@ -32,6 +32,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
   ];
   const [prescriptionId, setPrescriptionId] = useState('');
   const [prescriptionList, setPrescriptionList] = useState([]);
+  const [deleteBtn, setDeleteBtn] = useState(false);
 
   useEffect(() => {
     if (isFocused) {
@@ -43,6 +44,16 @@ const AddPrescriptionPanel = ({navigation, route}) => {
     }
   }, [isFocused]);
 
+  // const deletePrescription = id => {
+  //   getMedicine().then(data => {
+  //     if (data !== null && data.length !== 0) {
+
+  //       let a = b => b.prescriptionId == id;
+  //       let index = data.indexOf(a);
+  //     }
+  //   });
+  // };
+
   const renderItem = ({item, index}) => {
     return (
       <Animatable.View animation="zoomIn" duration={400} delay={index * 200}>
@@ -51,8 +62,10 @@ const AddPrescriptionPanel = ({navigation, route}) => {
           onPress={() => {
             if (prescriptionId === item?.prescriptionId) {
               setPrescriptionId('');
+              setDeleteBtn(false);
             } else {
               setPrescriptionId(item?.prescriptionId);
+              setDeleteBtn(true);
             }
           }}>
           <View style={{flexDirection: 'row'}}>
@@ -79,7 +92,6 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   width: '20%',
-
                   marginRight: 12,
                   alignItems: 'center',
                 }}>
@@ -121,7 +133,13 @@ const AddPrescriptionPanel = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: colorPalette.basicColor}}>
-      <SubHeader navigation={navigation} title={'Add Prescription'} />
+      <SubHeader
+        navigation={navigation}
+        title={'Add Prescription'}
+        // deleteBtn={deleteBtn}
+        // deletePrescription={deletePrescription}
+        // prescriptionId={prescriptionId}
+      />
       <CustomModal
         modalVisible={visible}
         text="imageViewer"
@@ -192,15 +210,13 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   let index = prescriptionList.findIndex(a);
                   let data = prescriptionList[index];
                   prescriptionObject(data);
-                  // setPrescriptionObj(prescriptionList[index]);
-                  // prescriptionObject(prescriptionId);
                   Toast.show({
                     text1: 'Prescription Uploaded',
                     type: 'success',
                   });
                   setTimeout(() => {
                     navigation.pop();
-                  }, 4000);
+                  }, 1000);
                 }
               }}
             />
@@ -223,7 +239,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
           </>
         )}
       </View>
-      <Toast visibilityTime={2000} />
+      <Toast visibilityTime={500} />
     </View>
   );
 };

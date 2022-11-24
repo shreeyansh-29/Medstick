@@ -17,55 +17,28 @@ import * as Animatable from 'react-native-animatable';
 import {styles} from '../../styles/otherScreensStyles/prescriptionsStyles';
 import CustomImage from '../../components/atoms/customImage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {ListItem} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
+import {getPrescription} from '../../utils/storage';
 
 const Prescriptions = ({navigation}) => {
   const [myPrescriptions, setMyPrescriptions] = useState([]);
-  const res = useSelector(state => state.myPrescriptions);
-  const loading = useSelector(state => state.myPrescriptions?.isLoading);
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [refresh, setRefresh] = useState(false);
-  const [id, setId] = useState('');
-
-  const dispatch = useDispatch();
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const getPrescriptions = async () => {
-        const Id = await AsyncStorage.getItem('user_id');
-        setId(Id);
-        dispatch(myPrescriptionsRequest({currentPage, Id}));
-      };
-
-      getPrescriptions();
-      return () => {
-        true;
-      };
-    }, []),
-  );
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (res?.data !== null) {
-      setMyPrescriptions(res?.data);
+    if (isFocused) {
+      getPrescription().then(data => {
+        if (data !== null && data.length !== 0) {
+          setMyPrescriptions(data);
+        } else {
+          setMyPrescriptions([]);
+        }
+      });
     }
-  }, [res]);
-
-  const RenderLoader = () => {
-    return isLoading ? (
-      <View style={{marginVertical: 26, alignItems: 'center'}}>
-        <ActivityIndicator size="large" color={colorPalette.mainColor} />
-      </View>
-    ) : null;
-  };
-
-  const onEnd = () => {
-    setCurrentPage(currentPage + 1);
-  };
+  }, [isFocused]);
 
   const RenderItem = ({item, index}) => {
     return (
@@ -106,39 +79,22 @@ const Prescriptions = ({navigation}) => {
   return (
     <View style={styles.container}>
       <SubHeader title={'Prescriptions'} navigation={navigation} />
-      {loading ? (
-        <Loader />
+      {myPrescriptions.length === 0 ? (
+        <View style={styles.noPrescription}>
+          <CustomImage
+            resizeMode="contain"
+            styles={{width: '80%'}}
+            source={require('../../assets/images/noPrescriptions.png')}
+          />
+        </View>
       ) : (
-        <>
-          {myPrescriptions.length === 0 ? (
-            <View style={styles.noPrescription}>
-              <CustomImage
-                resizeMode="contain"
-                styles={{width: '80%'}}
-                source={require('../../assets/images/noPrescriptions.png')}
-              />
-            </View>
-          ) : (
-            <FlatList
-              style={styles.flatList}
-              data={myPrescriptions}
-              renderItem={RenderItem}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(item, index) => index.toString()}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(myPrescriptionsRequest({currentPage, id}));
-                    setRefresh(false);
-                  }}
-                />
-              }
-            />
-          )}
-        </>
+        <FlatList
+          style={styles.flatList}
+          data={myPrescriptions}
+          renderItem={RenderItem}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+        />
       )}
     </View>
   );

@@ -8,7 +8,7 @@ import {
 const initialState = {
   data: '',
   isLoading: false,
-  error: '',
+  error: null,
 };
 export const deleteCaretakerReqReducer = (state = initialState, action) => {
   switch (action.type) {

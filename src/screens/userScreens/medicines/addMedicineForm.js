@@ -1,17 +1,30 @@
 import {View, Text, TouchableOpacity, Animated} from 'react-native';
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import InputField from '../../../components/atoms/inputField';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {Picker} from '@react-native-picker/picker';
 import {Divider, TextInput} from 'react-native-paper';
-import LottieView from 'lottie-react-native';
 import CustomButton from '../../../components/atoms/customButton';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from '@react-navigation/native';
+import CustomModal from '../../../components/molecules/customModal';
+import RenderModalView from './renderModalView';
 
 const AddMedicineForm = props => {
   const progress = useRef(new Animated.Value(0)).current;
+  const [id, setId] = useState(null);
+  const [visible, setVisible] = useState(false);
+
+  useFocusEffect(() => {
+    async function checkforlog() {
+      const Id = await AsyncStorage.getItem('user_id');
+      setId(Id);
+    }
+    checkforlog();
+  });
 
   useEffect(() => {
     Animated.timing(progress, {
@@ -28,6 +41,13 @@ const AddMedicineForm = props => {
         width: '90%',
         alignSelf: 'center',
       }}>
+      <CustomModal
+        modalVisible={visible}
+        type="fade"
+        onRequestClose={() => setVisible(!visible)}
+        modalView={<RenderModalView {...props} setVisible={setVisible} />}
+        customStyles={{height: '100%'}}
+      />
       <View style={{marginVertical: 6}}>
         <InputField
           styles={{backgroundColor: 'white'}}
@@ -44,6 +64,44 @@ const AddMedicineForm = props => {
             {props.errors.medicineName}
           </Text>
         )}
+        {/* {props.connection && id === null ? (
+        {props.connection && id !== null ? (
+          <>
+            <TouchableOpacity
+              onPress={() => setVisible(true)}
+              activeOpacity={1}
+              style={{
+                width: '100%',
+                borderWidth: 1,
+                borderColor: 'lightgrey',
+                borderRadius: 4,
+                height: 60,
+                justifyContent: 'center',
+              }}>
+              <Text style={{marginLeft: 12, fontSize: 16, color: 'grey'}}>
+                Medicine Name
+              </Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <InputField
+              styles={{backgroundColor: 'white'}}
+              label="Medicine Name"
+              mode="outlined"
+              outlineColor="lightgrey"
+              text="medicineName"
+              activeOutlineColor={colorPalette.mainColor}
+              {...props}
+              value={props.values.medicineName}
+            />
+            {props.errors.medicineName && props.touched.medicineName && (
+              <Text style={{color: 'red', marginTop: 4}}>
+                {props.errors.medicineName}
+              </Text>
+            )}
+          </>
+        )} */}
       </View>
       <View style={{marginVertical: 6}}>
         <InputField

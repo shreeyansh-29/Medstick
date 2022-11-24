@@ -21,8 +21,8 @@ import Toast from 'react-native-toast-message';
 import { medicineNotesClear } from '../../../redux/action/medicineNotes/medicineNotesAction';
 
 const MedicineList = ({route, navigation}) => {
-  const data = route.params.data;
-  const [index, setIndex] = useState(route.params.index);
+  const data = route.params?.data;
+  const [index, setIndex] = useState(route.params?.index);
   const isCarousel = useRef(null);
   const [visible, setVisible] = useState(false);
   const [userMedicineId, setUserMedicineId] = useState('');

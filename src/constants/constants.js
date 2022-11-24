@@ -65,5 +65,6 @@ export const timeHours = {
   9: '21',
   10: '22',
   11: '23',
-  12: '12',
+  12: '24',
 };
+export const week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];

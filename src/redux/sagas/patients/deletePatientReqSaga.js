@@ -18,7 +18,7 @@ export function* deletePatientRequestSaga(data) {
 
 export function* watchDeletePatientReqSaga() {
   yield takeLatest(
-    types.DELETE_CARETAKER_REQ_REQUEST,
+    types.DELETE_PATIENT_REQ_REQUEST,
     deletePatientRequestSaga,
   );
 }

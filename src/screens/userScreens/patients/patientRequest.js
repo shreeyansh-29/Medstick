@@ -4,7 +4,10 @@ import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
-import {patientsReqRequest} from '../../../redux/action/patients/patientsRequestAction';
+import {
+  patientsReqClear,
+  patientsReqRequest,
+} from '../../../redux/action/patients/patientsRequestAction';
 import {acceptPatientReqRequest} from '../../../redux/action/patients/acceptPatientReqAction';
 import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
@@ -31,8 +34,8 @@ const PatientRequest = () => {
   ];
 
   useEffect(() => {
-    if (res !== null) {
-      setPatients([...res]);
+    if (res?.data !== null) {
+      setPatients(res.data);
     } else {
       setPatients([]);
     }
@@ -57,19 +60,29 @@ const PatientRequest = () => {
   // };
 
   const acceptRequest = requestId => {
+    let a = b => b.requestId == requestId;
+    let index = patients.findIndex(a);
+    patients.splice(index, 1);
     dispatch(acceptPatientReqRequest(requestId));
+    dispatch(patientsReqClear());
+
     setTimeout(() => {
+      dispatch(patientsReqRequest(0));
       dispatch(myPatientsRequest(0));
-      dispatch(patientsReqRequest(pageNo));
-    }, 1000);
+    }, 500);
   };
 
   const deleteRequest = requestId => {
+    let a = b => b.requestId == requestId;
+    let index = patients.findIndex(a);
+    patients.splice(index, 1);
     dispatch(deletePatientReqRequest(requestId));
+    dispatch(patientsReqClear());
+
     setTimeout(() => {
-      dispatch(myPatientsRequest(0));
-      dispatch(patientsReqRequest(pageNo));
-    }, 1000);
+      dispatch(patientsReqRequest(0));
+      dispatch(myPatientsRequest(pageNo));
+    }, 500);
   };
 
   const renderItem = ({item}) => {
@@ -81,7 +94,7 @@ const PatientRequest = () => {
               activeOpacity={1}
               onPress={() => {
                 setVisible(true);
-                setUri(item.picPath);
+                setUri(item?.picPath);
               }}>
               <Avatar size={80} rounded source={{uri: item.picPath}} />
             </TouchableOpacity>

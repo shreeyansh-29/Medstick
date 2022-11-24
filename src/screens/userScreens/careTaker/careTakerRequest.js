@@ -20,6 +20,7 @@ import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAct
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.caretakerRequest);
+  console.log(res);
   const [pageNo, setPageNo] = useState(0);
   const [caretakers, setCaretakers] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -55,30 +56,30 @@ const CareTakerRequest = () => {
   //   dispatch(caretakerReqRequest(pageNo));
   // };
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     fetchCaretakerReq();
-
-  //     return () => {};
-  //   }, []),
-  // );
-
   const acceptRequest = requestId => {
+    let a = b => b.requestId == requestId;
+    let index = caretakers.findIndex(a);
+    caretakers.splice(index, 1);
     dispatch(acceptCaretakerReqRequest(requestId));
+    dispatch(caretakerReqClear());
+
     setTimeout(() => {
+      dispatch(caretakerReqRequest(0));
       dispatch(myCaretakerRequest(0));
-      dispatch(caretakerReqClear());
-      dispatch(caretakerReqRequest(pageNo));
-    }, 1000);
+    }, 500);
   };
 
   const deleteRequest = requestId => {
+    let a = b => b.requestId == requestId;
+    let index = caretakers.findIndex(a);
+    caretakers.splice(index, 1);
     dispatch(deleteCaretakerReqRequest(requestId));
+    dispatch(caretakerReqClear());
+
     setTimeout(() => {
+      dispatch(caretakerReqRequest(0));
       dispatch(myCaretakerRequest(0));
-      dispatch(caretakerReqClear());
-      dispatch(caretakerReqRequest(pageNo));
-    }, 1000);
+    }, 500);
   };
 
   const renderItem = ({item}) => {

@@ -50,6 +50,7 @@ const AddPrescription = ({navigation}) => {
       contact: values.contact,
       location: values.location,
       prescriptionUrl: values.image,
+      appointmentList: [],
     };
 
     getPrescription().then(data => {
@@ -59,6 +60,7 @@ const AddPrescription = ({navigation}) => {
         Toast.show({
           text1: 'Prescription Added Successfully',
           type: 'success',
+          position: 'bottom',
         });
       } else if (data === null || data === undefined) {
         let temp = [];
@@ -67,17 +69,19 @@ const AddPrescription = ({navigation}) => {
         Toast.show({
           text1: 'Prescription Added Successfully',
           type: 'success',
+          position: 'bottom',
         });
       } else {
         Toast.show({
           text1: 'Something Went Wrong',
           type: 'error',
+          position: 'bottom',
         });
       }
     });
     setTimeout(() => {
       navigation.pop();
-    }, 4000);
+    }, 1000);
   };
 
   return (
@@ -155,7 +159,7 @@ const AddPrescription = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={2000} />
+      <Toast visibilityTime={500} />
     </View>
   );
 };

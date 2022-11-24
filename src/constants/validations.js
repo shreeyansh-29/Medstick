@@ -61,14 +61,6 @@ export const updateAppointmentSchema = yup.object().shape({
   time: yup.string().required('Time is Required*').nullable(),
 });
 
-export const updateNotesSchema = yup.object().shape({
-  notes:yup
-  .string()
-  .min(20, ({min}) => `Notes must be greater than ${min} characters`)
-  .max(100, ({max}) => `Notes can be only be of ${max} characters`)
-  .required('Notes is Required*')
-  .nullable(),
-})
 export const addMedicineSchema = yup.object().shape({
   medicineName: yup.string().required('Medicine Name is Required*').nullable(),
   description: yup

@@ -5,11 +5,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../atoms/colorPalette';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import AddAppointment from '../../atoms/addAppointment';
-import {useDispatch} from 'react-redux';
-import {notifyUserClear} from '../../../redux/action/patients/notifyUserAction';
 import ShareButton from '../../atoms/shareButton';
 import EditButton from '../../atoms/editButton';
 import DownloadButton from '../../atoms/downloadButton';
+import DeletePrescription from '../../atoms/deletePrescription';
 
 const SubHeader = ({
   title,
@@ -18,20 +17,16 @@ const SubHeader = ({
   options,
   routeName,
   notes,
+  deleteBtn,
+  deletePrescription,
+  prescriptionId,
 }) => {
-  const dispatch = useDispatch();
   return (
     <View style={styles.subHeader}>
       <TouchableOpacity
         style={styles.backIcon}
         onPress={() => {
           navigation.pop();
-          // if (title === 'Patient Medicine') {
-          //   dispatch(notifyUserClear());
-          // }
-          if (title === 'Send Snap') {
-            dispatch(sendSnapClear());
-          }
         }}>
         <FontAwesomeIcon
           icon={faArrowLeft}
@@ -46,12 +41,23 @@ const SubHeader = ({
         <DownloadButton download={download} />
       )}
       {title !== 'Appointment Reminders' ? null : (
-        <AddAppointment navigation={navigation} routeName={routeName} notes={notes}/>
+        <AddAppointment
+          navigation={navigation}
+          routeName={routeName}
+          notes={notes}
+        />
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}
       {/* {title !== 'Patient Profile' ? null : (
         <EditButton navigation={navigation} />
       )} */}
+      {title !== 'Add Prescription' ? null : (
+        <DeletePrescription
+          deleteBtn={deleteBtn}
+          deletePrescription={deletePrescription}
+          prescriptionId={prescriptionId}
+        />
+      )}
     </View>
   );
 };

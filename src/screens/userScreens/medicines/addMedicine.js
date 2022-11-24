@@ -206,7 +206,7 @@ const AddMedicines = ({navigation, route}) => {
     fetchPrescriptionAndMedicineId();
   }, []);
 
-  const getStock = (data) => {
+  const getStock = data => {
     setStock(data);
   };
 
@@ -300,23 +300,21 @@ const AddMedicines = ({navigation, route}) => {
         reminderStatus: null,
         frequency: null,
         beforeAfter: null,
-        totalReminders:null,
-        currentCount:null,
-        historyList:[]
+        totalReminders: null,
+        currentCount: null,
+        historyList: [],
       };
 
       getMedicine().then(data => {
         if (data !== null) {
-          console.log(data,  " data");
+          console.log(data, ' data');
           const temp = [...data, obj];
           AddMedicine(temp);
         } else {
-
           let temp = [];
           temp.push(obj);
           AddMedicine(temp);
-          console.log(data,  " temp");
-
+          console.log(data, ' temp');
         }
       });
       setTimeout(() => {
@@ -411,21 +409,27 @@ const AddMedicines = ({navigation, route}) => {
         onRequestClose={() => {
           setSearchModal(false);
         }}>
-        <View style={{}}>
-          <View style={{alignSelf: 'flex-end', marginTop: 8, marginRight: 12}}>
-            <TouchableOpacity
-              activeOpacity={1}
-              onPress={() => {
-                setSearchModal(false);
-                dispatch(searchMedicineClear());
-                setTempSearch([]);
-              }}>
-              <FontAwesomeIcon
-                icon={faXmarkCircle}
-                size={26}
-                color={colorPalette.mainColor}
-              />
-            </TouchableOpacity>
+        <View style={{margin: '5%'}}>
+          <TouchableOpacity
+            style={Styles.backButton}
+            onPress={() => {
+              setSearchModal(false);
+            }}>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              size={22}
+              color={colorPalette.mainColor}
+            />
+          </TouchableOpacity>
+          <View style={{marginTop: '4%'}}>
+            <TextInput
+              label="Search Medicine"
+              mode="outlined"
+              multiline={true}
+              onChangeText={text => search(text)}
+              outlineColor={colorPalette.mainColor}
+              activeOutlineColor={colorPalette.mainColor}
+            />
           </View>
         </View>
         <View style={{marginVertical: 10}}>

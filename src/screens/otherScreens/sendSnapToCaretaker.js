@@ -45,17 +45,12 @@ const SendSnapToCaretaker = ({navigation}) => {
       height: 400,
       cropping: true,
     }).then(image => {
-      console.log(image, 'image');
       setImage(image.path);
     });
   };
 
   useEffect(() => {
     openCamera();
-  }, []);
-
-  useEffect(() => {
-    dispatch(sendSnapClear());
   }, []);
 
   useEffect(() => {
@@ -66,7 +61,7 @@ const SendSnapToCaretaker = ({navigation}) => {
       });
       setTimeout(() => {
         navigation.pop();
-      }, 3000);
+      }, 1000);
     }
     if (res1?.status === 'Failed') {
       Toast.show({
@@ -74,9 +69,7 @@ const SendSnapToCaretaker = ({navigation}) => {
         text1: 'Something Went Wrong',
         text2: 'Try Again',
       });
-      setTimeout(() => {
-        dispatch(sendSnapClear());
-      }, 200);
+      dispatch(sendSnapClear());
     }
   }, [res1]);
 
@@ -267,7 +260,7 @@ const SendSnapToCaretaker = ({navigation}) => {
           />
         </ScrollView>
       </View>
-      <Toast visibilityTime={2000} />
+      <Toast visibilityTime={500} />
     </View>
   );
 };

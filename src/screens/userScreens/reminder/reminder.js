@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
@@ -7,7 +7,7 @@ import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {day_data, months} from './pushNotification/timeData';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import { faCaretDown} from '@fortawesome/free-solid-svg-icons';
+import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {TextInput} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -15,10 +15,7 @@ import styles from './reminderStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import moment from 'moment';
-import {
-  AddMedicine,
-  getMedicine,
-} from '../../../utils/storage.js';
+import {AddMedicine, getMedicine} from '../../../utils/storage.js';
 import PushNotification from 'react-native-push-notification';
 import uuid from 'react-native-uuid';
 import {hour, timeHours} from '../../../constants/constants';
@@ -100,6 +97,8 @@ const Reminder = ({route, navigation}) => {
 
     if (period === 'AM' && timing < 10) {
       time1 = '0' + timing + ':' + sec + ':' + '00';
+    } else if (period === 'AM' && timing > 10) {
+      time1 = timing + ':' + sec + ':' + '00';
     } else if (period === 'PM') {
       time1 = timeHours[timing] + ':' + sec + ':' + '00';
     }
@@ -116,15 +115,13 @@ const Reminder = ({route, navigation}) => {
         reminder.push(time1);
       });
 
-      console.log(reminder, ' timeAMPM');
-      let dateTime = moment(
-        obj?.startDate + ' ' + reminder,
-      );
-      console.log(dateTime._d,"dateTime");
-   
-      Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
+    console.log(reminder, ' timeAMPM');
+    let dateTime = moment(obj?.startDate + ' ' + reminder);
+    console.log(dateTime._d, 'dateTime');
+
+    Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
   };
-  
+
   // useEffect(() => {
   //   pushReminderChannel();
   // }, []);

@@ -12,6 +12,7 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 
 const HistoryDetail = ({data, onPress}) => {
+  console.log('aaaaaaa', data);
   const [filterData, setfilterData] = useState([]);
 
   function findTime(ele) {

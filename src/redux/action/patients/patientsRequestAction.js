@@ -18,3 +18,9 @@ export const patientsReqError = payload => {
     payload,
   };
 };
+
+export const patientsReqClear = () => {
+  return {
+    type: types.PATIENT_REQ_CLEAR,
+  };
+};
