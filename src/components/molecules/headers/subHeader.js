@@ -9,7 +9,6 @@ import ShareButton from '../../atoms/shareButton';
 import EditButton from '../../atoms/editButton';
 import DownloadButton from '../../atoms/downloadButton';
 import DeletePrescription from '../../atoms/deletePrescription';
-import EditButton from '../../atoms/editButton';
 
 const SubHeader = ({
   title,
