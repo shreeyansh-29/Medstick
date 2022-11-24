@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React, {useRef, useEffect, useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
-import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import {Card} from 'react-native-paper';
 import {ListItem} from 'react-native-elements';
@@ -18,16 +17,13 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import CustomImage from '../../../components/atoms/customImage';
 import {week} from '../../../constants/constants';
 import uuid from 'react-native-uuid';
-import { hitSlop } from 'deprecated-react-native-prop-types/DeprecatedViewPropTypes';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
-  const [name, setName] = useState('');
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -82,9 +78,9 @@ const MedicinePanel = ({navigation}) => {
           history.date = td_da;
           history.time = data[i].reminderTime.split(',');
           history.notTaken = data[i].reminderTime;
-          history.taken='';
+          history.taken = '';
           data[i].historyList.push(history);
-        } 
+        }
       } else if (data[i].endDate === 'No End Date') {
         // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
         const a = b => b.date == td_da;
@@ -109,22 +105,13 @@ const MedicinePanel = ({navigation}) => {
     if (isFocused) {
       getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
+          console.log(data);
           setMedicineResponse(data);
         }
       });
     }
   }, [isFocused]);
 
-  const getUser = async () => {
-    const user = await GoogleSignin.getCurrentUser();
-    setName(user);
-  };
-
-  useEffect(() => {
-    if (isFocused) {
-      getUser();
-    }
-  }, [isFocused]);
   useEffect(() => {
     medicineResponse.map(item => {
       item.reminderId !== null ? MedicineHistory(medicineResponse) : null;
@@ -138,15 +125,13 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              if (name !== null) {
-                navigation.navigate('MedicinePanelStack', {
-                  screen: 'MedicineList',
-                  params: {
-                    data: medicineResponse,
-                    index: index,
-                  },
-                });
-              }
+              navigation.navigate('MedicinePanelStack', {
+                screen: 'MedicineList',
+                params: {
+                  data: medicineResponse,
+                  index: index,
+                },
+              });
             }}>
             <Card style={Styles.card}>
               <View style={Styles.listView}>
@@ -240,7 +225,7 @@ const MedicinePanel = ({navigation}) => {
             <CustomImage
               resizeMode="contain"
               source={require('../../../assets/images/nomeds.png')}
-              styles={{width: '70%'}}
+              styles={{width: '66%'}}
             />
           </View>
         ) : (

@@ -8,6 +8,7 @@ import AddAppointment from '../../atoms/addAppointment';
 import ShareButton from '../../atoms/shareButton';
 import DownloadButton from '../../atoms/downloadButton';
 import DeletePrescription from '../../atoms/deletePrescription';
+import EditButton from '../../atoms/editButton';
 
 const SubHeader = ({
   title,
@@ -17,8 +18,12 @@ const SubHeader = ({
   routeName,
   notes,
   deleteBtn,
-  deletePrescription,
   prescriptionId,
+  setPrescriptionList,
+  setPrescriptionId,
+  setDeleteBtn,
+  edit,
+  setEdit,
 }) => {
   return (
     <View style={styles.subHeader}>
@@ -48,14 +53,16 @@ const SubHeader = ({
         />
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}
-      {/* {title !== 'Patient Profile' ? null : (
-        <EditButton navigation={navigation} />
-      )} */}
+      {title !== 'Doctor Prescription' ? null : (
+        <EditButton navigation={navigation} edit={edit} setEdit={setEdit} />
+      )}
       {title !== 'Add Prescription' ? null : (
         <DeletePrescription
           deleteBtn={deleteBtn}
-          deletePrescription={deletePrescription}
           prescriptionId={prescriptionId}
+          setPrescriptionList={setPrescriptionList}
+          setPrescriptionId={setPrescriptionId}
+          setDeleteBtn={setDeleteBtn}
         />
       )}
     </View>

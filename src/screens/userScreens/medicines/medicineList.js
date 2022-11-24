@@ -14,11 +14,17 @@ import {faPencil} from '@fortawesome/free-solid-svg-icons';
 import {faNoteSticky} from '@fortawesome/free-regular-svg-icons';
 import {deviceWidth} from '../../../components/atoms/constant';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {useDispatch, useSelector} from 'react-redux';
 
 const MedicineList = ({route, navigation}) => {
   const data = route.params?.data;
   const [index, setIndex] = useState(route.params?.index);
   const isCarousel = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const [userMedicineId, setUserMedicineId] = useState('');
+  const dispatch = useDispatch();
+  const res = useSelector(state => state.medicineNotes?.data);
+  console.log(res, 'result......');
 
   const MedicineDetailCard = ({item, index}) => {
     return (
@@ -27,22 +33,25 @@ const MedicineList = ({route, navigation}) => {
           <View style={styles.top}>
             <View style={styles.medNameContainer}>
               <View style={styles.medNameView}>
-                <Text style={styles.medName}>{item.MedicineName}</Text>
+                <Text style={styles.medName}>{item.medicineName}</Text>
               </View>
               <View style={styles.iconView}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation?.navigate('AddMedicine', {
-                      itemMedicineName:item.medicineName,
-                      itemDescription: item.medicineDescription,
-                      itemDosageType: item.dosageType,
-                      itemDosagePower: item.dosagePower,
-                      itemDosageQuantity:item.dosageQuantity,
-                      Stock: item.stock,
-                      doctorName: item.doctorName,
-                      contact: item.contact,
-                      specialization: item.specialization,
-                      loaction: item.location,
+                    navigation?.navigate('AddMedicineStack', {
+                      screen: 'AddMedicine',
+                      params: {
+                        itemMedicineName: item.medicineName,
+                        itemDescription: item.medicineDescription,
+                        itemDosageType: item.dosageType,
+                        itemDosagePower: item.dosagePower,
+                        itemDosageQuantity: item.dosageQuantity,
+                        Stock: item.stock,
+                        doctorName: item.doctorName,
+                        contact: item.contact,
+                        specialization: item.specialization,
+                        loaction: item.location,
+                      },
                     });
                   }}>
                   <FontAwesomeIcon
@@ -67,7 +76,9 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Description : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.medicineDescription}</Text>
+                    <Text style={styles.itemData}>
+                      {item.medicineDescription}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>

@@ -1,14 +1,9 @@
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View} from 'react-native';
 import CustomImage from '../components/atoms/customImage';
 import styles from '../styles/otherScreensStyles/onBoardingStyles';
 
-const OnboardingScreen = ({navigation}) => {
-  setTimeout(() => {
-    navigation.navigate('Bottom');
-  }, 2000);
+const OnboardingScreen = () => {
   return (
     <View style={styles.container}>
       <CustomImage

@@ -7,6 +7,7 @@ import LottieView from 'lottie-react-native';
 import {Card, Divider} from 'react-native-paper';
 import {styles} from '../../styles/otherScreensStyles/prescriptionsStyles';
 import CustomModal from '../../components/molecules/customModal';
+import RenderModalView from './renderModalView';
 
 const DoctorPrescription = ({navigation, route}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -20,14 +21,22 @@ const DoctorPrescription = ({navigation, route}) => {
 
   const item = route.params.item;
   const [visible, setVisible] = useState(false);
+  const [edit, setEdit] = useState(false);
   const images = [
     {
       url: item?.prescriptionUrl,
     },
   ];
-  return (
+  return edit ? (
+    <RenderModalView item={item} setEdit={setEdit} navigation={navigation} />
+  ) : (
     <View style={styles.container1}>
-      <SubHeader navigation={navigation} title={'Doctor Prescription'} />
+      <SubHeader
+        navigation={navigation}
+        title={'Doctor Prescription'}
+        setEdit={setEdit}
+        edit={edit}
+      />
       <ScrollView>
         <View style={styles.lottieCont}>
           <LottieView
