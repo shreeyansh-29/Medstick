@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -11,7 +11,6 @@ import {deviceWidth} from '../../../components/atoms/constant';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
 import {day_data, months} from './pushNotification/timeData';
-import SaveButton from '../../../components/molecules/saveButton';
 import CustomButton from '../../../components/atoms/customButton';
 
 const ReminderDuration = ({route, navigation}) => {

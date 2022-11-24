@@ -9,6 +9,8 @@ import {useIsFocused} from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import NetInfo from '@react-native-community/netinfo';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 
 const AuthScreen = ({navigation}) => {
   const [connected, setConnected] = useState(false);
@@ -50,6 +52,14 @@ const AuthScreen = ({navigation}) => {
           navigation.navigate('Home');
         }}>
         <Text style={{color: 'gray', fontSize: 18}}>Skip</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{position: 'absolute', left: 16, top: 10}}
+        activeOpacity={1}
+        onPress={() => {
+          navigation.pop();
+        }}>
+        <FontAwesomeIcon icon={faArrowLeft} size={20} color={'gray'} />
       </TouchableOpacity>
       <View style={styles.mainView}>
         <View style={styles.textContainer}>

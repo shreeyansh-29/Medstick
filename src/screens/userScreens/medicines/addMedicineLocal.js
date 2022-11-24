@@ -119,13 +119,12 @@ const AddMedicineLocal = ({navigation}) => {
       currentCount: null,
       historyList: [],
       appointmentList: prescriptionObj.appointmentList,
+      medicineNotes: '',
     };
 
     getMedicine().then(data => {
       if (data !== null) {
-        console.log(data, 'before');
         const temp = [...data, obj];
-        console.log(temp, 'after');
         AddMedicine(temp);
         Toast.show({
           text1: 'Medicine Saved Successfully',

@@ -27,7 +27,6 @@ import PushNotification from 'react-native-push-notification';
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
-  const [name, setName] = useState('');
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -85,9 +84,9 @@ const MedicinePanel = ({navigation}) => {
           history.date = td_da;
           history.time = data[i].reminderTime.split(',');
           history.notTaken = data[i].reminderTime;
-          history.taken='';
+          history.taken = '';
           data[i].historyList.push(history);
-        } 
+        }
       } else if (data[i].endDate === 'No End Date') {
         // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
         const a = b => b.date == td_da;
@@ -252,7 +251,7 @@ const MedicinePanel = ({navigation}) => {
             <CustomImage
               resizeMode="contain"
               source={require('../../../assets/images/nomeds.png')}
-              styles={{width: '70%'}}
+              styles={{width: '66%'}}
             />
           </View>
         ) : (

@@ -1,10 +1,7 @@
 import {colorPalette} from '../../../components/atoms/colorPalette';
-import React, {useState} from 'react';
-import {StyleSheet, TouchableOpacity, Text, View} from 'react-native';
+import React from 'react';
+import {TouchableOpacity, Text} from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
-import HistoryDetail from '../patients/historyDetail';
-import {Modal} from 'react-native-paper';
-import AnimatedCircles from '../../../components/atoms/AnimatedCircle';
 
 function ColorCode(percentage) {
   if (percentage < 60) {
@@ -24,7 +21,7 @@ function DayComponent({
   setModalVisible,
   history,
 }) {
-  console.log('percent %',percentage)
+  console.log('percent %', percentage);
   return (
     <TouchableOpacity
       disabled={state === 'disabled'}

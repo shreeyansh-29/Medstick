@@ -23,7 +23,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SelectMedicineName from '../../../components/atoms/selectMedicineName';
 import TotalStock from '../../../components/molecules/totalStock';
 import LeftStock from '../../../components/molecules/leftStock';
-import SaveButton from '../../../components/molecules/saveButton';
+import ModalHeader from '../../../components/molecules/headers/modalHeader';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {loadAddMedicine} from '../../../redux/action/userMedicine/addMedicineAction';
@@ -628,7 +628,7 @@ const AddMedicines = ({navigation, route}) => {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={Styles.touchableOpacity}
               onPress={() =>
                 addMedicineInLocalStorage(
@@ -644,7 +644,7 @@ const AddMedicines = ({navigation, route}) => {
                 )
               }>
               <SaveButton />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </KeyboardAvoidingView>
         </ScrollView>
       </View>

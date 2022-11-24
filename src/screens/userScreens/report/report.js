@@ -53,6 +53,7 @@ LocaleConfig.locales['en'] = {
   ],
   dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
 };
+
 LocaleConfig.defaultLocale = 'en';
 
 const Report = ({navigation}) => {
@@ -240,9 +241,9 @@ const Report = ({navigation}) => {
         <View style={{paddingHorizontal: 12, paddingTop: 10}}>
           <View style={styles.picker}>
             <Picker
+              style={{color: 'black'}}
               mode="dropdown"
-              id="picker1"
-              selectedValue={medicineId}
+              selectedValue={medicineId}             
               onValueChange={data => {
                 setMedicineId(data);
               }}>

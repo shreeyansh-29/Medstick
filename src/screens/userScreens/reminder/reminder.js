@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
@@ -40,8 +40,8 @@ const Reminder = ({route, navigation}) => {
   const [dinnerTouchable, setDinnerTouchable] = useState(false);
   const [noEndDate, setNoEndDate] = useState(false);
   const [reminderStatus, setReminderStatus] = useState(true);
-  const [totalReminders, setTotalReminders] = useState(10);
-  const [currentCount, setCurrentCount] = useState(0);
+  const totalReminders = 0;
+  const currentCount = 0;
   const [time, setTime] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
@@ -302,27 +302,9 @@ const Reminder = ({route, navigation}) => {
     });
     loadstate(false);
 
-    // setTimeout(() => {
-    //   navigation.pop();
-    // }, 1000);
-
-    // dispatch(
-    //   saveReminderRequest(
-    //     fDatePrimary,
-    //     fDateSecondary,
-    //     days,
-    //     title,
-    //     time,
-    //     check1,
-    //     noEndDate,
-    //     reminderStatus,
-    //     frequencyTemp,
-    //     food,
-    //     totalReminders,
-    //     currentCount,
-    //     userMedicineId,
-    //   ),
-    // );
+    setTimeout(() => {
+      navigation.pop();
+    }, 1000);
   };
 
   return (
@@ -331,6 +313,7 @@ const Reminder = ({route, navigation}) => {
       <View style={styles.top}>
         <View style={styles.container1}>
           <TouchableOpacity
+            activeOpacity={1}
             onPress={() => {
               pickerstate(true);
             }}
@@ -372,6 +355,7 @@ const Reminder = ({route, navigation}) => {
           </TouchableOpacity>
           <Divider></Divider>
           <TouchableOpacity
+            activeOpacity={1}
             onPress={() => {
               navigation.navigate('ReminderDuration', {
                 date: startDate,
@@ -447,6 +431,7 @@ const Reminder = ({route, navigation}) => {
               }}>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
+                  activeOpacity={1}
                   style={{
                     borderRadius: breakfast ? 3 : 0,
                     alignItems: 'center',
@@ -470,6 +455,7 @@ const Reminder = ({route, navigation}) => {
                 </TouchableOpacity>
                 {breakfastTouchable ? (
                   <TouchableOpacity
+                    activeOpacity={1}
                     style={{
                       borderRadius: 3,
                       alignItems: 'center',
@@ -501,6 +487,7 @@ const Reminder = ({route, navigation}) => {
 
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
+                  activeOpacity={1}
                   style={{
                     borderRadius: lunch ? 3 : 0,
                     alignItems: 'center',
@@ -524,6 +511,7 @@ const Reminder = ({route, navigation}) => {
                 </TouchableOpacity>
                 {lunchTouchable ? (
                   <TouchableOpacity
+                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -554,6 +542,7 @@ const Reminder = ({route, navigation}) => {
               </View>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
+                  activeOpacity={1}
                   style={{
                     borderRadius: dinner ? 3 : 0,
                     alignItems: 'center',
@@ -577,6 +566,7 @@ const Reminder = ({route, navigation}) => {
                 </TouchableOpacity>
                 {dinnerTouchable ? (
                   <TouchableOpacity
+                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -636,6 +626,7 @@ const Reminder = ({route, navigation}) => {
                 alignSelf: 'center',
               }}>
               <TouchableOpacity
+                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,
@@ -663,6 +654,7 @@ const Reminder = ({route, navigation}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,
