@@ -29,7 +29,7 @@ const MyPatients = ({navigation}) => {
     if (res?.data !== null) {
       setMyPatients([...res.data]);
     }
-  }, [res]);
+  }, []);
 
   useEffect(() => {
     dispatch(myPatientsRequest(pageNo));
@@ -80,7 +80,7 @@ const MyPatients = ({navigation}) => {
         <Loader />
       ) : (
         <>
-          {myPatients.length === 0 ? (
+          {myPatients?.length === 0 ? (
             <View style={styles.imgCont}>
               <CustomImage
                 resizeMode="contain"
@@ -96,8 +96,8 @@ const MyPatients = ({navigation}) => {
               keyExtractor={(item, index) => index.toString()}
               refreshControl={
                 <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
+                  colors={colorPalette.mainColor}
+                  tintColor={colorPalette.mainColor}
                   refreshing={refresh}
                   onRefresh={() => {
                     dispatch(myPatientsRequest(pageNo));

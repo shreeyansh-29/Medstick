@@ -16,16 +16,10 @@ const MedicinePicker = ({onChange}) => {
   const getmedicine = () => {
     dispatch(loadGetUserMedicine());
   };
-
-  useEffect(() => {
-    getmedicine();
-  }, [medicineName]);
-
   return (
     <View style={styles.picker}>
       <Picker
         mode="dropdown"
-        id="picker1"
         selectedValue={medicineName}
         onValueChange={data => {
           setMedicineName(data);

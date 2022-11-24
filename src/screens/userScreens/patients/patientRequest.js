@@ -162,7 +162,7 @@ const PatientRequest = () => {
               data={patients}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(index) => index.toString()}
               refreshControl={
                 <RefreshControl
                   colors={[colorPalette.mainColor]}

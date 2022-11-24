@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React, {useRef, useEffect, useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
-import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import {Card} from 'react-native-paper';
 import {ListItem} from 'react-native-elements';
@@ -22,7 +21,8 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import CustomImage from '../../../components/atoms/customImage';
 import {week} from '../../../constants/constants';
 import uuid from 'react-native-uuid';
-import { hitSlop } from 'deprecated-react-native-prop-types/DeprecatedViewPropTypes';
+import PushNotification from 'react-native-push-notification';
+
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
@@ -38,9 +38,12 @@ const MedicinePanel = ({navigation}) => {
     }).start();
   }, []);
 
-  const deleteMedicineLocal = async index => {
+
+    
+  const deleteMedicineLocal = (index,name) => {
     medicineResponse.splice(index, 1);
     AddMedicine(medicineResponse);
+    deleteRem(name);
     getMedicine().then(data => {
       if (data !== null && data.length !== 0) {
         setMedicineResponse(data);
@@ -61,7 +64,7 @@ const MedicinePanel = ({navigation}) => {
     };
     for (let i = 0; i < data.length; i++) {
       // console.log('start of loop');
-      let arr = data[i].days.split(',');
+      let arr = data[i].days?.split(',');
       let set = new Set(arr);
       var start_date = new Date(data[i].endDate);
       var end_date = new Date(data[i].endDate);
@@ -115,6 +118,15 @@ const MedicinePanel = ({navigation}) => {
     }
   }, [isFocused]);
 
+  const deleteRem = name => {
+    PushNotification.getScheduledLocalNotifications(rn => {
+      for (let i = 0; i < rn.length; i++) {
+        if ('Take ' + name === rn[i].message) {
+          PushNotification.cancelLocalNotification({id: rn[i].id});
+        }
+      }
+    });
+  };
   const getUser = async () => {
     const user = await GoogleSignin.getCurrentUser();
     setName(user);
@@ -167,8 +179,8 @@ const MedicinePanel = ({navigation}) => {
                           {item.dosageType}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Dosage Power: </Text>
-                          {item.dosagePower}
+                          <Text style={{color: 'black'}}>Dosage: </Text>
+                          {item.dosageUnit + item.dosageQuantity}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Stock: </Text>
@@ -207,7 +219,7 @@ const MedicinePanel = ({navigation}) => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
                             text: 'Delete',
-                            onPress: () => deleteMedicineLocal(index),
+                            onPress: () => deleteMedicineLocal(index, item.medicineName),
                           },
                           {
                             text: 'Cancel',

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
@@ -14,36 +14,79 @@ import {faPencil} from '@fortawesome/free-solid-svg-icons';
 import {faNoteSticky} from '@fortawesome/free-regular-svg-icons';
 import {deviceWidth} from '../../../components/atoms/constant';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import CustomModal from '../../../components/molecules/customModal';
+import EditNotes from './editNotes';
+import {useDispatch, useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
+import { medicineNotesClear } from '../../../redux/action/medicineNotes/medicineNotesAction';
 
 const MedicineList = ({route, navigation}) => {
   const data = route.params?.data;
   const [index, setIndex] = useState(route.params?.index);
   const isCarousel = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const [userMedicineId, setUserMedicineId] = useState('');
+  const dispatch= useDispatch();
+  const res = useSelector(state => state.medicineNotes?.data);
+  console.log(res, 'result......');
+
+  useEffect(() => {
+    if (res?.status === 'Success') {
+      Toast.show({
+        type: 'success',
+        text1: 'Notes Saved Successfully',
+        position: 'bottom',
+      });
+      setTimeout(() => {
+        dispatch(medicineNotesClear());
+      }, 200);
+    }
+  }, [res]);
 
   const MedicineDetailCard = ({item, index}) => {
     return (
       <TouchableOpacity activeOpacity={1}>
+        <CustomModal
+          type="fade"
+          modalVisible={visible}
+          onRequestClose={() => setVisible(!visible)}
+          customStyles={{
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(52, 52, 52, 0.3)',
+          }}
+          modalView={
+            <EditNotes
+              userMedicineId={userMedicineId}
+              setVisible={setVisible}
+              res={res?.result}
+            />
+          }
+        />
         <View style={styles.container} key={index}>
           <View style={styles.top}>
             <View style={styles.medNameContainer}>
               <View style={styles.medNameView}>
-                <Text style={styles.medName}>{item.MedicineName}</Text>
+                <Text style={styles.medName}>{item.medicineName}</Text>
               </View>
               <View style={styles.iconView}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation?.navigate('AddMedicine', {
-                      itemMedicineName:item.medicineName,
-                      itemDescription: item.medicineDescription,
-                      itemDosageType: item.dosageType,
-                      itemDosagePower: item.dosagePower,
-                      itemDosageQuantity:item.dosageQuantity,
-                      Stock: item.stock,
-                      doctorName: item.doctorName,
-                      contact: item.contact,
-                      specialization: item.specialization,
-                      loaction: item.location,
-                    });
+                    navigation?.navigate(
+                      'AddMedicineStack',
+                      {screen: 'AddMedicine'},
+                      {
+                        itemDescription: item.description,
+                        itemDosageType: item.dosageQuantity,
+                        itemDosageUnit: item.dosageUnit,
+                        Stock: item.stock,
+                        doctorName: item.doctorName,
+                        contact: item.contact,
+                        specialization: item.specialization,
+                        loaction: item.location,
+                      },
+                    );
                   }}>
                   <FontAwesomeIcon
                     icon={faPencil}
@@ -51,7 +94,11 @@ const MedicineList = ({route, navigation}) => {
                     color={colorPalette.basicColor}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setVisible(true);
+                    setUserMedicineId(item?.userMedicineId);
+                  }}>
                   <FontAwesomeIcon
                     icon={faNoteSticky}
                     size={20}
@@ -67,7 +114,7 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Description : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.medicineDescription}</Text>
+                    <Text style={styles.itemData}>{item.description}</Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -75,7 +122,7 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Dosage Type : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.dosageType}</Text>
+                    <Text style={styles.itemData}>{item.dosageQuantity}</Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -170,7 +217,7 @@ const MedicineList = ({route, navigation}) => {
           inactiveSlideShift={0}
         />
         <Pagination
-          dotsLength={data?.length}
+          dotsLength={data.length}
           activeDotIndex={index}
           carouselRef={isCarousel}
           dotStyle={{
@@ -191,6 +238,7 @@ const MedicineList = ({route, navigation}) => {
           inactiveDotColor={'grey'}
         />
       </View>
+      <Toast />
     </>
   );
 };

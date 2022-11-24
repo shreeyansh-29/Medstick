@@ -4,11 +4,12 @@ import {
   deletePatientReqError,
   deletePatientReqSuccess,
 } from '../../action/patients/deletePatientReqAction';
-import deletePatientReqService from '../../../network/networkServices/common/deleteRequestService';
+import DeleteRequestService from '../../../network/networkServices/common/deleteRequestService';
 
 export function* deletePatientRequestSaga(data) {
   try {
-    let response = yield call(deletePatientReqService.putDeleteRequest, data);
+    let response = yield call(DeleteRequestService.putDeleteRequest, data);
+    console.log(response, "res");
     yield put(deletePatientReqSuccess(response));
   } catch (error) {
     yield put(deletePatientReqError(error));

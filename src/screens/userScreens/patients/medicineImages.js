@@ -38,7 +38,7 @@ const CarouselCardItem = ({item}) => {
 
       <View style={styles.bodyView}>
         <Text style={styles.body}>{item.caretakerName}</Text>
-        {/* <Text style={styles.body}>{item.date}</Text> */}
+        <Text style={styles.body}>{item.date}</Text>
       </View>
     </View>
   );

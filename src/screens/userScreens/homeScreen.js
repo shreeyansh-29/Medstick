@@ -22,7 +22,6 @@ const HomeScreen = ({navigation}) => {
     let conn = await CheckConnection();
     connectedstate(conn);
   };
-
   useEffect(() => {
     checkconnection();
   }, []);

@@ -6,6 +6,7 @@ import {colorPalette} from '../../atoms/colorPalette';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import AddAppointment from '../../atoms/addAppointment';
 import ShareButton from '../../atoms/shareButton';
+import EditButton from '../../atoms/editButton';
 import DownloadButton from '../../atoms/downloadButton';
 import DeletePrescription from '../../atoms/deletePrescription';
 
@@ -23,7 +24,6 @@ const SubHeader = ({
   return (
     <View style={styles.subHeader}>
       <TouchableOpacity
-        activeOpacity={1}
         style={styles.backIcon}
         onPress={() => {
           navigation.pop();

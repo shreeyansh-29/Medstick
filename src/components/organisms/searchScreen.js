@@ -224,3 +224,4 @@ const SearchScreen = ({navigation}) => {
 };
 
 export default SearchScreen;
+

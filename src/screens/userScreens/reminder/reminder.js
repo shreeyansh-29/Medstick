@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
@@ -14,24 +14,14 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import styles from './reminderStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
-import {useDispatch, useSelector} from 'react-redux';
-import {saveReminderSelector} from '../../../constants/Selector/saveReminderSelector';
-import {saveReminderRequest} from '../../../redux/action/Reminder/saveReminderAction';
-import {
-  AddMedicine,
-  addReminder,
-  getMedicine,
-  getReminder,
-  SaveReminder,
-} from '../../../utils/storage';
-import PushNotification, {Importance} from 'react-native-push-notification';
+import moment from 'moment';
+import {AddMedicine, getMedicine} from '../../../utils/storage.js';
+import PushNotification from 'react-native-push-notification';
 import uuid from 'react-native-uuid';
-import {hour} from '../../../constants/constants';
+import {hour, timeHours} from '../../../constants/constants';
+import Notifications from '../../../notification/notifications';
 
-var counter = 0;
-
-const Reminder = ({route, navigation, props}) => {
-  const [medicineInfo, setMedicineInfo] = useState(route.params.data);
+const Reminder = ({route, navigation}) => {
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = useState(false);
@@ -50,8 +40,8 @@ const Reminder = ({route, navigation, props}) => {
   const [dinnerTouchable, setDinnerTouchable] = useState(false);
   const [noEndDate, setNoEndDate] = useState(false);
   const [reminderStatus, setReminderStatus] = useState(true);
-  const totalReminders=0;
-  const currentCount = 0;
+  const [totalReminders, setTotalReminders] = useState(10);
+  const [currentCount, setCurrentCount] = useState(0);
   const [time, setTime] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
@@ -61,13 +51,7 @@ const Reminder = ({route, navigation, props}) => {
   const [dinner, setDinner] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
   const [fDateSecondary, setfDate] = useState('');
-
-  const dispatch = useDispatch();
-
-  const saveReminderData = useSelector(saveReminderSelector.saveReminder);
-  const saveReminderResponse = saveReminderData?.data?.data?.status;
-
-  const userMedicineId = route.params.id;
+  const [timelist, setTimelist] = useState([]);
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -90,148 +74,57 @@ const Reminder = ({route, navigation, props}) => {
     time_picker_mode_state(false);
   };
 
-  const setReminderWithSelectedDate = ({title, startDate, endDate}) => {
-    counter = 0;
-    var now = new Date();
-    console.log(now, 'uo');
-    // now.setDate(startDate?.getDate());
-
-    console.log(
-      now.getDate(),
-      now.getHours(),
-      now.getTime(),
-      '.......................',
-    );
-    // console.log(new Date(now.getTime()));
-    // console.log(now, 'now');
-    let sample_date = new Date();
-    console.log(sample_date, 'sample date');
-    var weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
-    // var set = new Set() < String > selecteddaysItems;
-    if (check1) {
-      timeings.forEach(timee => {
-        var num = Math.floor(Math.random() * 90000) + 10000;
-
-        counter += 1;
-        let timm_array = timee.split(':');
-
-        now.setHours(timm_array[0]);
-        now.setMinutes(timm_array[1]);
-
-        PushNotification.localNotificationSchedule({
-          //... You can use all the options from localNotifications
-          title: title,
-          message: 'Time to eat your medicine',
-          subText: 'Mark as read if you have taken', // (required)
-          id: num.toString(),
-          channelId: 'test1',
-          color: '#02A6AB',
-          showWhen: true,
-          tag: userMedicineId.toString(),
-          visibility: 'public',
-          usesChronometer: true,
-          when: now.getHours() + '' + now.getMinutes(),
-          date: new Date(now.getTime() + 5 * 100), // in 60 secs
-          allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
-          vibrate: true,
-          playSound: true,
-          invokeApp: false,
-          soundName: 'android.resource://com.project/raw/my_sound.mp3',
-          importance: Importance.HIGH,
-          repeatType: 'day',
-          smallIcon: 'android.resource://com.project/raw/icon.png',
-
-          actions: ['Open app to mark', 'Skip'],
-
-          /* Android Only Properties */
-          repeatTime: 3, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
-        });
-      });
-      return;
-    }
-    while (sample_date <= endDate) {
-      now.setDate(sample_date.getDate());
-
-      now.setMonth(sample_date.getMonth());
-      if (set.has(weeks[now.getDay()])) {
-        timeings.forEach(timee => {
-          // var num = Math.floor(Math.random() * 90000) + 10000;
-          counter += 1;
-          let timm_array = timee.split(':');
-
-          now.setHours(timm_array[0]);
-          now.setMinutes(timm_array[1]);
-          console.log(now, ' ', now.getHours(), ' ', weeks[now.getDay()]);
-
-          let num1 = Math.floor(Math.random() * 90000) + 10000;
-
-          PushNotification.createChannel(
-            {
-              channelId: 'test1', // (required)
-              channelName: title + 'Med channel', // (required)
-              channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
-              playSound: false, // (optional) default: true
-              soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
-              importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
-              vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
-            },
-            created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-          );
-          PushNotification.localNotificationSchedule({
-            //... You can use all the options from localNotifications
-            title: title,
-            message: 'Time to eat your medicine',
-            subText: 'Mark as read if you have taken', // (required)
-            id: num1.toString(),
-            channelId: 'test1',
-            color: '#3743ab',
-            showWhen: true,
-            tag: userMedicineId.toString(),
-            visibility: 'public',
-            usesChronometer: true,
-            when: new Date(now.getTime() + 5 * 100),
-            date: new Date(now.getTime()), // in 60 secs
-            allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
-            vibrate: true,
-            playSound: true,
-            invokeApp: false,
-            soundName: 'android.resource://com.project/raw/my_sound.mp3',
-            importance: Importance.HIGH,
-
-            smallIcon: 'ic_launcher',
-            largeIcon: 'ic_launcher',
-            actions: ['Open app to mark', 'Skip'],
-
-            /* Android Only Properties */
-            repeatTime: 3, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
-          });
-        });
-      }
-
-      sample_date.setDate(sample_date.getDate() + 1);
-    }
-  };
-
-  const pushReminderChannel = () => {
-    PushNotification.createChannel({
-      channelId: 'test-channel',
-      channelName: 'Test Channel',
-    });
-  };
-
-  // const handlePushNotification = () => {
-  //   PushNotification.localNotificationSchedule({
+  // const pushReminderChannel = () => {
+  //   PushNotification.createChannel({
   //     channelId: 'test-channel',
-  //     title: 'Alarm',
-  //     message: 'Take medicine',
-  //     date: new Date(Date.now() + 20 * 1000),
-  //     allowWhileIdle: true,
+  //     channelName: 'Test Channel',
   //   });
   // };
 
-  useEffect(() => {
-    pushReminderChannel();
-  }, []);
+  const findTime = ele => {
+    let timing = parseInt(ele.split(':')[0]),
+      period = ele.split(' ')[1],
+      second = parseInt(ele.split(':')[1]),
+      sec;
+
+    if (second < 10) {
+      sec = '0' + second;
+    } else {
+      sec = second;
+    }
+
+    let time1;
+
+    if (period === 'AM' && timing < 10) {
+      time1 = '0' + timing + ':' + sec + ':' + '00';
+    } else if (period === 'AM' && timing > 10) {
+      time1 = timing + ':' + sec + ':' + '00';
+    } else if (period === 'PM') {
+      time1 = timeHours[timing] + ':' + sec + ':' + '00';
+    }
+    return time1;
+  };
+
+  const handlePushNotification = (obj, check1) => {
+    console.log(obj);
+    let reminder = [];
+    let time = obj?.reminderTime.split(',');
+    time !== '' &&
+      time?.map(ele => {
+        let time1 = findTime(ele);
+        reminder.push(time1);
+      });
+
+    console.log(reminder, ' timeAMPM');
+    let dateTime = moment(obj?.startDate + ' ' + reminder);
+    console.log(dateTime._d, 'dateTime');
+
+    Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
+  };
+
+  // useEffect(() => {
+  //   pushReminderChannel();
+  // }, []);
 
   function getEndDate(params) {
     if (params.getTime() <= startDate.getTime()) {
@@ -296,7 +189,8 @@ const Reminder = ({route, navigation, props}) => {
     food,
     totalReminders,
     currentCount,
-    userMedicineId,
+    timelist,
+    setTimelist,
   ) => {
     if (
       title.length === 0
@@ -371,10 +265,8 @@ const Reminder = ({route, navigation, props}) => {
 
     // setReminderWithSelectedDate(title, fDatePrimary, fDateSecondary);
 
-    // handlePushNotification();
-
     frequencyHandler();
-    console.log(frequency, 'freq  ');
+    // console.log(frequency, 'freq  ');
     const frequencyTemp = frequency.toString();
 
     if (endDate === 'No End Date') {
@@ -396,6 +288,8 @@ const Reminder = ({route, navigation, props}) => {
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;
 
+    handlePushNotification(obj, check1);
+
     getMedicine().then(data => {
       const temp = data;
       if (temp[route.params.index].reminderId !== null) {
@@ -405,13 +299,12 @@ const Reminder = ({route, navigation, props}) => {
         temp[route.params.index] = obj;
       }
       AddMedicine(temp);
-      console.log(temp, 'data with reminder');
     });
     loadstate(false);
 
-    setTimeout(() => {
-      navigation.pop();
-    }, 1000);
+    // setTimeout(() => {
+    //   navigation.pop();
+    // }, 1000);
 
     // dispatch(
     //   saveReminderRequest(
@@ -438,7 +331,6 @@ const Reminder = ({route, navigation, props}) => {
       <View style={styles.top}>
         <View style={styles.container1}>
           <TouchableOpacity
-            activeOpacity={1}
             onPress={() => {
               pickerstate(true);
             }}
@@ -480,7 +372,6 @@ const Reminder = ({route, navigation, props}) => {
           </TouchableOpacity>
           <Divider></Divider>
           <TouchableOpacity
-            activeOpacity={1}
             onPress={() => {
               navigation.navigate('ReminderDuration', {
                 date: startDate,
@@ -556,7 +447,6 @@ const Reminder = ({route, navigation, props}) => {
               }}>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
-                  activeOpacity={1}
                   style={{
                     borderRadius: breakfast ? 3 : 0,
                     alignItems: 'center',
@@ -580,7 +470,6 @@ const Reminder = ({route, navigation, props}) => {
                 </TouchableOpacity>
                 {breakfastTouchable ? (
                   <TouchableOpacity
-                    activeOpacity={1}
                     style={{
                       borderRadius: 3,
                       alignItems: 'center',
@@ -612,7 +501,6 @@ const Reminder = ({route, navigation, props}) => {
 
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
-                  activeOpacity={1}
                   style={{
                     borderRadius: lunch ? 3 : 0,
                     alignItems: 'center',
@@ -636,7 +524,6 @@ const Reminder = ({route, navigation, props}) => {
                 </TouchableOpacity>
                 {lunchTouchable ? (
                   <TouchableOpacity
-                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -667,7 +554,6 @@ const Reminder = ({route, navigation, props}) => {
               </View>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
-                  activeOpacity={1}
                   style={{
                     borderRadius: dinner ? 3 : 0,
                     alignItems: 'center',
@@ -691,7 +577,6 @@ const Reminder = ({route, navigation, props}) => {
                 </TouchableOpacity>
                 {dinnerTouchable ? (
                   <TouchableOpacity
-                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -751,7 +636,6 @@ const Reminder = ({route, navigation, props}) => {
                 alignSelf: 'center',
               }}>
               <TouchableOpacity
-                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,
@@ -779,7 +663,6 @@ const Reminder = ({route, navigation, props}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,
@@ -899,7 +782,6 @@ const Reminder = ({route, navigation, props}) => {
                 food,
                 totalReminders,
                 currentCount,
-                userMedicineId,
               );
             }}
             buttonStyle={styles.buttonStyle}

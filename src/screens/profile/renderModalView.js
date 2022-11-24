@@ -14,7 +14,6 @@ import {
   resetProfile,
 } from '../../redux/action/profileAction/editProfileAction';
 import {useDispatch, useSelector} from 'react-redux';
-import moment from 'moment';
 import Toast from 'react-native-toast-message';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';

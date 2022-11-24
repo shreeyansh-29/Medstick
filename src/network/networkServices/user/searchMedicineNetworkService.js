@@ -4,7 +4,6 @@ import RequestService from '../../requestService';
 
 class searchMedicineNetworkService{
   async searchMedicineRequest(payload) {
-    const pageNo = payload.payload;
     const Id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
     const medicineName = payload;

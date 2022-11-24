@@ -7,21 +7,16 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
-import DatePicker from 'react-native-date-picker';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
 import {TextInput} from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import {horizontalScale, verticalScale} from '../atoms/constant';
-import {colorPalette} from '../atoms/colorPalette';
-import {faCalendarDays} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import SaveButton from './saveButton';
 import {Alert} from 'react-native';
 import {showInvalidMessage} from '../atoms/invaliMessage';
-import {useDispatch, useSelector} from 'react-redux';
-import {loadSaveDoctorPrescription} from '../../redux/action/doctorPrescription/saveDoctorPrescriptionAction';
+import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid'
 import { getPrescription, savePrescription } from '../../utils/storage';
@@ -110,15 +105,6 @@ const AddPrescriptionList = ({ navigation }) => {
       if (arr !== null) {
         setArr([...arr, obj])
       }
-      else{
-        setArr([obj])
-      }
-      setTimeout(()=>{
-        navigation.navigate('AddMedicine',{
-          data:obj
-        })
-      },300)
-
     }
   };
 
