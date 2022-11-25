@@ -21,7 +21,7 @@ class Notifications {
     );
 
     PushNotification.getScheduledLocalNotifications(rn => {
-      console.log('SN -----', rn);
+      // console.log('SN -----', rn);
     });
   }
 
@@ -43,11 +43,11 @@ class Notifications {
       });
     }
   }
-  schduleNotification2(date) {
+  schduleNotification2(date, doctorName) {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Appointment!',
-      message: 'You have appointment',
+      message: 'You have scheduled appointment with ' + doctorName,
       date: date,
     });
   }

@@ -83,7 +83,6 @@ const EditProfile = ({navigation}) => {
                 result={res}
               />
             }
-            customStyles={styles.modalView}
           />
         </>
       ) : (

@@ -1,12 +1,11 @@
 import {
   View,
-  Dimensions,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
   Text,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
@@ -16,9 +15,8 @@ import {deviceWidth} from '../../../components/atoms/constant';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import CustomModal from '../../../components/molecules/customModal';
 import EditNotes from './editNotes';
-import {useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import { medicineNotesClear } from '../../../redux/action/medicineNotes/medicineNotesAction';
+import EditMedicineView from './editMedicineView';
 
 const MedicineList = ({route, navigation}) => {
   const data = route.params?.data;
@@ -26,44 +24,12 @@ const MedicineList = ({route, navigation}) => {
   const isCarousel = useRef(null);
   const [visible, setVisible] = useState(false);
   const [userMedicineId, setUserMedicineId] = useState('');
-  const dispatch= useDispatch();
-  const res = useSelector(state => state.medicineNotes?.data);
-  console.log(res, 'result......');
-
-  useEffect(() => {
-    if (res?.status === 'Success') {
-      Toast.show({
-        type: 'success',
-        text1: 'Notes Saved Successfully',
-        position: 'bottom',
-      });
-      setTimeout(() => {
-        dispatch(medicineNotesClear());
-      }, 200);
-    }
-  }, [res]);
+  const [edit, setEdit] = useState(false);
+  const [medData, setMedData] = useState('');
 
   const MedicineDetailCard = ({item, index}) => {
     return (
       <TouchableOpacity activeOpacity={1}>
-        <CustomModal
-          type="fade"
-          modalVisible={visible}
-          onRequestClose={() => setVisible(!visible)}
-          customStyles={{
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(52, 52, 52, 0.3)',
-          }}
-          modalView={
-            <EditNotes
-              userMedicineId={userMedicineId}
-              setVisible={setVisible}
-              res={res?.result}
-            />
-          }
-        />
         <View style={styles.container} key={index}>
           <View style={styles.top}>
             <View style={styles.medNameContainer}>
@@ -72,21 +38,10 @@ const MedicineList = ({route, navigation}) => {
               </View>
               <View style={styles.iconView}>
                 <TouchableOpacity
+                  activeOpacity={1}
                   onPress={() => {
-                    navigation?.navigate(
-                      'AddMedicineStack',
-                      {screen: 'AddMedicine'},
-                      {
-                        itemDescription: item.description,
-                        itemDosageType: item.dosageQuantity,
-                        itemDosageUnit: item.dosageUnit,
-                        Stock: item.stock,
-                        doctorName: item.doctorName,
-                        contact: item.contact,
-                        specialization: item.specialization,
-                        loaction: item.location,
-                      },
-                    );
+                    setEdit(true);
+                    setMedData(item);
                   }}>
                   <FontAwesomeIcon
                     icon={faPencil}
@@ -95,6 +50,7 @@ const MedicineList = ({route, navigation}) => {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
+                  activeOpacity={1}
                   onPress={() => {
                     setVisible(true);
                     setUserMedicineId(item?.userMedicineId);
@@ -114,7 +70,9 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Description : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.description}</Text>
+                    <Text style={styles.itemData}>
+                      {item.medicineDescription}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -189,9 +147,19 @@ const MedicineList = ({route, navigation}) => {
     );
   };
 
-  return (
-    <>
+  return edit ? (
+    <EditMedicineView item={medData} setEdit={setEdit} />
+  ) : (
+    <View style={styles.container1}>
       <SubHeader title={'Medicine Description'} navigation={navigation} />
+      <CustomModal
+        type="fade"
+        modalVisible={visible}
+        onRequestClose={() => setVisible(!visible)}
+        modalView={
+          <EditNotes userMedicineId={userMedicineId} setVisible={setVisible} />
+        }
+      />
       <View style={styles.carouselContainer}>
         <Carousel
           layout="default"
@@ -238,18 +206,16 @@ const MedicineList = ({route, navigation}) => {
           inactiveDotColor={'grey'}
         />
       </View>
-      <Toast />
-    </>
+      <Toast visibilityTime={500} />
+    </View>
   );
 };
 
 export default MedicineList;
-const HEIGHT = Dimensions.get('screen').height;
 
 const styles = StyleSheet.create({
   container1: {
     backgroundColor: colorPalette.backgroundColor,
-    alignItems: 'center',
     flex: 1,
   },
   carouselContainer: {
@@ -310,3 +276,19 @@ const styles = StyleSheet.create({
   },
   prescriptionText: {fontSize: 21},
 });
+
+// {
+//   navigation?.navigate('AddMedicineStack', {
+//     screen: 'AddMedicine',
+//     params: {
+//       itemDescription: item.medicineDescription,
+//       itemDosageType: item.dosageQuantity,
+//       itemDosageUnit: item.dosageUnit,
+//       Stock: item.stock,
+//       doctorName: item.doctorName,
+//       contact: item.contact,
+//       specialization: item.specialization,
+//       loaction: item.location,
+//     },
+//   });
+// }

@@ -10,7 +10,7 @@ import {colorPalette} from '../../components/atoms/colorPalette';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
 import {useIsFocused} from '@react-navigation/native';
-import {getPrescription, savePrescription} from '../../utils/storage';
+import {AddMedicine, getMedicine} from '../../utils/storage';
 
 const AppointmentReminderList = ({navigation}) => {
   const isFocused = useIsFocused();
@@ -22,22 +22,20 @@ const AppointmentReminderList = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [doctorName, setDoctorName] = useState([]);
 
-  const showAlert = () => {
-    Alert.alert('Add Some Precription First', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
-  };
-
   useEffect(() => {
     if (isFocused) {
-      getPrescription().then(data => {
+      getMedicine().then(data => {
+        console.log(data);
         if (data !== null && data.length !== 0) {
-          setDoctorName(data);
+          let doctorList = [];
           let reminderList = [];
           data.map(item => {
+            if (item.doctorName !== null && item.medicineId !== null) {
+              doctorList.push({
+                doctorName: item.doctorName,
+                prescriptionId: item.prescriptionId,
+              });
+            }
             if (item.appointmentList.length !== 0) {
               item.appointmentList.map(ele => {
                 reminderList.push(ele);
@@ -45,15 +43,14 @@ const AppointmentReminderList = ({navigation}) => {
             }
           });
           setAppointments(reminderList);
-        } else {
-          setAppointments([]);
+          setDoctorName(doctorList);
         }
       });
     }
   }, [isFocused]);
 
   const onClickDeleteAppointment = deleteId => {
-    getPrescription().then(data => {
+    getMedicine().then(data => {
       let updatedList = data;
       updatedList.map(a => {
         if (a.appointmentList.length !== 0) {
@@ -64,10 +61,9 @@ const AppointmentReminderList = ({navigation}) => {
           });
         }
       });
-      savePrescription(updatedList);
-      getPrescription().then(data => {
+      AddMedicine(updatedList);
+      getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
-          setDoctorName(data);
           let reminderList = [];
           data.map(item => {
             if (item.appointmentList.length !== 0) {
@@ -77,9 +73,6 @@ const AppointmentReminderList = ({navigation}) => {
             }
           });
           setAppointments(reminderList);
-        } else {
-          setAppointments([]);
-          showAlert();
         }
       });
     });

@@ -17,12 +17,10 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import CustomImage from '../../../components/atoms/customImage';
 import {week} from '../../../constants/constants';
 import uuid from 'react-native-uuid';
 import PushNotification from 'react-native-push-notification';
-
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
@@ -37,9 +35,7 @@ const MedicinePanel = ({navigation}) => {
     }).start();
   }, []);
 
-
-    
-  const deleteMedicineLocal = (index,name) => {
+  const deleteMedicineLocal = (index, name) => {
     medicineResponse.splice(index, 1);
     AddMedicine(medicineResponse);
     deleteRem(name);
@@ -102,7 +98,7 @@ const MedicinePanel = ({navigation}) => {
 
       // console.log('<================ FINAL DATA ================>', data[i]);
       updateArray.push(data[i]);
-      // console.log('end with loop');
+      // console.log('end with loop');MedicineList
     }
     AddMedicine(updateArray);
   };
@@ -126,16 +122,7 @@ const MedicinePanel = ({navigation}) => {
       }
     });
   };
-  const getUser = async () => {
-    const user = await GoogleSignin.getCurrentUser();
-    
-  };
 
-  useEffect(() => {
-    if (isFocused) {
-      getUser();
-    }
-  }, [isFocused]);
   useEffect(() => {
     medicineResponse.map(item => {
       item.reminderId !== null ? MedicineHistory(medicineResponse) : null;
@@ -149,15 +136,13 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              if (name !== null) {
-                navigation.navigate('MedicinePanelStack', {
-                  screen: 'MedicineList',
-                  params: {
-                    data: medicineResponse,
-                    index: index,
-                  },
-                });
-              }
+              navigation.navigate('MedicinePanelStack', {
+                screen: 'MedicineList',
+                params: {
+                  data: medicineResponse,
+                  index: index,
+                },
+              });
             }}>
             <Card style={Styles.card}>
               <View style={Styles.listView}>
@@ -178,8 +163,14 @@ const MedicinePanel = ({navigation}) => {
                           {item.dosageType}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Dosage: </Text>
-                          {item.dosageUnit + item.dosageQuantity}
+                          <Text style={{color: 'black'}}>Dosage Power: </Text>
+                          {item.dosagePower}
+                        </ListItem.Subtitle>
+                        <ListItem.Subtitle>
+                          <Text style={{color: 'black'}}>
+                            Dosage Quantity:{' '}
+                          </Text>
+                          {item.dosageQuantity}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Stock: </Text>
@@ -218,7 +209,8 @@ const MedicinePanel = ({navigation}) => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
                             text: 'Delete',
-                            onPress: () => deleteMedicineLocal(index, item.medicineName),
+                            onPress: () =>
+                              deleteMedicineLocal(index, item.medicineName),
                           },
                           {
                             text: 'Cancel',
