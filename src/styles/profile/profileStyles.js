@@ -47,26 +47,9 @@ const styles = StyleSheet.create({
   subView2: {
     marginHorizontal: 9,
     marginTop: 4,
-    // backgroundColor: 'red',
     fontSize: 17,
   },
   content: {color: 'grey', fontSize: 15},
-  modalView: {
-    backgroundColor: 'white',
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    height: '90%',
-  },
 
   //editProfile
   parentContainer: {

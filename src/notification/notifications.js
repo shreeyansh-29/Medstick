@@ -21,7 +21,7 @@ class Notifications {
     );
 
     PushNotification.getScheduledLocalNotifications(rn => {
-      console.log('SN -----', rn);
+      // console.log('SN -----', rn);
     });
   }
 

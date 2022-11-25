@@ -13,10 +13,8 @@ const initialState = {
 export const deleteCaretakerReqReducer = (state = initialState, action) => {
   switch (action.type) {
     case DELETE_CARETAKER_REQ_REQUEST:
-      console.log(action);
       return {...state, isLoading: true};
     case DELETE_CARETAKER_REQ_SUCCESS:
-      console.log(action);
       return {...state, data: action.payload, isLoading: false};
     case DELETE_CARETAKER_REQ_ERROR:
       return {...state, error: action.payload, isLoading: false};

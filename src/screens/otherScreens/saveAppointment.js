@@ -21,7 +21,12 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {hour} from '../../constants/constants';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
-import {getPrescription, savePrescription} from '../../utils/storage';
+import {
+  AddMedicine,
+  getMedicine,
+  getPrescription,
+  savePrescription,
+} from '../../utils/storage';
 import uuid from 'react-native-uuid';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
@@ -41,21 +46,25 @@ const AppointmentReminders = ({navigation, route}) => {
       appointmentId: appointmentId,
     };
 
-    getPrescription().then(data => {
-      let a = b => b.prescriptionId == prescriptionId;
-      let index = data.findIndex(a);
-      const temp = data;
-      temp[index].appointmentList.push(obj);
-      savePrescription(temp);
-      Toast.show({
-        type: 'success',
-        text1: 'Appointment Saved Successfully',
-        position: 'bottom',
-      });
-      setTimeout(() => {
-        navigation.pop();
-      }, 1000);
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        let updatedList = data;
+        updatedList.map((item, index) => {
+          if (item.prescriptionId === prescriptionId) {
+            updatedList[index].appointmentList.push(obj);
+          }
+        });
+        AddMedicine(updatedList);
+        Toast.show({
+          type: 'success',
+          text1: 'Appointment Saved Successfully',
+          position: 'bottom',
+        });
+      }
     });
+    setTimeout(() => {
+      navigation.pop();
+    }, 1000);
   };
 
   return (

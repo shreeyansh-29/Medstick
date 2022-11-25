@@ -3,6 +3,7 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
+  StyleSheet,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -25,10 +26,10 @@ const RenderModalVisible = ({
   setEdit,
   result,
 }) => {
-  const res = useSelector(state => state.editProfile);
   const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
   const dispatch = useDispatch();
+  const res = useSelector(state => state.editProfile);
 
   useEffect(() => {
     if (res?.data?.status === 'Success') {
@@ -41,7 +42,7 @@ const RenderModalVisible = ({
         setModalVisible(false);
         setEdit(false);
         dispatch(resetProfile());
-      }, 3000);
+      }, 1000);
     } else if (res?.data?.status === 'Failed') {
       Toast.show({
         type: 'error',
@@ -68,69 +69,98 @@ const RenderModalVisible = ({
   };
 
   return (
-    <View>
-      <View style={{alignItems: 'flex-end', paddingVertical: 10}}>
-        {isCancel ? (
-          <>
-            <TouchableOpacity onPress={onPress} activeOpacity={1}>
-              <FontAwesomeIcon
-                icon={faCircleXmark}
-                size={26}
-                color={colorPalette.mainColor}
-              />
-            </TouchableOpacity>
-          </>
-        ) : null}
+    <View style={styles.mainView}>
+      <View style={styles.customStyles}>
+        <View style={styles.closeBtn}>
+          {isCancel ? (
+            <>
+              <TouchableOpacity onPress={onPress} activeOpacity={1}>
+                <FontAwesomeIcon
+                  icon={faCircleXmark}
+                  size={26}
+                  color={colorPalette.mainColor}
+                />
+              </TouchableOpacity>
+            </>
+          ) : null}
+        </View>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={'padding'}
+          keyboardVerticalOffset={avoidKeyboardRequired ? -125 : -500}>
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}>
+            <Formik
+              validator={() => ({})}
+              enableReinitialize
+              initialValues={{
+                bio: result?.bio,
+                contact: result?.contact,
+                dateofBirth: result?.dateOfBirth,
+                gender: result?.gender,
+                country: result?.country,
+                bloodGroup: result?.bloodGroup,
+                address: result?.address,
+                state: result?.state,
+              }}
+              validationSchema={profileValidationSchema}
+              onSubmit={values => {
+                handleClick(values);
+              }}>
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+                setFieldValue,
+              }) => (
+                <ProfileForm
+                  errors={errors}
+                  touched={touched}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  setFieldValue={setFieldValue}
+                  handleSubmit={handleSubmit}
+                  values={values}
+                />
+              )}
+            </Formik>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={'padding'}
-        keyboardVerticalOffset={avoidKeyboardRequired ? -125 : -500}>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}>
-          <Formik
-            validator={() => ({})}
-            enableReinitialize
-            initialValues={{
-              bio: result?.bio,
-              contact: result?.contact,
-              dateofBirth: result?.dateOfBirth,
-              gender: result?.gender,
-              country: result?.country,
-              bloodGroup: result?.bloodGroup,
-              address: result?.address,
-              state: result?.state,
-            }}
-            validationSchema={profileValidationSchema}
-            onSubmit={values => {
-              handleClick(values);
-            }}>
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-              setFieldValue,
-            }) => (
-              <ProfileForm
-                errors={errors}
-                touched={touched}
-                handleChange={handleChange}
-                handleBlur={handleBlur}
-                setFieldValue={setFieldValue}
-                handleSubmit={handleSubmit}
-                values={values}
-              />
-            )}
-          </Formik>
-        </ScrollView>
-      </KeyboardAvoidingView>
-      <Toast visibilityTime={3000} />
+      <Toast visibilityTime={500} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  mainView: {
+    height: '100%',
+    justifyContent: 'flex-end',
+  },
+  customStyles: {
+    backgroundColor: 'white',
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    paddingHorizontal: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    height: '90%',
+  },
+  closeBtn: {
+    alignItems: 'flex-end',
+    paddingVertical: 10,
+    marginRight: 6,
+  },
+});
 
 export default RenderModalVisible;

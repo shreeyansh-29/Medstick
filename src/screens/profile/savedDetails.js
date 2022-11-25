@@ -10,6 +10,10 @@ const SavedDetails = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.getUserProfile?.data);
   const loading = useSelector(state => state.getUserProfile?.isLoading);
+  const dateHandler = date => {
+    let dob = date.split('-');
+    return dob[2] + '-' + dob[1] + '-' + dob[0];
+  };
 
   useEffect(() => {
     dispatch(getUserProfileRequest());
@@ -54,7 +58,9 @@ const SavedDetails = () => {
                 </View>
 
                 <View style={styles.subView2}>
-                  <Text style={styles.content}>{res?.dateOfBirth}</Text>
+                  <Text style={styles.content}>
+                    {dateHandler(res?.dateOfBirth)}
+                  </Text>
                 </View>
               </View>
             </View>

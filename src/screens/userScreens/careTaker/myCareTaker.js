@@ -22,8 +22,6 @@ const MyCareTaker = ({navigation}) => {
   useEffect(() => {
     if (res?.data !== null) {
       setCaretaker(res.data);
-    } else if (res?.data === null) {
-      setCaretaker([]);
     }
   }, [res]);
 

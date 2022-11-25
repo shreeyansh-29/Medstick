@@ -47,7 +47,7 @@ export const prescriptionValidationSchema = yup.object().shape({
     .min(10, ({min}) => `Contact number must be ${min} characters`)
     .max(10, ({max}) => `Contact number can be only ${max} characters`)
     .required('Contact is Required*')
-    .matches(/^[0-9]+$/, "Must be only digits")
+    .matches(/^[0-9]+$/, 'Must be only digits')
     .nullable(),
   location: yup.string().required('Location is Required*').nullable(),
   image: yup.string().required('Image is Required*').nullable(),
@@ -86,5 +86,13 @@ export const addMedicineSchema = yup.object().shape({
     .string()
     .required('Notify me when is Required*')
     .matches(/^[0-9]+$/, 'Must be only digits')
+    .nullable(),
+});
+
+export const updateNotesSchema = yup.object().shape({
+  review: yup
+    .string()
+    .min(10, ({min}) => `Review must be more than ${min} characters*`)
+    .max(120, ({max}) => `Review can be only of ${max} characters*`)
     .nullable(),
 });

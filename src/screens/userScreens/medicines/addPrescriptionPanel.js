@@ -23,7 +23,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomButton from '../../../components/atoms/customButton';
 import Toast from 'react-native-toast-message';
 import CustomModal from '../../../components/molecules/customModal';
-import {getMedicine, getPrescription} from '../../../utils/storage';
+import {getPrescription} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
 
 const AddPrescriptionPanel = ({navigation, route}) => {
