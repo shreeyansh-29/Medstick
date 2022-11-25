@@ -19,6 +19,7 @@ import MedicineReport from '../../screens/userScreens/patients/medicineReport';
 import MedicineImages from '../../screens/userScreens/patients/medicineImages';
 import SaveAppointment from '../../screens/otherScreens/saveAppointment';
 import AppointmentReminderList from '../../screens/otherScreens/appointmentReminderList';
+import Feedback from '../../screens/otherScreens/feedback';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ const AccountStack = () => {
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="About" component={About} />
+      <Stack.Screen name="Feedback" component={Feedback} />
       <Stack.Screen name="SavedDetails" component={SavedDetails} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="Prescriptions" component={Prescriptions} />

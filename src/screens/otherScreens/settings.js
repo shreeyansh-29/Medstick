@@ -30,6 +30,14 @@ const Settings = ({navigation}) => {
           titleStyle={styles.settingItems}
           onPress={() => navigation.navigate('About')}
         />
+
+        <SettingsList.Item
+          hasNavArrow={false}
+          title="Feedback"
+          titleStyle={styles.settingItems}
+          onPress={() => navigation.navigate('Feedback')}
+        />
+
         <SettingsList.Item
           hasNavArrow={false}
           title="Share with friends and family"
