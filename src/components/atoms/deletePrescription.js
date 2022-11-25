@@ -1,4 +1,4 @@
-import {View, Text, Alert} from 'react-native';
+import {View, Alert} from 'react-native';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
