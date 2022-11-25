@@ -10,12 +10,7 @@ import {colorPalette} from '../../components/atoms/colorPalette';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
 import {useIsFocused} from '@react-navigation/native';
-import {
-  AddMedicine,
-  getMedicine,
-  getPrescription,
-  savePrescription,
-} from '../../utils/storage';
+import {AddMedicine, getMedicine} from '../../utils/storage';
 
 const AppointmentReminderList = ({navigation}) => {
   const isFocused = useIsFocused();
@@ -27,23 +22,15 @@ const AppointmentReminderList = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [doctorName, setDoctorName] = useState([]);
 
-  const showAlert = () => {
-    Alert.alert('Add Some Precription First', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
-  };
-
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
+        console.log(data);
         if (data !== null && data.length !== 0) {
           let doctorList = [];
           let reminderList = [];
           data.map(item => {
-            if (item.doctorName !== null) {
+            if (item.doctorName !== null && item.medicineId !== null) {
               doctorList.push({
                 doctorName: item.doctorName,
                 prescriptionId: item.prescriptionId,
