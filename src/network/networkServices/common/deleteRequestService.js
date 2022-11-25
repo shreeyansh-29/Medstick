@@ -5,7 +5,6 @@ import {DELETE_REQUEST} from '../../../constants/apiUrl';
 class DeleteRequestService {
   async putDeleteRequest(payload) {
     const requestId = payload.payload;
-    console.log(payload,"payloaddddd");
     const token = await AsyncStorage.getItem('accessToken');
     const id = await AsyncStorage.getItem('user_id');
     return await RequestService.putRequest(

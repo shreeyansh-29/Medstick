@@ -28,6 +28,7 @@ const SubHeader = ({
   return (
     <View style={styles.subHeader}>
       <TouchableOpacity
+        activeOpacity={1}
         style={styles.backIcon}
         onPress={() => {
           navigation.pop();

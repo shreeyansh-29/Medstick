@@ -19,7 +19,7 @@ import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Toast from 'react-native-toast-message';
 import {hour} from '../../constants/constants';
-import {getPrescription, savePrescription} from '../../utils/storage';
+import {AddMedicine, getMedicine} from '../../utils/storage';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -41,7 +41,7 @@ const UpdateAppointment = ({
       time: values.time,
       appointmentId: appointmentId,
     };
-    getPrescription().then(data => {
+    getMedicine().then(data => {
       let updatedList = data;
       updatedList.map(item => {
         if (item.appointmentList.length !== 0) {
@@ -51,13 +51,13 @@ const UpdateAppointment = ({
             }
           });
         }
-        savePrescription(updatedList);
+        AddMedicine(updatedList);
         Toast.show({
           type: 'success',
           text1: 'Updated Successfully',
         });
 
-        getPrescription().then(data => {
+        getMedicine().then(data => {
           if (data !== null && data.length !== 0) {
             let reminderList = [];
             data.map(item => {
@@ -70,12 +70,11 @@ const UpdateAppointment = ({
             setAppointments(reminderList);
           }
         });
-
-        setTimeout(() => {
-          setModalVisible(false);
-        }, 1000);
       });
     });
+    setTimeout(() => {
+      setModalVisible(false);
+    }, 1000);
   };
 
   return (

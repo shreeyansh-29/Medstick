@@ -1,11 +1,5 @@
-import {
-  View,
-  Animated,
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
+import {View, KeyboardAvoidingView, ScrollView, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Formik} from 'formik';
 import AddMedicineForm from './addMedicineForm';
@@ -19,7 +13,6 @@ import CheckConnection from '../../../connectivity/checkConnection';
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
 const AddMedicineLocal = ({navigation}) => {
-  const progress = useRef(new Animated.Value(0)).current;
   const [doseType, setDoseType] = useState('');
   const [pill, setPill] = useState('Tablet');
   const [prescriptionObj, setPrescriptionObj] = useState({
@@ -75,14 +68,6 @@ const AddMedicineLocal = ({navigation}) => {
     checkconnection();
   }, []);
 
-  useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
   const saveMedicineLocal = values => {
     let userMedicineId = uuid.v4();
     let medicineId = uuid.v4();
@@ -101,7 +86,7 @@ const AddMedicineLocal = ({navigation}) => {
       present: 'true',
       dosageType: pill,
       dosageQuantity: values.dosageQuantity,
-      dosagePower: values.dosagePower + values.doseType,
+      dosagePower: values.dosagePower + ' ' + values.doseType,
       leftStock: values.notify,
       stock: values.stocks,
       reminderId: null,
@@ -119,7 +104,7 @@ const AddMedicineLocal = ({navigation}) => {
       currentCount: null,
       historyList: [],
       appointmentList: prescriptionObj.appointmentList,
-      medicineNotes: '',
+      notes: '',
     };
 
     getMedicine().then(data => {

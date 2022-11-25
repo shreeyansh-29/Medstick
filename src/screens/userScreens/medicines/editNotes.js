@@ -4,115 +4,169 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   ScrollView,
+  TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import CustomButton from '../../../components/atoms/customButton';
 import {colorPalette} from '../../../components/atoms/colorPalette';
-import {useDispatch, useSelector} from 'react-redux';
-import {medicineNotesRequest} from '../../../redux/action/medicineNotes/medicineNotesAction';
 import Toast from 'react-native-toast-message';
 import {Formik} from 'formik';
 import {updateNotesSchema} from '../../../constants/validations';
 import InputField from '../../../components/atoms/inputField';
+import {AddMedicine, getMedicine} from '../../../utils/storage';
+import {useIsFocused} from '@react-navigation/native';
+import {faCircleXmark} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
-const EditNotes = ({userMedicineId, res, setVisible}) => {
-  console.log(res);
-  const dispatch = useDispatch();
-  const resultNotes = useSelector(state => state.medicineNotes?.data); 
+const EditNotes = ({userMedicineId, setVisible}) => {
+  const isFocused = useIsFocused();
+  const [note, setNote] = useState('');
+  useEffect(() => {
+    if (isFocused) {
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          data.map((item, index) => {
+            if (item.userMedicineId === userMedicineId) {
+              setNote(data[index].notes);
+            }
+          });
+        }
+      });
+    }
+  }, [isFocused]);
+
+  const saveMedicineNotes = (notes, userMedicineId) => {
+    getMedicine().then(data => {
+      let updatedList = data;
+      updatedList.map((item, index) => {
+        if (item.userMedicineId === userMedicineId) {
+          updatedList[index].notes = notes;
+        }
+        AddMedicine(updatedList);
+      });
+    });
+    Toast.show({
+      text1: 'Updated Successfully',
+      type: 'success',
+    });
+    setTimeout(() => {
+      setVisible(false);
+    }, 1000);
+  };
 
   return (
-    <View
-      style={{
-        height: 280,
-        width: Dimensions.get('window').width / 1.1,
-        backgroundColor: '#fff',
-        borderRadius: 10,
-      }}>
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={'padding'}
-        keyboardVerticalOffset={avoidKeyboardRequired ? -125 : -500}>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}>
-          <Formik
-            validator={() => ({})}
-            enableReinitialize
-            initialValues={{
-              notes: res?.notes,
-            }}
-            validationSchema={updateNotesSchema}
-            onSubmit={values => {
-              let notes = values.notes;
-              dispatch(medicineNotesRequest({notes, userMedicineId}));
-              if(resultNotes.status === "Success"){
-                setVisible(false);
-              }
-            }}>
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-            }) => (
-              <View style={{}}>
-                <View style={{marginVertical: 10}}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 20,
-                      fontWeight: '700',
-                      marginBottom: 8,
-                      textAlign: 'center',
-                    }}>
-                    Notes
-                  </Text>
-                </View>
-                <View style={{width: '90%', alignSelf: 'center'}}>
-                  <InputField
-                    multiline={true}
-                    numberOfLines={2}
-                    mode="outlined"
-                    label="Notes"
-                    outlineColor="#02aba6"
-                    activeOutlineColor="#02aba6"
-                    value={values.notes}
-                    styles={{height: 100}}
-                    selectTextOnFocus={true}
-                    text="notes"
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
+    <View style={styles.mainHead}>
+      <View style={styles.innerBody}>
+        <TouchableOpacity
+          onPress={() => setVisible(false)}
+          activeOpacity={1}
+          style={styles.closeButton}>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            color={colorPalette.redPercentageColor}
+            size={24}
+          />
+        </TouchableOpacity>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>Review</Text>
+        </View>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={'padding'}
+          keyboardVerticalOffset={avoidKeyboardRequired ? -125 : -500}>
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}>
+            <Formik
+              validator={() => ({})}
+              enableReinitialize
+              initialValues={{
+                review: note,
+              }}
+              validationSchema={updateNotesSchema}
+              onSubmit={values => {
+                let notes = values.review;
+                saveMedicineNotes(notes, userMedicineId);
+              }}>
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+              }) => (
+                <View style={styles.formBody}>
+                  <View style={styles.textBox}>
+                    <InputField
+                      multiline={true}
+                      mode="outlined"
+                      outlineColor="#02aba6"
+                      activeOutlineColor="#02aba6"
+                      value={values.review}
+                      styles={styles.field}
+                      selectTextOnFocus={true}
+                      text="review"
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      label="Add Review"
+                    />
+                    {errors.review && touched.review && (
+                      <Text style={styles.errorText}>{errors.review}</Text>
+                    )}
+                  </View>
+                  <CustomButton
+                    title={'Save'}
+                    handleSubmit={handleSubmit}
+                    contStyles={styles.contStyles}
+                    btnStyles={styles.btnStyles}
                   />
-                  {errors.notes && touched.notes && (
-                    <Text style={{color: 'red'}}>{errors.notes}</Text>
-                  )}
                 </View>
-                <CustomButton
-                  title={'Save'}
-                  handleSubmit={handleSubmit}
-                  contStyles={{
-                    marginVertical: 40,
-                    width: '30%',
-                    alignSelf: 'center',
-                  }}
-                  btnStyles={{
-                    backgroundColor: colorPalette.mainColor,
-                    borderRadius: 5,
-                    paddingHorizontal: 20,
-                  }}
-                />
-              </View>
-            )}
-          </Formik>
-        </ScrollView>
-      </KeyboardAvoidingView>
-      <Toast />
+              )}
+            </Formik>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+      <Toast visibilityTime={500} />
     </View>
   );
 };
+const styles = StyleSheet.create({
+  mainHead: {
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.8)',
+  },
+  innerBody: {
+    height: 370,
+    width: Dimensions.get('window').width / 1.1,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+  },
+  closeButton: {alignSelf: 'flex-end', marginRight: 14, marginTop: 8},
+  textContainer: {alignItems: 'center'},
+  title: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  formBody: {alignItems: 'center', flex: 1},
+  textBox: {width: '90%', marginVertical: 15},
+  field: {height: 180},
+  errorText: {color: 'red', marginTop: 6},
+  contStyles: {
+    marginTop: 20,
+    width: '30%',
+  },
+  btnStyles: {
+    backgroundColor: colorPalette.mainColor,
+    borderRadius: 5,
+    paddingHorizontal: 20,
+  },
+});
 
 export default EditNotes;

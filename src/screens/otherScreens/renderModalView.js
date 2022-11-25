@@ -17,14 +17,19 @@ import PrescriptionForm from '../userScreens/medicines/prescriptionForm';
 import Toast from 'react-native-toast-message';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
-import {getPrescription, savePrescription} from '../../utils/storage';
+import {
+  AddMedicine,
+  getMedicine,
+  getPrescription,
+  savePrescription,
+} from '../../utils/storage';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
 const RenderModalView = ({item, setEdit, navigation}) => {
   const [visible, setVisible] = useState(false);
   const [load, loadstate] = useState(false);
-  const [uri, setUri] = useState('');
+  const [uri, setUri] = useState(item.prescriptionUrl);
   const images = [
     {
       url: uri,
@@ -43,6 +48,23 @@ const RenderModalView = ({item, setEdit, navigation}) => {
       prescriptionUrl: values.image,
       appointmentList: item.appointmentList,
     };
+
+    getMedicine().then(data => {
+      if (data !== null) {
+        let updateList = data;
+        let a = b => b.prescriptionId == prescription_id;
+        let index = updateList.findIndex(a);
+        updateList[index].prescriptionId = obj.prescriptionId;
+        updateList[index].doctorName = obj.doctorName;
+        updateList[index].specialization = obj.specialization;
+        updateList[index].contact = obj.contact;
+        updateList[index].location = obj.location;
+        updateList[index].prescriptionUrl = obj.prescriptionUrl;
+        updateList[index].appointmentList = obj.appointmentList;
+
+        AddMedicine(updateList);
+      }
+    });
 
     getPrescription().then(data => {
       if (data !== null) {

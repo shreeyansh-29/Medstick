@@ -9,7 +9,6 @@ import DeleteRequestService from '../../../network/networkServices/common/delete
 export function* deletePatientRequestSaga(data) {
   try {
     let response = yield call(DeleteRequestService.putDeleteRequest, data);
-    console.log(response, "res");
     yield put(deletePatientReqSuccess(response));
   } catch (error) {
     yield put(deletePatientReqError(error));
