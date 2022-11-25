@@ -11,6 +11,7 @@ export const profileValidationSchema = yup.object().shape({
     .min(10, ({min}) => `Contact number must be ${min} characters`)
     .max(10, ({max}) => `Contact number can be only ${max} characters`)
     .required('Contact is Required*')
+    .matches(/^[0-9]+$/, 'Must be only digits')
     .nullable(),
   dateofBirth: yup.string().required('Date of Birth is Required*').nullable(),
   gender: yup.string().required('Gender is Required*').nullable(),
@@ -46,6 +47,7 @@ export const prescriptionValidationSchema = yup.object().shape({
     .min(10, ({min}) => `Contact number must be ${min} characters`)
     .max(10, ({max}) => `Contact number can be only ${max} characters`)
     .required('Contact is Required*')
+    .matches(/^[0-9]+$/, "Must be only digits")
     .nullable(),
   location: yup.string().required('Location is Required*').nullable(),
   image: yup.string().required('Image is Required*').nullable(),
@@ -72,8 +74,17 @@ export const addMedicineSchema = yup.object().shape({
   dosageQuantity: yup
     .string()
     .required('Dosage Quantity is Required*')
+    .matches(/^[0-9]+$/, 'Must be only digits')
     .nullable(),
   dosagePower: yup.string().required('Dosage Power is Required*').nullable(),
-  stocks: yup.string().required('Stocks are Required*').nullable(),
-  notify: yup.string().required('Notify me when is Required*').nullable(),
+  stocks: yup
+    .string()
+    .required('Stocks are Required*')
+    .matches(/^[0-9]+$/, 'Must be only digits')
+    .nullable(),
+  notify: yup
+    .string()
+    .required('Notify me when is Required*')
+    .matches(/^[0-9]+$/, 'Must be only digits')
+    .nullable(),
 });

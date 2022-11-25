@@ -38,7 +38,6 @@ import {saveReminderWatcherSaga} from './saveReminder/saveReminderWatcherSaga';
 import {getReminderWatcherSaga} from './saveReminder/getReminderWatcherSaga';
 import {watchUpdateAppointmentSaga} from './appointmentSaga/updateAppointmentWatcherSaga';
 import {watchDeletePatientReqSaga} from './patients/deletePatientReqSaga';
-import { feedbackWatcherSaga } from './profileSaga/feedbackSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -82,6 +81,5 @@ export default function* RootSaga() {
     saveReminderWatcherSaga(),
     getReminderWatcherSaga(),
     watchUpdateAppointmentSaga(),
-    feedbackWatcherSaga(),
   ]);
 }

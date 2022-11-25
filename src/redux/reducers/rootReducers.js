@@ -40,7 +40,6 @@ import { saveReminderReducer } from './Reminder/saveReminderReducer';
 import { getReminderReducer } from './Reminder/getReminderReducer';
 import getUserMedicineReducer from './userMedicine/getUserMedicineReducer';
 import { MedicineNotesReducer } from './medicineNotesReducer/medicineNotesReducer';
-import { feedbackReducer } from './profileReducer/feedbackReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -83,7 +82,6 @@ const rootReducer = combineReducers({
   getReminder: getReminderReducer,
   getUserMedicineReducer:getUserMedicineReducer,
   medicineNotes: MedicineNotesReducer,
-  feedback: feedbackReducer,
 });
 
 export default rootReducer;

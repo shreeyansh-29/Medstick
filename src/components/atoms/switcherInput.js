@@ -1,9 +1,8 @@
 import React from 'react';
 import {View, Switch, Text, StyleSheet} from 'react-native';
-import { colorPalette } from './colorPalette';
+import {colorPalette} from './colorPalette';
 
 export default function ({value, onChange, description}) {
-
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -12,12 +11,13 @@ export default function ({value, onChange, description}) {
       <View style={styles.rightContainer}>
         <Switch
           ios_backgroundColor={'black'}
-          trackColor={{ false: colorPalette.GREY, true: colorPalette.BLUE, }}
+          trackColor={{false: colorPalette.GREY, true: colorPalette.BLUE}}
           value={value}
-          onValueChange={value => onChange(value)}/>
+          onValueChange={value => onChange(value)}
+        />
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   leftContainer: {
     flex: 1,
@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
   rightContainer: {
     flex: 1,
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   descriptionText: {
     fontWeight: 'bold',
-    color: colorPalette.BLUE
-  }
+    color: colorPalette.BLUE,
+  },
 });

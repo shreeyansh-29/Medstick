@@ -13,7 +13,6 @@ import {
   Pushnotificationforeground,
 } from './src/screens/userScreens/reminder/alarm/pushNotificationConfig.js';
 
-
 PushNotification.configure({
   onAction: function (notification) {
     if (notification.action === 'Open app to mark') {

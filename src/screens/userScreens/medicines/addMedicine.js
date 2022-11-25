@@ -628,7 +628,7 @@ const AddMedicines = ({navigation, route}) => {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={Styles.touchableOpacity}
               onPress={() =>
                 addMedicineInLocalStorage(
@@ -644,7 +644,7 @@ const AddMedicines = ({navigation, route}) => {
                 )
               }>
               <SaveButton />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </KeyboardAvoidingView>
         </ScrollView>
       </View>

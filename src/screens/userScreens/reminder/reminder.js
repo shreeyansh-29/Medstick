@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
@@ -16,9 +16,8 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import moment from 'moment';
 import {AddMedicine, getMedicine} from '../../../utils/storage.js';
-import PushNotification from 'react-native-push-notification';
 import uuid from 'react-native-uuid';
-import {hour, timeHours} from '../../../constants/constants';
+import {hour} from '../../../constants/constants';
 import Notifications from '../../../notification/notifications';
 
 const Reminder = ({route, navigation}) => {
@@ -40,8 +39,8 @@ const Reminder = ({route, navigation}) => {
   const [dinnerTouchable, setDinnerTouchable] = useState(false);
   const [noEndDate, setNoEndDate] = useState(false);
   const [reminderStatus, setReminderStatus] = useState(true);
-  const [totalReminders, setTotalReminders] = useState(10);
-  const [currentCount, setCurrentCount] = useState(0);
+  const totalReminders = 0;
+  const currentCount = 0;
   const [time, setTime] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
@@ -78,23 +77,16 @@ const Reminder = ({route, navigation}) => {
     let d = new Date(); // for now
     let currentTime = d.getHours() + ':' + d.getMinutes();
     const number = moment(obj.reminderTime, ['h:mm A']).format('HH:mm');
-    console.log(number, 'number');
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
-    console.log(chosenDate1.getFullYear(), chosenDate1.getMonth() + 1, chosenDate1.getDate(), 'year');
     let chosenDate2 =  chosenDate1.getFullYear() +"-"+ (chosenDate1.getMonth() + 1) +"-"+ chosenDate1.getDate();
-
-    console.log(chosenDate2, 'chosenDate1');
-    console.log(obj.startDate, 'remindert time');
 
     if (number < currentTime) {
       let dateTime = moment(chosenDate2 + ' ' + number);
-      console.log(dateTime._d, 'dateTime');
       Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
     } else {
       let dateTime = moment(obj.startDate + ' ' + number);
-      console.log(dateTime._d, 'dateTime');
       Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
     }
   };
@@ -275,27 +267,9 @@ const Reminder = ({route, navigation}) => {
     });
     loadstate(false);
 
-    // setTimeout(() => {
-    //   navigation.pop();
-    // }, 1000);
-
-    // dispatch(
-    //   saveReminderRequest(
-    //     fDatePrimary,
-    //     fDateSecondary,
-    //     days,
-    //     title,
-    //     time,
-    //     check1,
-    //     noEndDate,
-    //     reminderStatus,
-    //     frequencyTemp,
-    //     food,
-    //     totalReminders,
-    //     currentCount,
-    //     userMedicineId,
-    //   ),
-    // );
+    setTimeout(() => {
+      navigation.pop();
+    }, 1000);
   };
 
   return (

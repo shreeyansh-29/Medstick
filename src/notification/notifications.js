@@ -43,6 +43,14 @@ class Notifications {
       });
     }
   }
+  schduleNotification2(date) {
+    PushNotification.localNotificationSchedule({
+      channelId: 'reminders',
+      title: 'Appointment!',
+      message: 'You have appointment',
+      date: date,
+    });
+  }
 }
 
 export default new Notifications();

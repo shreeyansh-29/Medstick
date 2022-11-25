@@ -1,9 +1,15 @@
-import {View, Text, TouchableOpacity, FlatList, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Dimensions,
+  Alert,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Divider} from 'react-native-paper';
-import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
 import * as Animatable from 'react-native-animatable';
 import {ListItem} from 'react-native-elements';
@@ -43,16 +49,6 @@ const AddPrescriptionPanel = ({navigation, route}) => {
       });
     }
   }, [isFocused]);
-
-  // const deletePrescription = id => {
-  //   getMedicine().then(data => {
-  //     if (data !== null && data.length !== 0) {
-
-  //       let a = b => b.prescriptionId == id;
-  //       let index = data.indexOf(a);
-  //     }
-  //   });
-  // };
 
   const renderItem = ({item, index}) => {
     return (
@@ -136,9 +132,11 @@ const AddPrescriptionPanel = ({navigation, route}) => {
       <SubHeader
         navigation={navigation}
         title={'Add Prescription'}
-        // deleteBtn={deleteBtn}
-        // deletePrescription={deletePrescription}
-        // prescriptionId={prescriptionId}
+        deleteBtn={deleteBtn}
+        prescriptionId={prescriptionId}
+        setPrescriptionList={setPrescriptionList}
+        setPrescriptionId={setPrescriptionId}
+        setDeleteBtn={setDeleteBtn}
       />
       <CustomModal
         modalVisible={visible}
@@ -213,6 +211,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   Toast.show({
                     text1: 'Prescription Uploaded',
                     type: 'success',
+                    position: 'bottom',
                   });
                   setTimeout(() => {
                     navigation.pop();

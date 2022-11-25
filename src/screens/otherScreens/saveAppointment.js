@@ -23,6 +23,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {getPrescription, savePrescription} from '../../utils/storage';
 import uuid from 'react-native-uuid';
+import Notifications from '../../notification/notifications';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -30,6 +31,29 @@ const AppointmentReminders = ({navigation, route}) => {
   const [dateOpen, setDateOpen] = useState(false);
   const [saveTimeOpen, setSaveTimeOpen] = useState(false);
   let doctor = route.params.notes;
+
+  const handlePushNotification = (obj) => {
+    let d = new Date(); 
+    let currentTime = d.getHours() + ':' + d.getMinutes();
+    let currentDate = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+    const number = moment(obj.time, ['h:mm A']).format('HH:mm');
+    console.log(number,"number");
+
+    let chosenDate = new Date(obj?.date).getTime() + 24 * 60 * 60 * 1000;
+    let chosenDate1 = new Date(chosenDate);
+    let chosenDate2 =  chosenDate1.getFullYear() +"-"+ (chosenDate1.getMonth() + 1) +"-"+ chosenDate1.getDate();
+
+
+    if ((number < currentTime) && (currentDate>=obj?.date)) {
+      let dateTime = moment(chosenDate2 + ' ' + number);
+      console.log(dateTime._d,"dateTime1");
+      Notifications.schduleNotification2(dateTime._d);
+    } else {
+      let dateTime = moment(obj.date + ' ' + number);
+      console.log(dateTime._d,"dateTime2");
+      Notifications.schduleNotification2(dateTime._d);
+    }
+  };
 
   const saveAppointment = values => {
     let prescriptionId = values.doctorName;
@@ -40,6 +64,8 @@ const AppointmentReminders = ({navigation, route}) => {
       time: values.time,
       appointmentId: appointmentId,
     };
+
+    console.log(obj,"obj");
 
     getPrescription().then(data => {
       let a = b => b.prescriptionId == prescriptionId;
@@ -56,6 +82,8 @@ const AppointmentReminders = ({navigation, route}) => {
         navigation.pop();
       }, 1000);
     });
+    let check= 'appointment'
+    handlePushNotification(obj);
   };
 
   return (

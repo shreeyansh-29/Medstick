@@ -27,7 +27,6 @@ const Reminders = ({showAlert, setPercentage}) => {
     if (isFocused) {
       getMedicine().then(data => {
         if (data !== null) {
-          console.log('abc', data);
           setMedData(data);
         }
       });
@@ -76,7 +75,6 @@ const Reminders = ({showAlert, setPercentage}) => {
 
   // console.log(reminderList.length, ' <<<<<    after empty ');
   function settingReminders() {
-    console.log('data', medData);
     let abc = dailyReminders(medData);
     if (abc.length !== 0) {
       console.log(abc.length);
@@ -113,7 +111,7 @@ const Reminders = ({showAlert, setPercentage}) => {
         return item;
       }
     });
-    currentCount+=1;
+    currentCount += 1;
     let percentage = Math.floor((currentCount / totalReminders) * 100);
     console.log('percentage', currentCount);
     setPercentage(percentage);
