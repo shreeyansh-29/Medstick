@@ -5,8 +5,8 @@ export const AddMedicine = async data => {
     "data")
   try {
     await AsyncStorage.setItem('AddMedicine', JSON.stringify(data));
-    const res=JSON.parse(await AsyncStorage.getItem('AddMedicine'));
-    console.log( 'storage',res);
+    // const res=JSON.parse(await AsyncStorage.getItem('AddMedicine'));
+    // console.log( 'storage',res);
   } catch (error) {
     console.log(error);
   }
@@ -37,3 +37,20 @@ export const getPrescription = async () => {
     console.log(error);
   }
 };
+
+export const getPercentageDetails = async () =>{
+  try{
+    const response = JSON.parse(await AsyncStorage.getItem('Percentage'));
+    return response
+  }catch(error){
+    console.log(error);
+  }
+}
+
+export const savePercentageDetails = async (data) =>{
+  try{
+    await AsyncStorage.setItem('Percentage', JSON.stringify(data));
+  }catch(error){
+    console.log(error);
+  }
+}

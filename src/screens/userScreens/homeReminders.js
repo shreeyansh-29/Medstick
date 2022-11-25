@@ -5,7 +5,7 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from '../../styles/homeScreenStyles/reminderStyles';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -14,89 +14,151 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from '@fortawesome/free-regular-svg-icons';
-import {AddMedicine, getMedicine} from '../../utils/storage';
-import {useIsFocused} from '@react-navigation/native';
+import {
+  AddMedicine,
+  getMedicine,
+  getPercentageDetails,
+  savePercentageDetails,
+} from '../../utils/storage';
+import {useFocusEffect} from '@react-navigation/native';
 
-const Reminders = ({showAlert, setPercentage}) => {
-  const [medData, setMedData] = useState([]);
+const Reminders = ({showAlert, setPercentage, data}) => {
+  const medData = data;
+  console.log('1111111', medData);
   const [reminderList, setReminderList] = useState([]);
-  const isFocused = useIsFocused();
   const [totalReminders, setTotalReminders] = useState(0);
-  let currentCount = 0;
+  const [currentCount, setCurrentCount] = useState(0);
+  const [percentDetails, setPercentDetails] = useState({
+    totalReminders: 0,
+    currentCount: 0,
+    date: '',
+  });
+
+  let cC = currentCount;
+  let tR = totalReminders;
+
+  var tody_date = new Date();
+  let td_da =
+    tody_date.getFullYear() +
+    '-' +
+    (tody_date.getMonth() + 1) +
+    '-' +
+    tody_date.getDate();
+
+  let tempList = new Set();
+
   useEffect(() => {
-    if (isFocused) {
-      getMedicine().then(data => {
-        if (data !== null) {
-          console.log('abc', data);
-          setMedData(data);
-        }
-      });
+    if (medData != null) {
+      console.log('zzzz');
+      display();
     }
-  }, [isFocused]);
+    return () => {};
+  }, [medData]);
 
-  useEffect(() => {
-    if (isFocused) settingReminders();
+  function display() {
+    getPercentageDetails()
+      .then(data => {
+        // console.log('percent details', data);
+        if (data == null) {
+          let temp = {};
+          temp.date = td_da;
+          temp.totalReminders = 0;
+          temp.currentCount = 0;
+          console.log(' day conflict', temp);
+          setPercentage();
+          console.log('///////   ');
+          savePercentageDetails(temp);
+        } else if (data != null) {
+          if (data.date != '') {
+            setPercentDetails(data);
+            setCurrentCount(data.currentCount);
+            tR = data.totalReminders;
+            cC = data.currentCount;
+            console.log('tR', tR);
+            console.log('cC', cC);
+            setPercentage(Math.floor((cC / tR) * 100));
+          }
+          if (data.date !== td_da) {
+            let temp = {};
+            temp.date = td_da;
+            temp.totalReminders = 0;
+            temp.currentCount = 0;
+            savePercentageDetails(temp);
+            console.log(' day conflict', temp);
+          }
+        }
+      })
+      .then(() => {
+        if (medData.length != 0) {
+          console.log('daily rem', medData);
+          dailyReminders(medData);
+        }
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }
 
-    let t = false;
-    return () => {
-      t = true;
-    };
-  }, [isFocused, medData]);
-
-  let tempReminderList = [];
-
+  function totalMedReminders(data, index) {
+    let totalMedReminder = 0;
+    data[index].historyList.map(h => {
+      h.time.map(t => {
+        totalMedReminder += 1;
+        console.log('total med reminders', totalMedReminder);
+      });
+    });
+    return totalMedReminder;
+  }
   function dailyReminders(medicine) {
-    var tody_date = new Date();
-    let td_da =
-      tody_date.getFullYear() +
-      '-' +
-      (tody_date.getMonth() + 1) +
-      '-' +
-      tody_date.getDate();
-
-    medicine.map(item => {
+    let times = 0;
+    medicine.map((item, index) => {
+      item.totalReminders = totalMedReminders(medicine, index);
       item.historyList.map(r => {
         if (r.date === td_da) {
-          r.time.map(z => {
+          r.notTaken.split(',').map(z => {
+            times += 1;
+            setTotalReminders(times);
+            let p = percentDetails;
+            p.totalReminders = times;
+            p.currentCount = cC;
+            p.date = td_da;
+            // console.log('tR zzz aaa', p);
+            savePercentageDetails(p);
+            // console.log('percent details updated total rem', percentDetails);
+            const a = b => b.historyId == r.historyId;
+            const index = reminderList.findIndex(a);
             if (!r.taken.includes(z)) {
+              console.log('****************************************', tempList);
               let temp = {};
               temp.userMedicineId = item.userMedicineId;
               temp.medName = item.medicineName;
               temp.historyId = r.historyId;
               temp.time = z;
-              tempReminderList.push(temp);
-              item.totalReminders += 1;
+              console.log('push', r.time);
+              tempList.add(temp);
+              setReminderList([...tempList]);
             }
           });
         }
       });
     });
-    return tempReminderList;
   }
 
-  // console.log(reminderList.length, ' <<<<<    after empty ');
-  function settingReminders() {
-    console.log('data', medData);
-    let abc = dailyReminders(medData);
-    if (abc.length !== 0) {
-      console.log(abc.length);
-      setTotalReminders(abc.length);
-      setReminderList(abc);
-    }
-  }
+  // console.log('total reminders', totalReminders);
 
   function markingTaken(item) {
     console.log(item.item, ' INSIDE MARKING');
     console.log('before marking ', medData);
 
     const {userMedicineId, historyId, time, medName} = item.item;
-    let arr = medData.forEach(item => {
+    medData.forEach(item => {
       if (
         item.userMedicineId == userMedicineId &&
         item.medicineName == medName
       ) {
         item.historyList.map(r => {
-          if (r.historyId == historyId && !r.taken.includes(time)) {
+          console.log(r, historyId);
+          if (r.historyId === historyId && !r.taken.includes(time)) {
             // console.log('abcd',r.notTaken);
             r.taken = r.taken + time + ',';
             let arr = r.notTaken.split(',');
@@ -107,18 +169,24 @@ const Reminders = ({showAlert, setPercentage}) => {
             r.notTaken = arr.toString();
             // console.log(r, 'after updating notTaken');
             item.currentCount += 1;
+            item.stock -= 1;
           }
         });
-        // console.log('After updating reminders ', item);
-        return item;
+        console.log('After updating reminders ', item);
       }
     });
-    currentCount+=1;
-    let percentage = Math.floor((currentCount / totalReminders) * 100);
-    console.log('percentage', currentCount);
+    cC = currentCount + 1;
+    setCurrentCount(cC);
+    console.log('current Count', totalReminders);
+    let percentage = Math.floor((cC / totalReminders) * 100);
+    console.log('percentage', percentage);
     setPercentage(percentage);
-
-    console.log('After updating reminders ', medData);
+    percentDetails.totalReminders = totalReminders;
+    percentDetails.currentCount = cC;
+    percentDetails.date = td_da;
+    console.log('percent zz 1', percentDetails);
+    savePercentageDetails(percentDetails);
+    console.log('After updating reminders data', medData);
     AddMedicine(medData);
   }
 
@@ -154,7 +222,6 @@ const Reminders = ({showAlert, setPercentage}) => {
                 markingTaken(item);
                 reminderList.splice(index, 1);
                 setReminderList(reminderList);
-                console.log('deleting reminder ', reminderList);
               }}>
               <FontAwesomeIcon
                 key={index + 9}
@@ -167,8 +234,8 @@ const Reminders = ({showAlert, setPercentage}) => {
               key={index + 10}
               style={{padding: 8}}
               onPress={() => {
-                reminderList.splice(index, 1);
-                setReminderList(reminderList);
+                // reminderList.splice(index, 1);
+                // setReminderList(reminderList);
               }}
               activeOpacity={1}>
               <FontAwesomeIcon

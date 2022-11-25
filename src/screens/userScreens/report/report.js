@@ -67,7 +67,7 @@ const Report = ({navigation}) => {
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
-    if (isFocused)
+    if (isFocused) {
       getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
           setGetUserMedicine(data);
@@ -76,6 +76,7 @@ const Report = ({navigation}) => {
           showAlert();
         }
       });
+    }
   }, [isFocused]);
 
   const showAlert = () => {
@@ -130,12 +131,30 @@ const Report = ({navigation}) => {
         t.push(i);
       });
     }
-    let totalCount = nt.length + t.length;
+    let takenLength = 0;
+    let notTakenLength = 0;
+    nt.map(i => {
+      if (i !== '') {
+        takenLength += 1;
+      }
+    });
+    t.map(i => {
+      if (i !== '') {
+        notTakenLength += 1;
+      }
+    });
+    console.log(t, nt);
+    let totalCount = notTakenLength + takenLength;
     return Math.floor((t.length / totalCount) * 100);
   };
 
   function overallPecentage(totalReminders, currentCount) {
-    setPercentage(Math.floor((currentCount / totalReminders) * 100));
+    console.log('total rem ==>', totalReminders);
+    if (totalReminders == 0 || currentCount == 0) {
+      setPercentage(0);
+    } else {
+      setPercentage(Math.floor((currentCount / totalReminders) * 100));
+    }
   }
 
   const [dataMap, setDataMap] = useState([]);
@@ -150,9 +169,11 @@ const Report = ({navigation}) => {
   };
 
   useEffect(() => {
-    if (medicineId !== null) {
-      getHistory();
-      dateSelector(historyListData);
+    if (isFocused) {
+      if (medicineId !== null) {
+        getHistory();
+        dateSelector(historyListData);
+      }
     }
   }, [medicineId]);
 

@@ -34,34 +34,39 @@ const HistoryDetail = ({data, onPress}) => {
     const sArray = [];
     let nottaken = data.notTaken.split(','),
       taken = data.taken.split(',');
+    console.log(taken);
     nottaken[0] !== '' &&
       nottaken.map(ele => {
-        let mtitle = findTime(ele);
-        let nottakenObj = {
-          time: ele,
-          title: <Text style={{color: 'black'}}>{mtitle}</Text>,
-          description: (
-            <Text style={{color: colorPalette.redPercentageColor}}>
-              Not Taken
-            </Text>
-          ),
-        };
-        sArray.push(nottakenObj);
+        if (ele !== '') {
+          let mtitle = findTime(ele);
+          let nottakenObj = {
+            time: ele,
+            title: <Text style={{color: 'black'}}>{mtitle}</Text>,
+            description: (
+              <Text style={{color: colorPalette.redPercentageColor}}>
+                Not Taken
+              </Text>
+            ),
+          };
+          sArray.push(nottakenObj);
+        }
       });
 
     taken[0] !== '' &&
       taken.map(ele => {
-        let mtitle = findTime(ele);
-        let nottakenObj = {
-          time: ele,
-          title: <Text style={{color: 'black'}}>{mtitle}</Text>,
-          description: (
-            <Text style={{color: colorPalette.greenPercentageColor}}>
-              Taken
-            </Text>
-          ),
-        };
-        sArray.push(nottakenObj);
+        if (ele !== '') {
+          let mtitle = findTime(ele);
+          let nottakenObj = {
+            time: ele,
+            title: <Text style={{color: 'black'}}>{mtitle}</Text>,
+            description: (
+              <Text style={{color: colorPalette.greenPercentageColor}}>
+                Taken
+              </Text>
+            ),
+          };
+          sArray.push(nottakenObj);
+        }
       });
 
     setfilterData(sArray);

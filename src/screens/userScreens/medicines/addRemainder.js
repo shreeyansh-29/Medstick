@@ -4,26 +4,20 @@ import {
   TouchableOpacity,
   Animated,
   Alert,
-  StyleSheet,
 } from 'react-native';
 import React, {useEffect, useRef} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
 import {Picker} from '@react-native-picker/picker';
 import LottieView from 'lottie-react-native';
 import {useState} from 'react';
-import {Button, TextInput} from 'react-native-paper';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+import { TextInput} from 'react-native-paper';
 import DatePicker from 'react-native-date-picker';
 import {styles} from '../../../styles/addRemainderStyles';
-import alarmView from '../../../components/organisms/alarm/alarmView';
 import {
   enableAlarm,
   disableAlarm,
   getAlarmState,
   getAllAlarms,
 } from '../../../components/organisms/alarm/alarmService';
-import TimePicker from '../../../components/molecules/timePicker';
-import {colorPalette} from '../../../components/atoms/colorPalette';
 
 const AddRemainder = props => {
   const [pill, setPill] = useState();
