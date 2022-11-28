@@ -6,12 +6,13 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
 import {getMedicine} from '../../../utils/storage';
+import {useEffect} from 'react';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -64,29 +65,19 @@ const Report = ({navigation}) => {
   const [historyData, setHistoryData] = useState({});
   const [historyListData, setHistoryListData] = useState([]);
   const [percentage, setPercentage] = useState(0);
+  const isFocused = useIsFocused();
 
-  useFocusEffect(
-    React.useCallback(() => {
-      getMedicine()
-        .then(data => {
-          if (data !== null && data.length !== 0) {
-            setGetUserMedicine(data);
-          } else {
-            setGetUserMedicine([]);
-            showAlert();
-          }
-        })
-        .then(() => {
-          if (medicineId !== null) {
-            getHistory();
-            dateSelector(historyListData);
-          }
-        })
-        .catch(error => {
-          console.log('error', error);
-        });
-    }, [medicineId]),
-  );
+  useEffect(() => {
+    if (isFocused)
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          setGetUserMedicine(data);
+        } else {
+          setGetUserMedicine([]);
+          showAlert();
+        }
+      });
+  }, [isFocused]);
 
   const showAlert = () => {
     Alert.alert('Add Medicine First', 'Click Ok to proceed', [
@@ -110,7 +101,8 @@ const Report = ({navigation}) => {
   function getHistory() {
     let histories = [];
     getUserMedicine.map(data => {
-      if (data.userMedicineId == medicineId) {
+      if (data.userMedicineId == medicineId && data.historyList.length !== 0) {
+        console.log(data.historyList.length);
         data.historyList.map(i => {
           let his = {};
           console.log('his data', i);
@@ -120,8 +112,16 @@ const Report = ({navigation}) => {
           his.date = i.date;
           histories.push(his);
           setHistoryListData(histories);
+          dateSelector(histories);
           overallPecentage(data.totalReminders, data.currentCount);
         });
+      } else if (
+        data.userMedicineId == medicineId &&
+        data.historyList.length === 0
+      ) {
+        setHistoryListData([]);
+        dateSelector([]);
+        overallPecentage(0,0);
       }
     });
   }
@@ -172,6 +172,13 @@ const Report = ({navigation}) => {
     });
     setDataMap(data);
   };
+
+  useEffect(() => {
+    if (medicineId !== null) {
+      getHistory();
+      dateSelector(historyListData);
+    }
+  }, [medicineId]);
 
   const ModalOpen = () => {
     setModalVisible(true);
@@ -262,7 +269,9 @@ const Report = ({navigation}) => {
               mode="dropdown"
               selectedValue={medicineId}
               onValueChange={data => {
+                getHistory();
                 setMedicineId(data);
+                console.log('medicineId', data);
               }}>
               {getUserMedicine?.map((item, index) => {
                 return (
