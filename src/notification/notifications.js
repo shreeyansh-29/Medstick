@@ -47,7 +47,7 @@ class Notifications {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Appointment!',
-      message: 'You have scheduled appointment with ' + doctorName,
+      message: 'You have scheduled appointment',
       date: date,
     });
   }

@@ -32,7 +32,7 @@ const AppointmentReminders = ({navigation, route}) => {
   const [saveTimeOpen, setSaveTimeOpen] = useState(false);
   let doctor = route.params.notes;
 
-  const handlePushNotification = (obj, docName) => {
+  const handlePushNotification = obj => {
     let d = new Date();
     let currentTime = d.getHours() + ':' + d.getMinutes();
     let currentDate =
@@ -50,15 +50,14 @@ const AppointmentReminders = ({navigation, route}) => {
 
     if (number < currentTime && currentDate >= obj?.date) {
       let dateTime = moment(chosenDate2 + ' ' + number);
-      Notifications.schduleNotification2(dateTime._d, docName);
+      Notifications.schduleNotification2(dateTime._d);
     } else {
       let dateTime = moment(obj.date + ' ' + number);
-      Notifications.schduleNotification2(dateTime._d, docName);
+      Notifications.schduleNotification2(dateTime._d);
     }
   };
 
   const saveAppointment = values => {
-    let docName = '';
     let prescriptionId = values.doctorName;
     let appointmentId = uuid.v4();
     let obj = {
@@ -73,7 +72,6 @@ const AppointmentReminders = ({navigation, route}) => {
         let updatedList = data;
         updatedList.map((item, index) => {
           if (item.prescriptionId === prescriptionId) {
-            docName = updatedList[index].doctorName;
             updatedList[index].appointmentList.push(obj);
           }
         });
@@ -88,7 +86,8 @@ const AppointmentReminders = ({navigation, route}) => {
     setTimeout(() => {
       navigation.pop();
     }, 1000);
-    handlePushNotification(obj, docName);
+
+    handlePushNotification(obj);
   };
 
   return (
@@ -205,6 +204,7 @@ const AppointmentReminders = ({navigation, route}) => {
                 </View>
 
                 <DateTimePicker
+                  minimumDate={new Date()}
                   isVisible={dateOpen}
                   mode="date"
                   onConfirm={date => {

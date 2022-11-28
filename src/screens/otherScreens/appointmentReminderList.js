@@ -42,7 +42,6 @@ const AppointmentReminderList = ({navigation}) => {
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
-        console.log(data);
         if (data !== null && data.length !== 0) {
           let doctorList = [];
           let reminderList = [];
