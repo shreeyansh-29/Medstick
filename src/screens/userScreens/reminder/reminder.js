@@ -81,12 +81,7 @@ const Reminder = ({route, navigation}) => {
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
-    let chosenDate2 =
-      chosenDate1.getFullYear() +
-      '-' +
-      (chosenDate1.getMonth() + 1) +
-      '-' +
-      chosenDate1.getDate();
+    let chosenDate2 =  chosenDate1.getFullYear() +"-"+ (chosenDate1.getMonth() + 1) +"-"+ chosenDate1.getDate();
 
     if (number < currentTime) {
       let dateTime = moment(chosenDate2 + ' ' + number);
@@ -290,7 +285,6 @@ const Reminder = ({route, navigation}) => {
       <View style={styles.top}>
         <View style={styles.container1}>
           <TouchableOpacity
-            activeOpacity={1}
             onPress={() => {
               pickerstate(true);
             }}
@@ -332,7 +326,6 @@ const Reminder = ({route, navigation}) => {
           </TouchableOpacity>
           <Divider></Divider>
           <TouchableOpacity
-            activeOpacity={1}
             onPress={() => {
               navigation.navigate('ReminderDuration', {
                 date: startDate,
@@ -408,7 +401,6 @@ const Reminder = ({route, navigation}) => {
               }}>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
-                  activeOpacity={1}
                   style={{
                     borderRadius: breakfast ? 3 : 0,
                     alignItems: 'center',
@@ -432,7 +424,6 @@ const Reminder = ({route, navigation}) => {
                 </TouchableOpacity>
                 {breakfastTouchable ? (
                   <TouchableOpacity
-                    activeOpacity={1}
                     style={{
                       borderRadius: 3,
                       alignItems: 'center',
@@ -464,7 +455,6 @@ const Reminder = ({route, navigation}) => {
 
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
-                  activeOpacity={1}
                   style={{
                     borderRadius: lunch ? 3 : 0,
                     alignItems: 'center',
@@ -488,7 +478,6 @@ const Reminder = ({route, navigation}) => {
                 </TouchableOpacity>
                 {lunchTouchable ? (
                   <TouchableOpacity
-                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -519,7 +508,6 @@ const Reminder = ({route, navigation}) => {
               </View>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
-                  activeOpacity={1}
                   style={{
                     borderRadius: dinner ? 3 : 0,
                     alignItems: 'center',
@@ -543,7 +531,6 @@ const Reminder = ({route, navigation}) => {
                 </TouchableOpacity>
                 {dinnerTouchable ? (
                   <TouchableOpacity
-                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -603,7 +590,6 @@ const Reminder = ({route, navigation}) => {
                 alignSelf: 'center',
               }}>
               <TouchableOpacity
-                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,
@@ -631,7 +617,6 @@ const Reminder = ({route, navigation}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,

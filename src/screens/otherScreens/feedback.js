@@ -1,12 +1,11 @@
+import {View, Text} from 'react-native';
 import React from 'react';
 import {WebView} from 'react-native-webview';
 
 const Feedback = () => {
   return (
     <WebView
-      source={{
-        uri: 'https://docs.google.com/forms/d/e/1FAIpQLSd529pwZjABhnQpz3i24SBdhrzY8o8_bboqasndwxi1cNOneQ/viewform',
-      }}
+      source={{uri:'https://docs.google.com/forms/d/e/1FAIpQLSd529pwZjABhnQpz3i24SBdhrzY8o8_bboqasndwxi1cNOneQ/viewform'}}
       originWhitelist={['http://*', 'https://*', 'intent://*']}
       style={{marginTop: 20}}
       setSupportMultipleWindows={true}
