@@ -26,8 +26,8 @@ const SignUp = ({navigation, connected}) => {
     });
 
     setTimeout(() => {
-      navigation.pop(1);
-    }, 1000);
+      navigation.navigate('Home');
+    }, 500);
   };
 
   useEffect(() => {
@@ -74,17 +74,12 @@ const SignUp = ({navigation, connected}) => {
   return (
     <>
       <View style={styles.signUpCont}>
-        <TouchableOpacity
-          style={styles.signUpView}
-          onPress={() => signUp()}>
+        <TouchableOpacity style={styles.signUpView} onPress={() => signUp()}>
           <Image
             source={require('../../assets/images/g1.png')}
             style={styles.img}
           />
-          <Text
-            style={styles.text}>
-            Connect with Google
-          </Text>
+          <Text style={styles.text}>Connect with Google</Text>
         </TouchableOpacity>
       </View>
     </>

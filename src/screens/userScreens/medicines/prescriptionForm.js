@@ -38,7 +38,6 @@ const PrescriptionForm = props => {
         marginTop: 20,
         width: '90%',
         alignSelf: 'center',
-        // backgroundColor: 'yellow',
       }}>
       <View>
         <Text style={{fontSize: 16, color: 'gray', marginBottom: 6}}>
@@ -172,7 +171,7 @@ const PrescriptionForm = props => {
                   }}>
                   <Image
                     resizeMode="stretch"
-                    source={{uri: props.values.image}}
+                    source={{uri: props?.values?.image}}
                     style={{width: '100%', height: '100%', borderRadius: 11}}
                   />
                 </TouchableOpacity>
@@ -205,6 +204,7 @@ const PrescriptionForm = props => {
       <Divider style={{height: 1, marginTop: 14}} />
 
       <CustomButton
+        loading={props.load}
         title={'Save'}
         handleSubmit={props.handleSubmit}
         contStyles={{alignItems: 'center', marginVertical: 40}}

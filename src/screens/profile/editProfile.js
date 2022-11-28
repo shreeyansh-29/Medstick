@@ -1,6 +1,6 @@
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import React, {useEffect, useState} from 'react';
-import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, View, Image, TouchableOpacity} from 'react-native';
 import {faPenToSquare} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import SavedDetails from './savedDetails';
@@ -83,7 +83,6 @@ const EditProfile = ({navigation}) => {
                 result={res}
               />
             }
-            customStyles={styles.modalView}
           />
         </>
       ) : (

@@ -1,6 +1,5 @@
 import {
   View,
-  Dimensions,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
@@ -14,11 +13,19 @@ import {faPencil} from '@fortawesome/free-solid-svg-icons';
 import {faNoteSticky} from '@fortawesome/free-regular-svg-icons';
 import {deviceWidth} from '../../../components/atoms/constant';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import CustomModal from '../../../components/molecules/customModal';
+import EditNotes from './editNotes';
+import Toast from 'react-native-toast-message';
+import EditMedicineView from './editMedicineView';
 
 const MedicineList = ({route, navigation}) => {
   const data = route.params?.data;
   const [index, setIndex] = useState(route.params?.index);
   const isCarousel = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const [userMedicineId, setUserMedicineId] = useState('');
+  const [edit, setEdit] = useState(false);
+  const [medData, setMedData] = useState('');
 
   const MedicineDetailCard = ({item, index}) => {
     return (
@@ -27,23 +34,14 @@ const MedicineList = ({route, navigation}) => {
           <View style={styles.top}>
             <View style={styles.medNameContainer}>
               <View style={styles.medNameView}>
-                <Text style={styles.medName}>{item.MedicineName}</Text>
+                <Text style={styles.medName}>{item.medicineName}</Text>
               </View>
               <View style={styles.iconView}>
                 <TouchableOpacity
+                  activeOpacity={1}
                   onPress={() => {
-                    navigation?.navigate('AddMedicine', {
-                      itemMedicineName:item.medicineName,
-                      itemDescription: item.medicineDescription,
-                      itemDosageType: item.dosageType,
-                      itemDosagePower: item.dosagePower,
-                      itemDosageQuantity:item.dosageQuantity,
-                      Stock: item.stock,
-                      doctorName: item.doctorName,
-                      contact: item.contact,
-                      specialization: item.specialization,
-                      loaction: item.location,
-                    });
+                    setEdit(true);
+                    setMedData(item);
                   }}>
                   <FontAwesomeIcon
                     icon={faPencil}
@@ -51,7 +49,12 @@ const MedicineList = ({route, navigation}) => {
                     color={colorPalette.basicColor}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    setVisible(true);
+                    setUserMedicineId(item?.userMedicineId);
+                  }}>
                   <FontAwesomeIcon
                     icon={faNoteSticky}
                     size={20}
@@ -67,7 +70,9 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Description : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.medicineDescription}</Text>
+                    <Text style={styles.itemData}>
+                      {item.medicineDescription}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -75,7 +80,7 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Dosage Type : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>{item.dosageType}</Text>
+                    <Text style={styles.itemData}>{item.dosageQuantity}</Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -142,9 +147,19 @@ const MedicineList = ({route, navigation}) => {
     );
   };
 
-  return (
-    <>
+  return edit ? (
+    <EditMedicineView item={medData} setEdit={setEdit} />
+  ) : (
+    <View style={styles.container1}>
       <SubHeader title={'Medicine Description'} navigation={navigation} />
+      <CustomModal
+        type="fade"
+        modalVisible={visible}
+        onRequestClose={() => setVisible(!visible)}
+        modalView={
+          <EditNotes userMedicineId={userMedicineId} setVisible={setVisible} />
+        }
+      />
       <View style={styles.carouselContainer}>
         <Carousel
           layout="default"
@@ -170,7 +185,7 @@ const MedicineList = ({route, navigation}) => {
           inactiveSlideShift={0}
         />
         <Pagination
-          dotsLength={data?.length}
+          dotsLength={data.length}
           activeDotIndex={index}
           carouselRef={isCarousel}
           dotStyle={{
@@ -191,17 +206,16 @@ const MedicineList = ({route, navigation}) => {
           inactiveDotColor={'grey'}
         />
       </View>
-    </>
+      <Toast visibilityTime={500} />
+    </View>
   );
 };
 
 export default MedicineList;
-const HEIGHT = Dimensions.get('screen').height;
 
 const styles = StyleSheet.create({
   container1: {
     backgroundColor: colorPalette.backgroundColor,
-    alignItems: 'center',
     flex: 1,
   },
   carouselContainer: {
@@ -262,3 +276,19 @@ const styles = StyleSheet.create({
   },
   prescriptionText: {fontSize: 21},
 });
+
+// {
+//   navigation?.navigate('AddMedicineStack', {
+//     screen: 'AddMedicine',
+//     params: {
+//       itemDescription: item.medicineDescription,
+//       itemDosageType: item.dosageQuantity,
+//       itemDosageUnit: item.dosageUnit,
+//       Stock: item.stock,
+//       doctorName: item.doctorName,
+//       contact: item.contact,
+//       specialization: item.specialization,
+//       loaction: item.location,
+//     },
+//   });
+// }

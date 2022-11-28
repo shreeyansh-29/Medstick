@@ -1,11 +1,4 @@
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import {View, TouchableOpacity, FlatList, RefreshControl} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import AddButton from '../../../components/atoms/addButton';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -16,6 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {myPatientsRequest} from '../../../redux/action/patients/myPatientsAction';
 import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
+import {useIsFocused} from '@react-navigation/native';
 
 const MyPatients = ({navigation}) => {
   const dispatch = useDispatch();
@@ -23,17 +17,19 @@ const MyPatients = ({navigation}) => {
   const [myPatients, setMyPatients] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.myPatients);
-  const loading = useSelector(state => state.myPatients.isLoading);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     if (res?.data !== null) {
-      setMyPatients([...res.data]);
+      setMyPatients(res.data);
     }
   }, [res]);
 
   useEffect(() => {
-    dispatch(myPatientsRequest(pageNo));
-  }, []);
+    if (isFocused) {
+      dispatch(myPatientsRequest(pageNo));
+    }
+  }, [isFocused]);
 
   // const onEnd = () => {
   //   setPageNo(pageNo + 1);
@@ -53,9 +49,7 @@ const MyPatients = ({navigation}) => {
         activeOpacity={1}
         style={styles.top}
         onPress={() => {
-          navigation.navigate('PatientProfile', {
-            profile: item,
-          });
+          navigation.navigate('PatientProfile', {profile: item});
         }}>
         <ListItem
           style={styles.list}
@@ -76,11 +70,11 @@ const MyPatients = ({navigation}) => {
   };
   return (
     <View style={styles.mainCont}>
-      {loading ? (
+      {res?.isLoading ? (
         <Loader />
       ) : (
         <>
-          {myPatients.length === 0 ? (
+          {myPatients?.length === 0 ? (
             <View style={styles.imgCont}>
               <CustomImage
                 resizeMode="contain"

@@ -1,6 +1,6 @@
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import React from 'react';
-import { TouchableOpacity, Text,} from 'react-native';
+import {TouchableOpacity, Text} from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 
 function ColorCode(percentage) {
@@ -21,6 +21,7 @@ function DayComponent({
   setModalVisible,
   history,
 }) {
+  console.log('percent %', percentage);
   return (
     <TouchableOpacity
       disabled={state === 'disabled'}
@@ -42,6 +43,13 @@ function DayComponent({
           {date.day}
         </Text>
       </ProgressCircle>
+        {/* <AnimatedCircles
+        radius={15}
+        percentage={percentage}
+        strokeWidth={2}
+        text={date.day}
+        color={ColorCode(percentage)}
+      /> */}
     </TouchableOpacity>
   );
 }

@@ -1,9 +1,15 @@
-import {View, Text, TouchableOpacity, FlatList, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Dimensions,
+  Alert,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Divider} from 'react-native-paper';
-import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
 import * as Animatable from 'react-native-animatable';
 import {ListItem} from 'react-native-elements';
@@ -32,6 +38,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
   ];
   const [prescriptionId, setPrescriptionId] = useState('');
   const [prescriptionList, setPrescriptionList] = useState([]);
+  const [deleteBtn, setDeleteBtn] = useState(false);
 
   useEffect(() => {
     if (isFocused) {
@@ -51,8 +58,10 @@ const AddPrescriptionPanel = ({navigation, route}) => {
           onPress={() => {
             if (prescriptionId === item?.prescriptionId) {
               setPrescriptionId('');
+              setDeleteBtn(false);
             } else {
               setPrescriptionId(item?.prescriptionId);
+              setDeleteBtn(true);
             }
           }}>
           <View style={{flexDirection: 'row'}}>
@@ -79,7 +88,6 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   width: '20%',
-
                   marginRight: 12,
                   alignItems: 'center',
                 }}>
@@ -121,7 +129,15 @@ const AddPrescriptionPanel = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: colorPalette.basicColor}}>
-      <SubHeader navigation={navigation} title={'Add Prescription'} />
+      <SubHeader
+        navigation={navigation}
+        title={'Add Prescription'}
+        deleteBtn={deleteBtn}
+        prescriptionId={prescriptionId}
+        setPrescriptionList={setPrescriptionList}
+        setPrescriptionId={setPrescriptionId}
+        setDeleteBtn={setDeleteBtn}
+      />
       <CustomModal
         modalVisible={visible}
         text="imageViewer"
@@ -195,6 +211,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   Toast.show({
                     text1: 'Prescription Uploaded',
                     type: 'success',
+                    position: 'bottom',
                   });
                   setTimeout(() => {
                     navigation.pop();

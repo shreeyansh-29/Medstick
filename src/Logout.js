@@ -7,7 +7,7 @@ import {resetSignUp} from './redux/action/signUpAction/signUpAction';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Logout = ({navigation, imgstate, setName, setIsLoggedIn}) => {
+const Logout = ({navigation}) => {
   const dispatch = useDispatch();
 
   const logout = async () => {
@@ -17,22 +17,14 @@ const Logout = ({navigation, imgstate, setName, setIsLoggedIn}) => {
     await AsyncStorage.setItem('user_photo', '');
     await AsyncStorage.setItem('user_email', '');
     await AsyncStorage.setItem('accessToken', '');
-    imgstate('https://i.stack.imgur.com/l60Hf.png');
-    setName('Please Login First');
-    setIsLoggedIn(false);
-    dispatch(resetLogin());
-    dispatch(resetSignUp());
-  };
-
-  useEffect(() => {
     dispatch(resetLogin());
     dispatch(resetSignUp());
     setTimeout(() => {
-      navigation.navigate('AuthScreen', {
-        text: 'logout',
-      });
+      navigation.navigate('Home');
     }, 3000);
+  };
 
+  useEffect(() => {
     logout();
   }, []);
   return (
@@ -43,10 +35,16 @@ const Logout = ({navigation, imgstate, setName, setIsLoggedIn}) => {
         justifyContent: 'center',
         backgroundColor: colorPalette.mainColor,
       }}>
-      <Text style={{fontWeight: '500', color: colorPalette.basicColor}}>
+      <Text
+        style={{
+          fontWeight: '500',
+          color: colorPalette.basicColor,
+          fontSize: 20,
+          marginBottom: 10,
+        }}>
         Logging Out
       </Text>
-      <ActivityIndicator size="medium" color={colorPalette.basicColor} />
+      <ActivityIndicator size={28} color={'white'} />
     </View>
   );
 };

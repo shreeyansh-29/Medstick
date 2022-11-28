@@ -104,13 +104,12 @@ const Report = ({navigation}) => {
       if (data.userMedicineId == medicineId) {
         data.historyList.map(i => {
           let his = {};
-          console.log(i, 'his');
+          // console.log(i, 'his');
           his.historyId = i.historyId;
           his.taken = i.taken;
           his.notTaken = i.notTaken;
           his.date = i.date;
           histories.push(his);
-          console.log('222', histories);
           setHistoryListData(histories);
           overallPecentage(data.totalReminders, data.currentCount);
         });
@@ -143,13 +142,12 @@ const Report = ({navigation}) => {
         notTakenLength += 1;
       }
     });
-    console.log(t, nt);
+    // console.log(t, nt);
     let totalCount = notTakenLength + takenLength;
     return Math.floor((t.length / totalCount) * 100);
   };
 
   function overallPecentage(totalReminders, currentCount) {
-    console.log('total rem ==>', totalReminders);
     if (totalReminders == 0 || currentCount == 0) {
       setPercentage(0);
     } else {
@@ -159,7 +157,6 @@ const Report = ({navigation}) => {
 
   const [dataMap, setDataMap] = useState([]);
   const dateSelector = history => {
-    console.log('zzz history', history);
     var data = [];
     history.map(item => {
       let percentage = dayPercentageCalculator(item.taken, item.notTaken);
@@ -243,7 +240,7 @@ const Report = ({navigation}) => {
     <>
       <View style={styles.container} />
       <View style={styles.report}>
-        <MainHeader title={'Reports'} navigation={navigation} />
+        <MainHeader title={'Report'} navigation={navigation} />
 
         <Modal
           animationType="fade"
@@ -262,9 +259,9 @@ const Report = ({navigation}) => {
         <View style={{paddingHorizontal: 12, paddingTop: 10}}>
           <View style={styles.picker}>
             <Picker
+              style={{color: 'black'}}
               mode="dropdown"
-              id="picker1"
-              selectedValue={medicineId}
+              selectedValue={medicineId}             
               onValueChange={data => {
                 setMedicineId(data);
               }}>
@@ -342,3 +339,4 @@ const Report = ({navigation}) => {
 };
 
 export default Report;
+

@@ -16,15 +16,12 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import {
   AddMedicine,
-  getMedicine,
   getPercentageDetails,
   savePercentageDetails,
 } from '../../utils/storage';
-import {useFocusEffect} from '@react-navigation/native';
 
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
-  console.log('1111111', medData);
   const [reminderList, setReminderList] = useState([]);
   const [totalReminders, setTotalReminders] = useState(0);
   const [currentCount, setCurrentCount] = useState(0);
@@ -49,7 +46,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
 
   useEffect(() => {
     if (medData != null) {
-      console.log('zzzz');
       display();
     }
     return () => {};
@@ -58,15 +54,13 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   function display() {
     getPercentageDetails()
       .then(data => {
-        // console.log('percent details', data);
         if (data == null) {
           let temp = {};
           temp.date = td_da;
           temp.totalReminders = 0;
           temp.currentCount = 0;
-          console.log(' day conflict', temp);
+          // console.log(' day conflict', temp);
           setPercentage();
-          console.log('///////   ');
           savePercentageDetails(temp);
         } else if (data != null) {
           if (data.date != '') {
@@ -74,9 +68,8 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             setCurrentCount(data.currentCount);
             tR = data.totalReminders;
             cC = data.currentCount;
-            console.log('tR', tR);
-            console.log('cC', cC);
-            setPercentage(Math.floor((cC / tR) * 100));
+            let p = getPercentage(medData);
+            setPercentage(p);
           }
           if (data.date !== td_da) {
             let temp = {};
@@ -84,13 +77,12 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             temp.totalReminders = 0;
             temp.currentCount = 0;
             savePercentageDetails(temp);
-            console.log(' day conflict', temp);
+            // console.log(' day conflict', temp);
           }
         }
       })
       .then(() => {
         if (medData.length != 0) {
-          console.log('daily rem', medData);
           dailyReminders(medData);
         }
       })
@@ -104,7 +96,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     data[index].historyList.map(h => {
       h.time.map(t => {
         totalMedReminder += 1;
-        console.log('total med reminders', totalMedReminder);
       });
     });
     return totalMedReminder;
@@ -122,9 +113,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             p.totalReminders = times;
             p.currentCount = cC;
             p.date = td_da;
-            // console.log('tR zzz aaa', p);
             savePercentageDetails(p);
-            // console.log('percent details updated total rem', percentDetails);
             const a = b => b.historyId == r.historyId;
             const index = reminderList.findIndex(a);
             if (!r.taken.includes(z)) {
@@ -134,7 +123,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               temp.medName = item.medicineName;
               temp.historyId = r.historyId;
               temp.time = z;
-              console.log('push', r.time);
+              // console.log('push', r.time);
               tempList.add(temp);
               setReminderList([...tempList]);
             }
@@ -144,7 +133,24 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     });
   }
 
-  // console.log('total reminders', totalReminders);
+  function getPercentage(data) {
+    let tr = 0;
+    let cc = 0;
+    data.map(item => {
+      item.historyList.map(k => {
+        if (k.date == td_da) {
+          tr += item.reminderTime.split(',').length;
+          let temp = k.taken.split(',');
+          temp.map(i => {
+            if (i !== '') {
+              cc += 1;
+            }
+          });
+        }
+      });
+    });
+    return Math.floor((cc / tr) * 100);
+  }
 
   function markingTaken(item) {
     console.log(item.item, ' INSIDE MARKING');
@@ -159,15 +165,10 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         item.historyList.map(r => {
           console.log(r, historyId);
           if (r.historyId === historyId && !r.taken.includes(time)) {
-            // console.log('abcd',r.notTaken);
             r.taken = r.taken + time + ',';
             let arr = r.notTaken.split(',');
-            // console.log(' arr', arr);
-            // console.log(arr.indexOf(time));
             arr.splice(arr.indexOf(time), 1);
-
             r.notTaken = arr.toString();
-            // console.log(r, 'after updating notTaken');
             item.currentCount += 1;
             item.stock -= 1;
           }
@@ -175,23 +176,13 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         console.log('After updating reminders ', item);
       }
     });
-    cC = currentCount + 1;
-    setCurrentCount(cC);
-    console.log('current Count', totalReminders);
-    let percentage = Math.floor((cC / totalReminders) * 100);
-    console.log('percentage', percentage);
-    setPercentage(percentage);
-    percentDetails.totalReminders = totalReminders;
-    percentDetails.currentCount = cC;
-    percentDetails.date = td_da;
-    console.log('percent zz 1', percentDetails);
-    savePercentageDetails(percentDetails);
-    console.log('After updating reminders data', medData);
+    let percent = getPercentage(medData);
+    // console.log(percent, 'percent while marking');
+    setPercentage(percent);
     AddMedicine(medData);
   }
 
   const renderItem = (item, index) => {
-    // console.log(item.item.medName, 'aaa');
     const {medName, time} = item.item;
     return (
       <View style={{width: '100%'}} key={index}>
@@ -234,8 +225,8 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               key={index + 10}
               style={{padding: 8}}
               onPress={() => {
-                // reminderList.splice(index, 1);
-                // setReminderList(reminderList);
+                reminderList.splice(index, 1);
+                setReminderList(reminderList);
               }}
               activeOpacity={1}>
               <FontAwesomeIcon

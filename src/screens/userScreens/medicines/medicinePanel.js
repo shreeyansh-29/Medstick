@@ -22,15 +22,14 @@ import {
   savePercentageDetails,
 } from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import CustomImage from '../../../components/atoms/customImage';
 import {week} from '../../../constants/constants';
 import uuid from 'react-native-uuid';
+import PushNotification from 'react-native-push-notification';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
-  const [name, setName] = useState('');
   const [clear, setClear] = useState(false);
   const [clearMed, setClearMed] = useState(false);
 
@@ -48,7 +47,8 @@ const MedicinePanel = ({navigation}) => {
       if (data != null) {
         let temp = data;
         console.log('before cleared local med', data);
-        temp.currentCount = data.currentCount-medicineResponse[index].currentCount;
+        temp.currentCount =
+          data.currentCount - medicineResponse[index].currentCount;
         console.log('after cleared local med', temp);
         savePercentageDetails(temp);
       }
@@ -70,7 +70,7 @@ const MedicinePanel = ({navigation}) => {
   function clearLocal() {
     getPercentageDetails().then(data => {
       if (data != null) {
-        console.log('inside clear local', data)
+        console.log('inside clear local', data);
         let temp = data;
         temp.totalReminders = 0;
         temp.currentCount = 0;
@@ -143,22 +143,18 @@ const MedicinePanel = ({navigation}) => {
             history.time.toString() !=
               data[i].historyList[index].time.toString()
           ) {
-            // clearLocal();
-            // if (clear) {
-              history.historyId = data[i].historyList[index].historyId;
-              history.date = data[i].historyList[index].date;
-              history.notTaken = data[i].reminderTime;
-              history.taken = '';
-              history.time = data[i].reminderTime.split(',');
-              data[i].historyList[index] = history;
-              data[i].totalReminders = 0;
-              data[i].currentCount = 0;
-              console.log('history updated', data[i]);
-            // }
+            history.historyId = data[i].historyList[index].historyId;
+            history.date = data[i].historyList[index].date;
+            history.notTaken = data[i].reminderTime;
+            history.taken = '';
+            history.time = data[i].reminderTime.split(',');
+            data[i].historyList[index] = history;
+            data[i].totalReminders = 0;
+            data[i].currentCount = 0;
+            console.log('history updated', data[i]);
           }
         }
       } else if (data[i].endDate === 'No End Date') {
-        // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
         const a = b => b.date == td_da;
         const index = data[i].historyList.findIndex(a);
         if (data[i].historyList.length === 0) {
@@ -188,8 +184,10 @@ const MedicinePanel = ({navigation}) => {
       }
 
       updateArray.push(data[i]);
-      console.log('<================ FINAL DATA ================>', updateArray);
-      // console.log('end with loop');
+      console.log(
+        '<================ FINAL DATA ================>',
+        updateArray,
+      );
     }
     AddMedicine(updateArray);
   };
@@ -205,16 +203,15 @@ const MedicinePanel = ({navigation}) => {
     }
   }, [isFocused]);
 
-  const getUser = async () => {
-    const user = await GoogleSignin.getCurrentUser();
-    setName(user);
+  const deleteRem = name => {
+    PushNotification.getScheduledLocalNotifications(rn => {
+      for (let i = 0; i < rn.length; i++) {
+        if ('Take ' + name === rn[i].message) {
+          PushNotification.cancelLocalNotification({id: rn[i].id});
+        }
+      }
+    });
   };
-
-  useEffect(() => {
-    if (isFocused) {
-      getUser();
-    }
-  }, [isFocused]);
 
   useEffect(() => {
     medicineResponse.map(item => {
@@ -229,15 +226,13 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              if (name !== null) {
-                navigation.navigate('MedicinePanelStack', {
-                  screen: 'MedicineList',
-                  params: {
-                    data: medicineResponse,
-                    index: index,
-                  },
-                });
-              }
+              navigation.navigate('MedicinePanelStack', {
+                screen: 'MedicineList',
+                params: {
+                  data: medicineResponse,
+                  index: index,
+                },
+              });
             }}>
             <Card style={Styles.card}>
               <View style={Styles.listView}>
@@ -298,7 +293,10 @@ const MedicinePanel = ({navigation}) => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
                             text: 'Delete',
-                            onPress: () => deleteMedicineLocal(index),
+                            onPress: () => {
+                              deleteMedicineLocal(index);
+                              deleteRem(item.medicineName);
+                            },
                           },
                           {
                             text: 'Cancel',

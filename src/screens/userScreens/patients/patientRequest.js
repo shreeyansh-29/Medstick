@@ -36,8 +36,6 @@ const PatientRequest = () => {
   useEffect(() => {
     if (res?.data !== null) {
       setPatients(res.data);
-    } else {
-      setPatients([]);
     }
   }, [res]);
 
@@ -62,9 +60,9 @@ const PatientRequest = () => {
   const acceptRequest = requestId => {
     let a = b => b.requestId == requestId;
     let index = patients.findIndex(a);
-    patients.splice(index, 1);
     dispatch(acceptPatientReqRequest(requestId));
     dispatch(patientsReqClear());
+    patients.splice(index, 1);
 
     setTimeout(() => {
       dispatch(patientsReqRequest(0));
@@ -81,7 +79,7 @@ const PatientRequest = () => {
 
     setTimeout(() => {
       dispatch(patientsReqRequest(0));
-      dispatch(myPatientsRequest(pageNo));
+      dispatch(myPatientsRequest(0));
     }, 500);
   };
 
@@ -162,7 +160,7 @@ const PatientRequest = () => {
               data={patients}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(index, item) => index.toString()}
               refreshControl={
                 <RefreshControl
                   colors={[colorPalette.mainColor]}

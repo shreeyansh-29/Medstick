@@ -19,12 +19,15 @@ import MedicineReport from '../../screens/userScreens/patients/medicineReport';
 import MedicineImages from '../../screens/userScreens/patients/medicineImages';
 import SaveAppointment from '../../screens/otherScreens/saveAppointment';
 import AppointmentReminderList from '../../screens/otherScreens/appointmentReminderList';
+import AuthScreen from '../../screens/authScreens/authScreen';
 
 const Stack = createNativeStackNavigator();
 
 const AccountStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false, orientation:'portrait'}}>
+    <Stack.Navigator
+      screenOptions={{headerShown: false, orientation: 'portrait'}}>
+      <Stack.Screen name="AccountScreen" component={AccountTab} />
       <Stack.Screen name="CareTaker" component={CareTaker} />
       <Stack.Screen name="Patients" component={Patients} />
       <Stack.Screen name="PatientProfile" component={PatientProfile} />
@@ -35,16 +38,14 @@ const AccountStack = () => {
       <Stack.Screen name="SavedDetails" component={SavedDetails} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="Prescriptions" component={Prescriptions} />
-      <Stack.Screen name="Logout" component={Logout} />
       <Stack.Screen name="ViewPrescription" component={DoctorPrescription} />
       <Stack.Screen name="PatientPrescriptions" component={ViewPrescriptions} />
       <Stack.Screen name="PatientMedicines" component={ViewMedicines} />
       <Stack.Screen name="MedicineReport" component={MedicineReport} />
       <Stack.Screen name="MedicineImages" component={MedicineImages} />
-      <Stack.Screen
-        name="SaveAppointment"
-        component={SaveAppointment}
-      />
+      <Stack.Screen name="SaveAppointment" component={SaveAppointment} />
+      {/* <Stack.Screen name="Logout" component={Logout} />
+      <Stack.Screen name="AuthScreen" component={AuthScreen} /> */}
       <Stack.Screen
         name="AppointmentReminderList"
         component={AppointmentReminderList}

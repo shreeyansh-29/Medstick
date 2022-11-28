@@ -5,81 +5,60 @@ import {
   ScrollView,
   StyleSheet,
   KeyboardAvoidingView,
-  Alert,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import {Picker} from '@react-native-picker/picker';
-import {useDispatch, useSelector} from 'react-redux';
-import {appointmentReminderSelector} from '../../constants/Selector/appointmentReminderSelector';
-import {
-  saveAppointmentClear,
-  saveAppointmentRequest,
-} from '../../redux/action/appointmentReminderAction/saveAppointmentAction';
-import {Formik} from 'formik';
-import {appointmentValidationSchema} from '../../constants/validations';
-import InputField from '../../components/atoms/inputField';
-import CustomButton from '../../components/atoms/customButton';
-import Toast from 'react-native-toast-message';
-import {getAppointmentRequest} from '../../redux/action/appointmentReminderAction/getAppointmentAction';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {hour} from '../../constants/constants';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
+import {
+  AddMedicine,
+  getMedicine,
+} from '../../utils/storage';
+import uuid from 'react-native-uuid';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
 const AppointmentReminders = ({navigation, route}) => {
-  const dispatch = useDispatch();
-  const notes = route.params.notes;
   const [dateOpen, setDateOpen] = useState(false);
   const [saveTimeOpen, setSaveTimeOpen] = useState(false);
+  let doctor = route.params.notes;
 
-  const saveAppointmentData = useSelector(
-    appointmentReminderSelector.saveAppointmentReminder,
-  );
+  const saveAppointment = values => {
+    let prescriptionId = values.doctorName;
+    let appointmentId = uuid.v4();
+    let obj = {
+      notes: values.notes,
+      date: values.date,
+      time: values.time,
+      appointmentId: appointmentId,
+    };
 
-  useEffect(() => {
-    if (notes.length === 0 || notes === undefined) {
-      Alert.alert('Need to add prescription first', '', [
-        {
-          text: 'Ok',
-          onPress: () => {
-            navigation.pop();
-          },
-        },
-      ]);
-    }
-  }, [notes]);
-
-  useEffect(() => {
-    if (saveAppointmentData?.status === 'Success') {
-      Toast.show({
-        type: 'success',
-        text1: 'Appointment Saved Successfully',
-        position: 'bottom',
-      });
-      setTimeout(() => {
-        dispatch(saveAppointmentClear());
-        dispatch(getAppointmentRequest(0));
-        navigation.pop();
-      }, 3000);
-    }
-    if (saveAppointmentData?.status === 'Failed') {
-      Toast.show({
-        type: 'error',
-        text1: 'Something Went Wrong',
-        text2: 'Try Again',
-        position: 'bottom',
-      });
-      setTimeout(() => {
-        dispatch(saveAppointmentClear());
-      }, 200);
-    }
-  }, [saveAppointmentData]);
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        let updatedList = data;
+        updatedList.map((item, index) => {
+          if (item.prescriptionId === prescriptionId) {
+            updatedList[index].appointmentList.push(obj);
+          }
+        });
+        AddMedicine(updatedList);
+        Toast.show({
+          type: 'success',
+          text1: 'Appointment Saved Successfully',
+          position: 'bottom',
+        });
+      }
+    });
+    setTimeout(() => {
+      navigation.pop();
+    }, 1000);
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: colorPalette.mainColor}}>
@@ -101,21 +80,14 @@ const AppointmentReminders = ({navigation, route}) => {
             validator={() => ({})}
             enableReinitialize
             initialValues={{
-              doctorName: notes[0]?.prescriptionId,
+              doctorName: doctor[0].prescriptionId,
               notes: '',
               date: '',
               time: '',
             }}
             validationSchema={appointmentValidationSchema}
             onSubmit={values => {
-              const fDate = values.date;
-              const time = values.time;
-              const notes1 = values.notes;
-              const prescriptionId = values.doctorName;
-
-              dispatch(
-                saveAppointmentRequest(fDate, time, notes1, prescriptionId),
-              );
+              saveAppointment(values);
             }}>
             {({
               handleChange,
@@ -145,7 +117,7 @@ const AppointmentReminders = ({navigation, route}) => {
                       onValueChange={itemValue => {
                         setFieldValue('doctorName', itemValue);
                       }}>
-                      {notes?.map(item => {
+                      {doctor?.map(item => {
                         return (
                           <Picker.Item
                             label={item.doctorName}
@@ -311,7 +283,7 @@ const AppointmentReminders = ({navigation, route}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast />
+      <Toast visibilityTime={500} />
     </View>
   );
 };

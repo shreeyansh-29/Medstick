@@ -19,8 +19,15 @@ const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const [connected, connectedstate] = useState(false);
   const [percentage, setPercentage] = useState(0);
-  const [reset, setReset] = useState(false);
   const [medData, setMedData] = useState([]);
+
+  var tody_date = new Date();
+  let td_da =
+    tody_date.getFullYear() +
+    '-' +
+    (tody_date.getMonth() + 1) +
+    '-' +
+    tody_date.getDate();
 
   const checkconnection = async () => {
     let conn = await CheckConnection();
@@ -51,29 +58,47 @@ const HomeScreen = ({navigation}) => {
     dispatch(myCaretakerRequest(0));
   }, []);
 
-
   useFocusEffect(
     React.useCallback(() => {
-      getPercentage();
+      getData();
       return () => {};
     }, []),
   );
 
-  function getPercentage() {
+  function getPercentage(data) {
+    let tr = 0;
+    let cc = 0;
+    data.map(item => {
+      item.historyList.map(k => {
+        if (k.date == td_da) {
+          tr += item.reminderTime.split(',').length;
+          console.log('taken count', k);
+          let temp = k.taken.split(',');
+          temp.map(i => {
+            if (i !== '') {
+              cc += 1;
+            }
+          });
+        }
+      });
+    });
+    console.log('abcd', tr);
+    console.log('tr total reminders=>', tr, ' ,cc=> ', cc);
+    return Math.floor((cc / tr) * 100);
+  }
+  function getData() {
     getMedicine().then(data => {
       if (data.length == 0) {
-        console.log('clearing **********  ===>>>>  ');
         setPercentage(0);
       } else {
         setMedData(data);
-        console.log('aaaaaa ===>>>>>> ');
+        getPercentage(data);
         getPercentageDetails().then(data => {
           if (data.currentCount === 0) {
             setPercentage(0);
           } else {
-            setReset(true);
-            let p = Math.floor((data.currentCount / data.totalReminders) * 100);
-            console.log('percent details in', p);
+            let p = getPercentage(medData);
+            // console.log('percent details in', data);
             setPercentage(p);
           }
         });

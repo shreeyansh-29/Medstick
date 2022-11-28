@@ -1,4 +1,3 @@
-/* eslint-disable no-new */
 import NetInfo from '@react-native-community/netinfo';
 
 const CheckConnection = async () => {
@@ -14,3 +13,4 @@ const CheckConnection = async () => {
 };
 
 export default CheckConnection;
+
