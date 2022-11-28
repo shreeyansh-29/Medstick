@@ -1,12 +1,12 @@
 import {View, Text, ScrollView, Modal, TouchableOpacity} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -60,24 +60,33 @@ const Report = ({navigation}) => {
   const [medicineId, setMedicineId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
-  const isFocused = useIsFocused();
   const [getUserMedicine, setGetUserMedicine] = useState([]);
   const [historyData, setHistoryData] = useState({});
   const [historyListData, setHistoryListData] = useState([]);
   const [percentage, setPercentage] = useState(0);
 
-  useEffect(() => {
-    if (isFocused) {
-      getMedicine().then(data => {
-        if (data !== null && data.length !== 0) {
-          setGetUserMedicine(data);
-        } else {
-          setGetUserMedicine([]);
-          showAlert();
-        }
-      });
-    }
-  }, [isFocused]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getMedicine()
+        .then(data => {
+          if (data !== null && data.length !== 0) {
+            setGetUserMedicine(data);
+          } else {
+            setGetUserMedicine([]);
+            showAlert();
+          }
+        })
+        .then(() => {
+          if (medicineId !== null) {
+            getHistory();
+            dateSelector(historyListData);
+          }
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+    }, [medicineId]),
+  );
 
   const showAlert = () => {
     Alert.alert('Add Medicine First', 'Click Ok to proceed', [
@@ -104,7 +113,7 @@ const Report = ({navigation}) => {
       if (data.userMedicineId == medicineId) {
         data.historyList.map(i => {
           let his = {};
-          // console.log(i, 'his');
+          console.log('his data', i);
           his.historyId = i.historyId;
           his.taken = i.taken;
           his.notTaken = i.notTaken;
@@ -134,17 +143,16 @@ const Report = ({navigation}) => {
     let notTakenLength = 0;
     nt.map(i => {
       if (i !== '') {
-        takenLength += 1;
+        notTakenLength += 1;
       }
     });
     t.map(i => {
       if (i !== '') {
-        notTakenLength += 1;
+        takenLength += 1;
       }
     });
-    // console.log(t, nt);
     let totalCount = notTakenLength + takenLength;
-    return Math.floor((t.length / totalCount) * 100);
+    return Math.floor((takenLength / totalCount) * 100);
   };
 
   function overallPecentage(totalReminders, currentCount) {
@@ -164,15 +172,6 @@ const Report = ({navigation}) => {
     });
     setDataMap(data);
   };
-
-  useEffect(() => {
-    if (isFocused) {
-      if (medicineId !== null) {
-        getHistory();
-        dateSelector(historyListData);
-      }
-    }
-  }, [medicineId]);
 
   const ModalOpen = () => {
     setModalVisible(true);
@@ -209,7 +208,7 @@ const Report = ({navigation}) => {
             date={date}
             state={state}
             selectedDate={selectedDate}
-            initialDate={'2022-11-11'}
+            initialDate={'2022-11-21'}
             setSelectedDate={setSelectedDate}
             percentage={dataMap[index].percentage}
             setModalVisible={ModalOpen}
@@ -261,7 +260,7 @@ const Report = ({navigation}) => {
             <Picker
               style={{color: 'black'}}
               mode="dropdown"
-              selectedValue={medicineId}             
+              selectedValue={medicineId}
               onValueChange={data => {
                 setMedicineId(data);
               }}>
@@ -339,4 +338,3 @@ const Report = ({navigation}) => {
 };
 
 export default Report;
-
