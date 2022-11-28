@@ -158,11 +158,32 @@ const Reminder = ({route, navigation}) => {
     timelist,
     setTimelist,
   ) => {
-    if (
-      title.length === 0
-      // || timearray.length === 0
-    ) {
-      Alert.alert('Make sure you have valid reminder', ' ', [
+    if (title.length === 0) {
+      Alert.alert('Please enter a valid Title', ' ', [
+        {
+          text: 'OK',
+          onPress: () => {},
+        },
+      ]);
+      return;
+    } else if (timearray.length == 0) {
+      Alert.alert('Please enter atleat one Frequency', ' ', [
+        {
+          text: 'OK',
+          onPress: () => {},
+        },
+      ]);
+      return;
+    } else if (food == null) {
+      Alert.alert('Please specify before or after food.', ' ', [
+        {
+          text: 'OK',
+          onPress: () => {},
+        },
+      ]);
+      return;
+    } else if (!check1 && !check2) {
+      Alert.alert('Please select Days', ' ', [
         {
           text: 'OK',
           onPress: () => {},
