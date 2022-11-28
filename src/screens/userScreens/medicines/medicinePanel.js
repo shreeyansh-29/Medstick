@@ -15,7 +15,12 @@ import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
-import {AddMedicine, getMedicine} from '../../../utils/storage';
+import {
+  AddMedicine,
+  getMedicine,
+  getPercentageDetails,
+  savePercentageDetails,
+} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
 import CustomImage from '../../../components/atoms/customImage';
 import {week} from '../../../constants/constants';
@@ -26,6 +31,9 @@ import Loader from '../../../components/atoms/loader';
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
+  const [clear, setClear] = useState(false);
+  const [clearMed, setClearMed] = useState(false);
+
   const progress = useRef(new Animated.Value(0)).current;
   const [showLoader, setShowLoader] = useState(true);
 
@@ -46,18 +54,46 @@ const MedicinePanel = ({navigation}) => {
     }).start();
   }, []);
 
-  const deleteMedicineLocal = (index, name) => {
-    medicineResponse.splice(index, 1);
-    AddMedicine(medicineResponse);
-    deleteRem(name);
-    getMedicine().then(data => {
-      if (data !== null && data.length !== 0) {
-        setMedicineResponse(data);
-      } else {
-        setMedicineResponse([]);
+  const deleteMedicineLocal = async index => {
+    getPercentageDetails().then(data => {
+      if (data != null) {
+        let temp = data;
+        console.log('before cleared local med', data);
+        temp.currentCount =
+          data.currentCount - medicineResponse[index].currentCount;
+        console.log('after cleared local med', temp);
+        savePercentageDetails(temp);
       }
+      setClearMed(true);
     });
+    if (clearMed) {
+      medicineResponse.splice(index, 1);
+      AddMedicine(medicineResponse);
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          setMedicineResponse(data);
+        } else {
+          setMedicineResponse([]);
+        }
+      });
+    }
   };
+
+  function clearLocal() {
+    getPercentageDetails().then(data => {
+      if (data != null) {
+        console.log('inside clear local', data);
+        let temp = data;
+        temp.totalReminders = 0;
+        temp.currentCount = 0;
+        temp.date = '';
+        console.log('cleared local');
+        savePercentageDetails(temp);
+      }
+      setClear(true);
+    });
+    return true;
+  }
 
   const MedicineHistory = data => {
     var updateArray = [];
@@ -69,8 +105,18 @@ const MedicinePanel = ({navigation}) => {
       time: null,
     };
     for (let i = 0; i < data.length; i++) {
-      // console.log('start of loop');
-      let arr = data[i].days?.split(',');
+      if (data[i].everyday == true) {
+        data[i].days = [
+          'Sun',
+          'Mon',
+          'Tue',
+          'Wed',
+          'Thur',
+          'Fri',
+          'Sat',
+        ].toString();
+      }
+      let arr = data[i].days.split(',');
       let set = new Set(arr);
       var start_date = new Date(data[i].endDate);
       var end_date = new Date(data[i].endDate);
@@ -86,6 +132,7 @@ const MedicinePanel = ({navigation}) => {
         set.has(week[tody_date.getDay()]) &&
         start_date <= tody_date <= end_date
       ) {
+        console.log('aaa', data[i]);
         if (data[i].historyList.length === 0) {
           history.historyId = uuid.v4();
           history.date = td_da;
@@ -93,9 +140,33 @@ const MedicinePanel = ({navigation}) => {
           history.notTaken = data[i].reminderTime;
           history.taken = '';
           data[i].historyList.push(history);
+        } else {
+          const a = b => b.date === td_da;
+          const index = data[i].historyList.findIndex(a);
+          console.log(' existing history', data[i].historyList[index]);
+          history.time = data[i].reminderTime.split(',');
+          console.log(
+            'history conflict',
+            history.time.toString() !=
+              data[i].historyList[index].time.toString(),
+          );
+          if (
+            index >= 0 &&
+            history.time.toString() !=
+              data[i].historyList[index].time.toString()
+          ) {
+            history.historyId = data[i].historyList[index].historyId;
+            history.date = data[i].historyList[index].date;
+            history.notTaken = data[i].reminderTime;
+            history.taken = '';
+            history.time = data[i].reminderTime.split(',');
+            data[i].historyList[index] = history;
+            data[i].totalReminders = 0;
+            data[i].currentCount = 0;
+            console.log('history updated', data[i]);
+          }
         }
       } else if (data[i].endDate === 'No End Date') {
-        // console.log('<<<<<<<<< ====== Inside NO END DATE ====== >>>>>>>>');
         const a = b => b.date == td_da;
         const index = data[i].historyList.findIndex(a);
         if (data[i].historyList.length === 0) {
@@ -104,12 +175,31 @@ const MedicinePanel = ({navigation}) => {
           history.time = data[i].reminderTime.split(',');
           history.notTaken = data[i].reminderTime;
           data[i].historyList.push(history);
+        } else {
+          const a = b => b.date === td_da;
+          const index = data[i].historyList.findIndex(a);
+          history.time = data[i].reminderTime.split(',');
+          if (
+            index >= 0 &&
+            history.time.toString() !=
+              data[i].historyList[index].time.toString()
+          ) {
+            history.historyId = data[i].historyList[index].historyId;
+            history.date = data[i].historyList[index].date;
+            history.notTaken = data[i].reminderTime;
+            history.taken = '';
+            history.time = data[i].reminderTime.split(',');
+            data[i].historyList[index] = history;
+            savePercentageDetails(null);
+          }
         }
       }
 
-      // console.log('<================ FINAL DATA ================>', data[i]);
       updateArray.push(data[i]);
-      // console.log('end with loop');MedicineList
+      console.log(
+        '<================ FINAL DATA ================>',
+        updateArray,
+      );
     }
     AddMedicine(updateArray);
   };
@@ -118,6 +208,7 @@ const MedicinePanel = ({navigation}) => {
     if (isFocused) {
       getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
+          console.log('data', data);
           setMedicineResponse(data);
         }
       });
@@ -214,8 +305,10 @@ const MedicinePanel = ({navigation}) => {
                         Alert.alert('Delete it!', 'Sure you want delete it', [
                           {
                             text: 'Delete',
-                            onPress: () =>
-                              deleteMedicineLocal(index, item.medicineName),
+                            onPress: () => {
+                              deleteMedicineLocal(index);
+                              deleteRem(item.medicineName);
+                            },
                           },
                           {
                             text: 'Cancel',
@@ -239,33 +332,30 @@ const MedicinePanel = ({navigation}) => {
   };
 
   return (
-    <View style={Styles.container}>
-      {/* <View style={Styles.background} /> */}
-      <MainHeader title={'Medicine'} navigation={navigation} />
-      {showLoader ? (
-        <Loader />
-      ) : (
-        <>
-          {medicineResponse.length === 0 ? (
-            <View style={Styles.lottie}>
-              <CustomImage
-                resizeMode="contain"
-                source={require('../../../assets/images/nomeds.png')}
-                styles={{width: '66%'}}
-              />
-            </View>
-          ) : (
-            <>
-              <FlatList
-                data={medicineResponse}
-                renderItem={renderItemLocal}
-                showsVerticalScrollIndicator={false}
-              />
-            </>
-          )}
-        </>
-      )}
-    </View>
+    <>
+      <View style={Styles.container}>
+        {/* <View style={Styles.background} /> */}
+        <MainHeader title={'Medicine'} navigation={navigation} />
+        {medicineResponse.length === 0 ? (
+          <View style={Styles.lottie}>
+            {clearLocal()}
+            <CustomImage
+              resizeMode="contain"
+              source={require('../../../assets/images/nomeds.png')}
+              styles={{width: '66%'}}
+            />
+          </View>
+        ) : (
+          <>
+            <FlatList
+              data={medicineResponse}
+              renderItem={renderItemLocal}
+              showsVerticalScrollIndicator={false}
+            />
+          </>
+        )}
+      </View>
+    </>
   );
 };
 export default MedicinePanel;
