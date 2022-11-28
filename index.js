@@ -49,12 +49,12 @@ messaging().onNotificationOpenedApp(mss => {
   }
 });
 
-messaging()
-  .getInitialNotification()
-  .then(mssg => {
-    if (mssg) {
-    }
-  });
+// messaging()
+//   .getInitialNotification()
+//   .then(mssg => {
+//     if (mssg) {
+//     }
+//   });
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   if (remoteMessage.notification.title === 'caretaker') {

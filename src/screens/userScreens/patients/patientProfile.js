@@ -62,7 +62,15 @@ const PatientProfile = ({navigation, route}) => {
                   </View>
                   <View style={styles.subView2}>
                     <Text style={styles.content}>
-                      {item.address + ', ' + item.state + ', ' + item.country}
+                      {item?.address ? (
+                        <Text style={styles.content}>
+                          {item.address +
+                            ', ' +
+                            item.state +
+                            ', ' +
+                            item.country}
+                        </Text>
+                      ) : null}
                     </Text>
                   </View>
                 </View>

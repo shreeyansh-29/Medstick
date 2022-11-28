@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
@@ -15,15 +15,13 @@ import styles from './reminderStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import moment from 'moment';
-import {AddMedicine, getMedicine} from '../../../utils/storage';
-import PushNotification, {Importance} from 'react-native-push-notification';
+import {AddMedicine, getMedicine} from '../../../utils/storage.js';
 import uuid from 'react-native-uuid';
-import {hour, timeHours} from '../../../constants/constants';
+import {hour} from '../../../constants/constants';
 import Notifications from '../../../notification/notifications';
-var counter = 0;
+import Toast from 'react-native-toast-message';
 
-const Reminder = ({route, navigation, props}) => {
-  const [medicineInfo, setMedicineInfo] = useState(route.params.data);
+const Reminder = ({route, navigation}) => {
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = useState(false);
@@ -83,12 +81,7 @@ const Reminder = ({route, navigation, props}) => {
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
-    let chosenDate2 =
-      chosenDate1.getFullYear() +
-      '-' +
-      (chosenDate1.getMonth() + 1) +
-      '-' +
-      chosenDate1.getDate();
+    let chosenDate2 =  chosenDate1.getFullYear() +"-"+ (chosenDate1.getMonth() + 1) +"-"+ chosenDate1.getDate();
 
     if (number < currentTime) {
       let dateTime = moment(chosenDate2 + ' ' + number);
@@ -259,10 +252,8 @@ const Reminder = ({route, navigation, props}) => {
 
     // setReminderWithSelectedDate(title, fDatePrimary, fDateSecondary);
 
-    // handlePushNotification();
-
     frequencyHandler();
-    console.log(frequency, 'freq  ');
+    // console.log(frequency, 'freq  ');
     const frequencyTemp = frequency.toString();
 
     if (endDate === 'No End Date') {
@@ -298,6 +289,12 @@ const Reminder = ({route, navigation, props}) => {
     });
     loadstate(false);
 
+    Toast.show({
+      text1: 'Reminder Saved',
+      type: 'success',
+      position: 'bottom',
+    });
+
     setTimeout(() => {
       navigation.pop();
     }, 1000);
@@ -309,7 +306,6 @@ const Reminder = ({route, navigation, props}) => {
       <View style={styles.top}>
         <View style={styles.container1}>
           <TouchableOpacity
-            activeOpacity={1}
             onPress={() => {
               pickerstate(true);
             }}
@@ -351,7 +347,6 @@ const Reminder = ({route, navigation, props}) => {
           </TouchableOpacity>
           <Divider></Divider>
           <TouchableOpacity
-            activeOpacity={1}
             onPress={() => {
               navigation.navigate('ReminderDuration', {
                 date: startDate,
@@ -427,7 +422,6 @@ const Reminder = ({route, navigation, props}) => {
               }}>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
-                  activeOpacity={1}
                   style={{
                     borderRadius: breakfast ? 3 : 0,
                     alignItems: 'center',
@@ -451,7 +445,6 @@ const Reminder = ({route, navigation, props}) => {
                 </TouchableOpacity>
                 {breakfastTouchable ? (
                   <TouchableOpacity
-                    activeOpacity={1}
                     style={{
                       borderRadius: 3,
                       alignItems: 'center',
@@ -483,7 +476,6 @@ const Reminder = ({route, navigation, props}) => {
 
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
-                  activeOpacity={1}
                   style={{
                     borderRadius: lunch ? 3 : 0,
                     alignItems: 'center',
@@ -507,7 +499,6 @@ const Reminder = ({route, navigation, props}) => {
                 </TouchableOpacity>
                 {lunchTouchable ? (
                   <TouchableOpacity
-                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -538,7 +529,6 @@ const Reminder = ({route, navigation, props}) => {
               </View>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
-                  activeOpacity={1}
                   style={{
                     borderRadius: dinner ? 3 : 0,
                     alignItems: 'center',
@@ -562,7 +552,6 @@ const Reminder = ({route, navigation, props}) => {
                 </TouchableOpacity>
                 {dinnerTouchable ? (
                   <TouchableOpacity
-                    activeOpacity={1}
                     style={{
                       alignItems: 'center',
                       borderRadius: 3,
@@ -622,7 +611,6 @@ const Reminder = ({route, navigation, props}) => {
                 alignSelf: 'center',
               }}>
               <TouchableOpacity
-                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,
@@ -650,7 +638,6 @@ const Reminder = ({route, navigation, props}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                activeOpacity={1}
                 style={{
                   borderWidth: 1,
                   borderColor: colorPalette.mainColor,
@@ -777,6 +764,7 @@ const Reminder = ({route, navigation, props}) => {
           />
         </View>
       </View>
+      <Toast visibilityTime={500} />
     </ScrollView>
   );
 };

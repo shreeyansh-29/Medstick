@@ -331,7 +331,7 @@ const MedicinePanel = ({navigation}) => {
             <CustomImage
               resizeMode="contain"
               source={require('../../../assets/images/nomeds.png')}
-              styles={{width: '70%'}}
+              styles={{width: '66%'}}
             />
           </View>
         ) : (

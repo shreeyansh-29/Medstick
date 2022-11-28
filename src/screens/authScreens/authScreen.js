@@ -46,15 +46,15 @@ const AuthScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={{position: 'absolute', right: 16, top: 10}}
+        style={styles.skipBtn}
         activeOpacity={1}
         onPress={() => {
           navigation.navigate('Home');
         }}>
-        <Text style={{color: 'gray', fontSize: 18}}>Skip</Text>
+        <Text style={styles.text}>Skip</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={{position: 'absolute', left: 16, top: 10}}
+        style={styles.backBtn}
         activeOpacity={1}
         onPress={() => {
           navigation.pop();
@@ -82,46 +82,18 @@ const AuthScreen = ({navigation}) => {
       </View>
       <Toast visibilityTime={1000} />
       {visible && (
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            backgroundColor: colorPalette.greenPercentageColor,
-            height: 22,
-            width: '100%',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '28%',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+        <View style={styles.online}>
+          <View style={styles.onlineCont}>
             <MaterialIcons name={'wifi'} color={'white'} size={20} />
-            <Text style={{color: 'white', fontSize: 16}}>Back Online</Text>
+            <Text style={styles.onlineText}>Back Online</Text>
           </View>
         </View>
       )}
       {!connected && (
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            backgroundColor: 'grey',
-            height: 22,
-            width: '100%',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '28%',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+        <View style={styles.offline}>
+          <View style={styles.offlineCont}>
             <MaterialIcons name={'wifi-off'} color={'white'} size={20} />
-            <Text style={{color: 'white', fontSize: 16}}>No Internet</Text>
+            <Text style={styles.offlineText}>No Internet</Text>
           </View>
         </View>
       )}
@@ -166,6 +138,39 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     color: 'black',
   },
+  skipBtn: {position: 'absolute', right: 16, top: 10},
+  text: {color: 'gray', fontSize: 18},
+  backBtn: {position: 'absolute', left: 16, top: 10},
+  online: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: colorPalette.greenPercentageColor,
+    height: 22,
+    width: '100%',
+    alignItems: 'center',
+  },
+  onlineCont: {
+    flexDirection: 'row',
+    width: '28%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  onlineText: {color: 'white', fontSize: 16},
+  offline: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'grey',
+    height: 22,
+    width: '100%',
+    alignItems: 'center',
+  },
+  offlineCont: {
+    flexDirection: 'row',
+    width: '28%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  offlineText: {color: 'white', fontSize: 16},
 });
 
 export default AuthScreen;

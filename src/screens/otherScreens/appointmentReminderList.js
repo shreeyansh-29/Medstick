@@ -1,7 +1,12 @@
-import {View, FlatList, TouchableOpacity, Alert} from 'react-native';
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
-import {styles} from '../../styles/patientStyles/myPatientsStyles';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import CustomImage from '../../components/atoms/customImage';
@@ -10,12 +15,8 @@ import {colorPalette} from '../../components/atoms/colorPalette';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
 import {useIsFocused} from '@react-navigation/native';
-import {
-  AddMedicine,
-  getMedicine,
-  getPrescription,
-  savePrescription,
-} from '../../utils/storage';
+import {AddMedicine, getMedicine} from '../../utils/storage';
+import Loader from '../../components/atoms/loader';
 
 const AppointmentReminderList = ({navigation}) => {
   const isFocused = useIsFocused();
@@ -26,15 +27,17 @@ const AppointmentReminderList = ({navigation}) => {
   const [time1, setTime1] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [doctorName, setDoctorName] = useState([]);
+  const [showLoader, setShowLoader] = useState(true);
 
-  const showAlert = () => {
-    Alert.alert('Add Some Precription First', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      setShowLoader(false);
+    }, 1000);
+
+    return () => {
+      false;
+    };
+  }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -43,7 +46,7 @@ const AppointmentReminderList = ({navigation}) => {
           let doctorList = [];
           let reminderList = [];
           data.map(item => {
-            if (item.doctorName !== null) {
+            if (item.doctorName !== null && item.medicineName !== null) {
               doctorList.push({
                 doctorName: item.doctorName,
                 prescriptionId: item.prescriptionId,
@@ -97,50 +100,35 @@ const AppointmentReminderList = ({navigation}) => {
         <ListItem style={styles.list}>
           <ListItem.Content>
             <View>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <ListItem.Subtitle style={styles.reminderKey}>
                   Date:
                 </ListItem.Subtitle>
-                <ListItem.Subtitle
-                  style={{
-                    marginLeft: 3,
-                    fontSize: 15,
-                    color: colorPalette.mainColor,
-                  }}>
+                <ListItem.Subtitle style={styles.listSubtitle}>
                   {item.date}
                 </ListItem.Subtitle>
               </View>
 
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <ListItem.Subtitle style={styles.reminderKey}>
                   Time:
                 </ListItem.Subtitle>
-                <ListItem.Subtitle
-                  style={{
-                    marginLeft: 3,
-                    fontSize: 15,
-                    color: colorPalette.mainColor,
-                  }}>
+                <ListItem.Subtitle style={styles.listSubtitle}>
                   {item.time}
                 </ListItem.Subtitle>
               </View>
 
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <ListItem.Subtitle style={styles.reminderKey}>
                   Notes:
                 </ListItem.Subtitle>
-                <ListItem.Subtitle
-                  style={{
-                    marginLeft: 3,
-                    fontSize: 15,
-                    color: colorPalette.mainColor,
-                  }}>
+                <ListItem.Subtitle style={styles.listSubtitle}>
                   {item.notes}
                 </ListItem.Subtitle>
               </View>
             </View>
           </ListItem.Content>
-          <View style={{flexDirection: 'row', left: 55, padding: '6%'}}>
+          <View style={styles.editView}>
             <TouchableOpacity
               activeOpacity={1}
               onPress={() => {
@@ -158,7 +146,7 @@ const AppointmentReminderList = ({navigation}) => {
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={1}
-              style={{marginLeft: '10%', marginRight: '10%'}}
+              style={styles.deleteTouch}
               onPress={() => {
                 Alert.alert('Are you sure', 'Click ok to proceed', [
                   {
@@ -186,7 +174,7 @@ const AppointmentReminderList = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colorPalette.backgroundColor}}>
+    <View style={styles.mainContainer}>
       <SubHeader
         title={'Appointment Reminders'}
         navigation={navigation}
@@ -210,30 +198,60 @@ const AppointmentReminderList = ({navigation}) => {
         }
       />
 
-      {appointments.length === 0 ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'white',
-          }}>
-          <CustomImage
-            resizeMode="contain"
-            styles={styles.img}
-            source={require('../../assets/images/noAppointments.png')}
-          />
-        </View>
+      {showLoader ? (
+        <Loader />
       ) : (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={appointments}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        <>
+          {appointments.length === 0 ? (
+            <View style={styles.imgCont}>
+              <CustomImage
+                resizeMode="contain"
+                styles={styles.img}
+                source={require('../../assets/images/noAppointments.png')}
+              />
+            </View>
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={appointments}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          )}
+        </>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  mainContainer: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  imgCont: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  img: {width: '70%'},
+  top: {flexDirection: 'row', marginVertical: 2},
+  list: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  reminderKey: {
+    fontSize: 16,
+    marginLeft: 3,
+    fontWeight: '900',
+    color: '#000',
+  },
+  listSubtitle: {
+    marginLeft: 3,
+    fontSize: 15,
+    color: colorPalette.mainColor,
+  },
+  editView: {flexDirection: 'row', left: 55, padding: '6%'},
+  deleteTouch: {marginLeft: '10%', marginRight: '10%'},
+});
 
 export default AppointmentReminderList;

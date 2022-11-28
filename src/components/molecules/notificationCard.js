@@ -8,7 +8,6 @@ import BellIcon from '../atoms/bellIcon';
 import {colorPalette} from '../atoms/colorPalette';
 
 const NotificationCard = ({text, date, time, notificationId, sender}) => {
-  
   return (
     <View
       style={{

@@ -60,7 +60,7 @@ const SavedDetails = () => {
 
                 <View style={styles.subView2}>
                   <Text style={styles.content}>
-                    {dateHandler(res?.dateOfBirth)}
+                    {res?.dateOfBirth ? dateHandler(res?.dateOfBirth) : null}
                   </Text>
                 </View>
               </View>

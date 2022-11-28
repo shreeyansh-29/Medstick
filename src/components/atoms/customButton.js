@@ -10,6 +10,7 @@ const CustomButton = props => {
       buttonStyle={props.btnStyles}
       containerStyle={props.contStyles}
       onPress={props.handleSubmit}
+      disabled={props.disabled}
     />
   );
 };
