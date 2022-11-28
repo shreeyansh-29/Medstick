@@ -55,8 +55,8 @@ const AccountTab = ({navigation}) => {
   //   checkforlog();
   // });
   useFocusEffect(() => {
-      async function checkforlog() {
-        const checkforlogin = await AsyncStorage.getItem('user_id'); 
+    async function checkforlog() {
+      const checkforlogin = await AsyncStorage.getItem('user_id');
       if (checkforlogin !== null) {
         setName(await AsyncStorage.getItem('user_name'));
         imgstate(await AsyncStorage.getItem('user_photo'));
@@ -72,7 +72,7 @@ const AccountTab = ({navigation}) => {
         '380266789888-bupnp07eamd8bo5aoacs6vv7fv4mhkah.apps.googleusercontent.com',
     });
   }, []);
-  
+
   return (
     <View style={styles.container}>
       <MainHeader title={'Account'} />
@@ -153,15 +153,8 @@ const AccountTab = ({navigation}) => {
         {isLoggedIn ? (
           <CustomButton
             title={'Logout'}
-            btnStyles={{
-              borderRadius: 5,
-              padding: 12,
-              backgroundColor: colorPalette.mainColor,
-              width: '40%',
-              alignItems: 'center',
-              marginVertical: 40,
-            }}
-            contStyles={{alignItems: 'center', marginTop: verticalScale(16)}}
+            btnStyles={styles.btnStyles}
+            contStyles={styles.contStyles}
             handleSubmit={() => {
               navigation.navigate('Logout');
               imgstate('https://i.stack.imgur.com/l60Hf.png');
@@ -172,15 +165,8 @@ const AccountTab = ({navigation}) => {
         ) : (
           <CustomButton
             title={'Login'}
-            btnStyles={{
-              borderRadius: 5,
-              padding: 12,
-              backgroundColor: colorPalette.mainColor,
-              width: '40%',
-              alignItems: 'center',
-              marginVertical: 40,
-            }}
-            contStyles={{alignItems: 'center', marginTop: verticalScale(16)}}
+            btnStyles={styles.btnStyles}
+            contStyles={styles.contStyles}
             handleSubmit={() => navigation.navigate('AuthScreen')}
           />
         )}

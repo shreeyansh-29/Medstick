@@ -167,12 +167,6 @@ const MedicinePanel = ({navigation}) => {
                           {item.dosagePower}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>
-                            Dosage Quantity:{' '}
-                          </Text>
-                          {item.dosageQuantity}
-                        </ListItem.Subtitle>
-                        <ListItem.Subtitle>
                           <Text style={{color: 'black'}}>Stock: </Text>
                           {item.stock}
                         </ListItem.Subtitle>

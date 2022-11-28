@@ -21,12 +21,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {hour} from '../../constants/constants';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
-import {
-  AddMedicine,
-  getMedicine,
-  getPrescription,
-  savePrescription,
-} from '../../utils/storage';
+import {AddMedicine, getMedicine} from '../../utils/storage';
 import uuid from 'react-native-uuid';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
@@ -68,15 +63,10 @@ const AppointmentReminders = ({navigation, route}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colorPalette.mainColor}}>
+    <View style={styles.mainView}>
       <SubHeader title={'Save Appointment'} navigation={navigation} />
       <KeyboardAvoidingView
-        style={{
-          flex: 1,
-          borderTopRightRadius: 20,
-          borderTopLeftRadius: 20,
-          backgroundColor: 'white',
-        }}
+        style={styles.keyboardView}
         behavior={'padding'}
         keyboardVerticalOffset={avoidKeyboardRequired ? -125 : -500}>
         <ScrollView
@@ -105,19 +95,12 @@ const AppointmentReminders = ({navigation, route}) => {
               touched,
               setFieldValue,
             }) => (
-              <View style={{alignItems: 'center', flex: 1, marginTop: 19}}>
-                <View style={{marginBottom: 16}}>
+              <View style={styles.formBody}>
+                <View style={styles.picker}>
                   <View style={styles.text1}>
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        color: 'black',
-                        fontWeight: '700',
-                      }}>
-                      Doctor Name
-                    </Text>
+                    <Text style={styles.docName}>Doctor Name</Text>
                     <Picker
-                      style={{width: '58%', color: 'black'}}
+                      style={styles.pickerBody}
                       dropdownIconColor={1}
                       mode="dropdown"
                       selectedValue={values.doctorName}
@@ -141,11 +124,7 @@ const AppointmentReminders = ({navigation, route}) => {
                 </View>
 
                 {/* Note */}
-                <View
-                  style={{
-                    width: '90%',
-                    marginBottom: 16,
-                  }}>
+                <View style={styles.notes}>
                   <InputField
                     handleChange={handleChange}
                     handleBlur={handleBlur}
@@ -156,7 +135,7 @@ const AppointmentReminders = ({navigation, route}) => {
                     text="notes"
                     activeOutlineColor={colorPalette.mainColor}
                     value={values.notes}
-                    styles={{height: 100, backgroundColor: 'white'}}
+                    styles={styles.field}
                     multiline={true}
                     selectTextOnFocus={true}
                   />
@@ -174,21 +153,11 @@ const AppointmentReminders = ({navigation, route}) => {
                     }}
                     style={styles.containerTouch}>
                     <View style={styles.dateContainer}>
-                      <View
-                        style={{justifyContent: 'flex-start', width: '35%'}}>
+                      <View style={styles.heading}>
                         <Text style={styles.dateText}>Date</Text>
                       </View>
-                      <View
-                        style={{
-                          width: '51%',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <View
-                          style={{
-                            width: '100%',
-                            alignItems: 'center',
-                          }}>
+                      <View style={styles.dateView}>
+                        <View style={styles.dateSubView}>
                           <Text style={styles.dateText1}>{values.date}</Text>
                         </View>
                       </View>
@@ -225,21 +194,11 @@ const AppointmentReminders = ({navigation, route}) => {
                     }}
                     style={styles.containerTouch}>
                     <View style={styles.dateContainer}>
-                      <View
-                        style={{justifyContent: 'flex-start', width: '35%'}}>
+                      <View style={styles.heading}>
                         <Text style={styles.dateText}>Time</Text>
                       </View>
-                      <View
-                        style={{
-                          width: '51%',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <View
-                          style={{
-                            width: '100%',
-                            alignItems: 'center',
-                          }}>
+                      <View style={styles.dateView}>
+                        <View style={styles.dateSubView}>
                           <Text style={styles.dateText1}>{values.time}</Text>
                         </View>
                       </View>
@@ -278,12 +237,8 @@ const AppointmentReminders = ({navigation, route}) => {
                 <CustomButton
                   title={'Save'}
                   handleSubmit={handleSubmit}
-                  contStyles={{marginVertical: 18, width: '25%'}}
-                  btnStyles={{
-                    backgroundColor: colorPalette.mainColor,
-                    borderRadius: 5,
-                    alignItems: 'center',
-                  }}
+                  contStyles={styles.contStyles}
+                  btnStyles={styles.btnStyles}
                 />
               </View>
             )}
@@ -296,6 +251,7 @@ const AppointmentReminders = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  mainView: {flex: 1, backgroundColor: colorPalette.mainColor},
   container1: {
     marginBottom: 15,
     width: '92%',
@@ -347,13 +303,44 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   arrow: {
-    // alignItems: 'flex-start',
     justifyContent: 'center',
-    // right: 4,
     width: '10%',
-    // backgroundColor: 'red',
   },
-  downIcon: {},
+  keyboardView: {
+    flex: 1,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    backgroundColor: 'white',
+  },
+  formBody: {alignItems: 'center', flex: 1, marginTop: 19},
+  picker: {marginBottom: 16},
+  docName: {
+    fontSize: 18,
+    color: 'black',
+    fontWeight: '700',
+  },
+  pickerBody: {width: '58%', color: 'black'},
+  notes: {
+    width: '90%',
+    marginBottom: 16,
+  },
+  field: {height: 100, backgroundColor: 'white'},
+  heading: {justifyContent: 'flex-start', width: '35%'},
+  dateView: {
+    width: '51%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dateSubView: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  contStyles: {marginVertical: 18, width: '25%'},
+  btnStyles: {
+    backgroundColor: colorPalette.mainColor,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
 });
 
 export default AppointmentReminders;

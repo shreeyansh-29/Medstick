@@ -5,7 +5,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const AddAppointment = ({navigation, routeName, notes}) => {
   const showAlert = () => {
-    Alert.alert('Add Some Precription First', '', [
+    Alert.alert('Add Medicine and Precription First', '', [
       {
         text: 'Ok',
         onPress: () => {},
@@ -24,7 +24,7 @@ const AddAppointment = ({navigation, routeName, notes}) => {
             showAlert();
           }
         }}>
-        <EvilIcons name="plus" color={'white'} size={32} />
+        <EvilIcons name="plus" color={'white'} size={34} />
       </TouchableOpacity>
     </View>
   );

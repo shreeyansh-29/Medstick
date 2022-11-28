@@ -16,21 +16,6 @@ const styles = StyleSheet.create({
     minHeight: 80,
     width: '96.5%',
   },
-  dobTouch: {
-    height: 48,
-    borderWidth: 1.1,
-    borderRadius: 3.5,
-    borderColor: 'lightgrey',
-    justifyContent: 'center',
-  },
-  dobView: {
-    backgroundColor: 'blue',
-  },
-  dobText: {
-    color: 'black',
-    fontSize: 16,
-    marginLeft: 13,
-  },
   subView1: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -107,10 +92,9 @@ const styles = StyleSheet.create({
 
   //inputField
   field: {height: 48, backgroundColor: 'white'},
-  bio: {height: 120, backgroundColor: 'white', color: 'green'},
+  bio: {height: 120, backgroundColor: 'white'},
   inputForm: {
     marginHorizontal: 20,
-    // backgroundColor: 'red',
   },
   inputField: {
     marginBottom: 10,
@@ -145,6 +129,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'lightgrey',
     borderRadius: 4,
+    // height: 48,
   },
   fieldHeading: {fontSize: 17, color: 'grey', fontWeight: '500'},
   pickerHeading: {
@@ -152,6 +137,24 @@ const styles = StyleSheet.create({
     color: 'grey',
     marginBottom: 4,
     fontWeight: '500',
+  },
+  pickerText: {
+    color: 'black',
+  },
+  dobTouch: {
+    height: 48,
+    borderWidth: 1.1,
+    borderRadius: 3.5,
+    borderColor: 'lightgrey',
+    justifyContent: 'center',
+  },
+  dobView: {
+    backgroundColor: 'blue',
+  },
+  dobText: {
+    color: 'grey',
+    fontSize: 16,
+    marginLeft: 13,
   },
 });
 

@@ -4,88 +4,82 @@ export const profileValidationSchema = yup.object().shape({
   bio: yup
     .string()
     .max(200, ({max}) => `Bio can be only ${max} characters`)
-    .required('Bio is Required*')
-    .nullable(),
+    .required('Bio is Required*'),
   contact: yup
     .string()
     .min(10, ({min}) => `Contact number must be ${min} characters`)
     .max(10, ({max}) => `Contact number can be only ${max} characters`)
     .required('Contact is Required*')
-    .matches(/^[0-9]+$/, 'Must be only digits')
-    .nullable(),
-  dateofBirth: yup.string().required('Date of Birth is Required*').nullable(),
-  gender: yup.string().required('Gender is Required*').nullable(),
-  bloodGroup: yup.string().required('Blood Group is Required*').nullable(),
-  country: yup.string().required('Country is Required*').nullable(),
+    .matches(/^[0-9]+$/, 'Must be only digits'),
+  dateofBirth: yup.string().required('Date of Birth is Required*'),
+  gender: yup.string().required('Gender is Required*'),
+  bloodGroup: yup.string().required('Blood Group is Required*'),
+  country: yup.string().required('Country is Required*'),
   address: yup
     .string()
     .max(100, ({max}) => `Address can be only ${max} characters`)
-    .required('Address is Required*')
-    .nullable(),
-  state: yup.string().required('State is Required*').nullable(),
+    .required('Address is Required*'),
+  state: yup.string().required('State is Required*'),
 });
 
 export const appointmentValidationSchema = yup.object().shape({
-  doctorName: yup.string().required('Doctor name is required').nullable(),
+  doctorName: yup.string().required('Doctor name is required'),
   notes: yup
     .string()
     .max(100, ({max}) => `Notes can be only ${max} characters`)
-    .required('Notes is Required*')
-    .nullable(),
-  date: yup.string().required('Date is Required*').nullable(),
-  time: yup.string().required('Time is Required*').nullable(),
+    .required('Notes is Required*'),
+  date: yup.string().required('Date is Required*'),
+  time: yup.string().required('Time is Required*'),
 });
 
 export const prescriptionValidationSchema = yup.object().shape({
-  doctorName: yup.string().required('Doctor Name is Required*').nullable(),
-  specialization: yup
-    .string()
-    .required('Specialization is Required*')
-    .nullable(),
+  doctorName: yup.string().required('Doctor Name is Required*'),
+  specialization: yup.string().required('Specialization is Required*'),
   contact: yup
     .string()
     .min(10, ({min}) => `Contact number must be ${min} characters`)
     .max(10, ({max}) => `Contact number can be only ${max} characters`)
     .required('Contact is Required*')
-    .matches(/^[0-9]+$/, 'Must be only digits')
-    .nullable(),
-  location: yup.string().required('Location is Required*').nullable(),
-  image: yup.string().required('Image is Required*').nullable(),
+    .matches(/^[0-9]+$/, 'Must be only digits'),
+  location: yup.string().required('Location is Required*'),
+  image: yup.string().required('Image is Required*'),
 });
 
 export const updateAppointmentSchema = yup.object().shape({
   notes: yup
     .string()
     .max(100, ({max}) => `Notes can be only ${max} characters`)
-    .required('Notes is Required*')
-    .nullable(),
-  date1: yup.string().required('Date is Required*').nullable(),
-  time: yup.string().required('Time is Required*').nullable(),
+    .required('Notes is Required*'),
+  date1: yup.string().required('Date is Required*'),
+  time: yup.string().required('Time is Required*'),
 });
 
 export const addMedicineSchema = yup.object().shape({
-  medicineName: yup.string().required('Medicine Name is Required*').nullable(),
+  medicineName: yup.string().required('Medicine Name is Required*'),
   description: yup
     .string()
     .min(10, ({min}) => `Description must be more than ${min} characters*`)
     .max(120, ({max}) => `Description can be only of ${max} characters*`)
-    .required('Description is Required*')
-    .nullable(),
+    .required('Description is Required*'),
   dosageQuantity: yup
-    .string()
+    .number()
+    .min(1, ({min}) => `Should be more than ${min}`)
     .required('Dosage Quantity is Required*')
-    .matches(/^[0-9]+$/, 'Must be only digits')
-    .nullable(),
-  dosagePower: yup.string().required('Dosage Power is Required*').nullable(),
+    .integer('Must be only digits'),
+  dosagePower: yup
+    .number()
+    .required('Dosage Power is Required*')
+    .min(1, ({min}) => `Should be more than ${min}`)
+    .integer('Must be only digits'),
   stocks: yup
-    .string()
+    .number()
     .required('Stocks are Required*')
-    .matches(/^[0-9]+$/, 'Must be only digits')
-    .nullable(),
+    .min(1, ({min}) => `Should be more than ${min}`)
+    .integer('Must be only digits'),
   notify: yup
-    .string()
-    .required('Notify me when is Required*')
-    .matches(/^[0-9]+$/, 'Must be only digits')
+    .number()
+    .min(1, ({min}) => `Must be more than ${min}`)
+    .integer('Must be only digits')
     .nullable(),
 });
 

@@ -149,6 +149,7 @@ const Reminders = ({showAlert, setPercentage}) => {
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
+                showAlert();
                 markingTaken(item);
                 reminderList.splice(index, 1);
                 setReminderList(reminderList);

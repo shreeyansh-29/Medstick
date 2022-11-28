@@ -1,4 +1,10 @@
-import {View, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -44,45 +50,47 @@ const EditMedicineView = ({setEdit, item}) => {
   }, [pill]);
 
   const updateMedicineDetails = values => {
-    let obj = item;
+    if (values.notify > values.stocks) {
+      Alert.alert('Notify Me should be less than Stock Unit', '', [
+        {
+          text: 'Ok',
+          onPress: () => {},
+        },
+      ]);
+    } else {
+      let obj = item;
 
-    obj.medicineName = values.medicineName;
-    obj.medicineDescription = values.description;
-    obj.dosageType = values.pill;
-    obj.dosageQuantity = values.dosageQuantity;
-    obj.dosagePower = values.dosagePower + ' ' + values.doseType;
-    obj.leftStock = values.notify;
-    obj.stock = values.stocks;
+      obj.medicineName = values.medicineName;
+      obj.medicineDescription = values.description;
+      obj.dosageType = values.pill;
+      obj.dosageQuantity = values.dosageQuantity;
+      obj.dosagePower = values.dosagePower + ' ' + values.doseType;
+      obj.leftStock = values.notify;
+      obj.stock = values.stocks;
 
-    getMedicine().then(data => {
-      const temp = data;
-      temp.map((ele, index) => {
-        if (ele.userMedicineId === obj.userMedicineId) {
-          temp[index] = obj;
-        }
+      getMedicine().then(data => {
+        const temp = data;
+        temp.map((ele, index) => {
+          if (ele.userMedicineId === obj.userMedicineId) {
+            temp[index] = obj;
+          }
+        });
+        AddMedicine(temp);
       });
-      AddMedicine(temp);
-    });
-    Toast.show({
-      text1: 'Medicine Updated Successfully',
-      type: 'success',
-      position: 'bottom',
-    });
-    setTimeout(() => {
-      setEdit(false);
-    }, 1000);  console.log('before', data);
-
+      Toast.show({
+        text1: 'Medicine Updated Successfully',
+        type: 'success',
+        position: 'bottom',
+      });
+      setTimeout(() => {
+        setEdit(false);
+      }, 1000);
+    }
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View
-        style={{
-          alignSelf: 'flex-start',
-          backgroundColor: 'white',
-          marginLeft: 12,
-          marginTop: 10,
-        }}>
+    <View style={styles.addMedicinePage}>
+      <View style={styles.closeBtn}>
         <TouchableOpacity
           activeOpacity={1}
           style={{backgroundColor: 'white'}}
@@ -155,14 +163,18 @@ const EditMedicineView = ({setEdit, item}) => {
 
 const styles = StyleSheet.create({
   addMedicinePage: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: 'white',
     flex: 1,
   },
   keyboardView: {
     backgroundColor: 'white',
     flex: 1,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    marginTop: 10,
+  },
+  closeBtn: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'white',
+    marginLeft: 12,
     marginTop: 10,
   },
 });

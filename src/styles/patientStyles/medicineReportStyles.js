@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     width: '80%',
     textAlign: 'center',
-    margin:2,
-    fontWeight:'600'
+    margin: 2,
+    fontWeight: '600',
   },
   color: colorPalette.redPercentageColor,
   shadowColor: colorPalette.restPercentageColor,
@@ -97,6 +97,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'black',
     paddingVertical: 6,
+  },
+  animatedCircle: {
+    alignItems: 'center',
+    padding: verticalScale(8),
+    backgroundColor: colorPalette.mainColor,
+    height: 200,
   },
 });
 export default styles;

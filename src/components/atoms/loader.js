@@ -10,7 +10,7 @@ const Loader = () => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: colorPalette.backgroundColor,
+        backgroundColor: 'white',
       }}>
       <LottieView
         source={require('../../assets/animation/loader.json')}

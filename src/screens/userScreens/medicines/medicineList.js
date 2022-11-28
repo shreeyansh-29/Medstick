@@ -276,19 +276,3 @@ const styles = StyleSheet.create({
   },
   prescriptionText: {fontSize: 21},
 });
-
-// {
-//   navigation?.navigate('AddMedicineStack', {
-//     screen: 'AddMedicine',
-//     params: {
-//       itemDescription: item.medicineDescription,
-//       itemDosageType: item.dosageQuantity,
-//       itemDosageUnit: item.dosageUnit,
-//       Stock: item.stock,
-//       doctorName: item.doctorName,
-//       contact: item.contact,
-//       specialization: item.specialization,
-//       loaction: item.location,
-//     },
-//   });
-// }

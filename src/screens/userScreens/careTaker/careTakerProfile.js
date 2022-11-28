@@ -3,7 +3,6 @@ import React from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {styles} from '../../../styles/careTakerStyles/careTakerProfileStyles';
 import {Card, Divider} from 'react-native-paper';
-import Loader from '../../../components/atoms/loader';
 import ErrorBoundary from 'react-native-error-boundary';
 
 const CareTakerProfile = ({navigation, route}) => {

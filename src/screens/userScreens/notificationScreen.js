@@ -1,4 +1,4 @@
-import {View, FlatList, RefreshControl, Text} from 'react-native';
+import {View, FlatList, RefreshControl, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import NotificationCard from '../../components/molecules/notificationCard';
@@ -31,7 +31,7 @@ const NotificationScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{flex: 1, backgroundColor: colorPalette.backgroundColor}}>
+    <View style={styles.container}>
       <SubHeader title={'Notifications'} navigation={navigation} />
       {loading ? (
         <Loader />
@@ -39,16 +39,10 @@ const NotificationScreen = ({navigation}) => {
         <>
           {notification?.length === 0 ? (
             <>
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: 'white',
-                }}>
+              <View style={styles.imgContainer}>
                 <CustomImage
                   resizeMode="contain"
-                  styles={{width: '70%'}}
+                  styles={styles.img}
                   source={require('../../assets/images/noNotification.png')}
                 />
               </View>
@@ -85,5 +79,16 @@ const NotificationScreen = ({navigation}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  imgContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+  img: {width: '70%'},
+});
 
 export default NotificationScreen;
