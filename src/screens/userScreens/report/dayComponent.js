@@ -21,7 +21,6 @@ function DayComponent({
   setModalVisible,
   history,
 }) {
-  console.log('percent %', percentage);
   return (
     <TouchableOpacity
       disabled={state === 'disabled'}
@@ -43,13 +42,6 @@ function DayComponent({
           {date.day}
         </Text>
       </ProgressCircle>
-        {/* <AnimatedCircles
-        radius={15}
-        percentage={percentage}
-        strokeWidth={2}
-        text={date.day}
-        color={ColorCode(percentage)}
-      /> */}
     </TouchableOpacity>
   );
 }

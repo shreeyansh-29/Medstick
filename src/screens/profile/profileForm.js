@@ -63,10 +63,10 @@ const ProfileForm = props => {
             setDateOpen(true);
           }}
           style={styles.dobTouch}>
-          {props.values.dateofBirth === null ? (
+          {props.values.dateofBirth === undefined ? (
             <Text style={styles.dobText}>Date Of Birth</Text>
           ) : (
-            <Text style={styles.dobText}>
+            <Text style={[styles.dobText, {color: 'black'}]}>
               {moment(props.values.dateofBirth).format('YYYY-MM-DD')}
             </Text>
           )}
@@ -109,7 +109,7 @@ const ProfileForm = props => {
         <View style={styles.subInputGroup}>
           <Text style={styles.fieldHeading}>State :</Text>
           <InputField
-            styles={{backgroundColor: 'white', height: 50}}
+            styles={styles.field}
             dense={true}
             placeholder="State"
             mode="outlined"
@@ -127,7 +127,7 @@ const ProfileForm = props => {
         <View style={styles.subInputGroup}>
           <Text style={styles.fieldHeading}>Country :</Text>
           <InputField
-            styles={{backgroundColor: 'white', height: 50}}
+            styles={styles.field}
             placeholder="Country"
             mode="outlined"
             outlineColor="lightgrey"
@@ -148,9 +148,7 @@ const ProfileForm = props => {
           <Text style={styles.pickerHeading}>Blood Group :</Text>
           <View style={styles.picker}>
             <PickerField
-              styles={{
-                color: 'black',
-              }}
+              styles={styles.pickerText}
               pickerItem={bloodGroup}
               mode="dialog"
               selectedValue={props.values.bloodGroup}
@@ -166,9 +164,7 @@ const ProfileForm = props => {
           <Text style={styles.pickerHeading}>Gender :</Text>
           <View style={styles.picker}>
             <PickerField
-              styles={{
-                color: 'black',
-              }}
+              styles={styles.pickerText}
               pickerItem={gender}
               mode="dialog"
               selectedValue={props.values.gender}

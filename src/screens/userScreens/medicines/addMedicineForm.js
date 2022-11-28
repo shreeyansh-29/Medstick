@@ -1,5 +1,5 @@
-import {View, Text, TouchableOpacity, Animated} from 'react-native';
-import React, {useRef, useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import InputField from '../../../components/atoms/inputField';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
@@ -8,39 +8,27 @@ import {Divider, TextInput} from 'react-native-paper';
 import CustomButton from '../../../components/atoms/customButton';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useFocusEffect} from '@react-navigation/native';
 import CustomModal from '../../../components/molecules/customModal';
 import RenderModalView from './renderModalView';
+import {styles} from '../../../styles/medicinePanelStyles/medicineFormStyles';
+import NetInfo from '@react-native-community/netinfo';
 
 const AddMedicineForm = props => {
-  const progress = useRef(new Animated.Value(0)).current;
-  const [id, setId] = useState(null);
   const [visible, setVisible] = useState(false);
-
-  useFocusEffect(() => {
-    async function checkforlog() {
-      const Id = await AsyncStorage.getItem('user_id');
-      setId(Id);
-    }
-    checkforlog();
-  });
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
-    <View
-      style={{
-        marginTop: 16,
-        width: '90%',
-        alignSelf: 'center',
-      }}>
+    <View style={styles.mainView}>
       <CustomModal
         modalVisible={visible}
         type="fade"
@@ -48,9 +36,33 @@ const AddMedicineForm = props => {
         modalView={<RenderModalView {...props} setVisible={setVisible} />}
         customStyles={{height: '100%'}}
       />
-      <View style={{marginVertical: 6}}>
+      <View style={styles.inputField}>
+        {/* {connected ? (
+          <>
+            <TouchableOpacity
+              onPress={() => setVisible(true)}
+              activeOpacity={1}
+              style={{}}>
+              <InputField
+                styles={{backgroundColor: 'white'}}
+                label="Medicine Name"
+                mode="outlined"
+                outlineColor="lightgrey"
+                text="medicineName"
+                activeOutlineColor={colorPalette.mainColor}
+                {...props}
+                value={props.values.medicineName}
+              />
+              {props.errors.medicineName && props.touched.medicineName && (
+                <Text style={{color: 'red', marginTop: 4}}>
+                  {props.errors.medicineName}
+                </Text>
+              )}
+            </TouchableOpacity>
+          </>
+        ) : ( */}
         <InputField
-          styles={{backgroundColor: 'white'}}
+          styles={styles.field}
           label="Medicine Name"
           mode="outlined"
           outlineColor="lightgrey"
@@ -60,52 +72,12 @@ const AddMedicineForm = props => {
           value={props.values.medicineName}
         />
         {props.errors.medicineName && props.touched.medicineName && (
-          <Text style={{color: 'red', marginTop: 4}}>
-            {props.errors.medicineName}
-          </Text>
+          <Text style={styles.errorText}>{props.errors.medicineName}</Text>
         )}
-        {/* {props.connection && id === null ? (
-        {props.connection && id !== null ? (
-          <>
-            <TouchableOpacity
-              onPress={() => setVisible(true)}
-              activeOpacity={1}
-              style={{
-                width: '100%',
-                borderWidth: 1,
-                borderColor: 'lightgrey',
-                borderRadius: 4,
-                height: 60,
-                justifyContent: 'center',
-              }}>
-              <Text style={{marginLeft: 12, fontSize: 16, color: 'grey'}}>
-                Medicine Name
-              </Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <InputField
-              styles={{backgroundColor: 'white'}}
-              label="Medicine Name"
-              mode="outlined"
-              outlineColor="lightgrey"
-              text="medicineName"
-              activeOutlineColor={colorPalette.mainColor}
-              {...props}
-              value={props.values.medicineName}
-            />
-            {props.errors.medicineName && props.touched.medicineName && (
-              <Text style={{color: 'red', marginTop: 4}}>
-                {props.errors.medicineName}
-              </Text>
-            )}
-          </>
-        )} */}
       </View>
-      <View style={{marginVertical: 6}}>
+      <View style={styles.inputField}>
         <InputField
-          styles={{height: 100, backgroundColor: 'white'}}
+          styles={styles.description}
           label="Description"
           mode="outlined"
           outlineColor="lightgrey"
@@ -118,24 +90,15 @@ const AddMedicineForm = props => {
           dense={true}
         />
         {props.errors.description && props.touched.description && (
-          <Text style={{color: 'red', marginTop: 4}}>
-            {props.errors.description}
-          </Text>
+          <Text style={styles.errorText}>{props.errors.description}</Text>
         )}
       </View>
 
-      <View style={Styles.textView1}>
-        <View
-          style={{
-            width: '48%',
-            marginTop: 6,
-          }}>
-          <View style={Styles.picker}>
+      <View style={styles.inputGroup}>
+        <View style={styles.pickerView}>
+          <View style={styles.picker}>
             <Picker
-              style={{
-                color: 'black',
-                height: 56,
-              }}
+              style={styles.pickerField}
               dropdownIconColor={1}
               selectedValue={props.pill}
               onValueChange={val => props.setPill(val)}>
@@ -146,9 +109,9 @@ const AddMedicineForm = props => {
             </Picker>
           </View>
         </View>
-        <View style={{width: '50%'}}>
+        <View style={styles.subInputGroup}>
           <InputField
-            styles={{backgroundColor: 'white'}}
+            styles={styles.field}
             label="Dosage Quantity"
             mode="outlined"
             outlineColor="lightgrey"
@@ -159,17 +122,15 @@ const AddMedicineForm = props => {
             keyboardType="numeric"
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
-            <Text style={{color: 'red', marginTop: 4}}>
-              {props.errors.dosageQuantity}
-            </Text>
+            <Text style={styles.errorText}>{props.errors.dosageQuantity}</Text>
           )}
         </View>
       </View>
 
-      <View style={Styles.textView1}>
-        <View style={{width: '50%'}}>
+      <View style={styles.inputGroup}>
+        <View style={styles.subInputGroup}>
           <InputField
-            styles={{width: '97%', backgroundColor: 'white'}}
+            styles={[styles.field, {width: '97%'}]}
             text="dosagePower"
             label="Dosage Power"
             value={props.values.dosagePower}
@@ -181,15 +142,13 @@ const AddMedicineForm = props => {
             {...props}
           />
           {props.errors.dosagePower && props.touched.dosagePower && (
-            <Text style={{color: 'red', marginTop: 4}}>
-              {props.errors.dosagePower}
-            </Text>
+            <Text style={styles.errorText}>{props.errors.dosagePower}</Text>
           )}
         </View>
-        <View style={{width: '50%'}}>
+        <View style={styles.subInputGroup}>
           <TextInput
             disabled
-            style={{width: '100%', backgroundColor: 'white'}}
+            style={styles.field}
             label="Dose Type"
             value={props.doseType}
             mode="outlined"
@@ -200,17 +159,13 @@ const AddMedicineForm = props => {
           />
         </View>
       </View>
-      <View style={Styles.textView1}>
-        <View style={Styles.textbox}>
-          <Text style={Styles.text}>Stock Unit</Text>
+      <View style={styles.inputGroup}>
+        <View style={styles.textbox}>
+          <Text style={styles.text}>Stock Unit</Text>
         </View>
-        <View
-          style={{
-            width: '50%',
-            alignItems: 'center',
-          }}>
+        <View style={styles.unitBox}>
           <InputField
-            styles={{width: '60%', backgroundColor: 'white'}}
+            styles={[styles.field, {width: '60%'}]}
             label="Units"
             mode="outlined"
             outlineColor="lightgrey"
@@ -231,9 +186,9 @@ const AddMedicineForm = props => {
         <View style={Styles.textbox}>
           <Text style={Styles.text}>Notify me when only </Text>
         </View>
-        <View style={{width: '50%', alignItems: 'center'}}>
+        <View style={styles.unitBox}>
           <InputField
-            styles={{width: '60%', backgroundColor: 'white'}}
+            styles={[styles.field, {width: '60%'}]}
             label="Units"
             mode="outlined"
             outlineColor="lightgrey"
@@ -244,36 +199,19 @@ const AddMedicineForm = props => {
             keyboardType="numeric"
           />
           {props.errors.notify && props.touched.notify && (
-            <Text style={{color: 'red', marginTop: 4}}>
-              {props.errors.notify}
-            </Text>
+            <Text style={styles.errorText}>{props.errors.notify}</Text>
           )}
         </View>
       </View>
       <View style={Styles.textView}>
         <View style={Styles.textbox}>
           <Text style={Styles.text}>Add Prescription Here </Text>
-          <Text style={{fontSize: 14, fontWeight: '500', color: 'black'}}>
-            (Optional)
-          </Text>
+          <Text style={styles.subText}>(Optional)</Text>
         </View>
 
         {props.add ? (
-          <View
-            style={{
-              width: '43%',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}>
-            <CustomButton
-              title={'Added'}
-              btnStyles={{
-                backgroundColor: colorPalette.mainColor,
-                paddingHorizontal: 20,
-                borderRadius: 5,
-              }}
-            />
+          <View style={styles.addedBtn}>
+            <CustomButton title={'Added'} btnStyles={styles.btnStyles} />
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
@@ -287,52 +225,34 @@ const AddMedicineForm = props => {
             </TouchableOpacity>
           </View>
         ) : (
-          <View
-            style={{
-              width: '50%',
-              alignItems: 'center',
-            }}>
+          <View style={styles.addBtn}>
             <CustomButton
               title={'Add'}
               handleSubmit={() => {
-                props.navigation.navigate('AddPrescriptionPanel', {
-                  prescriptionObject: props.prescriptionObject,
-                });
+                if (props.values.medicineName.length !== 0) {
+                  props.navigation.navigate('AddPrescriptionPanel', {
+                    prescriptionObject: props.prescriptionObject,
+                  });
+                } else {
+                  Alert.alert('Fill rest details first', '', [
+                    {
+                      text: 'Ok',
+                      onPress: () => {},
+                    },
+                  ]);
+                }
               }}
-              btnStyles={{
-                backgroundColor: colorPalette.mainColor,
-                paddingHorizontal: 20,
-                borderRadius: 5,
-              }}
+              btnStyles={styles.btnStyles}
             />
-            {/* <TouchableOpacity
-              activeOpacity={1}
-              style={Styles.touchableOpacity}
-              onPress={() => {
-                props.navigation.navigate('AddPrescriptionPanel', {
-                  prescriptionObject: props.prescriptionObject,
-                });
-              }}>
-              <LottieView
-                style={Styles.addPrescriptionIcon}
-                speed={0.7}
-                progress={progress}
-                source={require('../../../assets/animation/addPrescriptionButton.json')}
-              />
-            </TouchableOpacity> */}
           </View>
         )}
       </View>
-      <Divider style={{height: 1, marginTop: 8}} />
+      <Divider style={styles.divider} />
       <CustomButton
         title={'Save'}
         handleSubmit={props.handleSubmit}
-        contStyles={{alignItems: 'center', marginVertical: 24}}
-        btnStyles={{
-          backgroundColor: colorPalette.mainColor,
-          width: '50%',
-          borderRadius: 5,
-        }}
+        contStyles={styles.contStyles}
+        btnStyles={styles.saveBtn}
       />
     </View>
   );

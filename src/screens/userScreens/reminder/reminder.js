@@ -19,6 +19,7 @@ import {AddMedicine, getMedicine} from '../../../utils/storage.js';
 import uuid from 'react-native-uuid';
 import {hour} from '../../../constants/constants';
 import Notifications from '../../../notification/notifications';
+import Toast from 'react-native-toast-message';
 
 const Reminder = ({route, navigation}) => {
   const [picker, pickerstate] = useState(false);
@@ -266,6 +267,12 @@ const Reminder = ({route, navigation}) => {
       AddMedicine(temp);
     });
     loadstate(false);
+
+    Toast.show({
+      text1: 'Reminder Saved',
+      type: 'success',
+      position: 'bottom',
+    });
 
     setTimeout(() => {
       navigation.pop();
@@ -736,6 +743,7 @@ const Reminder = ({route, navigation}) => {
           />
         </View>
       </View>
+      <Toast visibilityTime={500} />
     </ScrollView>
   );
 };

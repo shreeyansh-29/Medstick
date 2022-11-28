@@ -36,4 +36,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   divider: {height: 1, width: '100%'},
+  btnStyles: {
+    borderRadius: 5,
+    padding: 12,
+    backgroundColor: colorPalette.mainColor,
+    width: '40%',
+    alignItems: 'center',
+    marginVertical: 40,
+  },
+  contStyles: {alignItems: 'center', marginTop: verticalScale(16)},
 });

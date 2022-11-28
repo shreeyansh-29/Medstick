@@ -9,7 +9,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-import PerformanceCircle from '../../../components/organisms/performanceCircle';
 import {PermissionsAndroid} from 'react-native';
 import Downloadpdf from '../../../components/organisms/downloadPdf';
 import {Divider} from 'react-native-paper';
@@ -142,12 +141,7 @@ const MedicineReport = ({navigation, route}) => {
       />
 
       <View
-        style={{
-          alignItems: 'center',
-          padding: verticalScale(8),
-          backgroundColor: colorPalette.mainColor,
-          height: 200,
-        }}>
+        style={styles.animatedCircle}>
         <AnimatedProgessCircle
           radius={58}
           strokeWidth={12}

@@ -24,7 +24,7 @@ const AddAppointment = ({navigation, routeName, notes}) => {
             showAlert();
           }
         }}>
-        <EvilIcons name="plus" color={'white'} size={32} />
+        <EvilIcons name="plus" color={'white'} size={34} />
       </TouchableOpacity>
     </View>
   );

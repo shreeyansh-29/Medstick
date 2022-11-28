@@ -46,8 +46,6 @@
     "react-native-bouncy-checkbox": "^3.0.4",
     "react-native-calendar-strip": "^2.2.6",
     "react-native-calendars": "^1.1289.0",
-    "react-native-camera": "4.2.0",
-    "react-native-camera-hooks": "^0.5.3",
     "react-native-check-box": "^2.1.7",
     "react-native-date-picker": "^4.2.5",
     "react-native-element-dropdown": "^2.3.1",
