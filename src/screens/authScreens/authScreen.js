@@ -9,6 +9,8 @@ import {useIsFocused} from '@react-navigation/native';
 import NetInfo from '@react-native-community/netinfo';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 
 const AuthScreen = ({navigation}) => {
   const [connected, setConnected] = useState(false);
