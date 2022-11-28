@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   //editProfile
   parentContainer: {
     flex: 1,
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: 'white',
   },
   childCont: {
     height: 180,

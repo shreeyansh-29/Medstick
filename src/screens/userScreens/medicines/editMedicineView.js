@@ -1,9 +1,9 @@
 import {
   View,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   Alert,
+  StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -50,7 +50,7 @@ const EditMedicineView = ({setEdit, item}) => {
   }, [pill]);
 
   const updateMedicineDetails = values => {
-    if (values.notify > values.stocks) {
+    if (Number(values.notify) > Number(values.stocks)) {
       Alert.alert('Notify Me should be less than Stock Unit', '', [
         {
           text: 'Ok',

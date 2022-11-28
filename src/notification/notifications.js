@@ -43,6 +43,14 @@ class Notifications {
       });
     }
   }
+  schduleNotification2(date, doctorName) {
+    PushNotification.localNotificationSchedule({
+      channelId: 'reminders',
+      title: 'Appointment!',
+      message: 'You have scheduled appointment with ' + doctorName,
+      date: date,
+    });
+  }
 }
 
 export default new Notifications();

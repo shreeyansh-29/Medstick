@@ -53,7 +53,6 @@ LocaleConfig.locales['en'] = {
   ],
   dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
 };
-
 LocaleConfig.defaultLocale = 'en';
 
 const Report = ({navigation}) => {

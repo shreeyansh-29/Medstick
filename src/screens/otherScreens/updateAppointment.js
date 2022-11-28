@@ -166,6 +166,7 @@ const UpdateAppointment = ({
                 </View>
 
                 <DateTimePickerModal
+                  minimumDate={new Date()}
                   isVisible={dateOpen}
                   mode="date"
                   onConfirm={date => {

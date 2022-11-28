@@ -66,7 +66,6 @@ const DeletePrescription = ({
                 let a = b => b.prescriptionId == prescriptionId;
                 let index = list.findIndex(a);
                 list.splice(index, 1);
-
                 savePrescription(list);
                 getPrescription().then(data => {
                   if (data !== null) {

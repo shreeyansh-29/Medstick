@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
@@ -16,10 +16,10 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import moment from 'moment';
 import {AddMedicine, getMedicine} from '../../../utils/storage.js';
-import PushNotification from 'react-native-push-notification';
 import uuid from 'react-native-uuid';
-import {hour, timeHours} from '../../../constants/constants';
+import {hour} from '../../../constants/constants';
 import Notifications from '../../../notification/notifications';
+import Toast from 'react-native-toast-message';
 
 const Reminder = ({route, navigation}) => {
   const [picker, pickerstate] = useState(false);
@@ -74,57 +74,28 @@ const Reminder = ({route, navigation}) => {
     time_picker_mode_state(false);
   };
 
-  // const pushReminderChannel = () => {
-  //   PushNotification.createChannel({
-  //     channelId: 'test-channel',
-  //     channelName: 'Test Channel',
-  //   });
-  // };
-
-  const findTime = ele => {
-    let timing = parseInt(ele.split(':')[0]),
-      period = ele.split(' ')[1],
-      second = parseInt(ele.split(':')[1]),
-      sec;
-
-    if (second < 10) {
-      sec = '0' + second;
-    } else {
-      sec = second;
-    }
-
-    let time1;
-
-    if (period === 'AM' && timing < 10) {
-      time1 = '0' + timing + ':' + sec + ':' + '00';
-    } else if (period === 'AM' && timing > 10) {
-      time1 = timing + ':' + sec + ':' + '00';
-    } else if (period === 'PM') {
-      time1 = timeHours[timing] + ':' + sec + ':' + '00';
-    }
-    return time1;
-  };
-
   const handlePushNotification = (obj, check1) => {
-    console.log(obj);
-    let reminder = [];
-    let time = obj?.reminderTime.split(',');
-    time !== '' &&
-      time?.map(ele => {
-        let time1 = findTime(ele);
-        reminder.push(time1);
-      });
+    let d = new Date(); // for now
+    let currentTime = d.getHours() + ':' + d.getMinutes();
+    const number = moment(obj.reminderTime, ['h:mm A']).format('HH:mm');
 
-    console.log(reminder, ' timeAMPM');
-    let dateTime = moment(obj?.startDate + ' ' + reminder);
-    console.log(dateTime._d, 'dateTime');
+    let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
+    let chosenDate1 = new Date(chosenDate);
+    let chosenDate2 =
+      chosenDate1.getFullYear() +
+      '-' +
+      (chosenDate1.getMonth() + 1) +
+      '-' +
+      chosenDate1.getDate();
 
-    Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
+    if (number < currentTime) {
+      let dateTime = moment(chosenDate2 + ' ' + number);
+      Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
+    } else {
+      let dateTime = moment(obj.startDate + ' ' + number);
+      Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
+    }
   };
-
-  // useEffect(() => {
-  //   pushReminderChannel();
-  // }, []);
 
   function getEndDate(params) {
     if (params.getTime() <= startDate.getTime()) {
@@ -301,6 +272,12 @@ const Reminder = ({route, navigation}) => {
       AddMedicine(temp);
     });
     loadstate(false);
+
+    Toast.show({
+      text1: 'Reminder Saved',
+      type: 'success',
+      position: 'bottom',
+    });
 
     setTimeout(() => {
       navigation.pop();
@@ -781,6 +758,7 @@ const Reminder = ({route, navigation}) => {
           />
         </View>
       </View>
+      <Toast visibilityTime={500} />
     </ScrollView>
   );
 };

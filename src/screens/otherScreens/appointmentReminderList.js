@@ -33,6 +33,10 @@ const AppointmentReminderList = ({navigation}) => {
     setTimeout(() => {
       setShowLoader(false);
     }, 1000);
+
+    return () => {
+      false;
+    };
   }, []);
 
   useEffect(() => {

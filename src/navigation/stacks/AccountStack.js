@@ -20,6 +20,7 @@ import MedicineImages from '../../screens/userScreens/patients/medicineImages';
 import SaveAppointment from '../../screens/otherScreens/saveAppointment';
 import AppointmentReminderList from '../../screens/otherScreens/appointmentReminderList';
 import AuthScreen from '../../screens/authScreens/authScreen';
+import Feedback from '../../screens/otherScreens/feedback';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,7 @@ const AccountStack = () => {
         name="AppointmentReminderList"
         component={AppointmentReminderList}
       />
+      <Stack.Screen name="Feedback" component={Feedback} />
     </Stack.Navigator>
   );
 };

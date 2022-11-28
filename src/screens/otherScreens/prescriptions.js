@@ -32,7 +32,7 @@ const Prescriptions = ({navigation}) => {
         } else {
           setMyPrescriptions([]);
         }
-      });
+    });
     }
   }, [isFocused]);
 

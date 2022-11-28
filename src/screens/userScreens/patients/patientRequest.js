@@ -23,6 +23,7 @@ const PatientRequest = () => {
   const [pageNo, setPageNo] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.patientsRequest);
+  console.log(res);
   const loading = useSelector(state => state.patientsRequest.isLoading);
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
