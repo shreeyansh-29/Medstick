@@ -32,8 +32,6 @@ const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
   const [clear, setClear] = useState(false);
-  const [clearMed, setClearMed] = useState(false);
-
   const progress = useRef(new Animated.Value(0)).current;
   const [showLoader, setShowLoader] = useState(true);
 
@@ -55,28 +53,15 @@ const MedicinePanel = ({navigation}) => {
   }, []);
 
   const deleteMedicineLocal = async index => {
-    getPercentageDetails().then(data => {
-      if (data != null) {
-        let temp = data;
-        console.log('before cleared local med', data);
-        temp.currentCount =
-          data.currentCount - medicineResponse[index].currentCount;
-        console.log('after cleared local med', temp);
-        savePercentageDetails(temp);
+    medicineResponse.splice(index, 1);
+    AddMedicine(medicineResponse);
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        setMedicineResponse(data);
+      } else {
+        setMedicineResponse([]);
       }
-      setClearMed(true);
     });
-    if (clearMed) {
-      medicineResponse.splice(index, 1);
-      AddMedicine(medicineResponse);
-      getMedicine().then(data => {
-        if (data !== null && data.length !== 0) {
-          setMedicineResponse(data);
-        } else {
-          setMedicineResponse([]);
-        }
-      });
-    }
   };
 
   function clearLocal() {
@@ -332,30 +317,34 @@ const MedicinePanel = ({navigation}) => {
   };
 
   return (
-    <>
-      <View style={Styles.container}>
-        {/* <View style={Styles.background} /> */}
-        <MainHeader title={'Medicine'} navigation={navigation} />
-        {medicineResponse.length === 0 ? (
-          <View style={Styles.lottie}>
-            {clearLocal()}
-            <CustomImage
-              resizeMode="contain"
-              source={require('../../../assets/images/nomeds.png')}
-              styles={{width: '66%'}}
-            />
-          </View>
-        ) : (
-          <>
-            <FlatList
-              data={medicineResponse}
-              renderItem={renderItemLocal}
-              showsVerticalScrollIndicator={false}
-            />
-          </>
-        )}
-      </View>
-    </>
+    <View style={Styles.container}>
+      {/* <View style={Styles.background} /> */}
+      <MainHeader title={'Medicine'} navigation={navigation} />
+      {showLoader ? (
+        <Loader />
+      ) : (
+        <>
+          {medicineResponse.length === 0 ? (
+            <View style={Styles.lottie}>
+              {/* {clearLocal()} */}
+              <CustomImage
+                resizeMode="contain"
+                source={require('../../../assets/images/nomeds.png')}
+                styles={{width: '66%'}}
+              />
+            </View>
+          ) : (
+            <>
+              <FlatList
+                data={medicineResponse}
+                renderItem={renderItemLocal}
+                showsVerticalScrollIndicator={false}
+              />
+            </>
+          )}
+        </>
+      )}
+    </View>
   );
 };
 export default MedicinePanel;
