@@ -254,7 +254,7 @@ const AppointmentReminders = ({navigation, route}) => {
                         : date.getMinutes();
 
                     let newTime =
-                      date.getHours() > 12
+                      date.getHours() > 11
                         ? hour[date.getHours()] + ':' + minutes + ' ' + 'PM'
                         : date.getHours() + ':' + minutes + ' ' + 'AM';
 

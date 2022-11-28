@@ -101,7 +101,7 @@ const AppointmentReminderList = ({navigation}) => {
         <ListItem style={styles.list}>
           <ListItem.Content>
             <View>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <ListItem.Subtitle style={styles.reminderKey}>
                   Date:
                 </ListItem.Subtitle>
@@ -110,7 +110,7 @@ const AppointmentReminderList = ({navigation}) => {
                 </ListItem.Subtitle>
               </View>
 
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <ListItem.Subtitle style={styles.reminderKey}>
                   Time:
                 </ListItem.Subtitle>
@@ -119,7 +119,7 @@ const AppointmentReminderList = ({navigation}) => {
                 </ListItem.Subtitle>
               </View>
 
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <ListItem.Subtitle style={styles.reminderKey}>
                   Notes:
                 </ListItem.Subtitle>
