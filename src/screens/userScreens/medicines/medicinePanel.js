@@ -21,12 +21,23 @@ import CustomImage from '../../../components/atoms/customImage';
 import {week} from '../../../constants/constants';
 import uuid from 'react-native-uuid';
 import PushNotification from 'react-native-push-notification';
+import Loader from '../../../components/atoms/loader';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
-
   const progress = useRef(new Animated.Value(0)).current;
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowLoader(false);
+    }, 1000);
+    return () => {
+      false;
+    };
+  }, []);
+
   useEffect(() => {
     Animated.timing(progress, {
       toValue: 1,
@@ -132,7 +143,7 @@ const MedicinePanel = ({navigation}) => {
   const renderItemLocal = ({item, index}) => {
     return (
       <>
-        <Animatable.View animation="zoomInUp" duration={400}>
+        <Animatable.View animation="zoomIn" duration={400} delay={200 * index}>
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
@@ -228,29 +239,33 @@ const MedicinePanel = ({navigation}) => {
   };
 
   return (
-    <>
-      <View style={Styles.container}>
-        {/* <View style={Styles.background} /> */}
-        <MainHeader title={'Medicine'} navigation={navigation} />
-        {medicineResponse.length === 0 ? (
-          <View style={Styles.lottie}>
-            <CustomImage
-              resizeMode="contain"
-              source={require('../../../assets/images/nomeds.png')}
-              styles={{width: '66%'}}
-            />
-          </View>
-        ) : (
-          <>
-            <FlatList
-              data={medicineResponse}
-              renderItem={renderItemLocal}
-              showsVerticalScrollIndicator={false}
-            />
-          </>
-        )}
-      </View>
-    </>
+    <View style={Styles.container}>
+      {/* <View style={Styles.background} /> */}
+      <MainHeader title={'Medicine'} navigation={navigation} />
+      {showLoader ? (
+        <Loader />
+      ) : (
+        <>
+          {medicineResponse.length === 0 ? (
+            <View style={Styles.lottie}>
+              <CustomImage
+                resizeMode="contain"
+                source={require('../../../assets/images/nomeds.png')}
+                styles={{width: '66%'}}
+              />
+            </View>
+          ) : (
+            <>
+              <FlatList
+                data={medicineResponse}
+                renderItem={renderItemLocal}
+                showsVerticalScrollIndicator={false}
+              />
+            </>
+          )}
+        </>
+      )}
+    </View>
   );
 };
 export default MedicinePanel;

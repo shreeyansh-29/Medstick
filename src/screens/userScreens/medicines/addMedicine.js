@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {styles} from '../../../styles/homeScreenStyles/headerStyles';
-
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {faSearch, faXmark} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';

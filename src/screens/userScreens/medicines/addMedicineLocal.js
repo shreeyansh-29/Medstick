@@ -14,13 +14,14 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import Toast from 'react-native-toast-message';
 import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
-import CheckConnection from '../../../connectivity/checkConnection';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
 const AddMedicineLocal = ({navigation}) => {
   const [doseType, setDoseType] = useState('');
   const [pill, setPill] = useState('Tablet');
+  const [med, setMed] = useState('');
+  const [description, setDescription] = useState('');
   const [prescriptionObj, setPrescriptionObj] = useState({
     doctorName: null,
     prescriptionId: null,
@@ -31,7 +32,6 @@ const AddMedicineLocal = ({navigation}) => {
     appointmentList: [],
   });
   const [add, setAdd] = useState(false);
-  const [connection, setConnection] = useState(false);
 
   const getPrescriptionData = data => {
     setAdd(true);
@@ -64,15 +64,6 @@ const AddMedicineLocal = ({navigation}) => {
   useEffect(() => {
     setType();
   }, [pill]);
-
-  const checkconnection = async () => {
-    let conn = await CheckConnection();
-    setConnection(conn);
-  };
-
-  useEffect(() => {
-    checkconnection();
-  }, []);
 
   const saveMedicineLocal = values => {
     if (Number(values.notify) > Number(values.stocks)) {
@@ -208,7 +199,8 @@ const AddMedicineLocal = ({navigation}) => {
                 prescriptionObject={getPrescriptionData}
                 add={add}
                 setAdd={setAdd}
-                connection={connection}
+                setMed={setMed}
+                med={med}
               />
             )}
           </Formik>

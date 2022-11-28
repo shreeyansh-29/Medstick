@@ -22,6 +22,9 @@ const Prescriptions = ({navigation}) => {
     setTimeout(() => {
       setShowLoader(false);
     }, 1000);
+    return () => {
+      false;
+    };
   }, []);
 
   useEffect(() => {
@@ -32,7 +35,7 @@ const Prescriptions = ({navigation}) => {
         } else {
           setMyPrescriptions([]);
         }
-    });
+      });
     }
   }, [isFocused]);
 
