@@ -12,7 +12,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction';
 import CheckConnection from '../../connectivity/checkConnection';
 import {verticalScale} from '../../components/atoms/constant';
-import {getMedicine, getPercentageDetails} from '../../utils/storage';
+import {
+  getMedicine,
+  getPercentageDetails,
+  savePercentageDetails,
+} from '../../utils/storage';
 import {useFocusEffect} from '@react-navigation/native';
 
 const HomeScreen = ({navigation}) => {
@@ -72,7 +76,6 @@ const HomeScreen = ({navigation}) => {
       item.historyList.map(k => {
         if (k.date == td_da) {
           tr += item.reminderTime.split(',').length;
-          console.log('taken count', k);
           let temp = k.taken.split(',');
           temp.map(i => {
             if (i !== '') {
@@ -82,24 +85,54 @@ const HomeScreen = ({navigation}) => {
         }
       });
     });
-    console.log('abcd', tr);
-    console.log('tr total reminders=>', tr, ' ,cc=> ', cc);
+    getPercentageDetails().then(data => {
+      let obj = [];
+      let temp = {};
+      if (data == null) {
+        temp.date = td_da;
+        temp.percentage = Math.floor((cc / tr) * 100);
+        obj.push(temp);
+        savePercentageDetails(obj);
+      } else if (data != null) {
+        data.map((item, index) => {
+          if (item.date === td_da) {
+            item.percentage = Math.floor((cc / tr) * 100);
+            data[index] = item;
+          } else if (item.date != td_da && tr != 0) {
+            temp.date = td_da;
+            temp.percentage = Math.floor((cc / tr) * 100);
+            data.push(temp);
+          }
+        });
+        savePercentageDetails(data);
+        // console.log('Percent in local', data);
+      }
+    });
+    // console.log('tr total reminders=>', tr, ' ,cc=> ', cc);
     return Math.floor((cc / tr) * 100);
   }
+
   function getData() {
     getMedicine().then(data => {
       if (data.length == 0) {
         setPercentage(0);
       } else {
         setMedData(data);
-        getPercentage(data);
-        getPercentageDetails().then(data => {
-          if (data.currentCount === 0) {
-            setPercentage(0);
+        let p = getPercentage(data);
+        setPercentage(p);
+      }
+    });
+  }
+
+  function getDate(data) {
+    getPercentageDetails().then(item => {
+      if (item != null) {
+        let temp = item;
+        temp.map(p => {
+          if (p.date == data) {
+            setPercentage(p.percentage);
           } else {
-            let p = getPercentage(medData);
-            // console.log('percent details in', data);
-            setPercentage(p);
+            setPercentage(0);
           }
         });
       }
@@ -156,7 +189,7 @@ const HomeScreen = ({navigation}) => {
         <View style={styles.background} />
         <MainHeader title={'Medstick'} navigation={navigation} />
         <View style={styles.card}>
-          <Calender />
+          <Calender date={getDate} />
           <View style={styles.progressCircleContainer}>
             {percentage >= 0 ? (
               <AnimatedProgressCircle

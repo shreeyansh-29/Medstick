@@ -17,23 +17,12 @@ import {
 import {
   AddMedicine,
   getPercentageDetails,
-  savePercentageDetails,
 } from '../../utils/storage';
 
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
-  const [totalReminders, setTotalReminders] = useState(0);
-  const [currentCount, setCurrentCount] = useState(0);
-  const [percentDetails, setPercentDetails] = useState({
-    totalReminders: 0,
-    currentCount: 0,
-    date: '',
-  });
-
-  let cC = currentCount;
-  let tR = totalReminders;
-
+  
   var tody_date = new Date();
   let td_da =
     tody_date.getFullYear() +
@@ -54,31 +43,9 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   function display() {
     getPercentageDetails()
       .then(data => {
-        if (data == null) {
-          let temp = {};
-          temp.date = td_da;
-          temp.totalReminders = 0;
-          temp.currentCount = 0;
-          // console.log(' day conflict', temp);
-          setPercentage();
-          savePercentageDetails(temp);
-        } else if (data != null) {
-          if (data.date != '') {
-            setPercentDetails(data);
-            setCurrentCount(data.currentCount);
-            tR = data.totalReminders;
-            cC = data.currentCount;
-            let p = getPercentage(medData);
-            setPercentage(p);
-          }
-          if (data.date !== td_da) {
-            let temp = {};
-            temp.date = td_da;
-            temp.totalReminders = 0;
-            temp.currentCount = 0;
-            savePercentageDetails(temp);
-            // console.log(' day conflict', temp);
-          }
+        if (data != null && data.date != '') {
+          let p = getPercentage(medData);
+          setPercentage(p);
         }
       })
       .then(() => {
@@ -101,29 +68,19 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     return totalMedReminder;
   }
   function dailyReminders(medicine) {
-    let times = 0;
     medicine.map((item, index) => {
       item.totalReminders = totalMedReminders(medicine, index);
       item.historyList.map(r => {
         if (r.date === td_da) {
           r.notTaken.split(',').map(z => {
-            times += 1;
-            setTotalReminders(times);
-            let p = percentDetails;
-            p.totalReminders = times;
-            p.currentCount = cC;
-            p.date = td_da;
-            savePercentageDetails(p);
             const a = b => b.historyId == r.historyId;
             const index = reminderList.findIndex(a);
             if (!r.taken.includes(z)) {
-              console.log('****************************************', tempList);
               let temp = {};
               temp.userMedicineId = item.userMedicineId;
               temp.medName = item.medicineName;
               temp.historyId = r.historyId;
               temp.time = z;
-              // console.log('push', r.time);
               tempList.add(temp);
               setReminderList([...tempList]);
             }
@@ -153,9 +110,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   }
 
   function markingTaken(item) {
-    console.log(item.item, ' INSIDE MARKING');
-    console.log('before marking ', medData);
-
     const {userMedicineId, historyId, time, medName} = item.item;
     medData.forEach(item => {
       if (
@@ -177,7 +131,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
       }
     });
     let percent = getPercentage(medData);
-    // console.log(percent, 'percent while marking');
     setPercentage(percent);
     AddMedicine(medData);
   }

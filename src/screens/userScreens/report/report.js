@@ -112,7 +112,7 @@ const Report = ({navigation}) => {
           histories.push(his);
           setHistoryListData(histories);
           dateSelector(histories);
-          overallPecentage(data.totalReminders, data.currentCount);
+          overallPecentage(data);
         });
       } else if (
         data.userMedicineId == medicineId &&
@@ -120,7 +120,7 @@ const Report = ({navigation}) => {
       ) {
         setHistoryListData([]);
         dateSelector([]);
-        overallPecentage(0,0);
+        overallPecentage(0, 0);
       }
     });
   }
@@ -151,15 +151,24 @@ const Report = ({navigation}) => {
       }
     });
     let totalCount = notTakenLength + takenLength;
+    // console.log(Math.floor((takenLength / totalCount) * 100));
     return Math.floor((takenLength / totalCount) * 100);
   };
 
-  function overallPecentage(totalReminders, currentCount) {
-    if (totalReminders == 0 || currentCount == 0) {
-      setPercentage(0);
-    } else {
-      setPercentage(Math.floor((currentCount / totalReminders) * 100));
-    }
+  function overallPecentage(data) {
+    let cc = 0;
+    let tr = 0;
+    data.historyList.map(item => {
+      tr += data.reminderTime.split(',').length;
+      let temp = item.taken.split(',');
+      temp.map(i => {
+        if (i !== '') {
+          cc += 1;
+        }
+      });
+    });
+    console.log('tr and cc in Report', tr, cc);
+    setPercentage(Math.floor((cc / tr) * 100));
   }
 
   const [dataMap, setDataMap] = useState([]);

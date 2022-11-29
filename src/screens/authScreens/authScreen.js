@@ -10,6 +10,7 @@ import NetInfo from '@react-native-community/netinfo';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { colorPalette } from '../../components/atoms/colorPalette';
 
 
 const AuthScreen = ({navigation}) => {
