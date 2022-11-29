@@ -17,6 +17,7 @@ const Prescriptions = ({navigation}) => {
   const [myPrescriptions, setMyPrescriptions] = useState([]);
   const isFocused = useIsFocused();
   const [showLoader, setShowLoader] = useState(true);
+  let flag = true;
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,7 +63,10 @@ const Prescriptions = ({navigation}) => {
               activeOpacity={1}
               style={{marginRight: 12}}
               onPress={() => {
-                navigation.navigate('ViewPrescription', {item: item});
+                navigation.navigate('ViewPrescription', {
+                  item: item,
+                  flag: flag,
+                });
               }}>
               <FontAwesomeIcon
                 icon={faChevronRight}

@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import InputField from '../../../components/atoms/inputField';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -6,6 +6,8 @@ import {Picker} from '@react-native-picker/picker';
 import {Divider, TextInput} from 'react-native-paper';
 import CustomButton from '../../../components/atoms/customButton';
 import {styles} from '../../../styles/medicinePanelStyles/medicineFormStyles';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 
 const EditMedicineForm = props => {
   return (
@@ -149,6 +151,62 @@ const EditMedicineForm = props => {
             <Text style={styles.errorText}>{props.errors.notify}</Text>
           )}
         </View>
+      </View>
+
+      <View style={styles.inputGroup}>
+        <View style={styles.textbox}>
+          <Text style={styles.text}>Add Prescription Here </Text>
+          <Text style={styles.subText}>(Optional)</Text>
+        </View>
+
+        {props.add ? (
+          <View style={styles.addedBtn}>
+            <CustomButton
+              title={'Added'}
+              btnStyles={{
+                backgroundColor: 'white',
+                borderRadius: 5,
+                paddingHorizontal: 20,
+                borderWidth: 1,
+                borderColor: colorPalette.mainColor,
+              }}
+              titleStyle={{color: colorPalette.mainColor}}
+            />
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() => {
+                props.setAdd(false);
+              }}>
+              <FontAwesomeIcon
+                icon={faCircleXmark}
+                color={colorPalette.redPercentageColor}
+                size={20}
+              />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.addBtn}>
+            <CustomButton
+              title={'Add'}
+              handleSubmit={() => {
+                if (props.values.medicineName.length !== 0) {
+                  props.navigation.navigate('AddMedicineStack', {
+                    screen: 'AddPrescriptionPanel',
+                    params: {prescriptionObject: props.prescriptionObject},
+                  });
+                } else {
+                  Alert.alert('Fill rest details first', '', [
+                    {
+                      text: 'Ok',
+                      onPress: () => {},
+                    },
+                  ]);
+                }
+              }}
+              btnStyles={styles.btnStyles}
+            />
+          </View>
+        )}
       </View>
 
       <Divider style={styles.divider} />

@@ -1,4 +1,5 @@
 import PushNotification from 'react-native-push-notification';
+import {colorPalette} from '../../../../components/atoms/colorPalette';
 var Sound = require('react-native-sound');
 
 function PlaySound() {
@@ -39,7 +40,7 @@ const generatenotificationforpatient = (mssg, body) => {
     message: body,
     subText: '',
     id: num.toString(),
-    color: '#3743ab',
+    color: colorPalette.mainColor,
     showWhen: true,
     visibility: 'public',
     usesChronometer: true,
@@ -49,10 +50,7 @@ const generatenotificationforpatient = (mssg, body) => {
     playSound: true,
     group: 'Patient Channel',
     soundName: 'android.resource://com.project/raw/my_sound.mp3',
-
     smallIcon: 'android.resource://com.project/raw/icon.png',
-
-    actions: ['Notify Caretaker'],
   });
 };
 
@@ -75,7 +73,7 @@ const generatenotificationforcaretaker = (mssg, body, big_picure_url) => {
     message: body,
     subText: '',
     id: num.toString(),
-    color: '#3743ab',
+    color: colorPalette.mainColor,
     showWhen: true,
     visibility: 'public',
     usesChronometer: true,

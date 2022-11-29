@@ -21,6 +21,7 @@ const InputField = props => {
       selectTextOnFocus={props.selectTextOnFocus}
       autoComplete="off"
       keyboardType={props.keyboardType}
+      right={props.right}
     />
   );
 };

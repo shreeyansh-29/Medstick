@@ -20,8 +20,6 @@ const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 const AddMedicineLocal = ({navigation}) => {
   const [doseType, setDoseType] = useState('');
   const [pill, setPill] = useState('Tablet');
-  const [med, setMed] = useState('');
-  const [description, setDescription] = useState('');
   const [prescriptionObj, setPrescriptionObj] = useState({
     doctorName: null,
     prescriptionId: null,
@@ -199,8 +197,6 @@ const AddMedicineLocal = ({navigation}) => {
                 prescriptionObject={getPrescriptionData}
                 add={add}
                 setAdd={setAdd}
-                setMed={setMed}
-                med={med}
               />
             )}
           </Formik>

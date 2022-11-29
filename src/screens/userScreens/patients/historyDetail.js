@@ -35,7 +35,6 @@ const HistoryDetail = ({data, onPress}) => {
     const sArray = [];
     let nottaken = data.notTaken.split(','),
       taken = data.taken.split(',');
-    console.log(taken);
     nottaken[0] !== '' &&
       nottaken.map(ele => {
         if (ele !== '') {

@@ -22,8 +22,8 @@ const SubHeader = ({
   setPrescriptionList,
   setPrescriptionId,
   setDeleteBtn,
-  edit,
   setEdit,
+  flag,
 }) => {
   return (
     <View style={styles.subHeader}>
@@ -54,7 +54,7 @@ const SubHeader = ({
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}
       {title !== 'Doctor Prescription' ? null : (
-        <EditButton navigation={navigation} edit={edit} setEdit={setEdit} />
+        <EditButton navigation={navigation} setEdit={setEdit} flag={flag} />
       )}
       {title !== 'Add Prescription' ? null : (
         <DeletePrescription
