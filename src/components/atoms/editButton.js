@@ -4,8 +4,8 @@ import {styles} from '../../styles/homeScreenStyles/subHeaderStyles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPenToSquare} from '@fortawesome/free-regular-svg-icons';
 
-const EditButton = ({edit, setEdit}) => {
-  return edit ? null : (
+const EditButton = ({setEdit, flag}) => {
+  return !flag ? null : (
     <View style={styles.bellIcon}>
       <TouchableOpacity
         onPress={() => setEdit(true)}

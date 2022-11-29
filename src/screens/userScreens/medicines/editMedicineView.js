@@ -18,9 +18,29 @@ import Toast from 'react-native-toast-message';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
-const EditMedicineView = ({setEdit, item}) => {
+const EditMedicineView = ({setEdit, item, navigation}) => {
+  let doctorName = item.doctorName;
   const [doseType, setDoseType] = useState(item.dosageType);
   const [pill, setPill] = useState(item.dosageType);
+
+  const [prescriptionObj, setPrescriptionObj] = useState({
+    doctorName: item.doctorName !== null ? item.doctorName : null,
+    prescriptionId: item.prescriptionId !== null ? item.prescriptionId : null,
+    contact: item.contact !== null ? item.prescriptionId : null,
+    prescriptionUrl:
+      item.prescriptionUrl !== null ? item.prescriptionUrl : null,
+    location: item.location !== null ? item.location : null,
+    specialization: item.specialization !== null ? item.specialization : null,
+    appointmentList:
+      item.appointmentList !== null ? item.appointmentList : null,
+  });
+  const [add, setAdd] = useState(item.doctorName !== null ? true : false);
+
+  const getPrescriptionData = data => {
+    setAdd(true);
+    setPrescriptionObj(data);
+  };
+
   const setType = () => {
     switch (pill) {
       case 'Tablet': {
@@ -67,6 +87,15 @@ const EditMedicineView = ({setEdit, item}) => {
       obj.dosagePower = values.dosagePower + ' ' + values.doseType;
       obj.leftStock = values.notify;
       obj.stock = values.stocks;
+      if (prescriptionObj.doctorName !== doctorName) {
+        obj.prescriptionId = prescriptionObj.prescriptionId;
+        obj.doctorName = prescriptionObj.doctorName;
+        obj.prescriptionUrl = prescriptionObj.prescriptionUrl;
+        obj.location = prescriptionObj.location;
+        obj.specialization = prescriptionObj.specialization;
+        obj.contact = prescriptionObj.contact;
+        obj.appointmentList = prescriptionObj.appointmentList;
+      }
 
       getMedicine().then(data => {
         const temp = data;
@@ -150,7 +179,10 @@ const EditMedicineView = ({setEdit, item}) => {
                 setDoseType={setDoseType}
                 pill={pill}
                 doseType={doseType}
-                // connection={connection}
+                prescriptionObject={getPrescriptionData}
+                add={add}
+                setAdd={setAdd}
+                navigation={navigation}
               />
             )}
           </Formik>

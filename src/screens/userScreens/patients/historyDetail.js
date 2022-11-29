@@ -12,7 +12,6 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 
 const HistoryDetail = ({data, onPress}) => {
-  console.log('aaaaaaa', data);
   const [filterData, setfilterData] = useState([]);
 
   function findTime(ele) {
@@ -34,7 +33,6 @@ const HistoryDetail = ({data, onPress}) => {
     const sArray = [];
     let nottaken = data.notTaken.split(','),
       taken = data.taken.split(',');
-    console.log(taken);
     nottaken[0] !== '' &&
       nottaken.map(ele => {
         if (ele !== '') {

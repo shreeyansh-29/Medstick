@@ -11,7 +11,6 @@ const SavedDetails = () => {
   const res = useSelector(state => state.getUserProfile?.data);
   const loading = useSelector(state => state.getUserProfile?.isLoading);
   const dateHandler = date => {
-    console.log('date', date);
     let dob = date.split('-');
     return dob[2] + '-' + dob[1] + '-' + dob[0];
   };

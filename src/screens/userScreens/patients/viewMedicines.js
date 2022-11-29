@@ -78,17 +78,19 @@ const ViewMedicines = ({navigation, route}) => {
               color={colorPalette.mainColor}
             />
             <ListItem.Content style={{}}>
-              <ListItem.Title
-                style={style.title}>{`${item.medicineName}`}</ListItem.Title>
-              <ListItem.Subtitle style={style.subtitle1}>
+              <ListItem.Title style={style.title} numberOfLines={1}>
+                {item.medicineName}
+              </ListItem.Title>
+              <ListItem.Subtitle numberOfLines={1} style={style.subtitle1}>
                 {item?.days}
               </ListItem.Subtitle>
-              <ListItem.Subtitle style={style.subtitle2}>
+              <ListItem.Subtitle numberOfLines={1} style={style.subtitle2}>
                 {item?.reminderTime}
               </ListItem.Subtitle>
             </ListItem.Content>
             <View style={style.options}>
               <TouchableOpacity
+                activeOpacity={1}
                 style={style.imagesbtn}
                 onPress={() =>
                   navigation.navigate('MedicineImages', {

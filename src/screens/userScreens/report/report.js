@@ -101,7 +101,6 @@ const Report = ({navigation}) => {
     let histories = [];
     getUserMedicine.map(data => {
       if (data.userMedicineId == medicineId && data.historyList.length !== 0) {
-        console.log(data.historyList.length);
         data.historyList.map(i => {
           let his = {};
           console.log('his data', i);
@@ -120,7 +119,7 @@ const Report = ({navigation}) => {
       ) {
         setHistoryListData([]);
         dateSelector([]);
-        overallPecentage(0,0);
+        overallPecentage(0, 0);
       }
     });
   }

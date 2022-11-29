@@ -1,4 +1,4 @@
-let apiUrl = 'https://1dd2-106-51-81-179.in.ngrok.io/api/v1/user';
+let apiUrl = 'https://c878-106-51-81-179.in.ngrok.io/api/v1/user';
 
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
@@ -35,7 +35,6 @@ export const USER_PRESCRIPTIONS = `${apiUrl}/doctor-prescription`;
 export const SAVED_MEDICINE_REMINDER = `${apiUrl}/medicine-reminder`;
 export const NOTIFY_USER = `${apiUrl}/notify-user`;
 export const MEDICINE_IMAGES = `${apiUrl}/medicine-images`;
-export const FETCH_IMAGE = `${apiUrl}`;
 export const GET_MEDICINE_HISTORY = `${apiUrl}/medicine-history`;
 export const GET_MEDICINE_HISTORY_BY_DATE = `${apiUrl}/medicine-by-date`;
 export const DOWNLOAD_PDF = `${apiUrl}/pdf`;

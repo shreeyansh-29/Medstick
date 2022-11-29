@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import SubHeader from '../molecules/headers/subHeader';
@@ -42,6 +43,15 @@ const SearchScreen = ({navigation}) => {
   const res = useSelector(state => state.getUser?.data);
   const res1 = useSelector(state => state.sendRequest?.data);
   const [data, setData] = useState([]);
+  const loading = useSelector(state => state.getUser.isLoading());
+
+  const activityIndicator = () => {
+    return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator size="large" color={colorPalette.mainColor} />
+      </View>
+    );
+  };
 
   const progress = useRef(new Animated.Value(0)).current;
 
@@ -183,7 +193,16 @@ const SearchScreen = ({navigation}) => {
                   }}
                   lightTheme="true"
                   placeholderTextColor={colorPalette.mainColor}
-                  clearIcon={{color: colorPalette.mainColor, size: 22}}
+                  clearIcon={
+                    <Icon
+                      name="remove"
+                      type="font-awesome"
+                      size={20}
+                      onPress={handleChange('email')}
+                      color={colorPalette.mainColor}
+                      containerStyle={{marginLeft: 10}}
+                    />
+                  }
                   searchIcon={
                     <Icon
                       size={22}
@@ -202,21 +221,27 @@ const SearchScreen = ({navigation}) => {
         </Formik>
       </KeyboardAvoidingView>
 
-      {data.length === 0 ? (
-        <View style={styles.lottieCont}>
-          <LottieView
-            source={require('../../assets/animation/user.json')}
-            speed={0.6}
-            progress={progress}
-            style={styles.lottie}
-          />
-        </View>
+      {loading ? (
+        activityIndicator()
       ) : (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-        />
+        <>
+          {data.length === 0 ? (
+            <View style={styles.lottieCont}>
+              <LottieView
+                source={require('../../assets/animation/user.json')}
+                speed={0.6}
+                progress={progress}
+                style={styles.lottie}
+              />
+            </View>
+          ) : (
+            <FlatList
+              data={data}
+              renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
+        </>
       )}
       <Toast />
     </View>
@@ -224,4 +249,3 @@ const SearchScreen = ({navigation}) => {
 };
 
 export default SearchScreen;
-

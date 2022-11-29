@@ -193,7 +193,6 @@ const MedicinePanel = ({navigation}) => {
     if (isFocused) {
       getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
-          console.log('data', data);
           setMedicineResponse(data);
         }
       });
