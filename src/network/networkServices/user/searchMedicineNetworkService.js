@@ -2,14 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SEARCH_MEDICINE} from '../../../constants/apiUrl';
 import RequestService from '../../requestService';
 
-class searchMedicineNetworkService{
+class searchMedicineNetworkService {
   async searchMedicineRequest(payload) {
     const Id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
-    const medicineName = payload;
-    
+    const {data, pageNo} = payload.payload;
+
     return RequestService.getRequest(
-      `${SEARCH_MEDICINE}?medicineName=${medicineName}&pageNo=0&pageSize=8&Id=${Id}`,
+      `${SEARCH_MEDICINE}?medicineName=${data}&pageNo=${pageNo}&pageSize=8&Id=${Id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -19,4 +19,3 @@ class searchMedicineNetworkService{
   }
 }
 export default new searchMedicineNetworkService();
-

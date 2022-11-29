@@ -1,27 +1,25 @@
 import * as types from '../../actionTypes';
 
-export const searchMedicineRequest = data => {
+export const searchMedicineRequest = payload => {
   return {
     type: types.SEARCH_MEDICINE_REQUEST,
-    payload: data,
+    payload,
   };
 };
-export const searchMedicineSuccess = data => {
+export const searchMedicineSuccess = payload => {
   return {
     type: types.SEARCH_MEDICINE_SUCCESS,
-    payload: data,
+    payload,
   };
 };
-export const searchMedicineError = err => {
+export const searchMedicineError = payload => {
   return {
     type: types.SEARCH_MEDICINE_ERROR,
-    payload: err,
+    payload,
   };
 };
 export const searchMedicineClear = () => {
-    return {
-      type: types.SEARCH_MEDICINE_CLEAR,   
-    };
+  return {
+    type: types.SEARCH_MEDICINE_CLEAR,
   };
-  
-
+};
