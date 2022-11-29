@@ -20,6 +20,7 @@ const DoctorPrescription = ({navigation, route}) => {
   }, []);
 
   const item = route.params.item;
+  const flag = route.params.flag;
   const [visible, setVisible] = useState(false);
   const [edit, setEdit] = useState(false);
   const images = [
@@ -27,6 +28,7 @@ const DoctorPrescription = ({navigation, route}) => {
       url: item?.prescriptionUrl,
     },
   ];
+
   return edit ? (
     <RenderModalView item={item} setEdit={setEdit} navigation={navigation} />
   ) : (
@@ -35,7 +37,7 @@ const DoctorPrescription = ({navigation, route}) => {
         navigation={navigation}
         title={'Doctor Prescription'}
         setEdit={setEdit}
-        edit={edit}
+        flag={flag}
       />
       <ScrollView>
         <View style={styles.lottieCont}>

@@ -211,7 +211,17 @@ const AddMedicineForm = props => {
 
         {props.add ? (
           <View style={styles.addedBtn}>
-            <CustomButton title={'Added'} btnStyles={styles.btnStyles} />
+            <CustomButton
+              title={'Added'}
+              btnStyles={{
+                backgroundColor: 'white',
+                borderRadius: 5,
+                paddingHorizontal: 20,
+                borderWidth: 1,
+                borderColor: colorPalette.mainColor,
+              }}
+              titleStyle={{color: colorPalette.mainColor}}
+            />
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {

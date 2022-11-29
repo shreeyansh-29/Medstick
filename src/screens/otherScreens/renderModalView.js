@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
   backBtn: {
     alignSelf: 'flex-start',
     backgroundColor: colorPalette.backgroundColor,
-    marginLeft: 12,
-    marginTop: 10,
+    marginLeft: 14,
+    marginTop: 16,
   },
 });
 

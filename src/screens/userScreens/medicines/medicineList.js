@@ -15,7 +15,6 @@ import {deviceWidth} from '../../../components/atoms/constant';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import CustomModal from '../../../components/molecules/customModal';
 import EditNotes from './editNotes';
-import Toast from 'react-native-toast-message';
 import EditMedicineView from './editMedicineView';
 
 const MedicineList = ({route, navigation}) => {
@@ -206,7 +205,6 @@ const MedicineList = ({route, navigation}) => {
           inactiveDotColor={'grey'}
         />
       </View>
-      <Toast visibilityTime={500} />
     </View>
   );
 };

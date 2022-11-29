@@ -11,11 +11,12 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 import {styles} from '../../../styles/patientStyles/patientProfileStyles';
 import {Card, Divider} from 'react-native-paper';
 import ErrorBoundary from '../../../errorBoundary';
+import {monthName} from '../../../constants/constants';
 
 const PatientProfile = ({navigation, route}) => {
   const dateHandler = date => {
     let dob = date.split('-');
-    return dob[2] + '-' + dob[1] + '-' + dob[0];
+    return dob[2] + '-' + monthName[dob[1]] + '-' + dob[0];
   };
   const item = route.params.profile;
 
@@ -30,7 +31,15 @@ const PatientProfile = ({navigation, route}) => {
             source={require('../../../assets/images/background3.png')}
             style={styles.mainCont}>
             <View style={styles.imgCont}>
-              <Image source={{uri: item.picPath}} style={styles.img} />
+              <Image
+                source={{
+                  uri:
+                    item?.picPath !== ''
+                      ? item.picPath
+                      : 'https://i.stack.imgur.com/l60Hf.png',
+                }}
+                style={styles.img}
+              />
             </View>
             <View style={styles.userDetialsCont}>
               <Text style={styles.userName}>{item.userName}</Text>
@@ -42,9 +51,11 @@ const PatientProfile = ({navigation, route}) => {
                   <View style={styles.subView1}>
                     <Text style={styles.heading}>Bio</Text>
                   </View>
-                  <View style={styles.subView2}>
-                    <Text style={styles.content}>{item.bio}</Text>
-                  </View>
+                  {item.bio ? (
+                    <View style={styles.subView2}>
+                      <Text style={styles.content}>{item.bio}</Text>
+                    </View>
+                  ) : null}
                 </View>
                 <Divider style={styles.divider} />
                 <View style={styles.subCont}>
@@ -52,7 +63,9 @@ const PatientProfile = ({navigation, route}) => {
                     <Text style={styles.heading}>Contact No</Text>
                   </View>
                   <View style={styles.subView2}>
-                    <Text style={styles.content}>{item.contact}</Text>
+                    {item.contact ? (
+                      <Text style={styles.content}>{item.contact}</Text>
+                    ) : null}
                   </View>
                 </View>
                 <Divider style={styles.divider} />
@@ -80,9 +93,11 @@ const PatientProfile = ({navigation, route}) => {
                     <Text style={styles.heading}>DOB</Text>
                   </View>
                   <View style={styles.subView2}>
-                    <Text style={styles.content}>
-                      {dateHandler(item.dateOfBirth)}
-                    </Text>
+                    {item.dateOfBirth ? (
+                      <Text style={styles.content}>
+                        {dateHandler(item.dateOfBirth)}
+                      </Text>
+                    ) : null}
                   </View>
                 </View>
                 <Divider style={styles.divider} />
@@ -91,7 +106,11 @@ const PatientProfile = ({navigation, route}) => {
                     <Text style={styles.heading}>Blood Group</Text>
                   </View>
                   <View style={styles.subView2}>
-                    <Text style={styles.content}>{item.bloodGroup}</Text>
+                    <View style={styles.subView2}>
+                      {item.bloodGroup ? (
+                        <Text style={styles.content}>{item.bloodGroup}</Text>
+                      ) : null}
+                    </View>
                   </View>
                 </View>
                 <Divider style={styles.divider} />
@@ -100,7 +119,11 @@ const PatientProfile = ({navigation, route}) => {
                     <Text style={styles.heading}>Gender</Text>
                   </View>
                   <View style={styles.subView2}>
-                    <Text style={styles.content}>{item.gender}</Text>
+                    <View style={styles.subView2}>
+                      {item.gender ? (
+                        <Text style={styles.content}>{item.gender}</Text>
+                      ) : null}
+                    </View>
                   </View>
                 </View>
               </View>

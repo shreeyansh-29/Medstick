@@ -7,7 +7,6 @@ import {
 import notifyUserService from '../../../network/networkServices/patients/notifyUserService';
 
 export function* notifyUserSaga(data) {
-  console.log(data);
   try {
     let response = yield call(notifyUserService.postNotification, data);
     yield put(notifyUserSuccess(response?.data));
