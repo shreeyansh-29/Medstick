@@ -18,14 +18,14 @@ import {TextInput} from 'react-native-paper';
 import {faXmark} from '@fortawesome/free-solid-svg-icons';
 import {ListItem} from 'react-native-elements';
 
-const RenderModalView = props => {
+const RenderModalView = ({setVisible, setMed, setDescription}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.searchMedicine?.data);
   const status = useSelector(state => state.searchMedicine?.error);
   const loading = useSelector(state => state.searchMedicine?.isLoading);
   const [pageNo, setPageNo] = useState(0);
-  const [med, setMed] = useState('');
   const [tempSearch, setTempSearch] = useState([]);
+  const [med, setMed1] = useState('');
 
   const activityIndicator = () => {
     return (
@@ -48,14 +48,16 @@ const RenderModalView = props => {
   };
 
   const setData = item => {
-    // props.setVisible(false);
-    props.handleChange();
-    props.values.description(description);
+    setVisible(false);
+    setMed(item.medicineName);
+    setDescription(item.description);
+    dispatch(searchMedicineClear());
   };
 
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
+        activeOpacity={0.8}
         style={{marginTop: 4}}
         onPress={() => {
           setData(item);
@@ -89,7 +91,7 @@ const RenderModalView = props => {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            props.setVisible(false);
+            setVisible(false);
             dispatch(searchMedicineClear());
           }}>
           <FontAwesomeIcon
@@ -105,7 +107,7 @@ const RenderModalView = props => {
           label="Search Medicine"
           mode="outlined"
           onChangeText={text => {
-            setMed(text);
+            setMed1(text);
             search(text);
           }}
           outlineColor={colorPalette.mainColor}
@@ -115,7 +117,7 @@ const RenderModalView = props => {
           right={
             <TextInput.Icon
               onPress={() => {
-                setMed('');
+                setMed1('');
                 dispatch(searchMedicineClear());
               }}
               name={() => (

@@ -147,7 +147,11 @@ const MedicineList = ({route, navigation}) => {
   };
 
   return edit ? (
-    <EditMedicineView item={medData} setEdit={setEdit} />
+    <EditMedicineView
+      item={medData}
+      setEdit={setEdit}
+      navigation={navigation}
+    />
   ) : (
     <View style={styles.container1}>
       <SubHeader title={'Medicine Description'} navigation={navigation} />

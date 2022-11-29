@@ -9,13 +9,20 @@ import CustomButton from '../../../components/atoms/customButton';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import CustomModal from '../../../components/molecules/customModal';
-import RenderModalView from './renderModalView';
 import {styles} from '../../../styles/medicinePanelStyles/medicineFormStyles';
 import NetInfo from '@react-native-community/netinfo';
+import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import {useIsFocused} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import RenderModalView from './renderModalView';
 
 const AddMedicineForm = props => {
   const [visible, setVisible] = useState(false);
   const [connected, setConnected] = useState(false);
+  const focused = useIsFocused();
+  const [load, setLoad] = useState(false);
+  const [med, setMed] = useState('');
+  const [description, setDescription] = useState('');
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
@@ -27,40 +34,34 @@ const AddMedicineForm = props => {
     };
   }, []);
 
+  const getUser = async () => {
+    const user = await GoogleSignin.getCurrentUser();
+    if (user !== null) setLoad(true);
+  };
+
+  useEffect(() => {
+    if (focused) {
+      getUser();
+    }
+  }, [focused]);
+
   return (
     <View style={styles.mainView}>
       <CustomModal
         modalVisible={visible}
         type="fade"
         onRequestClose={() => setVisible(!visible)}
-        modalView={<RenderModalView {...props} setVisible={setVisible} />}
+        modalView={
+          <RenderModalView
+            props={props}
+            setVisible={setVisible}
+            setMed={setMed}
+            setDescription={setDescription}
+          />
+        }
         customStyles={{height: '100%'}}
       />
       <View style={styles.inputField}>
-        {/* {connected ? (
-          <>
-            <TouchableOpacity
-              onPress={() => setVisible(true)}
-              activeOpacity={1}
-              style={{}}>
-              <InputField
-                styles={{backgroundColor: 'white'}}
-                label="Medicine Name"
-                mode="outlined"
-                outlineColor="lightgrey"
-                text="medicineName"
-                activeOutlineColor={colorPalette.mainColor}
-                {...props}
-                value={props.values.medicineName}
-              />
-              {props.errors.medicineName && props.touched.medicineName && (
-                <Text style={{color: 'red', marginTop: 4}}>
-                  {props.errors.medicineName}
-                </Text>
-              )}
-            </TouchableOpacity>
-          </>
-        ) : ( */}
         <InputField
           styles={styles.field}
           label="Medicine Name"
@@ -69,7 +70,21 @@ const AddMedicineForm = props => {
           text="medicineName"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={props.values.medicineName}
+          value={med.length !== 0 ? med : props.values.medicineName}
+          right={
+            connected && load ? (
+              <TextInput.Icon
+                onPress={() => setVisible(true)}
+                name={() => (
+                  <FontAwesomeIcon
+                    size={20}
+                    icon={faSearch}
+                    color={colorPalette.mainColor}
+                  />
+                )}
+              />
+            ) : null
+          }
         />
         {props.errors.medicineName && props.touched.medicineName && (
           <Text style={styles.errorText}>{props.errors.medicineName}</Text>
@@ -84,7 +99,9 @@ const AddMedicineForm = props => {
           text="description"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={props.values.description}
+          value={
+            description.length !== 0 ? description : props.values.description
+          }
           multiline={true}
           selectTextOnFocus={true}
           dense={true}
