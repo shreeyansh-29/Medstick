@@ -19,7 +19,6 @@ import {AddMedicine, getPercentageDetails} from '../../utils/storage';
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
-
   var tody_date = new Date();
   let td_da =
     tody_date.getFullYear() +
