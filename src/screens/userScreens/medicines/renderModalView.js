@@ -1,23 +1,31 @@
 import {
   View,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
+  Text,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import {faXmarkCircle} from '@fortawesome/free-regular-svg-icons';
-import {Icon, SearchBar} from 'react-native-elements';
 import {useSelector, useDispatch} from 'react-redux';
-import {searchMedicineRequest} from '../../../redux/action/userMedicine/searchMedicineAction';
+import {
+  searchMedicineClear,
+  searchMedicineRequest,
+} from '../../../redux/action/userMedicine/searchMedicineAction';
+import {TextInput} from 'react-native-paper';
+import {faXmark} from '@fortawesome/free-solid-svg-icons';
+import {ListItem} from 'react-native-elements';
 
-const RenderModalView = props => {
+const RenderModalView = ({setVisible, setMed, setDescription}) => {
   const dispatch = useDispatch();
-  const searchMedicine = useSelector(state => state.searchMedicine?.data);
-  // console.log(searchMedicine);
+  const res = useSelector(state => state.searchMedicine?.data);
+  const status = useSelector(state => state.searchMedicine?.error);
   const loading = useSelector(state => state.searchMedicine?.isLoading);
+  const [pageNo, setPageNo] = useState(0);
+  const [tempSearch, setTempSearch] = useState([]);
+  const [med, setMed1] = useState('');
 
   const activityIndicator = () => {
     return (
@@ -28,62 +36,63 @@ const RenderModalView = props => {
   };
 
   useEffect(() => {
-    // if (searchMedicine.data !== null) {
-    //   setTempSearch(searchMedicine.data);
-    // }
-  }, [searchMedicine]);
+    if (res !== null) {
+      setTempSearch(res);
+    } else if (res === null) {
+      setTempSearch([]);
+    }
+  }, [res]);
 
   const search = data => {
-    dispatch(searchMedicineRequest(data));
+    dispatch(searchMedicineRequest({data, pageNo}));
   };
 
   const setData = item => {
-    props.setVisible(false);
-    props.values.medicineName(item?.medicineName);
-    props.values.description(item?.description);
+    setVisible(false);
+    setMed(item.medicineName);
+    setDescription(item.description);
+    dispatch(searchMedicineClear());
   };
 
-  const renderItem = ({item}) => {
+  const renderItem = ({item, index}) => {
     return (
-      <View>
-        <ListItem style={styles.list}>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={{marginTop: 4}}
+        onPress={() => {
+          setData(item);
+        }}>
+        <ListItem
+          style={{marginHorizontal: 8}}
+          hasTVPreferredFocus={undefined}
+          tvParallaxProperties={undefined}>
           <ListItem.Content>
-            <View style={{padding: 2}}>
-              <TouchableOpacity onPress={() => setData(item)}>
-                <View style={{flexDirection: 'row'}}>
-                  <ListItem.Subtitle>
-                    <Text
-                      style={{fontSize: 15, fontWeight: '700', color: '#000'}}>
-                      {'Medicine Name: '}
-                    </Text>
-                    {`${item.medicineName}`}
-                    {','}
-                  </ListItem.Subtitle>
-                </View>
-
-                <ListItem.Subtitle>
-                  <Text
-                    style={{fontSize: 15, fontWeight: '700', color: '#000'}}>
-                    {'Description: '}
-                  </Text>
-                  {`${item.description}`}
-                </ListItem.Subtitle>
-              </TouchableOpacity>
+            <View style={{}}>
+              <ListItem.Title
+                style={{color: 'black', fontWeight: '600', fontSize: 16}}>
+                <Text style={{fontWeight: 'bold'}}>Medicine : </Text>
+                {item.medicineName}
+              </ListItem.Title>
+              <ListItem.Subtitle
+                style={{color: 'black', fontWeight: '600', fontSize: 15}}>
+                <Text style={{fontWeight: 'bold'}}>Description : </Text>
+                {item.description}
+              </ListItem.Subtitle>
             </View>
           </ListItem.Content>
         </ListItem>
-        <Divider />
-      </View>
+      </TouchableOpacity>
     );
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
       <View style={{alignSelf: 'flex-end', marginTop: 8, marginRight: 12}}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            props.setVisible(false);
+            setVisible(false);
+            dispatch(searchMedicineClear());
           }}>
           <FontAwesomeIcon
             icon={faXmarkCircle}
@@ -93,39 +102,31 @@ const RenderModalView = props => {
         </TouchableOpacity>
       </View>
 
-      <View style={{marginVertical: 10}}>
-        <SearchBar
-          platform="default"
-          placeholder="Search Medicine"
-          value={props.values.medicineName}
+      <View style={{marginVertical: 10, width: '96%'}}>
+        <TextInput
+          label="Search Medicine"
+          mode="outlined"
           onChangeText={text => {
-            console.log(text);
-            props.handleChange(text);
+            setMed1(text);
             search(text);
           }}
-          containerStyle={{
-            backgroundColor: 'rbga(225,232,238,0)',
-          }}
-          inputContainerStyle={{
-            borderRadius: 30,
-            backgroundColor: '#EFF5F5',
-            height: 50,
-          }}
-          inputStyle={{
-            fontSize: 18,
-            color: colorPalette.mainColor,
-          }}
-          lightTheme="true"
-          placeholderTextColor={colorPalette.mainColor}
-          clearIcon={{color: colorPalette.mainColor, size: 22}}
-          searchIcon={
-            <Icon
-              size={22}
-              name="search"
-              type="font-awesome"
-              color={colorPalette.mainColor}
-              // onPress={() => handleSubmit()}
-              containerStyle={{marginLeft: 10}}
+          outlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPalette.mainColor}
+          style={{width: '100%', alignSelf: 'center'}}
+          value={med}
+          right={
+            <TextInput.Icon
+              onPress={() => {
+                setMed1('');
+                dispatch(searchMedicineClear());
+              }}
+              name={() => (
+                <FontAwesomeIcon
+                  size={20}
+                  icon={faXmark}
+                  color={colorPalette.mainColor}
+                />
+              )}
             />
           }
         />
@@ -134,15 +135,29 @@ const RenderModalView = props => {
         activityIndicator()
       ) : (
         <>
-          {searchMedicine ? (
-            <></>
+          {status === 404 ? (
+            <>
+              <Text>Medicine Not Found</Text>
+            </>
           ) : (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={searchMedicine}
-              renderItem={renderItem}
-              numColumns={1}
-            />
+            <>
+              {tempSearch.length === 0 ? (
+                <></>
+              ) : (
+                <>
+                  <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={tempSearch}
+                    renderItem={renderItem}
+                    contentContainerStyle={{
+                      flex: 1,
+                      backgroundColor: colorPalette.backgroundColor,
+                    }}
+                    style={{width: '100%'}}
+                  />
+                </>
+              )}
+            </>
           )}
         </>
       )}

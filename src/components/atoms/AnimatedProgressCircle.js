@@ -46,8 +46,9 @@ const AnimatedProgressCircle = ({
     animation(percentage);
     animatedValue.addListener(v => {
       if (circleRef?.current) {
+        const maxPerc = (100 * v.value)/max;
         const strokeDashoffset =
-          circumference - (circumference * v.value) / 100;
+          circumference - (circumference * maxPerc) / 100;
         circleRef.current.setNativeProps({
           strokeDashoffset,
         });

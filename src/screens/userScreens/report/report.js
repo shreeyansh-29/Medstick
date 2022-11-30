@@ -1,17 +1,18 @@
 import {View, Text, ScrollView, Modal, TouchableOpacity} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
 import {getMedicine} from '../../../utils/storage';
+import {useEffect} from 'react';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -59,11 +60,11 @@ const Report = ({navigation}) => {
   const [medicineId, setMedicineId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
-  const isFocused = useIsFocused();
   const [getUserMedicine, setGetUserMedicine] = useState([]);
   const [historyData, setHistoryData] = useState({});
   const [historyListData, setHistoryListData] = useState([]);
   const [percentage, setPercentage] = useState(0);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused)
@@ -99,19 +100,26 @@ const Report = ({navigation}) => {
   function getHistory() {
     let histories = [];
     getUserMedicine.map(data => {
-      if (data.userMedicineId == medicineId) {
+      if (data.userMedicineId == medicineId && data.historyList.length !== 0) {
         data.historyList.map(i => {
           let his = {};
-          console.log(i, 'his');
+          console.log('his data', i);
           his.historyId = i.historyId;
           his.taken = i.taken;
           his.notTaken = i.notTaken;
           his.date = i.date;
           histories.push(his);
-          console.log('222', histories);
           setHistoryListData(histories);
-          overallPecentage(data.totalReminders, data.currentCount);
+          dateSelector(histories);
+          overallPecentage(data);
         });
+      } else if (
+        data.userMedicineId == medicineId &&
+        data.historyList.length === 0
+      ) {
+        setHistoryListData([]);
+        dateSelector([]);
+        overallPecentage(0, 0);
       }
     });
   }
@@ -129,17 +137,41 @@ const Report = ({navigation}) => {
         t.push(i);
       });
     }
-    let totalCount = nt.length + t.length;
-    return Math.floor((t.length / totalCount) * 100);
+    let takenLength = 0;
+    let notTakenLength = 0;
+    nt.map(i => {
+      if (i !== '') {
+        notTakenLength += 1;
+      }
+    });
+    t.map(i => {
+      if (i !== '') {
+        takenLength += 1;
+      }
+    });
+    let totalCount = notTakenLength + takenLength;
+    // console.log(Math.floor((takenLength / totalCount) * 100));
+    return Math.floor((takenLength / totalCount) * 100);
   };
 
-  function overallPecentage(totalReminders, currentCount) {
-    setPercentage(Math.floor((currentCount / totalReminders) * 100));
+  function overallPecentage(data) {
+    let cc = 0;
+    let tr = 0;
+    data.historyList.map(item => {
+      tr += data.reminderTime.split(',').length;
+      let temp = item.taken.split(',');
+      temp.map(i => {
+        if (i !== '') {
+          cc += 1;
+        }
+      });
+    });
+    console.log('tr and cc in Report', tr, cc);
+    setPercentage(Math.floor((cc / tr) * 100));
   }
 
   const [dataMap, setDataMap] = useState([]);
   const dateSelector = history => {
-    console.log('zzz history', history);
     var data = [];
     history.map(item => {
       let percentage = dayPercentageCalculator(item.taken, item.notTaken);
@@ -190,7 +222,7 @@ const Report = ({navigation}) => {
             date={date}
             state={state}
             selectedDate={selectedDate}
-            initialDate={'2022-11-11'}
+            initialDate={'2022-11-21'}
             setSelectedDate={setSelectedDate}
             percentage={dataMap[index].percentage}
             setModalVisible={ModalOpen}
@@ -221,7 +253,7 @@ const Report = ({navigation}) => {
     <>
       <View style={styles.container} />
       <View style={styles.report}>
-        <MainHeader title={'Reports'} navigation={navigation} />
+        <MainHeader title={'Report'} navigation={navigation} />
 
         <Modal
           animationType="fade"
@@ -242,9 +274,11 @@ const Report = ({navigation}) => {
             <Picker
               style={{color: 'black'}}
               mode="dropdown"
-              selectedValue={medicineId}             
+              selectedValue={medicineId}
               onValueChange={data => {
+                getHistory();
                 setMedicineId(data);
+                console.log('medicineId', data);
               }}>
               {getUserMedicine?.map((item, index) => {
                 return (
@@ -320,4 +354,3 @@ const Report = ({navigation}) => {
 };
 
 export default Report;
-

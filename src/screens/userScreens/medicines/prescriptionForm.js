@@ -33,155 +33,115 @@ const PrescriptionForm = props => {
   };
 
   return (
-    <View
-      style={{
-        marginTop: 20,
-        width: '90%',
-        alignSelf: 'center',
-      }}>
-      <View>
-        <Text style={{fontSize: 16, color: 'gray', marginBottom: 6}}>
-          DETAILS
-        </Text>
-        <View style={styles.inputField}>
-          <InputField
-            styles={styles.bio}
-            label="Doctor Name"
-            mode="outlined"
-            outlineColor="lightgrey"
-            text="doctorName"
-            activeOutlineColor={colorPalette.mainColor}
-            {...props}
-            value={props.values.doctorName}
-          />
-          {props.errors.doctorName && props.touched.doctorName && (
-            <Text style={styles.errorText}>{props.errors.doctorName}</Text>
-          )}
-        </View>
-
-        <View style={styles.inputField}>
-          <InputField
-            styles={styles.bio}
-            label="Specialization"
-            mode="outlined"
-            outlineColor="lightgrey"
-            text="specialization"
-            activeOutlineColor={colorPalette.mainColor}
-            {...props}
-            value={props.values.specialization}
-          />
-          {props.errors.specialization && props.touched.specialization && (
-            <Text style={styles.errorText}>{props.errors.specialization}</Text>
-          )}
-        </View>
-
-        <View style={styles.inputField}>
-          <InputField
-            styles={styles.bio}
-            label="Contact"
-            mode="outlined"
-            outlineColor="lightgrey"
-            text="contact"
-            activeOutlineColor={colorPalette.mainColor}
-            {...props}
-            value={props.values.contact}
-            keyboardType="numeric"
-          />
-          {props.errors.contact && props.touched.contact && (
-            <Text style={styles.errorText}>{props.errors.contact}</Text>
-          )}
-        </View>
-
-        <View style={styles.inputField}>
-          <InputField
-            styles={styles.bio}
-            label="Location"
-            mode="outlined"
-            outlineColor="lightgrey"
-            text="location"
-            activeOutlineColor={colorPalette.mainColor}
-            {...props}
-            value={props.values.location}
-          />
-          {props.errors.location && props.touched.location && (
-            <Text style={styles.errorText}>{props.errors.location}</Text>
-          )}
-        </View>
+    <View style={styles.mainView}>
+      <Text style={styles.text}>DETAILS</Text>
+      <View style={styles.inputField}>
+        <InputField
+          styles={styles.bio}
+          label="Doctor Name"
+          mode="outlined"
+          outlineColor="lightgrey"
+          text="doctorName"
+          activeOutlineColor={colorPalette.mainColor}
+          {...props}
+          value={props.values.doctorName}
+        />
+        {props.errors.doctorName && props.touched.doctorName && (
+          <Text style={styles.errorText}>{props.errors.doctorName}</Text>
+        )}
       </View>
 
-      <Divider style={{height: 1, marginVertical: 14}} />
+      <View style={styles.inputField}>
+        <InputField
+          styles={styles.bio}
+          label="Specialization"
+          mode="outlined"
+          outlineColor="lightgrey"
+          text="specialization"
+          activeOutlineColor={colorPalette.mainColor}
+          {...props}
+          value={props.values.specialization}
+        />
+        {props.errors.specialization && props.touched.specialization && (
+          <Text style={styles.errorText}>{props.errors.specialization}</Text>
+        )}
+      </View>
+
+      <View style={styles.inputField}>
+        <InputField
+          styles={styles.bio}
+          label="Contact"
+          mode="outlined"
+          outlineColor="lightgrey"
+          text="contact"
+          activeOutlineColor={colorPalette.mainColor}
+          {...props}
+          value={props.values.contact}
+          keyboardType="numeric"
+        />
+        {props.errors.contact && props.touched.contact && (
+          <Text style={styles.errorText}>{props.errors.contact}</Text>
+        )}
+      </View>
+
+      <View style={styles.inputField}>
+        <InputField
+          styles={styles.bio}
+          label="Location"
+          mode="outlined"
+          outlineColor="lightgrey"
+          text="location"
+          activeOutlineColor={colorPalette.mainColor}
+          {...props}
+          value={props.values.location}
+        />
+        {props.errors.location && props.touched.location && (
+          <Text style={styles.errorText}>{props.errors.location}</Text>
+        )}
+      </View>
+
+      <Divider style={styles.divider} />
 
       <View>
-        <Text style={{fontSize: 16, color: 'gray'}}>UPLOAD</Text>
-        <Text style={{color: 'black', marginTop: 10, fontSize: 15}}>
+        <Text style={styles.uploadText}>UPLOAD</Text>
+        <Text style={styles.subText}>
           Please upload images of valid prescription from your doctor.
         </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginVertical: 12,
-          }}>
+        <View style={styles.touchableCont}>
           <TouchableOpacity
             style={{alignItems: 'center'}}
             activeOpacity={1}
             onPress={openCamera}>
-            <View
-              style={{
-                width: 46,
-                height: 46,
-                borderRadius: 23,
-                backgroundColor: colorPalette.mainColor,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            <View style={styles.touchableBtn}>
               <FontAwesomeIcon icon={faCamera} color={'white'} size={20} />
             </View>
-            <Text style={{fontSize: 13, marginTop: 4}}>Camera</Text>
+            <Text style={styles.text1}>Camera</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{alignItems: 'center', marginLeft: 30}}
             activeOpacity={1}
             onPress={uploadPhoto}>
-            <View
-              style={{
-                width: 46,
-                height: 46,
-                borderRadius: 23,
-                backgroundColor: colorPalette.mainColor,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+            <View style={styles.touchableBtn}>
               <FontAwesomeIcon icon={faImage} color={'white'} size={20} />
             </View>
-            <Text style={{fontSize: 13, marginTop: 4}}>Gallery</Text>
+            <Text style={styles.text1}>Gallery</Text>
           </TouchableOpacity>
-          <View style={{flex: 1, alignItems: 'center'}}>
+          <View style={styles.imgCont}>
             {props.values.image ? (
-              <View style={{height: 128}}>
+              <View style={styles.imgView}>
                 <TouchableOpacity
                   onPress={() => props.setVisible(true)}
                   activeOpacity={1}
-                  style={{
-                    width: 120,
-                    height: 120,
-                    borderRadius: 12,
-                    borderColor: 'lightgrey',
-                    borderWidth: 1,
-                    overflow: 'hidden',
-                  }}>
+                  style={styles.imgSubView}>
                   <Image
                     resizeMode="stretch"
                     source={{uri: props?.values?.image}}
-                    style={{width: '100%', height: '100%', borderRadius: 11}}
+                    style={styles.img}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
                   activeOpacity={1}
-                  style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    alignSelf: 'center',
-                  }}
+                  style={styles.closeBtn}
                   onPress={() => {
                     props.setFieldValue('image', '');
                     props.setUri('');
@@ -201,18 +161,14 @@ const PrescriptionForm = props => {
       {props.errors.image && props.touched.image && (
         <Text style={styles.errorText}>{props.errors.image}</Text>
       )}
-      <Divider style={{height: 1, marginTop: 14}} />
+      <Divider style={styles.divider} />
 
       <CustomButton
         loading={props.load}
         title={'Save'}
         handleSubmit={props.handleSubmit}
-        contStyles={{alignItems: 'center', marginVertical: 40}}
-        btnStyles={{
-          backgroundColor: colorPalette.mainColor,
-          width: '50%',
-          borderRadius: 5,
-        }}
+        contStyles={styles.contStyles}
+        btnStyles={styles.btnStyles}
       />
     </View>
   );
@@ -228,8 +184,55 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'red',
     alignSelf: 'flex-start',
-    marginLeft: 14,
-    marginTop: 1,
+    marginTop: 2,
+  },
+  mainView: {
+    marginTop: 16,
+    width: '90%',
+    alignSelf: 'center',
+  },
+  text: {
+    fontSize: 16,
+    color: 'gray',
+    marginBottom: 6,
+  },
+  divider: {height: 1, marginVertical: 14},
+  uploadText: {fontSize: 16, color: 'gray'},
+  subText: {color: 'black', marginTop: 10, fontSize: 15},
+  touchableCont: {
+    flexDirection: 'row',
+    marginVertical: 12,
+  },
+  touchableBtn: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: colorPalette.mainColor,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text1: {fontSize: 13, marginTop: 4},
+  imgCont: {flex: 1, alignItems: 'center'},
+  imgView: {height: 128},
+  imgSubView: {
+    width: 120,
+    height: 120,
+    borderRadius: 12,
+    borderColor: 'lightgrey',
+    borderWidth: 1,
+    overflow: 'hidden',
+  },
+  img: {width: '100%', height: '100%', borderRadius: 11},
+  closeBtn: {
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
+  },
+  contStyles: {alignItems: 'center', marginVertical: 40},
+  btnStyles: {
+    backgroundColor: colorPalette.mainColor,
+    width: '50%',
+    borderRadius: 5,
   },
 });
 

@@ -93,7 +93,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={styles.container}>
       <CustomModal
         modalVisible={visible}
         modalView={
@@ -120,13 +120,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
           setVisible(!visible);
         }}
       />
-      <View
-        style={{
-          alignSelf: 'flex-start',
-          backgroundColor: colorPalette.backgroundColor,
-          marginLeft: 12,
-          marginTop: 10,
-        }}>
+      <View style={styles.backBtn}>
         <TouchableOpacity
           activeOpacity={1}
           style={{backgroundColor: 'white'}}
@@ -191,7 +185,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.mainColor},
+  container: {flex: 1, backgroundColor: 'white'},
   modalView: {width: '100%', marginTop: 10},
   touchable: {alignSelf: 'flex-end', marginRight: 6},
   customStyles: {
@@ -214,9 +208,13 @@ const styles = StyleSheet.create({
   img: {height: '100%'},
   keyboardView: {
     flex: 1,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
     backgroundColor: 'white',
+  },
+  backBtn: {
+    alignSelf: 'flex-start',
+    backgroundColor: colorPalette.backgroundColor,
+    marginLeft: 14,
+    marginTop: 16,
   },
 });
 

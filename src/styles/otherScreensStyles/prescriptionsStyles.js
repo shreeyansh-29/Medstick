@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   container: {
@@ -56,7 +55,7 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   img: {
-    width: '100%',
+    width: '80%',
   },
   textContainer: {
     paddingHorizontal: 8,
@@ -68,7 +67,7 @@ export const styles = StyleSheet.create({
     borderBottomStartRadius: 12,
   },
   text1: {fontSize: 14, fontWeight: 'bold', color: 'black'},
-
+  font: {fontWeight: '600'},
   //doctor Prescription
   container1: {
     flex: 1,

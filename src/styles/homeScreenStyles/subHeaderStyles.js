@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     width: '60%',
   },
   bellIcon: {
-    width: '21%',
+    width: '23%',
     alignItems: 'flex-end',
   },
 });

@@ -16,6 +16,7 @@ import {style} from '../../../styles/patientStyles/viewPrescriptionStyles';
 
 const ViewPrescriptions = ({navigation, route}) => {
   const dispatch = useDispatch();
+  let flag = false;
   const [precriptions, setPrecriptions] = useState([]);
   const res = useSelector(state => state.myPrescriptions);
   const loading = useSelector(state => state.myPrescriptions?.isLoading);
@@ -55,7 +56,10 @@ const ViewPrescriptions = ({navigation, route}) => {
             <TouchableOpacity
               style={style.btn}
               onPress={() => {
-                navigation.navigate('ViewPrescription', {item: item});
+                navigation.navigate('ViewPrescription', {
+                  item: item,
+                  flag: flag,
+                });
               }}>
               <FontAwesomeIcon
                 icon={faChevronRight}

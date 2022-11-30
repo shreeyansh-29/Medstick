@@ -128,14 +128,14 @@ const UpdateAppointment = ({
         <TouchableOpacity
           onPress={() => setModalVisible(false)}
           activeOpacity={1}
-          style={{alignSelf: 'flex-end', marginRight: 14, marginTop: 8}}>
+          style={styles.closeBtn}>
           <FontAwesomeIcon
             icon={faCircleXmark}
             color={colorPalette.mainColor}
             size={24}
           />
         </TouchableOpacity>
-        <View style={{alignItems: 'center'}}>
+        <View style={styles.updateHeading}>
           <Text style={styles.title}>Update Appointment</Text>
         </View>
 
@@ -166,8 +166,8 @@ const UpdateAppointment = ({
               touched,
               setFieldValue,
             }) => (
-              <View style={{alignItems: 'center', flex: 1}}>
-                <View style={{width: '90%'}}>
+              <View style={styles.formBody}>
+                <View style={styles.notes}>
                   <InputField
                     handleChange={handleChange}
                     handleBlur={handleBlur}
@@ -178,14 +178,12 @@ const UpdateAppointment = ({
                     text="notes"
                     activeOutlineColor={colorPalette.mainColor}
                     value={values.notes}
-                    styles={{height: 100, backgroundColor: 'white'}}
+                    styles={styles.field}
                     multiline={true}
                     selectTextOnFocus={true}
                   />
                   {errors.notes && touched.notes && (
-                    <Text style={{color: 'red', marginTop: 4}}>
-                      {errors.notes}
-                    </Text>
+                    <Text style={styles.validation}>{errors.notes}</Text>
                   )}
                 </View>
 
@@ -198,21 +196,11 @@ const UpdateAppointment = ({
                     }}
                     style={styles.containerTouch}>
                     <View style={styles.dateContainer}>
-                      <View
-                        style={{justifyContent: 'flex-start', width: '35%'}}>
+                      <View style={styles.heading}>
                         <Text style={styles.dateText}>Date</Text>
                       </View>
-                      <View
-                        style={{
-                          width: '65%',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <View
-                          style={{
-                            width: '90%',
-                            alignItems: 'center',
-                          }}>
+                      <View style={styles.dateView}>
+                        <View style={styles.dateSubView}>
                           <Text style={styles.dateText1}>
                             {moment(values.date1).format('YYYY-MM-DD')}
                           </Text>
@@ -223,6 +211,7 @@ const UpdateAppointment = ({
                 </View>
 
                 <DateTimePickerModal
+                  minimumDate={new Date()}
                   isVisible={dateOpen}
                   mode="date"
                   minimumDate={new Date()}
@@ -243,21 +232,11 @@ const UpdateAppointment = ({
                     }}
                     style={styles.containerTouch}>
                     <View style={styles.dateContainer}>
-                      <View
-                        style={{justifyContent: 'flex-start', width: '35%'}}>
+                      <View style={styles.heading}>
                         <Text style={styles.dateText}>Time</Text>
                       </View>
-                      <View
-                        style={{
-                          width: '65%',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                        }}>
-                        <View
-                          style={{
-                            width: '90%',
-                            alignItems: 'center',
-                          }}>
+                      <View style={styles.dateView}>
+                        <View style={styles.dateSubView}>
                           <Text style={styles.dateText1}>{values.time}</Text>
                         </View>
                       </View>
@@ -275,7 +254,7 @@ const UpdateAppointment = ({
                         : date.getMinutes();
 
                     let newTime =
-                      date.getHours() > 12
+                      date.getHours() > 11
                         ? hour[date.getHours()] + ':' + minutes + ' ' + 'PM'
                         : date.getHours() + ':' + minutes + ' ' + 'AM';
 
@@ -285,16 +264,12 @@ const UpdateAppointment = ({
                   onCancel={() => setTimeOpen(false)}
                 />
 
-                <Divider style={{height: 1, width: '92%'}} />
+                <Divider style={styles.divider} />
                 <CustomButton
                   title={'Save'}
                   handleSubmit={handleSubmit}
-                  contStyles={{marginVertical: 18}}
-                  btnStyles={{
-                    backgroundColor: colorPalette.mainColor,
-                    borderRadius: 5,
-                    paddingHorizontal: 30,
-                  }}
+                  contStyles={styles.contStyles}
+                  btnStyles={styles.btnStyles}
                 />
               </View>
             )}
@@ -356,6 +331,31 @@ const styles = StyleSheet.create({
     width: '10%',
   },
   downIcon: {right: 0, position: 'absolute'},
+  closeBtn: {alignSelf: 'flex-end', marginRight: 14, marginTop: 8},
+  formBody: {alignItems: 'center', flex: 1},
+  updateHeading: {alignItems: 'center'},
+  notes: {
+    width: '90%',
+  },
+  field: {height: 100, backgroundColor: 'white'},
+  validation: {color: 'red', marginTop: 4},
+  heading: {justifyContent: 'flex-start', width: '35%'},
+  dateView: {
+    width: '65%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dateSubView: {
+    width: '90%',
+    alignItems: 'center',
+  },
+  contStyles: {marginVertical: 18},
+  btnStyles: {
+    backgroundColor: colorPalette.mainColor,
+    borderRadius: 5,
+    paddingHorizontal: 30,
+  },
+  divider: {height: 1, width: '92%'},
 });
 
 export default UpdateAppointment;

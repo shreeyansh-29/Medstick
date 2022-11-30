@@ -89,6 +89,7 @@ const DeletePrescription = ({
   return deleteBtn ? (
     <View style={styles.bellIcon}>
       <TouchableOpacity
+        style={{padding: 4}}
         onPress={() => deletePrescription(prescriptionId)}
         activeOpacity={1}>
         <FontAwesomeIcon icon={faTrash} size={18} color={'white'} />

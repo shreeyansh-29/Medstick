@@ -9,7 +9,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-import PerformanceCircle from '../../../components/organisms/performanceCircle';
 import {PermissionsAndroid} from 'react-native';
 import Downloadpdf from '../../../components/organisms/downloadPdf';
 import {Divider} from 'react-native-paper';
@@ -23,29 +22,36 @@ import LottieView from 'lottie-react-native';
 import HistoryDetail from './historyDetail';
 import CustomModal from '../../../components/molecules/customModal';
 import AnimatedProgessCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {verticalScale} from '../../../components/atoms/constant';
+import AdherencePercentage from './adherenceHistory';
 
 let detailData = {};
 
 const MedicineReport = ({navigation, route}) => {
   const dispatch = useDispatch();
   const item = route?.params?.item;
-  const {startDate, days, currentCount, reminderTime, endDate} = item;
+  const {startDate, days, currentCount, totalCount, endDate} = item;
   const res = useSelector(state => state.getMedsHistory?.data);
   const [historyData, setHistoryData] = useState([]);
   const [allDates, setAllDates] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [showDetail, showDetailState] = useState(false);
+  const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
     if (res?.status === 'OK') {
       setHistoryData(res?.result);
       showAllDates();
-      // AdherencePercentage(startDate, days, reminderTime, currentCount, '').then(
-      //   per => setAdherence(per),
-      // );
+      overallPecentage(totalCount, currentCount);
     }
   }, [res]);
+
+  function overallPecentage(totalReminders, currentCount) {
+    if (totalReminders == 0 || currentCount == 0) {
+      setPercentage(0);
+    } else {
+      setPercentage(Math.floor((currentCount / totalReminders) * 100));
+    }
+  }
 
   const showAllDates = () => {
     let alldates = [];
@@ -141,17 +147,11 @@ const MedicineReport = ({navigation, route}) => {
         customStyles={styles.detailView}
       />
 
-      <View
-        style={{
-          alignItems: 'center',
-          padding: verticalScale(8),
-          backgroundColor: colorPalette.mainColor,
-          height: 200,
-        }}>
+      <View style={styles.animatedCircle}>
         <AnimatedProgessCircle
           radius={58}
           strokeWidth={12}
-          percentage={91}
+          percentage={percentage}
           outerCircleColor={'#CFF5E7'}
           innerCircleColor={'grey'}
         />

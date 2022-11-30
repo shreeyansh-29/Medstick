@@ -18,6 +18,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 import {colorPalette} from '../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
+import {bloodGroup, gender} from '../../constants/pickerItem';
 
 const RenderModalVisible = ({
   isCancel,
@@ -98,9 +99,15 @@ const RenderModalVisible = ({
                 bio: result?.bio,
                 contact: result?.contact,
                 dateofBirth: result?.dateOfBirth,
-                gender: result?.gender,
+                gender:
+                  result?.gender.length === 0
+                    ? gender[0].value
+                    : result?.gender,
                 country: result?.country,
-                bloodGroup: result?.bloodGroup,
+                bloodGroup:
+                  result?.bloodGroup.length === 0
+                    ? bloodGroup[0].value
+                    : result?.bloodGroup,
                 address: result?.address,
                 state: result?.state,
               }}

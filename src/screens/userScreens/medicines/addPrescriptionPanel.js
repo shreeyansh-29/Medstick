@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
-  Alert,
+  StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPalette} from '../../../components/atoms/colorPalette';
@@ -25,6 +25,7 @@ import Toast from 'react-native-toast-message';
 import CustomModal from '../../../components/molecules/customModal';
 import {getPrescription} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
+import Loader from '../../../components/atoms/loader';
 
 const AddPrescriptionPanel = ({navigation, route}) => {
   let {prescriptionObject} = route?.params;
@@ -39,6 +40,17 @@ const AddPrescriptionPanel = ({navigation, route}) => {
   const [prescriptionId, setPrescriptionId] = useState('');
   const [prescriptionList, setPrescriptionList] = useState([]);
   const [deleteBtn, setDeleteBtn] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowLoader(false);
+    }, 1000);
+
+    return () => {
+      false;
+    };
+  }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -64,33 +76,20 @@ const AddPrescriptionPanel = ({navigation, route}) => {
               setDeleteBtn(true);
             }
           }}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.listView}>
             <ListItem
               hasTVPreferredFocus={undefined}
               tvParallaxProperties={undefined}
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: 3,
-              }}>
-              <ListItem.Content style={{marginLeft: 10}}>
-                <ListItem.Title
-                  style={{fontWeight: '500', fontSize: 18, marginBottom: 4}}>
+              style={styles.list}>
+              <ListItem.Content style={styles.content}>
+                <ListItem.Title style={styles.title}>
                   {`${item.doctorName}`}
                 </ListItem.Title>
                 <ListItem.Title style={{}}>
                   {`${item.specialization}`}
                 </ListItem.Title>
               </ListItem.Content>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: '20%',
-                  marginRight: 12,
-                  alignItems: 'center',
-                }}>
+              <View style={styles.touchableView}>
                 <TouchableOpacity
                   activeOpacity={0.9}
                   style={{padding: 10}}
@@ -128,7 +127,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colorPalette.basicColor}}>
+    <View style={styles.mainView}>
       <SubHeader
         navigation={navigation}
         title={'Add Prescription'}
@@ -145,63 +144,43 @@ const AddPrescriptionPanel = ({navigation, route}) => {
         modalView={<ImageViewer imageUrls={images} backgroundColor="white" />}
       />
 
-      <View
-        style={{
-          marginTop: 10,
-          alignItems: 'center',
-        }}>
-        <Text
-          style={{
-            color: colorPalette.mainColor,
-            fontSize: 20,
-            fontWeight: '400',
-          }}>
-          Select Prescription
-        </Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>Select Prescription</Text>
       </View>
-      <Divider style={{height: 1, marginVertical: 8}} />
+      <Divider style={styles.divider} />
 
-      {prescriptionList?.length === 0 ? (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: Dimensions.get('window').height / 1.274,
-          }}>
-          <CustomImage
-            resizeMode="contain"
-            source={require('../../../assets/images/noPrescription.png')}
-            styles={{width: '70%'}}
-          />
-        </View>
+      {showLoader ? (
+        <Loader />
       ) : (
-        <FlatList
-          style={{marginBottom: 50}}
-          data={prescriptionList}
-          keyExtractor={(item, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          renderItem={renderItem}
-        />
+        <>
+          {prescriptionList?.length === 0 ? (
+            <View style={styles.imgCont}>
+              <CustomImage
+                resizeMode="contain"
+                source={require('../../../assets/images/noPrescription.png')}
+                styles={styles.img}
+              />
+            </View>
+          ) : (
+            <FlatList
+              style={styles.flatList}
+              data={prescriptionList}
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              renderItem={renderItem}
+            />
+          )}
+        </>
       )}
 
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          alignSelf: 'center',
-          width: '100%',
-        }}>
+      <View style={styles.button}>
         {prescriptionId ? (
           <>
             <CustomButton
-              titleStyle={{fontSize: 18}}
+              titleStyle={styles.buttonText}
               title={'Save'}
-              btnStyles={{
-                backgroundColor: colorPalette.mainColor,
-                width: '50%',
-                borderRadius: 5,
-              }}
-              contStyles={{alignItems: 'center', marginBottom: 8}}
+              btnStyles={styles.btnStyles}
+              contStyles={styles.contStyles}
               handleSubmit={() => {
                 if (prescriptionId !== null) {
                   let a = b => b.prescriptionId === prescriptionId;
@@ -224,13 +203,9 @@ const AddPrescriptionPanel = ({navigation, route}) => {
           <>
             <CustomButton
               title={'Upload New'}
-              titleStyle={{fontSize: 18}}
-              btnStyles={{
-                backgroundColor: colorPalette.mainColor,
-                width: '50%',
-                borderRadius: 5,
-              }}
-              contStyles={{alignItems: 'center', marginBottom: 8}}
+              titleStyle={styles.buttonText}
+              btnStyles={styles.btnStyles}
+              contStyles={styles.contStyles}
               handleSubmit={() => {
                 navigation.navigate('Prescription');
               }}
@@ -242,5 +217,55 @@ const AddPrescriptionPanel = ({navigation, route}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  mainView: {flex: 1, backgroundColor: colorPalette.basicColor},
+  textContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  text: {
+    color: colorPalette.mainColor,
+    fontSize: 20,
+    fontWeight: '400',
+  },
+  divider: {height: 1, marginVertical: 8},
+  imgCont: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: Dimensions.get('window').height / 1.274,
+  },
+  img: {width: '70%'},
+  flatList: {marginBottom: 50},
+  button: {
+    position: 'absolute',
+    bottom: 0,
+    alignSelf: 'center',
+    width: '100%',
+  },
+  buttonText: {fontSize: 18},
+  btnStyles: {
+    backgroundColor: colorPalette.mainColor,
+    width: '50%',
+    borderRadius: 5,
+  },
+  contStyles: {alignItems: 'center', marginBottom: 8},
+  listView: {flexDirection: 'row'},
+  list: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 3,
+  },
+  title: {fontWeight: '500', fontSize: 18, marginBottom: 4},
+  touchableView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '20%',
+    marginRight: 12,
+    alignItems: 'center',
+  },
+  content: {marginLeft: 10},
+});
 
 export default AddPrescriptionPanel;
