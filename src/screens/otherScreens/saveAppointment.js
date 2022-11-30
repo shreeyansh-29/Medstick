@@ -37,13 +37,14 @@ const AppointmentReminders = ({navigation, route}) => {
   const [saveTimeOpen, setSaveTimeOpen] = useState(false);
   let doctor = route.params.notes;
 
-  const handlePushNotification = (obj, docName) => {
+  const handlePushNotification = (obj) => {
     let d = new Date();
     let currentTime = d.getHours() + ':' + d.getMinutes();
     let currentDate =
       d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
     const number = moment(obj.time, ['h:mm A']).format('HH:mm');
     console.log(number, 'number');
+    console.log(obj,"idddd");
 
     let chosenDate = new Date(obj?.date).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
@@ -57,11 +58,11 @@ const AppointmentReminders = ({navigation, route}) => {
     if (number < currentTime && currentDate >= obj?.date) {
       let dateTime = moment(chosenDate2 + ' ' + number);
       console.log(dateTime._d, 'dateTime1');
-      Notifications.schduleNotification2(dateTime._d, docName);
+      Notifications.schduleNotification2(dateTime._d, obj.appointmentId);
     } else {
       let dateTime = moment(obj.date + ' ' + number);
       console.log(dateTime._d, 'dateTime2');
-      Notifications.schduleNotification2(dateTime._d, docName);
+      Notifications.schduleNotification2(dateTime._d, obj.appointmentId);
     }
   };
 
@@ -96,7 +97,7 @@ const AppointmentReminders = ({navigation, route}) => {
     // setTimeout(() => {
     //   navigation.pop();
     // }, 1000);
-    handlePushNotification(obj, docName);
+    handlePushNotification(obj);
   };
 
   return (

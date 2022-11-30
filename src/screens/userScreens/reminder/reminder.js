@@ -19,6 +19,7 @@ import {AddMedicine, getMedicine} from '../../../utils/storage.js';
 import uuid from 'react-native-uuid';
 import {hour} from '../../../constants/constants';
 import Notifications from '../../../notification/notifications';
+import PushNotification from 'react-native-push-notification';
 
 const Reminder = ({route, navigation}) => {
   const [picker, pickerstate] = useState(false);
@@ -51,6 +52,7 @@ const Reminder = ({route, navigation}) => {
   const [currentIndex, setCurrentIndex] = useState();
   const [fDateSecondary, setfDate] = useState('');
   const [timelist, setTimelist] = useState([]);
+  console.log(route.params.data.userMedicineId,"iddddd");
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -80,14 +82,29 @@ const Reminder = ({route, navigation}) => {
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
-    let chosenDate2 =  chosenDate1.getFullYear() +"-"+ (chosenDate1.getMonth() + 1) +"-"+ chosenDate1.getDate();
+    let chosenDate2 =
+      chosenDate1.getFullYear() +
+      '-' +
+      (chosenDate1.getMonth() + 1) +
+      '-' +
+      chosenDate1.getDate();
 
     if (number < currentTime) {
       let dateTime = moment(chosenDate2 + ' ' + number);
-      Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
+      Notifications.schduleNotification(
+        dateTime._d,
+        check1,
+        obj.medicineName,
+        obj.userMedicineId,
+      );
     } else {
       let dateTime = moment(obj.startDate + ' ' + number);
-      Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
+      Notifications.schduleNotification(
+        dateTime._d,
+        check1,
+        obj.medicineName,
+        obj.userMedicineId,
+      );
     }
   };
 
@@ -252,6 +269,18 @@ const Reminder = ({route, navigation}) => {
     obj.startDate = fDatePrimary;
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;
+
+    if (reminderStatus == true) {
+      PushNotification.getScheduledLocalNotifications(rn => {
+        for (let i = 0; i < rn.length; i++) {
+          if (obj.userMedicineId === rn[i].id) {
+            PushNotification.cancelLocalNotification({
+              id: rn[obj.userMedicineId],
+            });
+          }
+        }
+      });
+    }
 
     handlePushNotification(obj, check1);
 

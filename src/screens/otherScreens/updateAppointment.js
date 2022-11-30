@@ -20,6 +20,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Toast from 'react-native-toast-message';
 import {hour} from '../../constants/constants';
 import {AddMedicine, getMedicine} from '../../utils/storage';
+import Notifications from '../../notification/notifications';
+import PushNotification from 'react-native-push-notification';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -33,6 +35,36 @@ const UpdateAppointment = ({
 }) => {
   const [dateOpen, setDateOpen] = useState(false);
   const [timeOpen, setTimeOpen] = useState(false);
+  console.log(appointmentId, 'ID');
+
+  const handlePushNotification = (temp, time1, appointmentId) => {
+    let d = new Date();
+    let currentTime = d.getHours() + ':' + d.getMinutes();
+    let currentDate =
+      d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+    const number = moment(time1, ['h:mm A']).format('HH:mm');
+    console.log(number, 'number');
+
+    let chosenDate = new Date(temp).getTime() + 24 * 60 * 60 * 1000;
+    let chosenDate1 = new Date(chosenDate);
+    let chosenDate2 =
+      chosenDate1.getFullYear() +
+      '-' +
+      (chosenDate1.getMonth() + 1) +
+      '-' +
+      chosenDate1.getDate();
+    console.log(currentDate, chosenDate2);
+
+    if (number < currentTime && currentDate >= temp) {
+      let dateTime = moment(chosenDate2 + ' ' + number);
+      console.log(dateTime._d, 'dateTime1');
+      Notifications.schduleNotification2(dateTime._d, appointmentId);
+    } else {
+      let dateTime = moment(temp + ' ' + number);
+      console.log(dateTime._d, 'dateTime2');
+      Notifications.schduleNotification2(dateTime._d, appointmentId);
+    }
+  };
 
   const updateAppointment = values => {
     let obj = {
@@ -41,6 +73,8 @@ const UpdateAppointment = ({
       time: values.time,
       appointmentId: appointmentId,
     };
+
+    console.log(obj.time, obj.date, obj.appointmentId, '..........');
     getMedicine().then(data => {
       let updatedList = data;
       updatedList.map(item => {
@@ -72,6 +106,17 @@ const UpdateAppointment = ({
         });
       });
     });
+
+    PushNotification.getScheduledLocalNotifications(rn => {
+      for (let i = 0; i < rn.length; i++) {
+        if (obj.appointmentId === rn[i].id) {
+          PushNotification.cancelLocalNotification({id: rn[obj.appointmentId]});
+        }
+      }
+    });
+
+    handlePushNotification(obj.date, obj.time, obj.appointmentId);
+
     setTimeout(() => {
       setModalVisible(false);
     }, 1000);
@@ -180,6 +225,7 @@ const UpdateAppointment = ({
                 <DateTimePickerModal
                   isVisible={dateOpen}
                   mode="date"
+                  minimumDate={new Date()}
                   onConfirm={date => {
                     setFieldValue('date1', moment(date).format('YYYY-MM-DD'));
                     setDateOpen(false);
