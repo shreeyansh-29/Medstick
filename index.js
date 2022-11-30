@@ -5,8 +5,13 @@
 import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
+import messaging from '@react-native-firebase/messaging';
 import './ignoreWarnings';
 import PushNotification from 'react-native-push-notification';
+import {
+  PlaySound,
+  Pushnotificationforeground,
+} from './src/screens/userScreens/reminder/pushNotification/pushNotificationConfig';
 
 PushNotification.configure({
   onAction: function (notification) {
@@ -34,7 +39,6 @@ PushNotification.configure({
 //   .then(mssg => {
 //     if (mssg) {
 //     }
-
 
 AppRegistry.registerHeadlessTask(
   'com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService',

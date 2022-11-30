@@ -153,6 +153,7 @@ const AppointmentReminderList = ({navigation}) => {
                     text: 'Ok',
                     onPress: () => {
                       onClickDeleteAppointment(item?.appointmentId);
+                      
                     },
                   },
                   {

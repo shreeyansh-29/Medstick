@@ -20,6 +20,7 @@ import uuid from 'react-native-uuid';
 import {hour} from '../../../constants/constants';
 import Notifications from '../../../notification/notifications';
 import PushNotification from 'react-native-push-notification';
+import Toast from 'react-native-toast-message';
 
 const Reminder = ({route, navigation}) => {
   const [picker, pickerstate] = useState(false);
@@ -52,7 +53,7 @@ const Reminder = ({route, navigation}) => {
   const [currentIndex, setCurrentIndex] = useState();
   const [fDateSecondary, setfDate] = useState('');
   const [timelist, setTimelist] = useState([]);
-  console.log(route.params.data.userMedicineId,"iddddd");
+  console.log(route.params.data.userMedicineId, 'iddddd');
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -96,6 +97,7 @@ const Reminder = ({route, navigation}) => {
         check1,
         obj.medicineName,
         obj.userMedicineId,
+        obj.reminderTime,
       );
     } else {
       let dateTime = moment(obj.startDate + ' ' + number);
@@ -104,6 +106,7 @@ const Reminder = ({route, navigation}) => {
         check1,
         obj.medicineName,
         obj.userMedicineId,
+        obj.reminderTime,
       );
     }
   };
