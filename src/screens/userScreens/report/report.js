@@ -103,7 +103,7 @@ const Report = ({navigation}) => {
       if (data.userMedicineId == medicineId && data.historyList.length !== 0) {
         data.historyList.map(i => {
           let his = {};
-          console.log('his data', i);
+          // console.log('his data', i);
           his.historyId = i.historyId;
           his.taken = i.taken;
           his.notTaken = i.notTaken;
@@ -201,12 +201,11 @@ const Report = ({navigation}) => {
   };
 
   const getHistorydata = date => {
+    console.log('date', date);
     const a = b => b.date == date.dateString;
     const historyIndex = historyListData.findIndex(a);
-    console.log('12345', historyListData);
-    console.log('z', historyListData[historyIndex]);
+    console.log('his', historyListData[historyIndex]);
     setHistoryData(historyListData[historyIndex]);
-    console.log(historyData, 'his');
   };
 
   let startDate = new Date().toDateString();

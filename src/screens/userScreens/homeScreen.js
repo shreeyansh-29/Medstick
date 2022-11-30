@@ -95,10 +95,11 @@ const HomeScreen = ({navigation}) => {
         savePercentageDetails(obj);
       } else if (data != null) {
         data.map((item, index) => {
+          const a = b => b.date == td_da;
           if (item.date === td_da) {
             item.percentage = Math.floor((cc / tr) * 100);
             data[index] = item;
-          } else if (item.date != td_da && tr != 0) {
+          } else if (!data.some(a) && tr != 0) {
             temp.date = td_da;
             temp.percentage = Math.floor((cc / tr) * 100);
             data.push(temp);
@@ -108,7 +109,7 @@ const HomeScreen = ({navigation}) => {
         // console.log('Percent in local', data);
       }
     });
-    // console.log('tr total reminders=>', tr, ' ,cc=> ', cc);
+    console.log('tr total reminders=>', tr, ' ,cc=> ', cc);
     return Math.floor((cc / tr) * 100);
   }
 
@@ -125,10 +126,11 @@ const HomeScreen = ({navigation}) => {
   }
 
   function getDate(data) {
+    // console.log('Fetch % from local for date', data);
     getPercentageDetails().then(item => {
       if (item != null) {
         let temp = item;
-        temp.map(p => {
+        temp.forEach(p => {
           if (p.date == data) {
             setPercentage(p.percentage);
           } else {

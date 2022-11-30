@@ -14,15 +14,12 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from '@fortawesome/free-regular-svg-icons';
-import {
-  AddMedicine,
-  getPercentageDetails,
-} from '../../utils/storage';
+import {AddMedicine, getPercentageDetails} from '../../utils/storage';
 
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
-  
+
   var tody_date = new Date();
   let td_da =
     tody_date.getFullYear() +
@@ -124,7 +121,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             arr.splice(arr.indexOf(time), 1);
             r.notTaken = arr.toString();
             item.currentCount += 1;
-            item.stock -= 1;
+            item.stock -= item.dosageQuantity;
           }
         });
         console.log('After updating reminders ', item);
@@ -138,16 +135,12 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   const renderItem = (item, index) => {
     const {medName, time} = item.item;
     return (
-      <View style={{width: '100%'}} key={index}>
-        <View style={styles.list} key={index + 1}>
-          <View style={styles.avatarView} key={index + 2}>
-            <View style={styles.medNameView} key={index + 3}>
-              <ListItem.Title key={index + 4} style={styles.medName}>
-                {time}
-              </ListItem.Title>
-              <ListItem.Subtitle
-                key={index + 5}
-                style={{marginVertical: 2, fontSize: 16}}>
+      <View key={item.item.medName + '1'} style={{width: '100%'}}>
+        <View style={styles.list} key={item.item.medName + '2'}>
+          <View style={styles.avatarView}>
+            <View style={styles.medNameView}>
+              <ListItem.Title style={styles.medName}>{time}</ListItem.Title>
+              <ListItem.Subtitle style={{marginVertical: 2, fontSize: 16}}>
                 {medName}
               </ListItem.Subtitle>
             </View>
@@ -157,9 +150,8 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               flexDirection: 'row',
               alignItems: 'center',
             }}
-            key={index + 6}>
+            key={item.item.medName + 6}>
             <TouchableOpacity
-              key={index + 7}
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
@@ -169,14 +161,12 @@ const Reminders = ({showAlert, setPercentage, data}) => {
                 setReminderList(reminderList);
               }}>
               <FontAwesomeIcon
-                key={index + 9}
                 icon={faCircleCheck}
                 color={colorPalette.mainColor}
                 size={30}
               />
             </TouchableOpacity>
             <TouchableOpacity
-              key={index + 10}
               style={{padding: 8}}
               onPress={() => {
                 reminderList.splice(index, 1);
@@ -184,7 +174,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               }}
               activeOpacity={1}>
               <FontAwesomeIcon
-                key={index + 11}
                 icon={faCircleXmark}
                 color={colorPalette.redPercentageColor}
                 size={30}

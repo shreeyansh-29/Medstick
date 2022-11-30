@@ -14,6 +14,7 @@ import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 const HistoryDetail = ({data, onPress}) => {
   const [filterData, setfilterData] = useState([]);
 
+  console.log('history',data)
   function findTime(ele) {
     let time = parseInt(ele.split(':')[0]),
       period = ele.split(' ')[1],
