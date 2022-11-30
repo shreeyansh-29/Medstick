@@ -19,7 +19,7 @@ import {AddMedicine, getMedicine} from '../../../utils/storage.js';
 import uuid from 'react-native-uuid';
 import {hour} from '../../../constants/constants';
 import Notifications from '../../../notification/notifications';
-import Toast from 'react-native-toast-message';
+import PushNotification from 'react-native-push-notification';
 
 const Reminder = ({route, navigation}) => {
   const [picker, pickerstate] = useState(false);
@@ -52,6 +52,7 @@ const Reminder = ({route, navigation}) => {
   const [currentIndex, setCurrentIndex] = useState();
   const [fDateSecondary, setfDate] = useState('');
   const [timelist, setTimelist] = useState([]);
+  console.log(route.params.data.userMedicineId,"iddddd");
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -90,10 +91,20 @@ const Reminder = ({route, navigation}) => {
 
     if (number < currentTime) {
       let dateTime = moment(chosenDate2 + ' ' + number);
-      Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
+      Notifications.schduleNotification(
+        dateTime._d,
+        check1,
+        obj.medicineName,
+        obj.userMedicineId,
+      );
     } else {
       let dateTime = moment(obj.startDate + ' ' + number);
-      Notifications.schduleNotification(dateTime._d, check1, obj.medicineName);
+      Notifications.schduleNotification(
+        dateTime._d,
+        check1,
+        obj.medicineName,
+        obj.userMedicineId,
+      );
     }
   };
 
@@ -279,6 +290,18 @@ const Reminder = ({route, navigation}) => {
     obj.startDate = fDatePrimary;
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;
+
+    if (reminderStatus == true) {
+      PushNotification.getScheduledLocalNotifications(rn => {
+        for (let i = 0; i < rn.length; i++) {
+          if (obj.userMedicineId === rn[i].id) {
+            PushNotification.cancelLocalNotification({
+              id: rn[obj.userMedicineId],
+            });
+          }
+        }
+      });
+    }
 
     handlePushNotification(obj, check1);
 

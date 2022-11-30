@@ -3,7 +3,7 @@ import PushNotification from 'react-native-push-notification';
 class Notifications {
   constructor() {
     PushNotification.configure({
-      onRegister: function (token) {},
+      onRegister: function (token) { },
       onNotification: function (notification) {
         console.log('Notification:', notification);
       },
@@ -21,11 +21,11 @@ class Notifications {
     );
 
     PushNotification.getScheduledLocalNotifications(rn => {
-      // console.log('SN -----', rn);
+      console.log('SN -----', rn);
     });
   }
 
-  schduleNotification(date, check1, name) {
+  schduleNotification(date, check1, name, userId) {
     if (check1) {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
@@ -33,6 +33,7 @@ class Notifications {
         message: 'Take ' + name,
         date: date,
         repeatType: 'day',
+        id: userId
       });
     } else {
       PushNotification.localNotificationSchedule({
@@ -40,15 +41,17 @@ class Notifications {
         title: 'Reminder!',
         message: 'Take ' + name,
         date: date,
+        id: userId,
       });
     }
   }
-  schduleNotification2(date, doctorName) {
+  schduleNotification2(date, Id) {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Appointment!',
       message: 'You have scheduled appointment',
       date: date,
+      id: Id,
     });
   }
 }
