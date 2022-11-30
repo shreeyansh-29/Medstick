@@ -23,8 +23,10 @@ const HistoryDetail = ({data, onPress}) => {
       mtitle = 'Morning';
     } else if (time >= 0 && time <= 6 && period === 'PM') {
       mtitle = 'Afternoon';
-    } else if (time >= 7 && time <= 12 && period === 'PM') {
+    } else if (time >= 7 && time <= 11 && period === 'PM') {
       mtitle = 'Night';
+    } else if (time >= 0 && time == 12 && period === 'PM') {
+      mtitle = 'Afternoon';
     }
 
     return mtitle;

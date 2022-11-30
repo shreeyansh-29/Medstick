@@ -1,19 +1,38 @@
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import React, {useState} from 'react';
 import CalendarStrip from 'react-native-calendar-strip';
 import {styles} from '../../styles/homeScreenStyles/calenderStyles';
 import moment from 'moment';
 
-const Calender = () => {
-  const [date, setDate] = useState('');
+const Calender = props => {
+  const [date, setDate] = useState(null);
+  const dateBlackList = i => {
+    let temp = i.format('YYYY-MM-DD');
+    if (temp > date) {
+      return i;
+    }
+  };
+
+  // let markedDates = [
+  //   {
+  //     date: '2022-11-28',
+  //     dots: [
+  //       {
+  //         color: 'green',
+  //         selectedColor: 'white',
+  //       },
+  //     ],
+  //   },
+  // ];
   return (
     <View>
       <CalendarStrip
         numDaysInWeek={7}
         scrollable
-        selectedDate={moment()}
+        selectedDate={moment().format('YYYY-MM-DD')}
         onDateSelected={todayDate => {
-          setDate(todayDate);
+          setDate(todayDate._i);
+          props.date(todayDate.format('YYYY-MM-DD'));
         }}
         style={styles.calendar}
         calendarColor={styles.calendarColor}
@@ -25,6 +44,8 @@ const Calender = () => {
         daySelectionAnimation={styles.daySelection}
         iconContainer={styles.icon}
         iconStyle={styles.iconStyle}
+        datesBlacklist={dateBlackList}
+        dayComponentHeight={40}
       />
     </View>
   );

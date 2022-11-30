@@ -15,12 +15,7 @@ import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
-import {
-  AddMedicine,
-  getMedicine,
-  getPercentageDetails,
-  savePercentageDetails,
-} from '../../../utils/storage';
+import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
 import CustomImage from '../../../components/atoms/customImage';
 import {week} from '../../../constants/constants';
@@ -31,7 +26,6 @@ import Loader from '../../../components/atoms/loader';
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
-  const [clear, setClear] = useState(false);
   const progress = useRef(new Animated.Value(0)).current;
   const [showLoader, setShowLoader] = useState(true);
 
@@ -63,22 +57,6 @@ const MedicinePanel = ({navigation}) => {
       }
     });
   };
-
-  function clearLocal() {
-    getPercentageDetails().then(data => {
-      if (data != null) {
-        console.log('inside clear local', data);
-        let temp = data;
-        temp.totalReminders = 0;
-        temp.currentCount = 0;
-        temp.date = '';
-        console.log('cleared local');
-        savePercentageDetails(temp);
-      }
-      setClear(true);
-    });
-    return true;
-  }
 
   const MedicineHistory = data => {
     var updateArray = [];
@@ -117,7 +95,6 @@ const MedicinePanel = ({navigation}) => {
         set.has(week[tody_date.getDay()]) &&
         start_date <= tody_date <= end_date
       ) {
-        console.log('aaa', data[i]);
         if (data[i].historyList.length === 0) {
           history.historyId = uuid.v4();
           history.date = td_da;
@@ -128,13 +105,7 @@ const MedicinePanel = ({navigation}) => {
         } else {
           const a = b => b.date === td_da;
           const index = data[i].historyList.findIndex(a);
-          console.log(' existing history', data[i].historyList[index]);
           history.time = data[i].reminderTime.split(',');
-          console.log(
-            'history conflict',
-            history.time.toString() !=
-              data[i].historyList[index].time.toString(),
-          );
           if (
             index >= 0 &&
             history.time.toString() !=
@@ -148,7 +119,7 @@ const MedicinePanel = ({navigation}) => {
             data[i].historyList[index] = history;
             data[i].totalReminders = 0;
             data[i].currentCount = 0;
-            console.log('history updated', data[i]);
+            // console.log('history updated', data[i]);
           }
         }
       } else if (data[i].endDate === 'No End Date') {
@@ -175,7 +146,6 @@ const MedicinePanel = ({navigation}) => {
             history.taken = '';
             history.time = data[i].reminderTime.split(',');
             data[i].historyList[index] = history;
-            savePercentageDetails(null);
           }
         }
       }
