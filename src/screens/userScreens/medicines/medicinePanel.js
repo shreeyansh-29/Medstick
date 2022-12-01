@@ -22,6 +22,8 @@ import {week} from '../../../constants/constants';
 import uuid from 'react-native-uuid';
 import PushNotification from 'react-native-push-notification';
 import Loader from '../../../components/atoms/loader';
+import moment from 'moment';
+
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
@@ -84,12 +86,8 @@ const MedicinePanel = ({navigation}) => {
       var start_date = new Date(data[i].endDate);
       var end_date = new Date(data[i].endDate);
       var tody_date = new Date();
-      let td_da =
-        tody_date.getFullYear() +
-        '-' +
-        (tody_date.getMonth() + 1) +
-        '-' +
-        tody_date.getDate();
+      let td_da = moment().format('YYYY-MM-DD');
+
       if (
         data[i].endDate !== 'No End Date' &&
         set.has(week[tody_date.getDay()]) &&
