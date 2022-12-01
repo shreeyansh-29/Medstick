@@ -65,6 +65,9 @@ const SubHeader = ({
           setDeleteBtn={setDeleteBtn}
         />
       )}
+      {title !== 'Report' ? null : (
+        <DownloadButton download={download} />
+      )}
     </View>
   );
 };

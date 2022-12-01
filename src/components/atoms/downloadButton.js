@@ -7,7 +7,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 const DownloadButton = ({download}) => {
   return (
     <View style={styles.bellIcon}>
-      <TouchableOpacity onPress={download} activeOpacity={1}>
+      <TouchableOpacity
+        onPress={download}
+        activeOpacity={1}
+        style={{padding: 2}}>
         <FontAwesomeIcon icon={faDownload} color={'white'} size={18} />
       </TouchableOpacity>
     </View>
