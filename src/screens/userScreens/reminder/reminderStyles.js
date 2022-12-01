@@ -3,7 +3,7 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 
 const styles = StyleSheet.create({
   scrollView: {flex: 1, backgroundColor: 'white'},
-  container1: {padding: 7, marginBottom: 15},
+  container1: {padding: 7, marginBottom: 15,},
   containerTouch: {flexDirection: 'row', paddingVertical: 5, marginTop: 5},
   dateContainer: {flexDirection: 'row', width: '100%', paddingVertical: 6},
   dateText: {fontSize: 16, marginLeft: 8, fontWeight: '700'},

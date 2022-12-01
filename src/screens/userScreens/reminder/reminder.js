@@ -331,473 +331,477 @@ const Reminder = ({route, navigation}) => {
   return (
     <View style={styles.scrollView}>
       <SubHeader title={'Add Reminder'} navigation={navigation} />
-      <View style={styles.container1}>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={() => {
-            pickerstate(true);
-          }}
-          style={styles.containerTouch}>
-          <View style={styles.dateContainer}>
-            <View style={{justifyContent: 'flex-start', width: '35%'}}>
-              <Text style={styles.dateText}>Start Date</Text>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.container1}>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              pickerstate(true);
+            }}
+            style={styles.containerTouch}>
+            <View style={styles.dateContainer}>
+              <View style={{justifyContent: 'flex-start', width: '35%'}}>
+                <Text style={styles.dateText}>Start Date</Text>
+              </View>
+              <View
+                style={{
+                  width: '65%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    justifyContent: 'flex-end',
+                    width: '90%',
+                    alignItems: 'flex-end',
+                  }}>
+                  <Text style={styles.dateText1}>
+                    {day_data[0].children[startDate.getDay()].id +
+                      ' ' +
+                      startDate.getDate() +
+                      ' ' +
+                      months[startDate.getMonth()] +
+                      ', ' +
+                      startDate.getFullYear()}
+                  </Text>
+                </View>
+                <View style={styles.arrow}>
+                  <FontAwesomeIcon
+                    icon={faCaretDown}
+                    style={styles.downIcon}
+                    color=""></FontAwesomeIcon>
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+          <Divider></Divider>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              navigation.navigate('ReminderDuration', {
+                date: startDate,
+                endDate: getEndDate,
+              });
+            }}
+            style={{paddingVertical: 15, flexDirection: 'row', width: '100%'}}>
+            <View
+              style={{
+                justifyContent: 'flex-start',
+                width: '40%',
+                alignItems: 'flex-start',
+              }}>
+              <Text style={styles.dateText}>Select Duration</Text>
             </View>
             <View
               style={{
-                width: '65%',
-                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                width: '60%',
                 alignItems: 'center',
+                paddingRight: 4,
               }}>
-              <View
-                style={{
-                  justifyContent: 'flex-end',
-                  width: '90%',
-                  alignItems: 'flex-end',
-                }}>
-                <Text style={styles.dateText1}>
-                  {day_data[0].children[startDate.getDay()].id +
+              <Text style={styles.dateText1}>
+                {fDateSecondary == 'No End Date'
+                  ? 'No End Date'
+                  : day_data[0].children[endDate.getDay()].id +
                     ' ' +
-                    startDate.getDate() +
+                    endDate.getDate() +
                     ' ' +
-                    months[startDate.getMonth()] +
+                    months[endDate.getMonth()] +
                     ', ' +
-                    startDate.getFullYear()}
-                </Text>
+                    endDate.getFullYear()}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <Divider></Divider>
+          <DateTimePicker
+            isVisible={picker}
+            mode="date"
+            minimumDate={new Date()}
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+          />
+          <DateTimePickerModal
+            isVisible={time_picker_mode}
+            mode="time"
+            onConfirm={handleConfirmfortime}
+            onCancel={hideDatePickerfortime}
+          />
+          <Text style={styles.title}>Add Title</Text>
+          <TextInput
+            placeholder="Title for reminder"
+            style={styles.titleText}
+            mode="outlined"
+            value={title}
+            onChangeText={txt => {
+              titlechange(txt);
+            }}
+            selectionColor={colorPalette.appColor}
+            outlineColor={colorPalette.appColor}
+            activeOutlineColor={colorPalette.appColor}
+          />
+          <Divider></Divider>
+          <View>
+            <Text style={styles.title}>Frequency</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginVertical: 10,
+                width: '95%',
+                alignSelf: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{flexDirection: 'column', width: '30%'}}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{
+                    borderRadius: breakfast ? 3 : 0,
+                    alignItems: 'center',
+                    borderColor: colorPalette.mainColor,
+                    backgroundColor: breakfast
+                      ? colorPalette.mainColor
+                      : colorPalette.greyColor,
+                  }}
+                  onPress={() => {
+                    setBreakfastTouchable(!breakfastTouchable);
+                    setBreakfast(!breakfast);
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: breakfast ? 'white' : 'black',
+                      padding: 6,
+                    }}>
+                    Breakfast
+                  </Text>
+                </TouchableOpacity>
+                {breakfastTouchable ? (
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    style={{
+                      borderRadius: 3,
+                      alignItems: 'center',
+                      borderColor: colorPalette.mainColor,
+                      backgroundColor: colorPalette.greyColor,
+                      padding: 6,
+                      marginTop: 6,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                    onPress={() => {
+                      time_picker_mode_state(true);
+                      setCurrentIndex(0);
+                    }}>
+                    <Text style={{fontSize: 16, textAlign: 'center'}}>
+                      {timearray[0]}
+                    </Text>
+                    <View style={styles.arrow}>
+                      <FontAwesomeIcon
+                        icon={faCaretDown}
+                        style={styles.downIcon}
+                        color=""></FontAwesomeIcon>
+                    </View>
+                  </TouchableOpacity>
+                ) : (
+                  <></>
+                )}
               </View>
-              <View style={styles.arrow}>
-                <FontAwesomeIcon
-                  icon={faCaretDown}
-                  style={styles.downIcon}
-                  color=""></FontAwesomeIcon>
+
+              <View style={{flexDirection: 'column', width: '30%'}}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{
+                    borderRadius: lunch ? 3 : 0,
+                    alignItems: 'center',
+                    borderColor: colorPalette.mainColor,
+                    backgroundColor: lunch
+                      ? colorPalette.mainColor
+                      : colorPalette.greyColor,
+                  }}
+                  onPress={() => {
+                    setLunchTouchable(!lunchTouchable);
+                    setLunch(!lunch);
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: lunch ? 'white' : 'black',
+                      padding: 6,
+                    }}>
+                    Lunch
+                  </Text>
+                </TouchableOpacity>
+                {lunchTouchable ? (
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    style={{
+                      alignItems: 'center',
+                      borderRadius: 3,
+                      borderColor: colorPalette.mainColor,
+                      backgroundColor: colorPalette.greyColor,
+                      padding: 6,
+                      marginTop: 6,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                    onPress={() => {
+                      time_picker_mode_state(true);
+                      setCurrentIndex(1);
+                    }}>
+                    <Text style={{fontSize: 16, textAlign: 'center'}}>
+                      {timearray[1]}
+                    </Text>
+                    <View style={styles.arrow}>
+                      <FontAwesomeIcon
+                        icon={faCaretDown}
+                        style={styles.downIcon}
+                        color=""></FontAwesomeIcon>
+                    </View>
+                  </TouchableOpacity>
+                ) : (
+                  <></>
+                )}
+              </View>
+              <View style={{flexDirection: 'column', width: '30%'}}>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{
+                    borderRadius: dinner ? 3 : 0,
+                    alignItems: 'center',
+                    borderColor: colorPalette.mainColor,
+                    backgroundColor: dinner
+                      ? colorPalette.mainColor
+                      : colorPalette.greyColor,
+                  }}
+                  onPress={() => {
+                    setDinnerTouchable(!dinnerTouchable);
+                    setDinner(!dinner);
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: dinner ? 'white' : 'black',
+                      padding: 6,
+                    }}>
+                    Dinner
+                  </Text>
+                </TouchableOpacity>
+                {dinnerTouchable ? (
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    style={{
+                      alignItems: 'center',
+                      borderRadius: 3,
+                      borderColor: colorPalette.mainColor,
+                      backgroundColor: colorPalette.greyColor,
+                      padding: 6,
+                      marginTop: 6,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                    onPress={() => {
+                      time_picker_mode_state(true);
+                      setCurrentIndex(2);
+                    }}>
+                    <Text style={styles.touchableText}>{timearray[2]}</Text>
+                    <View style={styles.arrow}>
+                      <FontAwesomeIcon
+                        icon={faCaretDown}
+                        style={styles.downIcon}
+                        color=""></FontAwesomeIcon>
+                    </View>
+                  </TouchableOpacity>
+                ) : (
+                  <></>
+                )}
               </View>
             </View>
           </View>
-        </TouchableOpacity>
-        <Divider></Divider>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={() => {
-            navigation.navigate('ReminderDuration', {
-              date: startDate,
-              endDate: getEndDate,
-            });
-          }}
-          style={{paddingVertical: 15, flexDirection: 'row', width: '100%'}}>
-          <View
-            style={{
-              justifyContent: 'flex-start',
-              width: '40%',
-              alignItems: 'flex-start',
-            }}>
-            <Text style={styles.dateText}>Select Duration</Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'flex-end',
-              width: '60%',
-              alignItems: 'center',
-              paddingRight: 4,
-            }}>
-            <Text style={styles.dateText1}>
-              {fDateSecondary == 'No End Date'
-                ? 'No End Date'
-                : day_data[0].children[endDate.getDay()].id +
-                  ' ' +
-                  endDate.getDate() +
-                  ' ' +
-                  months[endDate.getMonth()] +
-                  ', ' +
-                  endDate.getFullYear()}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <Divider></Divider>
-        <DateTimePicker
-          isVisible={picker}
-          mode="date"
-          minimumDate={new Date()}
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-        />
-        <DateTimePickerModal
-          isVisible={time_picker_mode}
-          mode="time"
-          onConfirm={handleConfirmfortime}
-          onCancel={hideDatePickerfortime}
-        />
-        <Text style={styles.title}>Add Title</Text>
-        <TextInput
-          placeholder="Title for reminder"
-          style={styles.titleText}
-          mode="outlined"
-          value={title}
-          onChangeText={txt => {
-            titlechange(txt);
-          }}
-          selectionColor={colorPalette.appColor}
-          outlineColor={colorPalette.appColor}
-          activeOutlineColor={colorPalette.appColor}
-        />
-        <Divider></Divider>
-        <View>
-          <Text style={styles.title}>Frequency</Text>
+          <Divider></Divider>
           <View
             style={{
               flexDirection: 'row',
-              marginVertical: 10,
+              alignItems: 'center',
               width: '95%',
               alignSelf: 'center',
-              justifyContent: 'space-between',
+              marginVertical: 10,
             }}>
-            <View style={{flexDirection: 'column', width: '30%'}}>
-              <TouchableOpacity
-                activeOpacity={1}
-                style={{
-                  borderRadius: breakfast ? 3 : 0,
-                  alignItems: 'center',
-                  borderColor: colorPalette.mainColor,
-                  backgroundColor: breakfast
-                    ? colorPalette.mainColor
-                    : colorPalette.greyColor,
-                }}
-                onPress={() => {
-                  setBreakfastTouchable(!breakfastTouchable);
-                  setBreakfast(!breakfast);
-                }}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: breakfast ? 'white' : 'black',
-                    padding: 6,
-                  }}>
-                  Breakfast
-                </Text>
-              </TouchableOpacity>
-              {breakfastTouchable ? (
-                <TouchableOpacity
-                  activeOpacity={1}
-                  style={{
-                    borderRadius: 3,
-                    alignItems: 'center',
-                    borderColor: colorPalette.mainColor,
-                    backgroundColor: colorPalette.greyColor,
-                    padding: 6,
-                    marginTop: 6,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                  onPress={() => {
-                    time_picker_mode_state(true);
-                    setCurrentIndex(0);
-                  }}>
-                  <Text style={{fontSize: 16, textAlign: 'center'}}>
-                    {timearray[0]}
-                  </Text>
-                  <View style={styles.arrow}>
-                    <FontAwesomeIcon
-                      icon={faCaretDown}
-                      style={styles.downIcon}
-                      color=""></FontAwesomeIcon>
-                  </View>
-                </TouchableOpacity>
-              ) : (
-                <></>
-              )}
-            </View>
-
-            <View style={{flexDirection: 'column', width: '30%'}}>
-              <TouchableOpacity
-                activeOpacity={1}
-                style={{
-                  borderRadius: lunch ? 3 : 0,
-                  alignItems: 'center',
-                  borderColor: colorPalette.mainColor,
-                  backgroundColor: lunch
-                    ? colorPalette.mainColor
-                    : colorPalette.greyColor,
-                }}
-                onPress={() => {
-                  setLunchTouchable(!lunchTouchable);
-                  setLunch(!lunch);
-                }}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: lunch ? 'white' : 'black',
-                    padding: 6,
-                  }}>
-                  Lunch
-                </Text>
-              </TouchableOpacity>
-              {lunchTouchable ? (
-                <TouchableOpacity
-                  activeOpacity={1}
-                  style={{
-                    alignItems: 'center',
-                    borderRadius: 3,
-                    borderColor: colorPalette.mainColor,
-                    backgroundColor: colorPalette.greyColor,
-                    padding: 6,
-                    marginTop: 6,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                  onPress={() => {
-                    time_picker_mode_state(true);
-                    setCurrentIndex(1);
-                  }}>
-                  <Text style={{fontSize: 16, textAlign: 'center'}}>
-                    {timearray[1]}
-                  </Text>
-                  <View style={styles.arrow}>
-                    <FontAwesomeIcon
-                      icon={faCaretDown}
-                      style={styles.downIcon}
-                      color=""></FontAwesomeIcon>
-                  </View>
-                </TouchableOpacity>
-              ) : (
-                <></>
-              )}
-            </View>
-            <View style={{flexDirection: 'column', width: '30%'}}>
-              <TouchableOpacity
-                activeOpacity={1}
-                style={{
-                  borderRadius: dinner ? 3 : 0,
-                  alignItems: 'center',
-                  borderColor: colorPalette.mainColor,
-                  backgroundColor: dinner
-                    ? colorPalette.mainColor
-                    : colorPalette.greyColor,
-                }}
-                onPress={() => {
-                  setDinnerTouchable(!dinnerTouchable);
-                  setDinner(!dinner);
-                }}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: dinner ? 'white' : 'black',
-                    padding: 6,
-                  }}>
-                  Dinner
-                </Text>
-              </TouchableOpacity>
-              {dinnerTouchable ? (
-                <TouchableOpacity
-                  activeOpacity={1}
-                  style={{
-                    alignItems: 'center',
-                    borderRadius: 3,
-                    borderColor: colorPalette.mainColor,
-                    backgroundColor: colorPalette.greyColor,
-                    padding: 6,
-                    marginTop: 6,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                  onPress={() => {
-                    time_picker_mode_state(true);
-                    setCurrentIndex(2);
-                  }}>
-                  <Text style={styles.touchableText}>{timearray[2]}</Text>
-                  <View style={styles.arrow}>
-                    <FontAwesomeIcon
-                      icon={faCaretDown}
-                      style={styles.downIcon}
-                      color=""></FontAwesomeIcon>
-                  </View>
-                </TouchableOpacity>
-              ) : (
-                <></>
-              )}
-            </View>
-          </View>
-        </View>
-        <Divider></Divider>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: '95%',
-            alignSelf: 'center',
-            marginVertical: 10,
-          }}>
-          <View
-            style={{
-              width: '35%',
-              marginTop: 10,
-              alignItems: 'flex-start',
-              justifyContent: 'flex-start',
-              paddingVertical: 6,
-            }}>
-            <Text style={{fontSize: 16, fontWeight: '700'}}>
-              Take Medicine:
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 10,
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '65%',
-              alignSelf: 'center',
-            }}>
-            <TouchableOpacity
-              activeOpacity={1}
+            <View
               style={{
-                borderWidth: 1,
-                borderColor: colorPalette.mainColor,
-                borderRadius: 6,
-                backgroundColor: foodBefore ? colorPalette.mainColor : 'white',
+                width: '35%',
+                marginTop: 10,
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                paddingVertical: 6,
+              }}>
+              <Text style={{fontSize: 16, fontWeight: '700'}}>
+                Take Medicine:
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 10,
                 alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: 6,
-                width: '46.5%',
-              }}
-              onPress={() => {
-                setFood('Before');
-                setFoodBefore(!foodBefore);
-                setFoodAfter(false);
+                justifyContent: 'space-between',
+                width: '65%',
+                alignSelf: 'center',
               }}>
-              <Text
+              <TouchableOpacity
+                activeOpacity={1}
                 style={{
-                  fontSize: 16,
-                  color: foodBefore ? 'white' : 'black',
-                  textAlign: 'center',
-                }}>
-                Before food
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{
-                borderWidth: 1,
-                borderColor: colorPalette.mainColor,
-                backgroundColor: foodAfter ? colorPalette.mainColor : 'white',
-                borderRadius: 6,
-                justifyContent: 'center',
-                paddingVertical: 6,
-                width: '46.5%',
-              }}
-              onPress={() => {
-                setFood('After');
-                setFoodAfter(!foodAfter);
-                setFoodBefore(false);
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: foodAfter ? 'white' : 'black',
-                  textAlign: 'center',
+                  borderWidth: 1,
+                  borderColor: colorPalette.mainColor,
+                  borderRadius: 6,
+                  backgroundColor: foodBefore
+                    ? colorPalette.mainColor
+                    : 'white',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingVertical: 6,
+                  width: '46.5%',
                 }}
-                numberOfLines={2}
-                textBreakStrategy="highQuality">
-                After food
-              </Text>
-            </TouchableOpacity>
+                onPress={() => {
+                  setFood('Before');
+                  setFoodBefore(!foodBefore);
+                  setFoodAfter(false);
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: foodBefore ? 'white' : 'black',
+                    textAlign: 'center',
+                  }}>
+                  Before food
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={1}
+                style={{
+                  borderWidth: 1,
+                  borderColor: colorPalette.mainColor,
+                  backgroundColor: foodAfter ? colorPalette.mainColor : 'white',
+                  borderRadius: 6,
+                  justifyContent: 'center',
+                  paddingVertical: 6,
+                  width: '46.5%',
+                }}
+                onPress={() => {
+                  setFood('After');
+                  setFoodAfter(!foodAfter);
+                  setFoodBefore(false);
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: foodAfter ? 'white' : 'black',
+                    textAlign: 'center',
+                  }}
+                  numberOfLines={2}
+                  textBreakStrategy="highQuality">
+                  After food
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <Divider></Divider>
-        <View style={{marginBottom: 10}}>
-          <Text style={styles.title}>Select Days</Text>
-          <CheckBox
-            style={styles.days}
-            onClick={() => {
-              setCheck1(!check1);
-              setCheck2(false);
+          <Divider></Divider>
+          <View style={{marginBottom: 10}}>
+            <Text style={styles.title}>Select Days</Text>
+            <CheckBox
+              style={styles.days}
+              onClick={() => {
+                setCheck1(!check1);
+                setCheck2(false);
+              }}
+              isChecked={check1}
+              checkBoxColor={colorPalette.appColor}
+              leftText={'Everyday'}
+              leftTextStyle={{fontSize: 16}}
+            />
+            <CheckBox
+              style={styles.days}
+              onClick={() => {
+                setCheck2(!check2);
+                setCheck1(false);
+              }}
+              isChecked={check2}
+              checkBoxColor={colorPalette.appColor}
+              leftText={'Selected days'}
+              leftTextStyle={{fontSize: 16}}
+            />
+            {check2 && (
+              <SectionedMultiSelect
+                hideSearch={true}
+                IconRenderer={Icon}
+                items={day_data}
+                uniqueKey="id"
+                subKey="children"
+                selectText="Choose days"
+                showDropDowns={true}
+                expandDropDowns={true}
+                icons={{
+                  arrowUp: {
+                    size: 20,
+                    name: 'keyboard-arrow-up',
+                  },
+                  arrowDown: {
+                    name: 'keyboard-arrow-down', // dropdown toggle
+                    size: 22,
+                  },
+                  check: {
+                    name: 'check', // selected item
+                    size: 22,
+                  },
+                  close: {
+                    name: 'close', // chip close
+                    size: 16,
+                  },
+                }}
+                styles={{
+                  listContainer: {height: 300, backgroundColor: 'red'},
+                  container: {maxHeight: 370, marginTop: 200, padding: 20},
+                  backdrop: {height: 400},
+                  modalWrapper: {height: 400},
+                  button: {
+                    backgroundColor: colorPalette.appColor,
+                  },
+                  cancelButton: {
+                    backgroundColor: 'white',
+                  },
+                  chipContainer: {
+                    backgroundColor: colorPalette.appColor,
+                  },
+                }}
+                colors={{
+                  chipColor: 'white',
+                }}
+                readOnlyHeadings={true}
+                onSelectedItemsChange={onSelecteddaysItemsChange}
+                selectedItems={selecteddaysItems}></SectionedMultiSelect>
+            )}
+          </View>
+          <Divider></Divider>
+          <Button
+            loading={load}
+            title="Save reminder"
+            onPress={() => {
+              savereminder(
+                fDatePrimary,
+                fDateSecondary,
+                title,
+                check1,
+                noEndDate,
+                reminderStatus,
+                frequency,
+                food,
+                totalReminders,
+                currentCount,
+              );
             }}
-            isChecked={check1}
-            checkBoxColor={colorPalette.appColor}
-            leftText={'Everyday'}
-            leftTextStyle={{fontSize: 16}}
+            buttonStyle={styles.buttonStyle}
+            containerStyle={styles.buttonContainer}
           />
-          <CheckBox
-            style={styles.days}
-            onClick={() => {
-              setCheck2(!check2);
-              setCheck1(false);
-            }}
-            isChecked={check2}
-            checkBoxColor={colorPalette.appColor}
-            leftText={'Selected days'}
-            leftTextStyle={{fontSize: 16}}
-          />
-          {check2 && (
-            <SectionedMultiSelect
-              hideSearch={true}
-              IconRenderer={Icon}
-              items={day_data}
-              uniqueKey="id"
-              subKey="children"
-              selectText="Choose days"
-              showDropDowns={true}
-              expandDropDowns={true}
-              icons={{
-                arrowUp: {
-                  size: 20,
-                  name: 'keyboard-arrow-up',
-                },
-                arrowDown: {
-                  name: 'keyboard-arrow-down', // dropdown toggle
-                  size: 22,
-                },
-                check: {
-                  name: 'check', // selected item
-                  size: 22,
-                },
-                close: {
-                  name: 'close', // chip close
-                  size: 16,
-                },
-              }}
-              styles={{
-                listContainer: {height: 300, backgroundColor: 'red'},
-                container: {maxHeight: 370, marginTop: 200, padding: 20},
-                backdrop: {height: 400},
-                modalWrapper: {height: 400},
-                button: {
-                  backgroundColor: colorPalette.appColor,
-                },
-                cancelButton: {
-                  backgroundColor: 'white',
-                },
-                chipContainer: {
-                  backgroundColor: colorPalette.appColor,
-                },
-              }}
-              colors={{
-                chipColor: 'white',
-              }}
-              readOnlyHeadings={true}
-              onSelectedItemsChange={onSelecteddaysItemsChange}
-              selectedItems={selecteddaysItems}></SectionedMultiSelect>
-          )}
         </View>
-        <Divider></Divider>
-        <Button
-          loading={load}
-          title="Save reminder"
-          onPress={() => {
-            savereminder(
-              fDatePrimary,
-              fDateSecondary,
-              title,
-              check1,
-              noEndDate,
-              reminderStatus,
-              frequency,
-              food,
-              totalReminders,
-              currentCount,
-            );
-          }}
-          buttonStyle={styles.buttonStyle}
-          containerStyle={styles.buttonContainer}
-        />
-      </View>
+      </ScrollView>
       <Toast visibilityTime={800} />
     </View>
   );
