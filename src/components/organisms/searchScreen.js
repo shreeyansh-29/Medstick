@@ -43,7 +43,7 @@ const SearchScreen = ({navigation}) => {
   const res = useSelector(state => state.getUser?.data);
   const res1 = useSelector(state => state.sendRequest?.data);
   const [data, setData] = useState([]);
-  const loading = useSelector(state => state.getUser.isLoading());
+  const loading = useSelector(state => state.getUser.isLoading);
 
   const activityIndicator = () => {
     return (
@@ -170,8 +170,15 @@ const SearchScreen = ({navigation}) => {
         <Formik
           validationSchema={loginValidationSchema}
           initialValues={{email: ''}}
-          onSubmit={values => sendMailToUser(values.email)}>
-          {({handleChange, handleSubmit, values, errors, touched}) => (
+          onSubmit={values => sendMailToUser(values.email.trim())}>
+          {({
+            handleChange,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            setFieldValue,
+          }) => (
             <>
               <View style={{marginVertical: 10}}>
                 <SearchBar
@@ -198,7 +205,10 @@ const SearchScreen = ({navigation}) => {
                       name="remove"
                       type="font-awesome"
                       size={20}
-                      onPress={handleChange('email')}
+                      onPress={() => {
+                        setData([]);
+                        setFieldValue('email', '');
+                      }}
                       color={colorPalette.mainColor}
                       containerStyle={{marginLeft: 10}}
                     />
