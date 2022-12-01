@@ -4,7 +4,7 @@ import {verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   calendar: {
-    height: 100,
+    height: 109,
     paddingTop: verticalScale(15),
     paddingBottom: verticalScale(15),
     borderTopLeftRadius: 18,
