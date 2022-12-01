@@ -120,6 +120,13 @@ const MedicinePanel = ({navigation}) => {
             data[i].totalReminders = 0;
             data[i].currentCount = 0;
             // console.log('history updated', data[i]);
+          } else if (index < 0) {
+            history.historyId = uuid.v4();
+            history.date = td_da;
+            history.time = data[i].reminderTime.split(',');
+            history.notTaken = data[i].reminderTime;
+            history.taken = '';
+            data[i].historyList.push(history);
           }
         }
       } else if (data[i].endDate === 'No End Date') {

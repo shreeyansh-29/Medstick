@@ -1,18 +1,30 @@
 import {View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CalendarStrip from 'react-native-calendar-strip';
 import {styles} from '../../styles/homeScreenStyles/calenderStyles';
 import moment from 'moment';
 
 const Calender = props => {
   const [date, setDate] = useState(null);
+
+  var tody_date = new Date();
+  let td_da =
+    tody_date.getFullYear() +
+    '-' +
+    (tody_date.getMonth() + 1) +
+    '-' +
+    tody_date.getDate();
+
   const dateBlackList = i => {
     let temp = i.format('YYYY-MM-DD');
-    if (temp > date) {
+    if (temp > td_da) {
       return i;
     }
   };
 
+  useEffect(()=>{
+    dateBlackList;
+  },[])
   // let markedDates = [
   //   {
   //     date: '2022-11-28',
