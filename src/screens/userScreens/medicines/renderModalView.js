@@ -42,12 +42,6 @@ const RenderModalView = ({setVisible, props}) => {
     }
   }, [res]);
 
-  // const search = med => {
-  //   setTimeout(() => {
-  //     dispatch(searchMedicineRequest({med, pageNo}));
-  //   }, 1000);
-  // };
-
   useEffect(() => {
     if (med.length !== 0) {
       setTimeout(() => {

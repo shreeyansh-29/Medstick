@@ -42,6 +42,16 @@ const AddMedicineForm = props => {
     }
   }, [focused]);
 
+  let obj = {
+    doctorName: null,
+    prescriptionId: null,
+    contact: null,
+    prescriptionUrl: null,
+    location: null,
+    specialization: null,
+    appointmentList: [],
+  };
+
   return (
     <View style={styles.mainView}>
       <CustomModal
@@ -218,18 +228,13 @@ const AddMedicineForm = props => {
           <View style={styles.addedBtn}>
             <CustomButton
               title={'Added'}
-              btnStyles={{
-                backgroundColor: 'white',
-                borderRadius: 5,
-                paddingHorizontal: 20,
-                borderWidth: 1,
-                borderColor: colorPalette.mainColor,
-              }}
+              btnStyles={styles.secondaryBtn}
               titleStyle={{color: colorPalette.mainColor}}
             />
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
+                props.prescriptionObject(obj);
                 props.setAdd(false);
               }}>
               <FontAwesomeIcon

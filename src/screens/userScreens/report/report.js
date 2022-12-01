@@ -1,4 +1,12 @@
-import {View, Text, ScrollView, Modal, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Modal,
+  TouchableOpacity,
+  PermissionsAndroid,
+  ToastAndroid,
+} from 'react-native';
 import React, {useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
@@ -14,6 +22,7 @@ import ProgressCircle from 'react-native-progress-circle';
 import {getMedicine} from '../../../utils/storage';
 import {useEffect} from 'react';
 import {months} from '../../../constants/constants';
+import Downloadpdf from '../../../components/organisms/downloadPdf';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -57,8 +66,6 @@ LocaleConfig.locales['en'] = {
 };
 LocaleConfig.defaultLocale = 'en';
 
-
-
 const Report = ({navigation}) => {
   const [medicineId, setMedicineId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -82,7 +89,6 @@ const Report = ({navigation}) => {
     }
   }, [isFocused]);
 
-
   const showAlert = () => {
     Alert.alert('Add Medicine First', 'Click Ok to proceed', [
       {
@@ -102,6 +108,21 @@ const Report = ({navigation}) => {
     ]);
   };
 
+  const downloadPdf = async () => {
+    await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    );
+    await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+    );
+    const downloadResp = await Downloadpdf(medicineId);
+    if (downloadResp !== 'err') {
+      ToastAndroid.show('Downloaded successfully', ToastAndroid.LONG);
+    } else {
+      ToastAndroid.show('Error while downloading', ToastAndroid.LONG);
+    }
+  };
+
   function getHistory() {
     let histories = [];
     getUserMedicine.map(data => {
@@ -115,7 +136,7 @@ const Report = ({navigation}) => {
           histories.push(his);
           setHistoryListData(histories);
           dateSelector(histories);
-          overallPecentage(data);
+          overallPercentage(data);
         });
       } else if (
         data.userMedicineId == medicineId &&
@@ -123,7 +144,7 @@ const Report = ({navigation}) => {
       ) {
         setHistoryListData([]);
         dateSelector([]);
-        overallPecentage(0, 0);
+        overallPercentage(data);
       }
     });
   }
@@ -158,19 +179,21 @@ const Report = ({navigation}) => {
     return Math.floor((takenLength / totalCount) * 100);
   };
 
-  function overallPecentage(data) {
+  function overallPercentage(data) {
     let cc = 0;
     let tr = 0;
-    data.historyList.map(item => {
-      tr += data.reminderTime.split(',').length;
-      let temp = item.taken.split(',');
-      temp.map(i => {
-        if (i !== '') {
-          cc += 1;
-        }
+    if (data.historyList.length !== 0) {
+      data.historyList.map(item => {
+        tr += data.reminderTime.split(',').length;
+        let temp = item.taken.split(',');
+        temp.map(i => {
+          if (i !== '') {
+            cc += 1;
+          }
+        });
       });
-    });
-    setPercentage(Math.floor((cc / tr) * 100));
+      setPercentage(Math.floor((cc / tr) * 100));
+    }
   }
 
   const [dataMap, setDataMap] = useState([]);
@@ -302,7 +325,11 @@ const Report = ({navigation}) => {
     <>
       <View style={styles.container} />
       <View style={styles.report}>
-        <MainHeader title={'Report'} navigation={navigation} />
+        <MainHeader
+          title={'Report'}
+          navigation={navigation}
+          download={downloadPdf}
+        />
 
         <Modal
           animationType="fade"
@@ -327,7 +354,6 @@ const Report = ({navigation}) => {
               onValueChange={data => {
                 getHistory();
                 setMedicineId(data);
-                console.log('medicineId', data);
               }}>
               {getUserMedicine?.map((item, index) => {
                 return (

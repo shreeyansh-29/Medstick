@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {colorPalette} from '../../components/atoms/colorPalette';
-import {horizontalScale, verticalScale} from '../../components/atoms/constant';
+import {verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   subHeader: {
@@ -9,6 +9,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colorPalette.mainColor,
   },
+  header: {
+    width: '60%',
+  },
   subHeaderFont: {
     fontSize: 20,
     color: colorPalette.basicColor,
@@ -16,9 +19,6 @@ export const styles = StyleSheet.create({
   backIcon: {
     alignItems: 'center',
     width: '14%',
-  },
-  header: {
-    width: '60%',
   },
   bellIcon: {
     width: '23%',
