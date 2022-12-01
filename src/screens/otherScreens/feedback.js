@@ -1,11 +1,20 @@
-import {View, Text} from 'react-native';
-import React from 'react';
+import React, { useState} from 'react';
 import {WebView} from 'react-native-webview';
+import { FEEDBACK } from '../../constants/apiUrl';
+import axios from 'axios';
 
 const Feedback = () => {
+  const [url, setUrl] = useState('');
+  axios({
+    method: 'get',
+    url: FEEDBACK,
+  }).then((response) => {
+    setUrl(response.data);
+  });
+
   return (
     <WebView
-      source={{uri:'https://docs.google.com/forms/d/e/1FAIpQLSd529pwZjABhnQpz3i24SBdhrzY8o8_bboqasndwxi1cNOneQ/viewform'}}
+      source={{uri:url}}
       originWhitelist={['http://*', 'https://*', 'intent://*']}
       style={{marginTop: 20}}
       setSupportMultipleWindows={true}

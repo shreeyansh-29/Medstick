@@ -6,12 +6,7 @@ import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import './ignoreWarnings';
-import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
-import {
-  PlaySound,
-  Pushnotificationforeground,
-} from './src/screens/userScreens/reminder/alarm/pushNotificationConfig.js';
 
 PushNotification.configure({
   onAction: function (notification) {
@@ -34,52 +29,12 @@ PushNotification.configure({
   requestPermissions: true,
 });
 
-messaging().onMessage(async mssg => {
-  Pushnotificationforeground(mssg);
-});
-
-messaging().onNotificationOpenedApp(mss => {
-  if (mss.notification.title === 'caretaker') {
-    Pushnotificationforeground(mss);
-  } else if (mss.notification.title === 'request') {
-    Pushnotificationforeground(mss);
-  } else {
-    PlaySound();
-    Pushnotificationforeground(mss);
-  }
-});
-
 // messaging()
 //   .getInitialNotification()
 //   .then(mssg => {
 //     if (mssg) {
 //     }
-//   });
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  if (remoteMessage.notification.title === 'caretaker') {
-    Pushnotificationforeground(remoteMessage);
-  } else if (remoteMessage.notification.title === 'request') {
-    Pushnotificationforeground(remoteMessage);
-  } else {
-    PlaySound();
-    Pushnotificationforeground(remoteMessage);
-  }
-});
-
-function sethandler() {
-  messaging().setBackgroundMessageHandler(async remoteMessage => {
-    if (remoteMessage.notification.title === 'caretaker') {
-      Pushnotificationforeground(remoteMessage);
-    } else if (remoteMessage.notification.title === 'request') {
-      Pushnotificationforeground(remoteMessage);
-    } else {
-      PlaySound();
-      Pushnotificationforeground(remoteMessage);
-    }
-  });
-  return Promise.resolve();
-}
 
 AppRegistry.registerHeadlessTask(
   'com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService',
