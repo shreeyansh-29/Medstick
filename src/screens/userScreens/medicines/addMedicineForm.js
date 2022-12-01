@@ -70,7 +70,7 @@ const AddMedicineForm = props => {
           text="medicineName"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={props.values.medicineName.trim()}
+          value={props.values.medicineName}
           right={
             connected && load ? (
               <TextInput.Icon
@@ -99,7 +99,7 @@ const AddMedicineForm = props => {
           text="description"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={props.values.description.trim()}
+          value={props.values.description}
           multiline={true}
           selectTextOnFocus={true}
           dense={true}
@@ -133,7 +133,7 @@ const AddMedicineForm = props => {
             text="dosageQuantity"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.dosageQuantity.trim()}
+            value={props.values.dosageQuantity}
             keyboardType="numeric"
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
@@ -148,7 +148,7 @@ const AddMedicineForm = props => {
             styles={[styles.field, {width: '97%'}]}
             text="dosagePower"
             label="Dosage Power"
-            value={props.values.dosagePower.trim()}
+            value={props.values.dosagePower}
             mode="outlined"
             outlineColor="lightgrey"
             keyboardType="numeric"
@@ -187,7 +187,7 @@ const AddMedicineForm = props => {
             text="stocks"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.stocks.trim()}
+            value={props.values.stocks}
             keyboardType="numeric"
           />
           {props.errors.stocks && props.touched.stocks && (
@@ -210,7 +210,7 @@ const AddMedicineForm = props => {
             text="notify"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.notify.trim()}
+            value={props.values.notify}
             keyboardType="numeric"
           />
           {props.errors.notify && props.touched.notify && (

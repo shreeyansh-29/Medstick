@@ -161,7 +161,7 @@ const MedicineReport = ({navigation, route}) => {
       </View>
       <View style={styles.bottomSheet}>
         <View style={styles.mainView}>
-          <Text style={styles.heading}>
+          <Text style={styles.heading} numberOfLines={1}>
             Scheduled Dates for {item?.medicineName}
           </Text>
           <ScrollView

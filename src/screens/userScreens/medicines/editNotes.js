@@ -88,7 +88,7 @@ const EditNotes = ({userMedicineId, setVisible}) => {
               }}
               validationSchema={updateNotesSchema}
               onSubmit={values => {
-                let notes = values.review;
+                let notes = values.review.trim();
                 saveMedicineNotes(notes, userMedicineId);
               }}>
               {({
@@ -106,7 +106,7 @@ const EditNotes = ({userMedicineId, setVisible}) => {
                       mode="outlined"
                       outlineColor="#02aba6"
                       activeOutlineColor="#02aba6"
-                      value={values.review.trim()}
+                      value={values.review}
                       styles={styles.field}
                       selectTextOnFocus={true}
                       text="review"

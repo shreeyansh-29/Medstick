@@ -68,7 +68,7 @@ const UpdateAppointment = ({
 
   const updateAppointment = values => {
     let obj = {
-      notes: values.notes,
+      notes: values.notes.trim(),
       date: values.date1,
       time: values.time,
       appointmentId: appointmentId,

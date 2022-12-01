@@ -63,7 +63,7 @@ const AppointmentReminders = ({navigation, route}) => {
     let prescriptionId = values.doctorName;
     let appointmentId = uuid.v4();
     let obj = {
-      notes: values.notes,
+      notes: values.notes.trim(),
       date: values.date,
       time: values.time,
       appointmentId: appointmentId,
@@ -85,9 +85,9 @@ const AppointmentReminders = ({navigation, route}) => {
         });
       }
     });
-    // setTimeout(() => {
-    //   navigation.pop();
-    // }, 1000);
+    setTimeout(() => {
+      navigation.pop();
+    }, 1000);
     handlePushNotification(obj);
   };
 

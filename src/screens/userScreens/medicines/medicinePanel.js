@@ -24,7 +24,6 @@ import PushNotification from 'react-native-push-notification';
 import Loader from '../../../components/atoms/loader';
 import moment from 'moment';
 
-
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
@@ -216,7 +215,9 @@ const MedicinePanel = ({navigation}) => {
                         color={colorPalette.mainColor}
                       />
                       <View style={Styles.medNameView}>
-                        <ListItem.Title style={Styles.medName}>
+                        <ListItem.Title
+                          style={Styles.medName}
+                          numberOfLines={1}>
                           {item.medicineName}
                         </ListItem.Title>
                         <ListItem.Subtitle>

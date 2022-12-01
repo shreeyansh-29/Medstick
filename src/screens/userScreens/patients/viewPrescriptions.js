@@ -44,7 +44,7 @@ const ViewPrescriptions = ({navigation, route}) => {
             tvParallaxProperties={undefined}>
             <UserAvatar size={60} name={`${item.doctorName}`} />
             <ListItem.Content>
-              <ListItem.Title style={style.patientName}>
+              <ListItem.Title style={style.patientName} numberOfLines={1}>
                 <Text style={style.font}>Doctor Name: </Text>
                 {`${item.doctorName}`}
               </ListItem.Title>
