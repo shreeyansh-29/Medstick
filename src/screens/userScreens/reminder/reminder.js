@@ -747,15 +747,15 @@ const Reminder = ({route, navigation}) => {
                     name: 'keyboard-arrow-up',
                   },
                   arrowDown: {
-                    name: 'keyboard-arrow-down', // dropdown toggle
+                    name: 'keyboard-arrow-down', 
                     size: 22,
                   },
                   check: {
-                    name: 'check', // selected item
+                    name: 'check', 
                     size: 22,
                   },
                   close: {
-                    name: 'close', // chip close
+                    name: 'close', 
                     size: 16,
                   },
                 }}

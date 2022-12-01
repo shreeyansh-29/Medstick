@@ -52,7 +52,7 @@ LocaleConfig.locales['en'] = {
     'Friday',
     'Saturday',
   ],
-  dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
+  dayNamesShort: ['Sun','Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'],
 };
 LocaleConfig.defaultLocale = 'en';
 
@@ -103,7 +103,6 @@ const Report = ({navigation}) => {
       if (data.userMedicineId == medicineId && data.historyList.length !== 0) {
         data.historyList.map(i => {
           let his = {};
-          // console.log('his data', i);
           his.historyId = i.historyId;
           his.taken = i.taken;
           his.notTaken = i.notTaken;
@@ -150,7 +149,6 @@ const Report = ({navigation}) => {
       }
     });
     let totalCount = notTakenLength + takenLength;
-    // console.log(Math.floor((takenLength / totalCount) * 100));
     return Math.floor((takenLength / totalCount) * 100);
   };
 
@@ -210,10 +208,8 @@ const Report = ({navigation}) => {
 
   let startDate = new Date().toDateString();
   const dayComponent = (date, state) => {
-    // console.log('date', date.dateString);
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
-    // console.log('1234', index);
     return (
       <>
         {dataMap.some(a) ? (
@@ -320,28 +316,17 @@ const Report = ({navigation}) => {
               minDate={'2012-05-10'}
               maxDate={'2222-12-30'}
               onDayLongPress={day => {
-                // console.log('selected day', day);
               }}
               monthFormat={'yyyy MM'}
               onMonthChange={month => {
-                // console.log('month changed', month);
               }}
               hideArrows={false}
-              hideExtraDays={true}
               disableMonthChange={true}
               firstDay={7}
               hideDayNames={false}
               onPressArrowLeft={subtractMonth => subtractMonth()}
               onPressArrowRight={addMonth => addMonth()}
               disableAllTouchEventsForDisabledDays={true}
-              renderHeader={date => {
-                return (
-                  <Text
-                    style={{fontSize: 20, fontWeight: '600', color: 'grey'}}>
-                    {date.toLocaleDateString()}
-                  </Text>
-                );
-              }}
               enableSwipeMonths={true}
               dayComponent={({date, state}) => dayComponent(date, state)}
             />

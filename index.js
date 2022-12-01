@@ -28,13 +28,6 @@ PushNotification.configure({
 
   requestPermissions: true,
 });
-
-// messaging()
-//   .getInitialNotification()
-//   .then(mssg => {
-//     if (mssg) {
-//     }
-
 AppRegistry.registerHeadlessTask(
   'com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService',
   () => sethandler,

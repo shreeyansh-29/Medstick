@@ -20,7 +20,6 @@ import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAct
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.caretakerRequest);
-  console.log(res);
   const [pageNo, setPageNo] = useState(0);
   const [caretakers, setCaretakers] = useState([]);
   const [refresh, setRefresh] = useState(false);

@@ -119,7 +119,6 @@ const MedicinePanel = ({navigation}) => {
             data[i].historyList[index] = history;
             data[i].totalReminders = 0;
             data[i].currentCount = 0;
-            // console.log('history updated', data[i]);
           } else if (index < 0) {
             history.historyId = uuid.v4();
             history.date = td_da;
@@ -158,10 +157,7 @@ const MedicinePanel = ({navigation}) => {
       }
 
       updateArray.push(data[i]);
-      console.log(
-        '<================ FINAL DATA ================>',
-        updateArray,
-      );
+     
     }
     AddMedicine(updateArray);
   };
@@ -294,7 +290,6 @@ const MedicinePanel = ({navigation}) => {
 
   return (
     <View style={Styles.container}>
-      {/* <View style={Styles.background} /> */}
       <MainHeader title={'Medicine'} navigation={navigation} />
       {showLoader ? (
         <Loader />
@@ -302,7 +297,6 @@ const MedicinePanel = ({navigation}) => {
         <>
           {medicineResponse.length === 0 ? (
             <View style={Styles.lottie}>
-              {/* {clearLocal()} */}
               <CustomImage
                 resizeMode="contain"
                 source={require('../../../assets/images/nomeds.png')}

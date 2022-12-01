@@ -38,21 +38,6 @@ const HomeScreen = ({navigation}) => {
     connectedstate(conn);
   };
 
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     Alert.alert('Hold On!', 'Are you sure you want to exit?', [
-  //       {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-  //       {text: 'Yes', onPress: () => BackHandler.exitApp()},
-  //     ]);
-  //     return true;
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
-  //   return () => backHandler.remove();
-  // }, []);
 
   useEffect(() => {
     checkconnection();

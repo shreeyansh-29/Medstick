@@ -44,20 +44,6 @@ const PatientRequest = () => {
     dispatch(patientsReqRequest(pageNo));
   }, []);
 
-  // const loadMoreItem = () => {
-  //   let a = pageNo + 1;
-  //   dispatch(patientsReqRequest(a));
-  //   setPageNo(a);
-  // };
-
-  // const renderLoader = () => {
-  //   return res?.content?.length === 7 ? (
-  //     <View style={{marginVertical: 26, alignItems: 'center'}}>
-  //       <ActivityIndicator size="large" color={colorPalette.mainColor} />
-  //     </View>
-  //   ) : null;
-  // };
-
   const acceptRequest = requestId => {
     let a = b => b.requestId == requestId;
     let index = patients.findIndex(a);
@@ -173,10 +159,6 @@ const PatientRequest = () => {
                   }}
                 />
               }
-              // numColumns={1}
-              // onEndReached={onEnd}
-              // ListFooterComponent={renderLoader}
-              // onEndReachedThreshold={0}
             />
           )}
         </>

@@ -31,18 +31,6 @@ const MyPatients = ({navigation}) => {
     }
   }, [isFocused]);
 
-  // const onEnd = () => {
-  //   setPageNo(pageNo + 1);
-  // };
-
-  // const renderLoader = () => {
-  //   return res?.result.length === 7 ? (
-  //     <View style={{marginVertical: 26, alignItems: 'center'}}>
-  //       <ActivityIndicator size="large" color={colorPalette.mainColor} />
-  //     </View>
-  //   ) : null;
-  // };
-
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
@@ -99,10 +87,6 @@ const MyPatients = ({navigation}) => {
                   }}
                 />
               }
-              // numColumns={1}
-              // onEndReached={onEnd}
-              // ListFooterComponent={renderLoader}
-              // onEndReachedThreshold={0.5}
             />
           )}
           <View style={styles.bottomView}>
