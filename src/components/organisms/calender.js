@@ -64,7 +64,7 @@ const Calender = props => {
         datesBlacklist={dateBlackList}
         dayComponentHeight={40}
         maxDate={new Date(endDate)}
-        minDate={new Date(startDate)}
+        // minDate={new Date(startDate)}
       />
     </View>
   );

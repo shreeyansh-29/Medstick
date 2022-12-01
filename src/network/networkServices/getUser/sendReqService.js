@@ -7,21 +7,27 @@ class SendRequestService {
     const {patient_id, sentby, fcmToken} = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('accessToken');
-    return await RequestService.postRequest(
-      `${SEND_REQUEST}?Id=${id}`,
-      {
-        caretakerId: id,
-        patientId: patient_id,
-        sentBy: sentby,
-        authorized: true,
-        fcmToken: fcmToken,
+    const body =
+      sentby === 'Caretaker'
+        ? {
+            caretakerId: id,
+            patientId: patient_id,
+            sentBy: sentby,
+            authorized: true,
+            fcmToken: fcmToken,
+          }
+        : {
+            caretakerId: patient_id,
+            patientId: id,
+            sentBy: sentby,
+            authorized: true,
+            fcmToken: fcmToken,
+          };
+    return await RequestService.postRequest(`${SEND_REQUEST}?Id=${id}`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    });
   }
 }
 export default new SendRequestService();

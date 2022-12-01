@@ -85,7 +85,7 @@ const SearchScreen = ({navigation}) => {
     if (res1?.status === 'Success') {
       Toast.show({
         type: 'success',
-        text1: 'Request Send Successfully',
+        text1: 'Request Sent Successfully',
         position: 'bottom',
       });
       setTimeout(() => {
@@ -114,7 +114,7 @@ const SearchScreen = ({navigation}) => {
     if (currentUser.user.email === email) {
       Toast.show({
         type: 'error',
-        text1: "Can't Add Yourself",
+        text1: "Cannot Add Yourself",
         position: 'bottom',
       });
       return;

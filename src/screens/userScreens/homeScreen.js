@@ -25,6 +25,7 @@ const HomeScreen = ({navigation}) => {
   const [connected, connectedstate] = useState(false);
   const [percentage, setPercentage] = useState(0);
   const [medData, setMedData] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   let td_da = moment().format('YYYY-MM-DD');
 
@@ -54,8 +55,8 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    dispatch(myCaretakerRequest(0));
-  }, []);
+    if (connected) dispatch(myCaretakerRequest(0));
+  }, [connected]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -69,7 +70,7 @@ const HomeScreen = ({navigation}) => {
     let cc = 0;
     data.map(item => {
       item.historyList.map(k => {
-        if (k.date == td_da) {
+        if (k.date === td_da && item.reminderTime !== '') {
           tr += item.reminderTime.split(',').length;
           let temp = k.taken.split(',');
           temp.map(i => {
@@ -110,23 +111,21 @@ const HomeScreen = ({navigation}) => {
 
   function getData() {
     getMedicine().then(data => {
-      if (data.length === 0 || data === null) {
-        setPercentage(0);
-      } else {
+      if (data.length !== 0 && data !== null) {
         setMedData(data);
         let p = getPercentage(data);
         setPercentage(p);
+      } else {
+        setPercentage(0);
       }
     });
   }
 
   function getDate(data) {
-    console.log('Fetch % from local for date', data);
     getPercentageDetails().then(item => {
       if (item !== null && item.length !== 0) {
         let temp = item;
         temp.forEach(p => {
-          console.log('item', item);
           if (p.date === data) {
             setPercentage(p.percentage);
           } else {
@@ -138,7 +137,7 @@ const HomeScreen = ({navigation}) => {
   }
 
   let res = useSelector(state => state.myCaretaker?.data);
-  const [modalVisible, setModalVisible] = useState(false);
+
   const showAlert = () => {
     if (connected) {
       if (res?.length === 0) {
@@ -244,7 +243,7 @@ const HomeScreen = ({navigation}) => {
         </View>
         <View style={{width: '100%', height: '44%'}}>
           <Reminders
-            showAlert={showAlert}
+            // showAlert={showAlert}
             setPercentage={setPercentage}
             data={medData}
           />

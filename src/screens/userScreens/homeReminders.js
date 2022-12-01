@@ -17,7 +17,6 @@ import {
 import {AddMedicine, getPercentageDetails} from '../../utils/storage';
 import moment from 'moment';
 
-
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
@@ -41,7 +40,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         }
       })
       .then(() => {
-        if (medData.length != 0) {
+        if (medData.length !== 0) {
           dailyReminders(medData);
         }
       })
