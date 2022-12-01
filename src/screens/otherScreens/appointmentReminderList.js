@@ -17,6 +17,7 @@ import UpdateAppointment from './updateAppointment';
 import {useIsFocused} from '@react-navigation/native';
 import {AddMedicine, getMedicine} from '../../utils/storage';
 import Loader from '../../components/atoms/loader';
+import PushNotification from 'react-native-push-notification';
 
 const AppointmentReminderList = ({navigation}) => {
   const isFocused = useIsFocused();
@@ -92,6 +93,15 @@ const AppointmentReminderList = ({navigation}) => {
         }
       });
     });
+
+    PushNotification.getScheduledLocalNotifications(rn => {
+      for (let i = 0; i < rn.length; i++) {
+        if ( deleteId === rn[i].number ) {
+          PushNotification.cancelLocalNotification({id: rn[i].id});
+        }
+      }
+    });
+
   };
 
   const renderItem = ({item}) => {

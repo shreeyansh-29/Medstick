@@ -35,7 +35,6 @@ PushNotification.configure({
 //     if (mssg) {
 //     }
 
-
 AppRegistry.registerHeadlessTask(
   'com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService',
   () => sethandler,
