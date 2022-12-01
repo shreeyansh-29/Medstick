@@ -11,6 +11,8 @@ class Notifications {
       requestPermissions: false.valueOf,
     });
 
+    // PushNotification.cancelAllLocalNotifications();
+
     PushNotification.createChannel(
       {
         channelId: 'reminders',
@@ -52,7 +54,8 @@ class Notifications {
       title: 'Appointment!',
       message: 'You have an appointment scheduled',
       date: date,
-      id: parseInt(Id),
+      number: Id,
+      shortcutId: "shortcut-id",
     });
   }
 }

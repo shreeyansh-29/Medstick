@@ -214,7 +214,6 @@ const UpdateAppointment = ({
                   minimumDate={new Date()}
                   isVisible={dateOpen}
                   mode="date"
-                  minimumDate={new Date()}
                   onConfirm={date => {
                     setFieldValue('date1', moment(date).format('YYYY-MM-DD'));
                     setDateOpen(false);
