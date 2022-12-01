@@ -46,7 +46,6 @@ const Reminder = ({route, navigation}) => {
   const [time, setTime] = useState('');
   const [foodBefore, setFoodBefore] = useState(false);
   const [foodAfter, setFoodAfter] = useState(false);
-  const [arr, setArr] = useState('');
   const [breakfast, setBreakfast] = useState(false);
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);

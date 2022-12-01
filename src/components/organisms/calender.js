@@ -1,19 +1,11 @@
 import {View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import CalendarStrip from 'react-native-calendar-strip';
 import {styles} from '../../styles/homeScreenStyles/calenderStyles';
 import moment from 'moment';
 
 const Calender = props => {
-  const [date, setDate] = useState(null);
-
-  var tody_date = new Date();
-  let td_da =
-    tody_date.getFullYear() +
-    '-' +
-    (tody_date.getMonth() + 1) +
-    '-' +
-    tody_date.getDate();
+  let td_da = moment().format('YYYY-MM-DD');
 
   const dateBlackList = i => {
     let temp = i.format('YYYY-MM-DD');
@@ -22,9 +14,9 @@ const Calender = props => {
     }
   };
 
-  useEffect(()=>{
-    dateBlackList;
-  },[])
+  // useEffect(() => {
+  //   dateBlackList;
+  // }, []);
   // let markedDates = [
   //   {
   //     date: '2022-11-28',
@@ -43,7 +35,7 @@ const Calender = props => {
         scrollable
         selectedDate={moment().format('YYYY-MM-DD')}
         onDateSelected={todayDate => {
-          setDate(todayDate._i);
+          
           props.date(todayDate.format('YYYY-MM-DD'));
         }}
         style={styles.calendar}

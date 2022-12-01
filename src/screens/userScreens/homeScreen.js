@@ -18,6 +18,7 @@ import {
   savePercentageDetails,
 } from '../../utils/storage';
 import {useFocusEffect} from '@react-navigation/native';
+import moment from 'moment';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -25,13 +26,7 @@ const HomeScreen = ({navigation}) => {
   const [percentage, setPercentage] = useState(0);
   const [medData, setMedData] = useState([]);
 
-  var tody_date = new Date();
-  let td_da =
-    tody_date.getFullYear() +
-    '-' +
-    (tody_date.getMonth() + 1) +
-    '-' +
-    tody_date.getDate();
+  let td_da = moment().format('YYYY-MM-DD');
 
   const checkconnection = async () => {
     let conn = await CheckConnection();
@@ -115,7 +110,7 @@ const HomeScreen = ({navigation}) => {
 
   function getData() {
     getMedicine().then(data => {
-      if (data.length == 0) {
+      if (data.length === 0 || data === null) {
         setPercentage(0);
       } else {
         setMedData(data);
@@ -126,12 +121,13 @@ const HomeScreen = ({navigation}) => {
   }
 
   function getDate(data) {
-    // console.log('Fetch % from local for date', data);
+    console.log('Fetch % from local for date', data);
     getPercentageDetails().then(item => {
-      if (item != null) {
+      if (item !== null && item.length !== 0) {
         let temp = item;
         temp.forEach(p => {
-          if (p.date == data) {
+          console.log('item', item);
+          if (p.date === data) {
             setPercentage(p.percentage);
           } else {
             setPercentage(0);

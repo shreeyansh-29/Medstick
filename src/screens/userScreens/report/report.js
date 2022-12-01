@@ -6,13 +6,14 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
 import {getMedicine} from '../../../utils/storage';
 import {useEffect} from 'react';
+import {months} from '../../../constants/constants';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -52,9 +53,11 @@ LocaleConfig.locales['en'] = {
     'Friday',
     'Saturday',
   ],
-  dayNamesShort: ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'],
+  dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'],
 };
 LocaleConfig.defaultLocale = 'en';
+
+
 
 const Report = ({navigation}) => {
   const [medicineId, setMedicineId] = useState('');
@@ -67,7 +70,7 @@ const Report = ({navigation}) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused)
+    if (isFocused) {
       getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
           setGetUserMedicine(data);
@@ -76,7 +79,9 @@ const Report = ({navigation}) => {
           showAlert();
         }
       });
+    }
   }, [isFocused]);
+
 
   const showAlert = () => {
     Alert.alert('Add Medicine First', 'Click Ok to proceed', [
@@ -103,7 +108,6 @@ const Report = ({navigation}) => {
       if (data.userMedicineId == medicineId && data.historyList.length !== 0) {
         data.historyList.map(i => {
           let his = {};
-          // console.log('his data', i);
           his.historyId = i.historyId;
           his.taken = i.taken;
           his.notTaken = i.notTaken;
@@ -166,7 +170,6 @@ const Report = ({navigation}) => {
         }
       });
     });
-    console.log('tr and cc in Report', tr, cc);
     setPercentage(Math.floor((cc / tr) * 100));
   }
 
@@ -201,19 +204,22 @@ const Report = ({navigation}) => {
   };
 
   const getHistorydata = date => {
-    console.log('date', date);
     const a = b => b.date == date.dateString;
     const historyIndex = historyListData.findIndex(a);
-    console.log('his', historyListData[historyIndex]);
+    // console.log('his', historyListData[historyIndex]);
     setHistoryData(historyListData[historyIndex]);
   };
 
-  let startDate = new Date().toDateString();
+  let td = new Date();
+  let startDate = new Date(
+    td.getFullYear() + '-' + (td.getMonth() + 1) + '-' + (td.getDate() + 1),
+  ).toISOString();
+
   const dayComponent = (date, state) => {
     // console.log('date', date.dateString);
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
-    // console.log('1234', index);
+    // console.log('1234', dataMap);
     return (
       <>
         {dataMap.some(a) ? (
@@ -248,6 +254,50 @@ const Report = ({navigation}) => {
       </>
     );
   };
+
+  const CalendarComp = () => {
+    return (
+      <>
+        <Calendar
+          style={styles.calendar}
+          theme={styles.theme}
+          initialDate={startDate}
+          minDate={'2012-05-10'}
+          // maxDate={'2222-12-30'}
+          onDayLongPress={day => {
+            // console.log('selected day', day);
+          }}
+          monthFormat={'yyyy MM'}
+          onMonthChange={month => {
+            // console.log('month changed', month);
+          }}
+          hideArrows={false}
+          hideExtraDays={true}
+          disableMonthChange={true}
+          firstDay={1}
+          hideDayNames={false}
+          onPressArrowLeft={subtractMonth => subtractMonth()}
+          onPressArrowRight={addMonth => addMonth()}
+          disableAllTouchEventsForDisabledDays={true}
+          renderHeader={date => {
+            return (
+              <Text style={{fontSize: 20, fontWeight: '600', color: 'grey'}}>
+                {date.getDate() +
+                  ' ' +
+                  months[date.getMonth()] +
+                  ' ,' +
+                  ' ' +
+                  date.getFullYear()}
+              </Text>
+            );
+          }}
+          enableSwipeMonths={true}
+          dayComponent={({date, state}) => dayComponent(date, state)}
+        />
+      </>
+    );
+  };
+
   return (
     <>
       <View style={styles.container} />
@@ -313,38 +363,7 @@ const Report = ({navigation}) => {
             <Text style={styles.reportText}>Your Report</Text>
           </View>
           <View style={styles.calendarView}>
-            <Calendar
-              style={styles.calendar}
-              theme={styles.theme}
-              initialDate={startDate}
-              minDate={'2012-05-10'}
-              maxDate={'2222-12-30'}
-              onDayLongPress={day => {
-                // console.log('selected day', day);
-              }}
-              monthFormat={'yyyy MM'}
-              onMonthChange={month => {
-                // console.log('month changed', month);
-              }}
-              hideArrows={false}
-              hideExtraDays={true}
-              disableMonthChange={true}
-              firstDay={7}
-              hideDayNames={false}
-              onPressArrowLeft={subtractMonth => subtractMonth()}
-              onPressArrowRight={addMonth => addMonth()}
-              disableAllTouchEventsForDisabledDays={true}
-              renderHeader={date => {
-                return (
-                  <Text
-                    style={{fontSize: 20, fontWeight: '600', color: 'grey'}}>
-                    {date.toLocaleDateString()}
-                  </Text>
-                );
-              }}
-              enableSwipeMonths={true}
-              dayComponent={({date, state}) => dayComponent(date, state)}
-            />
+            <CalendarComp />
           </View>
         </ScrollView>
       </View>
