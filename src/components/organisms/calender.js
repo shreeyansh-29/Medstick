@@ -6,6 +6,13 @@ import moment from 'moment';
 
 const Calender = props => {
   let td_da = moment().format('YYYY-MM-DD');
+  let upcomingDate = new Date();
+  let endDate =
+    upcomingDate.getFullYear() +
+    '-' +
+    (upcomingDate.getMonth() + 1) +
+    '-' +
+    (upcomingDate.getDate() + 7);
 
   const dateBlackList = i => {
     let temp = i.format('YYYY-MM-DD');
@@ -13,6 +20,13 @@ const Calender = props => {
       return i;
     }
   };
+
+  let startDate =
+    upcomingDate.getFullYear() +
+    '-' +
+    upcomingDate.getMonth() +
+    '-' +
+    upcomingDate.getDate();
 
   // useEffect(() => {
   //   dateBlackList;
@@ -35,7 +49,6 @@ const Calender = props => {
         scrollable
         selectedDate={moment().format('YYYY-MM-DD')}
         onDateSelected={todayDate => {
-          
           props.date(todayDate.format('YYYY-MM-DD'));
         }}
         style={styles.calendar}
@@ -50,6 +63,8 @@ const Calender = props => {
         iconStyle={styles.iconStyle}
         datesBlacklist={dateBlackList}
         dayComponentHeight={40}
+        maxDate={new Date(endDate)}
+        minDate={new Date(startDate)}
       />
     </View>
   );
