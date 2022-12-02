@@ -99,7 +99,7 @@ const Report = ({navigation}) => {
         .catch(error => {
           console.log('error', error);
         });
-        setIsLoading(false);
+      setIsLoading(false);
     }
   }, [isFocused, medicineId]);
 
@@ -309,32 +309,32 @@ const Report = ({navigation}) => {
             />
           </View>
         </Modal>
+        <View style={{paddingHorizontal: 12, paddingTop: 10}}>
+          <View style={styles.picker}>
+            <Picker
+              style={{color: 'black'}}
+              mode="dialog"
+              selectedValue={medicineId}
+              onValueChange={data => {
+                setIsLoading(true);
+                setMedicineId(data);
+              }}>
+              {getUserMedicine?.map((item, index) => {
+                return (
+                  <Picker.Item
+                    label={item.medicineName}
+                    value={item.userMedicineId}
+                    key={index}
+                  />
+                );
+              })}
+            </Picker>
+          </View>
+        </View>
         {isLoading ? (
           <Loader />
         ) : (
           <>
-            <View style={{paddingHorizontal: 12, paddingTop: 10}}>
-              <View style={styles.picker}>
-                <Picker
-                  style={{color: 'black'}}
-                  mode='dialog'
-                  selectedValue={medicineId}
-                  onValueChange={data => {
-                    setIsLoading(true);
-                    setMedicineId(data);
-                  }}>
-                  {getUserMedicine?.map((item, index) => {
-                    return (
-                      <Picker.Item
-                        label={item.medicineName}
-                        value={item.userMedicineId}
-                        key={index}
-                      />
-                    );
-                  })}
-                </Picker>
-              </View>
-            </View>
             <ScrollView>
               <View style={styles.reportContainer}>
                 <View style={styles.analytics}>
