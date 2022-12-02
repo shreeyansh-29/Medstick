@@ -121,13 +121,13 @@ const HomeScreen = ({navigation}) => {
   }
 
   function getDate(data) {
-    console.log('Fetch % from local for date', data);
     getPercentageDetails().then(item => {
       if (item !== null && item.length !== 0) {
         let temp = item;
         temp.forEach(p => {
           console.log('item', item);
           if (p.date === data) {
+            console.log('Fetch % from local for date', p.percentage);
             setPercentage(p.percentage);
           } else {
             setPercentage(0);
