@@ -68,4 +68,11 @@ export const styles = StyleSheet.create({
     width: '50%',
     borderRadius: 5,
   },
+  secondaryBtn: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    borderColor: colorPalette.mainColor,
+  },
 });

@@ -21,9 +21,6 @@ const AddMedicineForm = props => {
   const [connected, setConnected] = useState(false);
   const focused = useIsFocused();
   const [load, setLoad] = useState(false);
-  const [med, setMed] = useState('');
-  const [description, setDescription] = useState('');
-
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setConnected(state.isConnected);
@@ -45,20 +42,23 @@ const AddMedicineForm = props => {
     }
   }, [focused]);
 
+  let obj = {
+    doctorName: null,
+    prescriptionId: null,
+    contact: null,
+    prescriptionUrl: null,
+    location: null,
+    specialization: null,
+    appointmentList: [],
+  };
+
   return (
     <View style={styles.mainView}>
       <CustomModal
         modalVisible={visible}
         type="fade"
         onRequestClose={() => setVisible(!visible)}
-        modalView={
-          <RenderModalView
-            props={props}
-            setVisible={setVisible}
-            setMed={setMed}
-            setDescription={setDescription}
-          />
-        }
+        modalView={<RenderModalView props={props} setVisible={setVisible} />}
         customStyles={{height: '100%'}}
       />
       <View style={styles.inputField}>
@@ -70,7 +70,7 @@ const AddMedicineForm = props => {
           text="medicineName"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={med.length !== 0 ? med : props.values.medicineName}
+          value={props.values.medicineName.trim()}
           right={
             connected && load ? (
               <TextInput.Icon
@@ -99,9 +99,7 @@ const AddMedicineForm = props => {
           text="description"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={
-            description.length !== 0 ? description : props.values.description
-          }
+          value={props.values.description.trim()}
           multiline={true}
           selectTextOnFocus={true}
           dense={true}
@@ -135,7 +133,7 @@ const AddMedicineForm = props => {
             text="dosageQuantity"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.dosageQuantity}
+            value={props.values.dosageQuantity.trim()}
             keyboardType="numeric"
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
@@ -150,7 +148,7 @@ const AddMedicineForm = props => {
             styles={[styles.field, {width: '97%'}]}
             text="dosagePower"
             label="Dosage Power"
-            value={props.values.dosagePower}
+            value={props.values.dosagePower.trim()}
             mode="outlined"
             outlineColor="lightgrey"
             keyboardType="numeric"
@@ -189,7 +187,7 @@ const AddMedicineForm = props => {
             text="stocks"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.stocks}
+            value={props.values.stocks.trim()}
             keyboardType="numeric"
           />
           {props.errors.stocks && props.touched.stocks && (
@@ -212,7 +210,7 @@ const AddMedicineForm = props => {
             text="notify"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.notify}
+            value={props.values.notify.trim()}
             keyboardType="numeric"
           />
           {props.errors.notify && props.touched.notify && (
@@ -230,18 +228,13 @@ const AddMedicineForm = props => {
           <View style={styles.addedBtn}>
             <CustomButton
               title={'Added'}
-              btnStyles={{
-                backgroundColor: 'white',
-                borderRadius: 5,
-                paddingHorizontal: 20,
-                borderWidth: 1,
-                borderColor: colorPalette.mainColor,
-              }}
+              btnStyles={styles.secondaryBtn}
               titleStyle={{color: colorPalette.mainColor}}
             />
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
+                props.prescriptionObject(obj);
                 props.setAdd(false);
               }}>
               <FontAwesomeIcon

@@ -8,6 +8,7 @@ import {monthName} from '../../../constants/constants';
 
 const CareTakerProfile = ({navigation, route}) => {
   const item = route.params.profile;
+  console.log('item', item);
   const dateHandler = date => {
     let dob = date.split('-');
     return dob[2] + '-' + monthName[dob[1]] + '-' + dob[0];
