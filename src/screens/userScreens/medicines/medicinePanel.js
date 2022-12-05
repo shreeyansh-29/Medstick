@@ -175,7 +175,7 @@ const MedicinePanel = ({navigation}) => {
   const deleteRem = name => {
     PushNotification.getScheduledLocalNotifications(rn => {
       for (let i = 0; i < rn.length; i++) {
-        if ('Take ' + name === rn[i].message) {
+        if (name === rn[i].number) {
           PushNotification.cancelLocalNotification({id: rn[i].id});
         }
       }

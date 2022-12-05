@@ -43,7 +43,7 @@ const SearchScreen = ({navigation}) => {
   const res = useSelector(state => state.getUser?.data);
   const res1 = useSelector(state => state.sendRequest?.data);
   const [data, setData] = useState([]);
-  const loading = useSelector(state => state.getUser.isLoading());
+  const loading = useSelector(state => state.getUser.isLoading);
 
   const activityIndicator = () => {
     return (

@@ -3,7 +3,7 @@ import PushNotification from 'react-native-push-notification';
 class Notifications {
   constructor() {
     PushNotification.configure({
-      onRegister: function (token) { },
+      onRegister: function (token) {},
       onNotification: function (notification) {
         console.log('Notification:', notification);
       },
@@ -25,24 +25,36 @@ class Notifications {
     });
   }
 
-  schduleNotification(date, check1, name, userId, time) {
-    let Id1 = parseInt(userId);
+  schduleNotification(date, check1, name, time, enddate) {
+    let currentTime = new Date();
+    let currentTime2 =
+      currentTime.getFullYear() +
+      '-' +
+      (currentTime.getMonth() + 1) +
+      '-' +
+      currentTime.getDate();
+
+    console.log(currentTime2, 'current timeee');
+    console.log(enddate,"enddateeee");
+
     if (check1) {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name+ ' at '+time,
+        message: 'Take '+name+' at '+time,
         date: date,
         repeatType: 'day',
-        id: Id1,
+        number:name
       });
     } else {
       PushNotification.localNotificationSchedule({
+        number: name,
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name+ ' at '+time,
+        message: 'Take ' + name+' at '+time,
         date: date,
-        id: Id1,
+        repeatType: currentTime2 <= enddate ? 'day' : null,
+        
       });
     }
   }
@@ -53,7 +65,7 @@ class Notifications {
       message: 'You have an appointment scheduled',
       date: date,
       number: Id,
-      shortcutId: "shortcut-id",
+      shortcutId: 'shortcut-id',
     });
   }
 }

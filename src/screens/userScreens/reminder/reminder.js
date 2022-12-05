@@ -53,7 +53,6 @@ const Reminder = ({route, navigation}) => {
   const [currentIndex, setCurrentIndex] = useState();
   const [fDateSecondary, setfDate] = useState('');
   const [timelist, setTimelist] = useState([]);
-  console.log(route.params.data.userMedicineId, 'iddddd');
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -76,10 +75,22 @@ const Reminder = ({route, navigation}) => {
     time_picker_mode_state(false);
   };
 
-  const handlePushNotification = (obj, check1) => {
+  const handlePushNotification = (obj, check1, endDate) => {
     let d = new Date(); // for now
     let currentTime = d.getHours() + ':' + d.getMinutes();
-    const number = moment(obj.reminderTime, ['h:mm A']).format('HH:mm');
+    let number = [];
+    for (let i = 0; i < timearray.length; i++) {
+      number.push(moment(timearray[i], ['h:mm A']).format('HH:mm'));
+    }
+    console.log(number, 'timeeeeee,,,,');
+
+    let endDate1 =
+      endDate.getFullYear() +
+      '-' +
+      (endDate.getMonth() + 1) +
+      '-' +
+      endDate.getDate();
+    console.log(endDate1, 'endDate111');
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
@@ -89,25 +100,27 @@ const Reminder = ({route, navigation}) => {
       (chosenDate1.getMonth() + 1) +
       '-' +
       chosenDate1.getDate();
+      console.log(number.length,"length");
 
-    if (number < currentTime) {
-      let dateTime = moment(chosenDate2 + ' ' + number);
-      Notifications.schduleNotification(
-        dateTime._d,
-        check1,
-        obj.medicineName,
-        obj.userMedicineId,
-        obj.reminderTime,
-      );
-    } else {
-      let dateTime = moment(obj.startDate + ' ' + number);
-      Notifications.schduleNotification(
-        dateTime._d,
-        check1,
-        obj.medicineName,
-        obj.userMedicineId,
-        obj.reminderTime,
-      );
+    for (let i = 0; i<number.length;i++) {
+      if (number[i] < currentTime) {
+        let dateTime = moment(chosenDate2 + ' ' + number[i]);
+        Notifications.schduleNotification(
+          dateTime._d,
+          number,
+          check1,
+          obj.medicineName,
+          endDate1,
+        );
+      } else {
+        let dateTime = moment(obj.startDate + ' ' + number[i]);
+        Notifications.schduleNotification(
+          dateTime._d,
+          check1,
+          obj.medicineName,
+          endDate1,
+        );
+      }
     }
   };
 
@@ -294,19 +307,19 @@ const Reminder = ({route, navigation}) => {
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;
 
+    let name = route.params.data.medicineName;
+
     if (reminderStatus == true) {
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
-          if (obj.userMedicineId === rn[i].id) {
-            PushNotification.cancelLocalNotification({
-              id: rn[obj.userMedicineId],
-            });
+          if ('Take ' + name === rn[i].message) {
+            PushNotification.cancelLocalNotification({id: rn[i].id});
           }
         }
       });
     }
 
-    handlePushNotification(obj, check1);
+    handlePushNotification(obj, check1, endDate);
 
     getMedicine().then(data => {
       const temp = data;
@@ -747,15 +760,15 @@ const Reminder = ({route, navigation}) => {
                     name: 'keyboard-arrow-up',
                   },
                   arrowDown: {
-                    name: 'keyboard-arrow-down', 
+                    name: 'keyboard-arrow-down',
                     size: 22,
                   },
                   check: {
-                    name: 'check', 
+                    name: 'check',
                     size: 22,
                   },
                   close: {
-                    name: 'close', 
+                    name: 'close',
                     size: 16,
                   },
                 }}

@@ -32,7 +32,7 @@ const AppointmentReminders = ({navigation, route}) => {
   const [saveTimeOpen, setSaveTimeOpen] = useState(false);
   let doctor = route.params.notes;
 
-  const handlePushNotification = (obj) => {
+  const handlePushNotification = obj => {
     let d = new Date();
     let currentTime = d.getHours() + ':' + d.getMinutes();
     let currentDate =
@@ -85,9 +85,9 @@ const AppointmentReminders = ({navigation, route}) => {
         });
       }
     });
-    // setTimeout(() => {
-    //   navigation.pop();
-    // }, 1000);
+    setTimeout(() => {
+      navigation.pop();
+    }, 1000);
     handlePushNotification(obj);
   };
 
