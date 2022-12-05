@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   FlatList,
   Text,
+  StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -14,14 +15,17 @@ import {
   searchMedicineRequest,
 } from '../../../redux/action/userMedicine/searchMedicineAction';
 import {TextInput} from 'react-native-paper';
-import {faArrowLeft, faXmark} from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faSearch,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import {ListItem} from 'react-native-elements';
 
 const RenderModalView = ({setVisible, props}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.searchMedicine?.data);
-  const error = useSelector(state => state.searchMedicine?.error);
-  // const loading = useSelector(state => state.searchMedicine?.isLoading);
+  const error = useSelector(state => state.searchMedicine?.error?.data);
   const [pageNo, setPageNo] = useState(0);
   const [tempSearch, setTempSearch] = useState([]);
   const [med, setMed] = useState('');
@@ -29,7 +33,7 @@ const RenderModalView = ({setVisible, props}) => {
 
   const activityIndicator = () => {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={styles.loader}>
         <ActivityIndicator size="large" color={colorPalette.mainColor} />
       </View>
     );
@@ -44,21 +48,14 @@ const RenderModalView = ({setVisible, props}) => {
   useEffect(() => {
     if (res !== null) {
       setTempSearch([...tempSearch, ...res]);
-    } else if (res === null) {
-      setTempSearch([]);
     }
   }, [res]);
 
-  useEffect(() => {
+  const apiCall = () => {
     if (med.length !== 0) {
-      apiCall(med, pageNo);
+      let medicineName = med.trim();
+      dispatch(searchMedicineRequest({medicineName, pageNo}));
     }
-  }, [med]);
-
-  const apiCall = (med, pageNo) => {
-    setTimeout(() => {
-      dispatch(searchMedicineRequest({med, pageNo}));
-    }, 2000);
   };
 
   const onEnd = () => {
@@ -108,19 +105,15 @@ const RenderModalView = ({setVisible, props}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
-      <View
-        style={{
-          alignSelf: 'flex-start',
-          marginTop: 16,
-          marginLeft: 10,
-          marginBottom: 2,
-        }}>
+    <View style={styles.container}>
+      <View style={styles.backBtnCont}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
             setVisible(false);
             dispatch(searchMedicineClear());
+            setPageNo(0);
+            setTempSearch([]);
           }}>
           <FontAwesomeIcon
             icon={faArrowLeft}
@@ -130,21 +123,40 @@ const RenderModalView = ({setVisible, props}) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{marginVertical: 10, width: '96%'}}>
+      <View style={styles.textContainer}>
         <TextInput
-          label="Search Medicine"
+          placeholder="Search Medicine"
           mode="outlined"
-          onChangeText={text => setMed(text)}
+          onChangeText={text => {
+            setMed(text);
+            setTempSearch([]);
+            setPageNo(0);
+          }}
           outlineColor={colorPalette.mainColor}
           activeOutlineColor={colorPalette.mainColor}
-          style={{width: '100%', alignSelf: 'center'}}
+          style={styles.field}
           value={med}
           right={
+            med.length !== 0 ? (
+              <TextInput.Icon
+                onPress={() => apiCall()}
+                name={() => (
+                  <FontAwesomeIcon
+                    size={20}
+                    icon={faSearch}
+                    color={colorPalette.mainColor}
+                  />
+                )}
+              />
+            ) : null
+          }
+          left={
             <TextInput.Icon
               onPress={() => {
                 setMed('');
                 dispatch(searchMedicineClear());
                 setPageNo(0);
+                setTempSearch([]);
               }}
               name={() => (
                 <FontAwesomeIcon
@@ -155,32 +167,17 @@ const RenderModalView = ({setVisible, props}) => {
               )}
             />
           }
+          clearTextOnFocus={true}
         />
       </View>
       {loading ? (
         activityIndicator()
       ) : (
         <>
-          {error?.status === 404 ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'white',
-              }}>
-              <Text style={{color: 'black', fontSize: 20, fontWeight: '500'}}>
-                Medicine Not Found
-              </Text>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 14,
-                  fontWeight: '500',
-                  marginTop: 10,
-                }}>
-                (Please Enter Manually)
-              </Text>
+          {error?.status === 'Failed' ? (
+            <View style={styles.errorCont}>
+              <Text style={styles.text1}>Medicine Not Found</Text>
+              <Text style={styles.text2}>(Please Enter Manually)</Text>
             </View>
           ) : (
             <>
@@ -208,5 +205,31 @@ const RenderModalView = ({setVisible, props}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {flex: 1, backgroundColor: 'white', alignItems: 'center'},
+  backBtnCont: {
+    alignSelf: 'flex-start',
+    marginTop: 16,
+    marginLeft: 10,
+    marginBottom: 2,
+  },
+  textContainer: {marginVertical: 10, width: '96%'},
+  field: {width: '100%', alignSelf: 'center'},
+  errorCont: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+  text1: {color: 'black', fontSize: 20, fontWeight: '500'},
+  text2: {
+    color: 'black',
+    fontSize: 14,
+    fontWeight: '500',
+    marginTop: 10,
+  },
+  loader: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+});
 
 export default RenderModalView;

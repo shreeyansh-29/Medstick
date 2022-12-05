@@ -111,7 +111,8 @@ const RenderModalVisible = ({
               }}
               validationSchema={profileValidationSchema}
               onSubmit={values => {
-                handleClick(values);
+                console.log(values);
+                // handleClick(values);
               }}>
               {({
                 handleChange,

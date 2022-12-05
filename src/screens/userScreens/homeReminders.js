@@ -108,7 +108,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         item.medicineName == medName
       ) {
         item.historyList.map(r => {
-          console.log(r, historyId);
           if (r.historyId === historyId && !r.taken.includes(time)) {
             r.taken = r.taken + time + ',';
             let arr = r.notTaken.split(',');
@@ -118,7 +117,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             item.stock -= item.dosageQuantity;
           }
         });
-        console.log('After updating reminders ', item);
       }
     });
     let percent = getPercentage(medData);

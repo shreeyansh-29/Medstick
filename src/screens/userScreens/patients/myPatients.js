@@ -37,6 +37,7 @@ const MyPatients = ({
     pageNo === 0 ? dispatch(myPatientsRequest(pageNo)) : null;
   }, [pageNo]);
 
+
   useEffect(() => {
     if (res?.data !== null) {
       setMyPatients([...myPatients, ...res.data]);

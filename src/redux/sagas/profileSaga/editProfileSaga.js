@@ -4,11 +4,11 @@ import {
   editProfileSuccess,
 } from '../../action/profileAction/editProfileAction';
 import * as types from '../../actionTypes';
-import editProfileService from '../../../network/networkServices/profile/editProfileService';
+import networkService from '../../../network/networkService';
 
 export function* editProfileSaga(data) {
   try {
-    let response = yield call(editProfileService.editProfile, data);
+    let response = yield call(networkService.editProfile, data);
     yield put(editProfileSuccess(response.data));
   } catch (error) {
     yield put(editProfileError(error));

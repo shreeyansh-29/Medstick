@@ -4,11 +4,11 @@ import {
   acceptPatientReqError,
   acceptPatientReqSuccess,
 } from '../../action/patients/acceptPatientReqAction';
-import acceptPatientReqService from '../../../network/networkServices/common/acceptRequestService';
+import networkService from '../../../network/networkService';
 
 export function* acceptPatientRequestSaga(data) {
   try {
-    let response = yield call(acceptPatientReqService.putAcceptRequest, data);
+    let response = yield call(networkService.putAcceptRequest, data);
     yield put(acceptPatientReqSuccess(response));
   } catch (error) {
     yield put(acceptPatientReqError(error));

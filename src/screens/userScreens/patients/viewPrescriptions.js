@@ -22,7 +22,7 @@ const ViewPrescriptions = ({navigation, route}) => {
   const loading = useSelector(state => state.myPrescriptions?.isLoading);
   const Id = route?.params?.id;
   const [refresh, setRefresh] = useState(false);
-  let currentPage = 0;
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     if (res?.data !== null) {
@@ -55,6 +55,7 @@ const ViewPrescriptions = ({navigation, route}) => {
             </ListItem.Content>
             <TouchableOpacity
               style={style.btn}
+              activeOpacity={1}
               onPress={() => {
                 navigation.navigate('ViewPrescription', {
                   item: item,

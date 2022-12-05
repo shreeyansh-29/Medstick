@@ -7,28 +7,14 @@ import store from './src/redux/store';
 import './ignoreWarnings';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ErrorBoundary from 'react-native-error-boundary';
+import OfflineBar from './src/components/atoms/offlineBar';
 
 const App = () => {
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     Alert.alert('Hold On!', 'Are you sure you want to exit?', [
-  //       {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-  //       {text: 'Yes', onPress: () => BackHandler.exitApp()},
-  //     ]);
-  //     return true;
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
-  //   return () => backHandler.remove();
-  // }, []);
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <ErrorBoundary>
         <Provider store={store}>
+          <OfflineBar />
           <StatusBar backgroundColor={colorPalette.mainColor} />
           <MainNavigation />
         </Provider>

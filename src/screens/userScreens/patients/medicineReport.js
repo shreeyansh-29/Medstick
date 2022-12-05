@@ -22,7 +22,6 @@ import LottieView from 'lottie-react-native';
 import HistoryDetail from './historyDetail';
 import CustomModal from '../../../components/molecules/customModal';
 import AnimatedProgessCircle from '../../../components/atoms/AnimatedProgressCircle';
-import AdherencePercentage from './adherenceHistory';
 
 let detailData = {};
 
@@ -36,6 +35,7 @@ const MedicineReport = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [showDetail, showDetailState] = useState(false);
   const [percentage, setPercentage] = useState(0);
+  const [pageNo, setPageNo] = useState(0);
 
   useEffect(() => {
     if (res?.status === 'OK') {
@@ -80,7 +80,8 @@ const MedicineReport = ({navigation, route}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(getMedsHistoryRequest(item?.userMedicineId));
+      let med = item?.userMedicineId;
+      dispatch(getMedsHistoryRequest({med, pageNo}));
       return () => {
         true;
       };
@@ -112,6 +113,15 @@ const MedicineReport = ({navigation, route}) => {
     }
     showDetailState(true);
     setModalVisible(true);
+  };
+
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (historyData?.length % 5 === 0 && a !== 0 && res?.result?.length !== 0) {
+      let med = item?.userMedicineId;
+      dispatch(getMedsHistoryRequest({med, pageNo}));
+    }
+    setPageNo(a);
   };
 
   return (
@@ -218,6 +228,8 @@ const MedicineReport = ({navigation, route}) => {
           }}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={{padding: 8}}
+          onEndReachedThreshold={0.01}
+          onEndReached={onEnd}
         />
       </View>
     </View>

@@ -10,26 +10,17 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import CustomModal from '../../../components/molecules/customModal';
 import {styles} from '../../../styles/medicinePanelStyles/medicineFormStyles';
-import NetInfo from '@react-native-community/netinfo';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import {useIsFocused} from '@react-navigation/native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import RenderModalView from './renderModalView';
+import {useSelector} from 'react-redux';
 
 const AddMedicineForm = props => {
   const [visible, setVisible] = useState(false);
-  const [connected, setConnected] = useState(false);
   const focused = useIsFocused();
   const [load, setLoad] = useState(false);
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      setConnected(state.isConnected);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  const connected = useSelector(state => state.internetConnectivity?.data);
 
   const getUser = async () => {
     const user = await GoogleSignin.getCurrentUser();
@@ -133,7 +124,7 @@ const AddMedicineForm = props => {
             text="dosageQuantity"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.dosageQuantity}
+            value={props.values.dosageQuantity.trim()}
             keyboardType="numeric"
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
@@ -148,7 +139,7 @@ const AddMedicineForm = props => {
             styles={[styles.field, {width: '97%'}]}
             text="dosagePower"
             label="Dosage Power"
-            value={props.values.dosagePower}
+            value={props.values.dosagePower.trim()}
             mode="outlined"
             outlineColor="lightgrey"
             keyboardType="numeric"
@@ -187,7 +178,7 @@ const AddMedicineForm = props => {
             text="stocks"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.stocks}
+            value={props.values.stocks.trim()}
             keyboardType="numeric"
           />
           {props.errors.stocks && props.touched.stocks && (
@@ -210,7 +201,7 @@ const AddMedicineForm = props => {
             text="notify"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.notify}
+            value={props.values.notify.trim()}
             keyboardType="numeric"
           />
           {props.errors.notify && props.touched.notify && (

@@ -43,7 +43,6 @@ const PatientRequest = ({
   }, []);
 
   useEffect(() => {
-    console.log(res.data, 'data');
     if (res?.data !== null) {
       setPatients([...patients, ...res.data]);
       dispatch(patientsReqClear());

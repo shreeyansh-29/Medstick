@@ -10,7 +10,6 @@ import {faInfo} from '@fortawesome/free-solid-svg-icons';
 import CustomModal from '../../components/molecules/customModal';
 import {useDispatch, useSelector} from 'react-redux';
 import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction';
-import CheckConnection from '../../connectivity/checkConnection';
 import {verticalScale} from '../../components/atoms/constant';
 import {
   getMedicine,
@@ -22,17 +21,13 @@ import moment from 'moment';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
-  const [connected, connectedstate] = useState(false);
   const [percentage, setPercentage] = useState(0);
   const [medData, setMedData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const connected = useSelector(state => state.internetConnectivity?.data);
+  const load = useSelector(state => state.userInfo?.data);
 
   let td_da = moment().format('YYYY-MM-DD');
-
-  const checkconnection = async () => {
-    let conn = await CheckConnection();
-    connectedstate(conn);
-  };
 
   // useEffect(() => {
   //   const backAction = () => {
@@ -51,12 +46,8 @@ const HomeScreen = ({navigation}) => {
   // }, []);
 
   useEffect(() => {
-    checkconnection();
-  }, []);
-
-  useEffect(() => {
-    if (connected) dispatch(myCaretakerRequest(0));
-  }, [connected]);
+    if (connected && load) dispatch(myCaretakerRequest(0));
+  }, [connected, load]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -102,10 +93,8 @@ const HomeScreen = ({navigation}) => {
           }
         });
         savePercentageDetails(data);
-        // console.log('Percent in local', data);
       }
     });
-    console.log('tr total reminders=>', tr, ' ,cc=> ', cc);
     return Math.floor((cc / tr) * 100);
   }
 
@@ -127,6 +116,7 @@ const HomeScreen = ({navigation}) => {
         let temp = item;
         temp.forEach(p => {
           if (p.date === data) {
+            console.log('Fetch % from local for date', p.percentage);
             setPercentage(p.percentage);
           } else {
             setPercentage(0);
@@ -139,7 +129,7 @@ const HomeScreen = ({navigation}) => {
   let res = useSelector(state => state.myCaretaker?.data);
 
   const showAlert = () => {
-    if (connected) {
+    if (connected && load) {
       if (res?.length === 0) {
         Alert.alert('Need to add caretaker first', '', [
           {
@@ -243,7 +233,7 @@ const HomeScreen = ({navigation}) => {
         </View>
         <View style={{width: '100%', height: '44%'}}>
           <Reminders
-            // showAlert={showAlert}
+            showAlert={showAlert}
             setPercentage={setPercentage}
             data={medData}
           />

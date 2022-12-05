@@ -51,8 +51,6 @@ const Reminder = ({route, navigation}) => {
   const [dinner, setDinner] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
   const [fDateSecondary, setfDate] = useState('');
-  const [timelist, setTimelist] = useState([]);
-  console.log(route.params.data.userMedicineId, 'iddddd');
 
   let fDatePrimary =
     startDate.getFullYear() +
