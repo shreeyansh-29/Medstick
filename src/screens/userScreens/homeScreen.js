@@ -83,24 +83,26 @@ const HomeScreen = ({navigation}) => {
     getPercentageDetails().then(data => {
       let obj = [];
       let temp = {};
-      if (data == null) {
+      if (data === null) {
         temp.date = td_da;
         temp.percentage = Math.floor((cc / tr) * 100);
         obj.push(temp);
         savePercentageDetails(obj);
-      } else if (data != null) {
-        data.map((item, index) => {
+      } else if (data !== null && data.length !==0) {
+        obj=data;
+        obj.map((item, index) => {
           const a = b => b.date == td_da;
           if (item.date === td_da) {
             item.percentage = Math.floor((cc / tr) * 100);
-            data[index] = item;
-          } else if (!data.some(a) && tr != 0) {
+            obj[index] = item;
+            console.log('zzz', obj);
+          } else if (!obj.some(a) && tr !== 0) {
             temp.date = td_da;
             temp.percentage = Math.floor((cc / tr) * 100);
-            data.push(temp);
+            obj.push(temp);
           }
         });
-        savePercentageDetails(data);
+        savePercentageDetails(obj);
         // console.log('Percent in local', data);
       }
     });
@@ -125,7 +127,6 @@ const HomeScreen = ({navigation}) => {
       if (item !== null && item.length !== 0) {
         let temp = item;
         temp.forEach(p => {
-          console.log('item', item);
           if (p.date === data) {
             console.log('Fetch % from local for date', p.percentage);
             setPercentage(p.percentage);
