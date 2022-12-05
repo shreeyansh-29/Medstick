@@ -18,3 +18,9 @@ export const myCaretakerError = payload => {
     payload,
   };
 };
+export const myCaretakerClear = payload => {
+  return {
+    type: types.MY_CARETAKER_CLEAR,
+    payload,
+  };
+};

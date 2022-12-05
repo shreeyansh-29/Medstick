@@ -10,4 +10,3 @@ class LoginNetworkService {
   }
 }
 export default new LoginNetworkService();
-

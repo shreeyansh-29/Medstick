@@ -21,10 +21,11 @@ const RenderModalView = ({setVisible, props}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.searchMedicine?.data);
   const error = useSelector(state => state.searchMedicine?.error);
-  const loading = useSelector(state => state.searchMedicine?.isLoading);
+  // const loading = useSelector(state => state.searchMedicine?.isLoading);
   const [pageNo, setPageNo] = useState(0);
   const [tempSearch, setTempSearch] = useState([]);
   const [med, setMed] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const activityIndicator = () => {
     return (
@@ -35,8 +36,14 @@ const RenderModalView = ({setVisible, props}) => {
   };
 
   useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
     if (res !== null) {
-      setTempSearch(res);
+      setTempSearch([...tempSearch, ...res]);
     } else if (res === null) {
       setTempSearch([]);
     }
@@ -44,11 +51,23 @@ const RenderModalView = ({setVisible, props}) => {
 
   useEffect(() => {
     if (med.length !== 0) {
-      setTimeout(() => {
-        dispatch(searchMedicineRequest({med, pageNo}));
-      }, 1000);
+      apiCall(med, pageNo);
     }
   }, [med]);
+
+  const apiCall = (med, pageNo) => {
+    setTimeout(() => {
+      dispatch(searchMedicineRequest({med, pageNo}));
+    }, 2000);
+  };
+
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (tempSearch.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+      apiCall(med, a);
+    }
+    setPageNo(a);
+  };
 
   const setData = item => {
     setVisible(false);
@@ -125,6 +144,7 @@ const RenderModalView = ({setVisible, props}) => {
               onPress={() => {
                 setMed('');
                 dispatch(searchMedicineClear());
+                setPageNo(0);
               }}
               name={() => (
                 <FontAwesomeIcon
@@ -173,10 +193,11 @@ const RenderModalView = ({setVisible, props}) => {
                     data={tempSearch}
                     renderItem={renderItem}
                     contentContainerStyle={{
-                      flex: 1,
                       backgroundColor: colorPalette.backgroundColor,
                     }}
                     style={{width: '100%'}}
+                    onEndReached={onEnd}
+                    onEndReachedThreshold={0.01}
                   />
                 </>
               )}
