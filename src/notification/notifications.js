@@ -11,6 +11,8 @@ class Notifications {
       requestPermissions: false.valueOf,
     });
 
+    // PushNotification.cancelAllLocalNotifications();
+
     PushNotification.createChannel(
       {
         channelId: 'reminders',

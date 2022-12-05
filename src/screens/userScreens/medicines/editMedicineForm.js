@@ -10,6 +10,15 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 
 const EditMedicineForm = props => {
+  let obj = {
+    doctorName: null,
+    prescriptionId: null,
+    contact: null,
+    prescriptionUrl: null,
+    location: null,
+    specialization: null,
+    appointmentList: [],
+  };
   return (
     <View style={styles.mainView}>
       <View style={styles.inputField}>
@@ -163,18 +172,13 @@ const EditMedicineForm = props => {
           <View style={styles.addedBtn}>
             <CustomButton
               title={'Added'}
-              btnStyles={{
-                backgroundColor: 'white',
-                borderRadius: 5,
-                paddingHorizontal: 20,
-                borderWidth: 1,
-                borderColor: colorPalette.mainColor,
-              }}
+              btnStyles={styles.secondaryBtn}
               titleStyle={{color: colorPalette.mainColor}}
             />
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
+                props.prescriptionObject(obj);
                 props.setAdd(false);
               }}>
               <FontAwesomeIcon

@@ -51,11 +51,11 @@ const PatientProfile = ({navigation, route}) => {
                   <View style={styles.subView1}>
                     <Text style={styles.heading}>Bio</Text>
                   </View>
-                  {item.bio ? (
-                    <View style={styles.subView2}>
+                  <View style={styles.subView2}>
+                    {item.bio ? (
                       <Text style={styles.content}>{item.bio}</Text>
-                    </View>
-                  ) : null}
+                    ) : null}
+                  </View>
                 </View>
                 <Divider style={styles.divider} />
                 <View style={styles.subCont}>

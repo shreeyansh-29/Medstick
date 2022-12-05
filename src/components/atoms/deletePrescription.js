@@ -40,7 +40,6 @@ const DeletePrescription = ({
         });
         if (flag) showAlert();
         else {
-          console.log('in');
           getPrescription().then(data => {
             let list = data;
             let a = b => b.prescriptionId == prescriptionId;

@@ -1,4 +1,12 @@
-import {View, Text, ScrollView, Modal, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Modal,
+  TouchableOpacity,
+  PermissionsAndroid,
+  ToastAndroid,
+} from 'react-native';
 import React, {useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
@@ -6,13 +14,16 @@ import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPalette} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
 import {getMedicine} from '../../../utils/storage';
 import {useEffect} from 'react';
+import {months} from '../../../constants/constants';
+import Downloadpdf from '../../../components/organisms/downloadPdf';
+import Loader from '../../../components/atoms/loader';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -52,7 +63,7 @@ LocaleConfig.locales['en'] = {
     'Friday',
     'Saturday',
   ],
-  dayNamesShort: ['Sun','Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'],
+  dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'],
 };
 LocaleConfig.defaultLocale = 'en';
 
@@ -65,18 +76,37 @@ const Report = ({navigation}) => {
   const [historyListData, setHistoryListData] = useState([]);
   const [percentage, setPercentage] = useState(0);
   const isFocused = useIsFocused();
+  const [dataMap, setDataMap] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (isFocused)
-      getMedicine().then(data => {
-        if (data !== null && data.length !== 0) {
-          setGetUserMedicine(data);
-        } else {
-          setGetUserMedicine([]);
-          showAlert();
-        }
-      });
-  }, [isFocused]);
+    if (isFocused) {
+      getMedicine()
+        .then(data => {
+          if (data !== null && data.length !== 0) {
+            setGetUserMedicine(data);
+          } else {
+            setGetUserMedicine([]);
+            showAlert();
+          }
+        })
+        .then(() => {
+          if (getUserMedicine.length !== 0 && medicineId !== null) {
+            console.log('medicine Id', getUserMedicine[0].userMedicineId);
+            getHistory(medicineId);
+          }
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+      setIsLoading(false);
+    }
+  }, [isFocused, medicineId]);
+
+  let td = new Date();
+  let startDate = new Date(
+    td.getFullYear() + '-' + (td.getMonth() + 1) + '-' + (td.getDate() + 1),
+  ).toISOString();
 
   const showAlert = () => {
     Alert.alert('Add Medicine First', 'Click Ok to proceed', [
@@ -97,10 +127,25 @@ const Report = ({navigation}) => {
     ]);
   };
 
-  function getHistory() {
+  const downloadPdf = async () => {
+    await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    );
+    await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+    );
+    const downloadResp = await Downloadpdf(medicineId);
+    if (downloadResp !== 'err') {
+      ToastAndroid.show('Downloaded successfully', ToastAndroid.LONG);
+    } else {
+      ToastAndroid.show('Error while downloading', ToastAndroid.LONG);
+    }
+  };
+
+  function getHistory(medicine) {
     let histories = [];
-    getUserMedicine.map(data => {
-      if (data.userMedicineId == medicineId && data.historyList.length !== 0) {
+    getUserMedicine.forEach(data => {
+      if (data.userMedicineId === medicine && data.historyList.length !== 0) {
         data.historyList.map(i => {
           let his = {};
           his.historyId = i.historyId;
@@ -108,9 +153,9 @@ const Report = ({navigation}) => {
           his.notTaken = i.notTaken;
           his.date = i.date;
           histories.push(his);
-          setHistoryListData(histories);
           dateSelector(histories);
-          overallPecentage(data);
+          setHistoryListData(histories);
+          overallPercentage(data);
         });
       } else if (
         data.userMedicineId == medicineId &&
@@ -118,7 +163,7 @@ const Report = ({navigation}) => {
       ) {
         setHistoryListData([]);
         dateSelector([]);
-        overallPecentage(0, 0);
+        overallPercentage(data);
       }
     });
   }
@@ -152,38 +197,33 @@ const Report = ({navigation}) => {
     return Math.floor((takenLength / totalCount) * 100);
   };
 
-  function overallPecentage(data) {
+  function overallPercentage(data) {
     let cc = 0;
     let tr = 0;
-    data.historyList.map(item => {
-      tr += data.reminderTime.split(',').length;
-      let temp = item.taken.split(',');
-      temp.map(i => {
-        if (i !== '') {
-          cc += 1;
-        }
+    if (data.historyList.length !== 0) {
+      data.historyList.map(item => {
+        tr += data.reminderTime.split(',').length;
+        let temp = item.taken.split(',');
+        temp.map(i => {
+          if (i !== '') {
+            cc += 1;
+          }
+        });
       });
-    });
-    console.log('tr and cc in Report', tr, cc);
-    setPercentage(Math.floor((cc / tr) * 100));
+      setPercentage(Math.floor((cc / tr) * 100));
+    }
   }
 
-  const [dataMap, setDataMap] = useState([]);
   const dateSelector = history => {
     var data = [];
-    history.map(item => {
-      let percentage = dayPercentageCalculator(item.taken, item.notTaken);
-      data.push({date: item.date, percentage: percentage});
-    });
+    if (history.length !== 0) {
+      history.forEach(item => {
+        let percentage = dayPercentageCalculator(item.taken, item.notTaken);
+        data.push({date: item.date, percentage: percentage});
+      });
+    }
     setDataMap(data);
   };
-
-  useEffect(() => {
-    if (medicineId !== null) {
-      getHistory();
-      dateSelector(historyListData);
-    }
-  }, [medicineId]);
 
   const ModalOpen = () => {
     setModalVisible(true);
@@ -199,17 +239,16 @@ const Report = ({navigation}) => {
   };
 
   const getHistorydata = date => {
-    console.log('date', date);
     const a = b => b.date == date.dateString;
     const historyIndex = historyListData.findIndex(a);
-    console.log('his', historyListData[historyIndex]);
+    // console.log('his', historyListData[historyIndex]);
     setHistoryData(historyListData[historyIndex]);
   };
 
-  let startDate = new Date().toDateString();
   const dayComponent = (date, state) => {
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
+    // console.log('1234', dataMap);
     return (
       <>
         {dataMap.some(a) ? (
@@ -244,12 +283,16 @@ const Report = ({navigation}) => {
       </>
     );
   };
+
   return (
     <>
       <View style={styles.container} />
       <View style={styles.report}>
-        <MainHeader title={'Report'} navigation={navigation} />
-
+        <MainHeader
+          title={'Report'}
+          navigation={navigation}
+          download={downloadPdf}
+        />
         <Modal
           animationType="fade"
           transparent={true}
@@ -268,12 +311,11 @@ const Report = ({navigation}) => {
           <View style={styles.picker}>
             <Picker
               style={{color: 'black'}}
-              mode="dropdown"
+              mode="dialog"
               selectedValue={medicineId}
               onValueChange={data => {
-                getHistory();
+                setIsLoading(true);
                 setMedicineId(data);
-                console.log('medicineId', data);
               }}>
               {getUserMedicine?.map((item, index) => {
                 return (
@@ -287,51 +329,77 @@ const Report = ({navigation}) => {
             </Picker>
           </View>
         </View>
-        <ScrollView>
-          <View style={styles.reportContainer}>
-            <View style={styles.analytics}>
-              <View style={styles.container1Text}>
-                <Text style={styles.font}>Overall Performance</Text>
-                <Text style={styles.fontSmall}>
-                  This percentage shows your overall adherence rate.
-                </Text>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <ScrollView>
+              <View style={styles.reportContainer}>
+                <View style={styles.analytics}>
+                  <View style={styles.container1Text}>
+                    <Text style={styles.font}>Overall Performance</Text>
+                    <Text style={styles.fontSmall}>
+                      This percentage shows your overall adherence rate.
+                    </Text>
+                  </View>
+                  <View style={styles.progressView}>
+                    <AnimatedProgressCircle
+                      radius={57}
+                      percentage={percentage}
+                      strokeWidth={12}
+                    />
+                  </View>
+                </View>
               </View>
-              <View style={styles.progressView}>
-                <AnimatedProgressCircle
-                  radius={57}
-                  percentage={percentage}
-                  strokeWidth={12}
+              <View style={styles.reportHeading}>
+                <Text style={styles.reportText}>Your Report</Text>
+              </View>
+              <View style={styles.calendarView}>
+                <Calendar
+                  style={styles.calendar}
+                  theme={styles.theme}
+                  initialDate={startDate}
+                  minDate={'2012-05-10'}
+                  // maxDate={'2222-12-30'}
+                  onDayLongPress={day => {
+                    // console.log('selected day', day);
+                  }}
+                  monthFormat={'yyyy MM'}
+                  onMonthChange={month => {
+                    // console.log('month changed', month);
+                  }}
+                  hideArrows={false}
+                  hideExtraDays={true}
+                  disableMonthChange={true}
+                  firstDay={1}
+                  hideDayNames={false}
+                  onPressArrowLeft={subtractMonth => subtractMonth()}
+                  onPressArrowRight={addMonth => addMonth()}
+                  disableAllTouchEventsForDisabledDays={true}
+                  renderHeader={date => {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '600',
+                          color: 'grey',
+                        }}>
+                        {date.getDate() +
+                          ' ' +
+                          months[date.getMonth()] +
+                          ' ,' +
+                          ' ' +
+                          date.getFullYear()}
+                      </Text>
+                    );
+                  }}
+                  enableSwipeMonths={true}
+                  dayComponent={({date, state}) => dayComponent(date, state)}
                 />
               </View>
-            </View>
-          </View>
-          <View style={styles.reportHeading}>
-            <Text style={styles.reportText}>Your Report</Text>
-          </View>
-          <View style={styles.calendarView}>
-            <Calendar
-              style={styles.calendar}
-              theme={styles.theme}
-              initialDate={startDate}
-              minDate={'2012-05-10'}
-              maxDate={'2222-12-30'}
-              onDayLongPress={day => {
-              }}
-              monthFormat={'yyyy MM'}
-              onMonthChange={month => {
-              }}
-              hideArrows={false}
-              disableMonthChange={true}
-              firstDay={7}
-              hideDayNames={false}
-              onPressArrowLeft={subtractMonth => subtractMonth()}
-              onPressArrowRight={addMonth => addMonth()}
-              disableAllTouchEventsForDisabledDays={true}
-              enableSwipeMonths={true}
-              dayComponent={({date, state}) => dayComponent(date, state)}
-            />
-          </View>
-        </ScrollView>
+            </ScrollView>
+          </>
+        )}
       </View>
     </>
   );

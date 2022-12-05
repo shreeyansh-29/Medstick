@@ -15,17 +15,13 @@ import {
   faCircleXmark,
 } from '@fortawesome/free-regular-svg-icons';
 import {AddMedicine, getPercentageDetails} from '../../utils/storage';
+import moment from 'moment';
+
 
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
-  var tody_date = new Date();
-  let td_da =
-    tody_date.getFullYear() +
-    '-' +
-    (tody_date.getMonth() + 1) +
-    '-' +
-    tody_date.getDate();
+  let td_da = moment().format('YYYY-MM-DD');
 
   let tempList = new Set();
 

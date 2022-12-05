@@ -74,11 +74,11 @@ export const addMedicineSchema = yup.object().shape({
   stocks: yup
     .number()
     .required('Stocks are Required*')
-    .min(1, ({min}) => `Should be more than ${min}`)
+    .min(1, ({min}) => `Should be atleast ${min}`)
     .integer('Must be only digits'),
   notify: yup
     .number()
-    .min(1, ({min}) => `Must be more than ${min}`)
+    // .min(1, ({min}) => `Should be atleast ${min}`)
     .integer('Must be only digits')
     .nullable(),
 });
