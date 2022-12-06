@@ -17,7 +17,6 @@ import {
 import {AddMedicine, getPercentageDetails} from '../../utils/storage';
 import moment from 'moment';
 
-
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
@@ -41,7 +40,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         }
       })
       .then(() => {
-        if (medData.length != 0) {
+        if (medData.length !== 0) {
           dailyReminders(medData);
         }
       })
@@ -109,7 +108,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         item.medicineName == medName
       ) {
         item.historyList.map(r => {
-          console.log(r, historyId);
           if (r.historyId === historyId && !r.taken.includes(time)) {
             r.taken = r.taken + time + ',';
             let arr = r.notTaken.split(',');
@@ -119,7 +117,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             item.stock -= item.dosageQuantity;
           }
         });
-        console.log('After updating reminders ', item);
       }
     });
     let percent = getPercentage(medData);

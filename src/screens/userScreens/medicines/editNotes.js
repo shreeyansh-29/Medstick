@@ -88,7 +88,7 @@ const EditNotes = ({userMedicineId, setVisible}) => {
               }}
               validationSchema={updateNotesSchema}
               onSubmit={values => {
-                let notes = values.review;
+                let notes = values.review.trim();
                 saveMedicineNotes(notes, userMedicineId);
               }}>
               {({

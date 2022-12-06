@@ -6,6 +6,7 @@ import {resetLogin} from './redux/action/loginAction/loginAction';
 import {resetSignUp} from './redux/action/signUpAction/signUpAction';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {saveUserLoggedIn} from './redux/action/loginAction/saveUserLoggedIn';
 
 const Logout = ({navigation}) => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const Logout = ({navigation}) => {
     await AsyncStorage.setItem('accessToken', '');
     dispatch(resetLogin());
     dispatch(resetSignUp());
+    dispatch(saveUserLoggedIn(false));
     setTimeout(() => {
       navigation.navigate('Home');
     }, 3000);

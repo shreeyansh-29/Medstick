@@ -74,6 +74,7 @@ const SingleImageComponent = ({item}) => {
 
 const MedicineImages = ({navigation, route}) => {
   const [imageData, setImageData] = useState([]);
+  const [pageNo, setPageNo] = useState(0);
   const medId = route?.params?.item;
   const dispatch = useDispatch();
   let res = useSelector(state => state.medicineImages);
@@ -99,7 +100,7 @@ const MedicineImages = ({navigation, route}) => {
   }, [res]);
 
   const fetchImages = () => {
-    dispatch(medicineImagesRequest(medId));
+    dispatch(medicineImagesRequest({medId, pageNo}));
   };
 
   useFocusEffect(
@@ -108,6 +109,18 @@ const MedicineImages = ({navigation, route}) => {
       return () => {};
     }, []),
   );
+
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (
+      imageData.length % 5 === 0 &&
+      a !== 0 &&
+      res?.data?.imageList?.length !== 0
+    ) {
+      dispatch(medicineImagesRequest({medId, a}));
+    }
+    setPageNo(a);
+  };
 
   return (
     <View style={styles.mainView}>
@@ -129,6 +142,10 @@ const MedicineImages = ({navigation, route}) => {
               <FlatList
                 data={imageData}
                 renderItem={({item}) => <SingleImageComponent item={item} />}
+                keyExtractor={(item, index) => index.toString()}
+                onEndReached={onEnd}
+                onEndReachedThreshold={0.01}
+                showsVerticalScrollIndicator={false}
               />
             </>
           )}

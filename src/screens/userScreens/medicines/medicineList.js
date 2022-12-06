@@ -38,6 +38,7 @@ const MedicineList = ({route, navigation}) => {
               <View style={styles.iconView}>
                 <TouchableOpacity
                   activeOpacity={1}
+                  style={{padding: 2}}
                   onPress={() => {
                     setEdit(true);
                     setMedData(item);
@@ -49,6 +50,7 @@ const MedicineList = ({route, navigation}) => {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
+                  style={{padding: 2}}
                   activeOpacity={1}
                   onPress={() => {
                     setVisible(true);
@@ -249,7 +251,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,
-    justifyContent: 'space-evenly',
   },
   medNameView: {width: '70%', left: 10},
   iconView: {

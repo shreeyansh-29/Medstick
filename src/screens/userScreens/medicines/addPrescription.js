@@ -45,10 +45,10 @@ const AddPrescription = ({navigation}) => {
 
     let obj = {
       prescriptionId: prescription_id,
-      doctorName: values.doctorName,
-      specialization: values.specialization,
-      contact: values.contact,
-      location: values.location,
+      doctorName: values.doctorName.trim(),
+      specialization: values.specialization.trim(),
+      contact: values.contact.trim(),
+      location: values.location.trim(),
       prescriptionUrl: values.image,
       appointmentList: [],
     };

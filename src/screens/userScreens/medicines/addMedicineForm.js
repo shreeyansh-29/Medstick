@@ -10,26 +10,17 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import CustomModal from '../../../components/molecules/customModal';
 import {styles} from '../../../styles/medicinePanelStyles/medicineFormStyles';
-import NetInfo from '@react-native-community/netinfo';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import {useIsFocused} from '@react-navigation/native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import RenderModalView from './renderModalView';
+import {useSelector} from 'react-redux';
 
 const AddMedicineForm = props => {
   const [visible, setVisible] = useState(false);
-  const [connected, setConnected] = useState(false);
   const focused = useIsFocused();
   const [load, setLoad] = useState(false);
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      setConnected(state.isConnected);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  const connected = useSelector(state => state.internetConnectivity?.data);
 
   const getUser = async () => {
     const user = await GoogleSignin.getCurrentUser();
@@ -70,7 +61,7 @@ const AddMedicineForm = props => {
           text="medicineName"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={props.values.medicineName.trim()}
+          value={props.values.medicineName}
           right={
             connected && load ? (
               <TextInput.Icon
@@ -99,7 +90,7 @@ const AddMedicineForm = props => {
           text="description"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={props.values.description.trim()}
+          value={props.values.description}
           multiline={true}
           selectTextOnFocus={true}
           dense={true}

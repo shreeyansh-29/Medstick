@@ -11,11 +11,13 @@ import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {useIsFocused} from '@react-navigation/native';
+import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn';
 
-const Login = ({navigation, connected}) => {
+const Login = ({navigation}) => {
   const res = useSelector(state => state.signIn.data);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
+  const connected = useSelector(state => state.internetConnectivity?.data);
 
   const getResponse = async () => {
     if (res?.status === 'Success') {
@@ -23,6 +25,8 @@ const Login = ({navigation, connected}) => {
       await AsyncStorage.setItem('user_name', res.userList[0].userName);
       await AsyncStorage.setItem('user_email', res.userList[0].email);
       await AsyncStorage.setItem('accessToken', res.accessToken);
+      const user = await GoogleSignin.getCurrentUser();
+      if (user !== null) dispatch(saveUserLoggedIn(true));
 
       Toast.show({
         type: 'success',
@@ -31,7 +35,7 @@ const Login = ({navigation, connected}) => {
 
       setTimeout(() => {
         navigation.navigate('Home');
-      }, 500);
+      }, 800);
     } else {
       Toast.show({
         type: 'error',
@@ -72,11 +76,6 @@ const Login = ({navigation, connected}) => {
           text1: 'Something Went Wrong',
         });
       }
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Please connect to Internet',
-      });
     }
   };
 

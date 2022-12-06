@@ -4,14 +4,14 @@ import {
   notifyUserError,
   notifyUserSuccess,
 } from '../../action/patients/notifyUserAction';
-import notifyUserService from '../../../network/networkServices/patients/notifyUserService';
+import networkService from '../../../network/networkService';
 
 export function* notifyUserSaga(data) {
   try {
-    let response = yield call(notifyUserService.postNotification, data);
+    let response = yield call(networkService.postNotification, data);
     yield put(notifyUserSuccess(response?.data));
   } catch (error) {
-    yield put(notifyUserError(error));  
+    yield put(notifyUserError(error));
   }
 }
 

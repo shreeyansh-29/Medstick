@@ -50,7 +50,7 @@ const Prescriptions = ({navigation}) => {
             tvParallaxProperties={undefined}>
             <UserAvatar size={60} name={`${item.doctorName}`} />
             <ListItem.Content>
-              <ListItem.Title style={styles.patientName}>
+              <ListItem.Title style={styles.patientName} numberOfLines={1}>
                 <Text style={styles.font}>Doctor Name: </Text>
                 {`${item.doctorName}`}
               </ListItem.Title>

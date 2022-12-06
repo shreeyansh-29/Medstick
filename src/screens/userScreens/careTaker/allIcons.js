@@ -3,10 +3,12 @@ import {
   faUserFriends,
   faRightToBracket,
   faSignOut,
+  faHospitalUser,
 } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colorPalette} from '../../../components/atoms/colorPalette';
+import {StyleSheet} from 'react-native';
 
 function Caretaker_nurse() {
   return (
@@ -35,5 +37,33 @@ function Userfriend() {
       icon={faUserFriends}></FontAwesomeIcon>
   );
 }
+const Iconcomp1 = () => {
+  return (
+    <FontAwesomeIcon
+      style={styles.icon}
+      color={colorPalette.mainColor}
+      icon={faHospitalUser}
+    />
+  );
+};
 
-export {Caretaker_nurse, Userfriend, Righttoobracket, Signout};
+const Iconcomp2 = () => {
+  return (
+    <FontAwesomeIcon
+      style={styles.icon}
+      color={colorPalette.mainColor}
+      icon={faUserFriends}
+    />
+  );
+};
+
+const styles = StyleSheet.create({icon: {marginBottom: 6}});
+
+export {
+  Caretaker_nurse,
+  Userfriend,
+  Righttoobracket,
+  Signout,
+  Iconcomp1,
+  Iconcomp2,
+};

@@ -20,13 +20,11 @@ import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAct
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.caretakerRequest);
-  console.log(res);
   const [pageNo, setPageNo] = useState(0);
   const [caretakers, setCaretakers] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const [visible, setVisible] = useState(false);
   const [uri, setUri] = useState('');
-  const loading = useSelector(state => state.caretakerRequest.isLoading);
+  const [isLoading, setIsLoading] = useState(true);
 
   const images = [
     {
@@ -35,8 +33,15 @@ const CareTakerRequest = () => {
   ];
 
   useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
     if (res?.data !== null) {
-      setCaretakers(res.data);
+      setCaretakers([...caretakers, ...res.data]);
+      dispatch(caretakerReqClear());
     }
   }, [res]);
 
@@ -44,17 +49,13 @@ const CareTakerRequest = () => {
     dispatch(caretakerReqRequest(pageNo));
   }, []);
 
-  // const loadMoreItem = () => {
-  //   if (res?.data?.length === 7) {
-  //     let a = pageNo + 1;
-  //     dispatch(caretakerReqRequest(a));
-  //     setPageNo(a);
-  //   }
-  // };
-
-  // const fetchCaretakerReq = () => {
-  //   dispatch(caretakerReqRequest(pageNo));
-  // };
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (caretakers?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+      dispatch(caretakerReqRequest(a));
+    }
+    setPageNo(a);
+  };
 
   const acceptRequest = requestId => {
     let a = b => b.requestId == requestId;
@@ -62,10 +63,10 @@ const CareTakerRequest = () => {
     caretakers.splice(index, 1);
     dispatch(acceptCaretakerReqRequest(requestId));
     dispatch(caretakerReqClear());
+    setPageNo(0);
 
     setTimeout(() => {
-      dispatch(caretakerReqRequest(0));
-      dispatch(myCaretakerRequest(0));
+      dispatch(caretakerReqRequest(pageNo));
     }, 500);
   };
 
@@ -75,10 +76,10 @@ const CareTakerRequest = () => {
     caretakers.splice(index, 1);
     dispatch(deleteCaretakerReqRequest(requestId));
     dispatch(caretakerReqClear());
+    setPageNo(0);
 
     setTimeout(() => {
-      dispatch(caretakerReqRequest(0));
-      dispatch(myCaretakerRequest(0));
+      dispatch(caretakerReqRequest(pageNo));
     }, 500);
   };
 
@@ -121,7 +122,7 @@ const CareTakerRequest = () => {
                 color={colorPalette.green1}
               />
               <View style={styles.space} />
-              
+
               <Button
                 onPress={() => {
                   deleteRequest(item.requestId);
@@ -145,7 +146,7 @@ const CareTakerRequest = () => {
         onRequestClose={() => setVisible(!visible)}
         modalView={<ImageViewer imageUrls={images} />}
       />
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <>
@@ -162,20 +163,9 @@ const CareTakerRequest = () => {
               data={caretakers}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
-              // onEndReached={loadMoreItem}
-              // onEndReachedThreshold={0.5}
+              onEndReached={onEnd}
+              onEndReachedThreshold={0.01}
               keyExtractor={(item, index) => index.toString()}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(caretakerReqRequest(pageNo));
-                    setRefresh(false);
-                  }}
-                />
-              }
             />
           )}
         </>
