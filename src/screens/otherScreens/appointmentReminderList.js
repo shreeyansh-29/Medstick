@@ -131,7 +131,11 @@ const AppointmentReminderList = ({navigation}) => {
         <ListItem>
           <ListItem.Content style={styles.mainView}>
             <View style={styles.view}>
-              <View style={{flexDirection: 'row', marginBottom: 2}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginBottom: 2,
+                }}>
                 <ListItem.Subtitle style={styles.reminderKey}>
                   Date
                 </ListItem.Subtitle>
@@ -139,7 +143,11 @@ const AppointmentReminderList = ({navigation}) => {
                   {dateHandler(item?.date)}
                 </ListItem.Subtitle>
               </View>
-              <View style={{flexDirection: 'row', marginBottom: 2}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginBottom: 2,
+                }}>
                 <ListItem.Subtitle style={styles.reminderKey}>
                   Time
                 </ListItem.Subtitle>
@@ -148,7 +156,10 @@ const AppointmentReminderList = ({navigation}) => {
                 </ListItem.Subtitle>
               </View>
 
-              <View style={{flexDirection: 'row'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
                 <ListItem.Subtitle style={styles.reminderKey}>
                   Note
                 </ListItem.Subtitle>
@@ -274,8 +285,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'gray',
     width: '84%',
+    paddingTop: 1.6,
   },
-  view: {width: '80%'},
+  view: {width: '80%', justifyContent: 'center'},
   subView: {
     flexDirection: 'row',
     width: '20%',
