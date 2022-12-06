@@ -4,11 +4,11 @@ import {
   getUserProfileSuccess,
 } from '../../action/profileAction/getUserProfileAction';
 import * as types from '../../actionTypes';
-import getUserProfileService from '../../../network/networkServices/profile/getUserProfileService';
+import networkService from '../../../network/networkService';
 
 export function* getUserProfileSaga() {
   try {
-    let response = yield call(getUserProfileService.getProfile);
+    let response = yield call(networkService.getProfile);
     yield put(getUserProfileSuccess(response.data));
   } catch (error) {
     yield put(getUserProfileError(error));

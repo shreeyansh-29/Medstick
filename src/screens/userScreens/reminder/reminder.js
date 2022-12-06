@@ -131,9 +131,6 @@ const Reminder = ({route, navigation}) => {
   };
 
   const handleConfirmfortime = date => {
-    // let minutes =
-    //   date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-
     if (date.getHours() > 11) {
       timearray[currentIndex] =
         hour[date.getHours()] + ':' + date.getMinutes() + ' PM';
@@ -286,7 +283,7 @@ const Reminder = ({route, navigation}) => {
     obj.reminderTime = time;
     obj.beforeAfter = food;
     obj.everyday = check1;
-    obj.reminderTitle = title;
+    obj.reminderTitle = title.trim();
     obj.startDate = fDatePrimary;
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;

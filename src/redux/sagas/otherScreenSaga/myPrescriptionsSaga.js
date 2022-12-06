@@ -4,11 +4,11 @@ import {
   myPrescriptionsSuccess,
 } from '../../action/otherScreenAction/prescriptionsAction';
 import * as types from '../../actionTypes';
-import myPrescriptionsService from '../../../network/networkServices/otherServices/myPrescriptionsService';
+import networkService from '../../../network/networkService';
 
 export function* myPrescriptionsSaga(data) {
   try {
-    let response = yield call(myPrescriptionsService.getMyPrescriptions, data);
+    let response = yield call(networkService.getMyPrescriptions, data);
     yield put(myPrescriptionsSuccess(response?.data));
   } catch (error) {
     yield put(myPrescriptionsError(error));

@@ -4,11 +4,11 @@ import {
   downloadPdfSuccess,
 } from '../../action/otherScreenAction/downloadPdfAction';
 import * as types from '../../actionTypes';
-import downloadPdfService from '../../../network/networkServices/common/downloadPdfService';
+import networkService from '../../../network/networkService';
 
 export function* downloadPdf(data) {
   try {
-    let response = yield call(downloadPdfService.downloadPdf, data);
+    let response = yield call(networkService.downloadPdf, data);
     yield put(downloadPdfSuccess(response?.data));
   } catch (error) {
     yield put(downloadPdfError(error));

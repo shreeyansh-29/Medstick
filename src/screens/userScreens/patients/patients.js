@@ -12,28 +12,15 @@ import {colorPalette} from '../../../components/atoms/colorPalette';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
+import {Iconcomp1, Iconcomp2} from '../careTaker/allIcons';
 
 const Patients = ({navigation}) => {
   const [index, setIndex] = useState(0);
-  const Iconcomp1 = () => {
-    return (
-      <FontAwesomeIcon
-        style={styles.icon}
-        color={colorPalette.mainColor}
-        icon={faHospitalUser}
-      />
-    );
-  };
+  const [myPatients, setMyPatients] = useState([]);
+  const [patients, setPatients] = useState([]);
+  const [pageNo, setPageNo] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const Iconcomp2 = () => {
-    return (
-      <FontAwesomeIcon
-        style={styles.icon}
-        color={colorPalette.mainColor}
-        icon={faUserFriends}
-      />
-    );
-  };
   useFocusEffect(() => {
     async function checkforlog() {
       const checkforlogin = await AsyncStorage.getItem('user_id');
@@ -87,10 +74,23 @@ const Patients = ({navigation}) => {
 
       <TabView value={index} onChange={setIndex} animationType="spring">
         <TabView.Item style={styles.tabItems}>
-          <MyPatients navigation={navigation} />
+          <MyPatients
+            navigation={navigation}
+            myPatients={myPatients}
+            setMyPatients={setMyPatients}
+            pageNo={pageNo}
+            setPageNo={setPageNo}
+          />
         </TabView.Item>
         <TabView.Item style={styles.tabItems}>
-          <PatientRequest />
+          <PatientRequest
+            patients={patients}
+            setPatients={setPatients}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            setPageNo={setPageNo}
+            setMyPatients={setMyPatients}
+          />
         </TabView.Item>
       </TabView>
     </View>

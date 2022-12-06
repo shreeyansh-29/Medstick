@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import {
+  MY_PATIENTS_CLEAR,
   MY_PATIENTS_ERROR,
   MY_PATIENTS_REQUEST,
   MY_PATIENTS_SUCCESS,
@@ -17,7 +18,18 @@ export const myPatientsReducer = (state = initialState, action) => {
     case MY_PATIENTS_SUCCESS:
       return {...state, data: action.payload.result, isLoading: false};
     case MY_PATIENTS_ERROR:
-      return {...state, error: action.payload, isLoading: false};
+      return {
+        ...state,
+        error: action.payload.status,
+        isLoading: false,
+        data: null,
+      };
+    case MY_PATIENTS_CLEAR:
+      return {
+        data: null,
+        isLoading: false,
+        error: null,
+      };
     default:
       return state;
   }

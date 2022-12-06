@@ -85,7 +85,7 @@ const SearchScreen = ({navigation}) => {
     if (res1?.status === 'Success') {
       Toast.show({
         type: 'success',
-        text1: 'Request Send Successfully',
+        text1: 'Request Sent Successfully',
         position: 'bottom',
       });
       setTimeout(() => {
@@ -114,7 +114,7 @@ const SearchScreen = ({navigation}) => {
     if (currentUser.user.email === email) {
       Toast.show({
         type: 'error',
-        text1: "Can't Add Yourself",
+        text1: 'Cannot Add Yourself',
         position: 'bottom',
       });
       return;
@@ -202,6 +202,16 @@ const SearchScreen = ({navigation}) => {
                   placeholderTextColor={colorPalette.mainColor}
                   clearIcon={
                     <Icon
+                      size={22}
+                      name="search"
+                      type="font-awesome"
+                      color={colorPalette.mainColor}
+                      onPress={() => handleSubmit()}
+                      containerStyle={{marginLeft: 10}}
+                    />
+                  }
+                  searchIcon={
+                    <Icon
                       name="remove"
                       type="font-awesome"
                       size={20}
@@ -210,16 +220,6 @@ const SearchScreen = ({navigation}) => {
                         setFieldValue('email', '');
                       }}
                       color={colorPalette.mainColor}
-                      containerStyle={{marginLeft: 10}}
-                    />
-                  }
-                  searchIcon={
-                    <Icon
-                      size={22}
-                      name="search"
-                      type="font-awesome"
-                      color={colorPalette.mainColor}
-                      onPress={() => handleSubmit()}
                       containerStyle={{marginLeft: 10}}
                     />
                   }

@@ -4,11 +4,11 @@ import {
   getUserSuccess,
 } from '../../action/getUserAction/getUserAction';
 import * as types from '../../actionTypes';
-import getUserService from '../../../network/networkServices/getUser/getUserService';
+import networkService from '../../../network/networkService';
 
 export function* getUserSaga(data) {
   try {
-    let response = yield call(getUserService.getUser, data);
+    let response = yield call(networkService.getUser, data);
     yield put(getUserSuccess(response.data));
   } catch (error) {
     yield put(getUserError(error));

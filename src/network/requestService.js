@@ -1,16 +1,16 @@
-import axios from 'axios';
+import instance from './instance';
 class RequestService {
-  getRequest(url, headers) {
-    return axios.get(url, headers);
+  getRequest(url) {
+    return instance.get(url);
   }
-  postRequest(url, object, headers) {
-    return axios.post(url, object, headers);
+  postRequest(url, object) {
+    return instance.post(url, object);
   }
-  putRequest(url, object, headers) {
-    return axios.put(url, object, headers);
+  putRequest(url, object) {
+    return instance.put(url, object);
   }
   deleteRequest(url) {
-    return axios.delete(url);
+    return instance.delete(url);
   }
 }
 export default new RequestService();

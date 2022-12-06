@@ -92,7 +92,6 @@ const Report = ({navigation}) => {
         })
         .then(() => {
           if (getUserMedicine.length !== 0 && medicineId !== null) {
-            console.log('medicine Id', getUserMedicine[0].userMedicineId);
             getHistory(medicineId);
           }
         })

@@ -4,14 +4,11 @@ import {
   getMedsHistoryError,
   getMedsHistorySuccess,
 } from '../../action/patients/getMedsHistoryAction';
-import GetMedicinesHistoryService from '../../../network/networkServices/patients/getMedsHistoryService';
+import networkService from '../../../network/networkService';
 
 export function* getMedsHistorySaga(data) {
   try {
-    let response = yield call(
-      GetMedicinesHistoryService.getGetMedicinesHistory,
-      data,
-    );
+    let response = yield call(networkService.getMedicineHistory, data);
     yield put(getMedsHistorySuccess(response?.data));
   } catch (error) {
     yield put(getMedsHistoryError(error));
