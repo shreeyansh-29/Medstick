@@ -12,7 +12,6 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
 import {day_data, months} from './pushNotification/timeData';
 import CustomButton from '../../../components/atoms/customButton';
-import {RadioButtonInput} from 'react-native-simple-radio-button';
 import CircleCheckBox from 'react-native-circle-checkbox';
 
 const ReminderDuration = ({route, navigation}) => {
