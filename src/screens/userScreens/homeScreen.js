@@ -80,8 +80,8 @@ const HomeScreen = ({navigation}) => {
         temp.percentage = Math.floor((cc / tr) * 100);
         obj.push(temp);
         savePercentageDetails(obj);
-      } else if (data !== null && data.length !==0) {
-        obj=data;
+      } else if (data !== null && data.length !== 0) {
+        obj = data;
         obj.map((item, index) => {
           const a = b => b.date == td_da;
           if (item.date === td_da) {
