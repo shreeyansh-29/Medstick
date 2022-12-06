@@ -255,7 +255,7 @@ const MedicinePanel = ({navigation}) => {
                             ? colorPalette.mainColor
                             : 'lightgrey'
                         }
-                        size={24}
+                        size={21}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -278,7 +278,7 @@ const MedicinePanel = ({navigation}) => {
                       <FontAwesomeIcon
                         icon={faTrash}
                         color={colorPalette.mainColor}
-                        size={24}
+                        size={21}
                       />
                     </TouchableOpacity>
                   </View>
