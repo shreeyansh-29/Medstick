@@ -92,6 +92,7 @@ const AppointmentReminderList = ({navigation}) => {
           a.appointmentList.map((r, index) => {
             if (r.appointmentId === deleteId) {
               a.appointmentList.splice(index, 1);
+              a.isModified = true;
             }
           });
         }

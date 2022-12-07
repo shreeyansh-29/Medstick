@@ -168,8 +168,6 @@ const Reminder = ({route, navigation}) => {
     food,
     totalReminders,
     currentCount,
-    timelist,
-    setTimelist,
   ) => {
     if (title.length === 0) {
       Alert.alert('Please enter a valid Title', ' ', [
@@ -287,6 +285,7 @@ const Reminder = ({route, navigation}) => {
     obj.startDate = fDatePrimary;
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;
+    obj.isModified = true;
 
     if (reminderStatus == true) {
       PushNotification.getScheduledLocalNotifications(rn => {

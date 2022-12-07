@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/userScreens/homeScreen';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -18,6 +18,10 @@ import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
 import AddButton from '../components/atoms/addButton';
 import {styles} from '../styles/navigationStyles';
 import Report from '../screens/userScreens/report/report';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {saveUserLoggedIn} from '../redux/action/loginAction/saveUserLoggedIn';
+import {useDispatch} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
 
 const TabBar = [
   {route: 'Home', component: HomeScreen, iconName: faHouseMedical},
@@ -29,6 +33,18 @@ const TabBar = [
 const Tab = createBottomTabNavigator();
 
 const BottomNavigator = ({navigation}) => {
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const getUser = async () => {
+    const user = await GoogleSignin.getCurrentUser();
+    if (user !== null) dispatch(saveUserLoggedIn(true));
+  };
+
+  useEffect(() => {
+    if (isFocused) getUser();
+    return () => {};
+  }, [isFocused]);
+
   const TabBarButton = props => {
     const {onPress, accessibilityState, item} = props;
     const focused = accessibilityState.selected;

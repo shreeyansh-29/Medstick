@@ -74,7 +74,6 @@ const UpdateAppointment = ({
       appointmentId: appointmentId,
     };
 
-    console.log(obj.time, obj.date, obj.appointmentId, '..........');
     getMedicine().then(data => {
       let updatedList = data;
       updatedList.map(item => {
@@ -82,6 +81,7 @@ const UpdateAppointment = ({
           item.appointmentList.map((ele, index) => {
             if (ele.appointmentId === appointmentId) {
               item.appointmentList[index] = obj;
+              item.isModified = true;
             }
           });
         }

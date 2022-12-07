@@ -23,6 +23,7 @@ const EditMedicineForm = props => {
     <View style={styles.mainView}>
       <View style={styles.inputField}>
         <InputField
+          disabled={true}
           styles={styles.field}
           label="Medicine Name"
           mode="outlined"

@@ -108,6 +108,7 @@ const AddMedicineLocal = ({navigation}) => {
         historyList: [],
         appointmentList: prescriptionObj.appointmentList,
         notes: '',
+        isModified: false,
       };
 
       getMedicine().then(data => {

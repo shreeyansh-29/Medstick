@@ -23,6 +23,7 @@ const InputField = props => {
       keyboardType={props.keyboardType}
       right={props.right}
       scrollEnabled={false}
+      disabled={props.disabled}
     />
   );
 };

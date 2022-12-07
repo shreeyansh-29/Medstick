@@ -24,14 +24,14 @@ const AuthScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.skipBtn}
         activeOpacity={1}
         onPress={() => {
           navigation.navigate('Home');
         }}>
         <Text style={styles.text}>Skip</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         style={styles.backBtn}
         activeOpacity={1}

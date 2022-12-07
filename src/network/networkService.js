@@ -229,5 +229,14 @@ class NetworkService {
       {},
     );
   }
+  async syncData(payload) {
+    const id = await AsyncStorage.getItem('user_id');
+    let data = payload.payload;
+    console.log(data);
+    return await RequestService.postRequest(
+      `${apiUrl.SYNC_DATA}?userId=${id}&Id=${id}`,
+      {data},
+    );
+  }
 }
 export default new NetworkService();

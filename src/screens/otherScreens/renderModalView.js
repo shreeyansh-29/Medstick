@@ -61,6 +61,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
         updateList[index].location = obj.location;
         updateList[index].prescriptionUrl = obj.prescriptionUrl;
         updateList[index].appointmentList = obj.appointmentList;
+        updateList[index].modified = true;
 
         AddMedicine(updateList);
       }

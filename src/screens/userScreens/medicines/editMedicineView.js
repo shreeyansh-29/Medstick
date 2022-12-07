@@ -87,6 +87,8 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
       obj.dosagePower = values.dosagePower.trim() + ' ' + values.doseType;
       obj.leftStock = values.notify.trim();
       obj.stock = values.stocks.trim();
+      obj.isModified = true;
+
       if (prescriptionObj.doctorName !== doctorName) {
         obj.prescriptionId = prescriptionObj.prescriptionId;
         obj.doctorName = prescriptionObj.doctorName;

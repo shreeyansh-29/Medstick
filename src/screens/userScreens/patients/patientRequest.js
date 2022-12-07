@@ -49,14 +49,11 @@ const PatientRequest = ({
     }
   }, [res]);
 
-  console.log(currentPage, 'hoja');
-
   useEffect(() => {
     currentPage === 0 ? dispatch(patientsReqRequest(currentPage)) : null;
   }, [currentPage]);
 
   const onEnd = () => {
-    console.log('ye call hora h');
     let a = currentPage + 1;
     if (patients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
       dispatch(patientsReqRequest(a));
@@ -175,7 +172,6 @@ const PatientRequest = ({
                 keyExtractor={(index, item) => index.toString()}
                 onEndReached={onEnd}
                 onEndReachedThreshold={0.01}
-                style={{backgroundColor: 'yellow'}}
               />
             </View>
           )}

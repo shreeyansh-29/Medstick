@@ -76,7 +76,7 @@ const RenderModalView = ({setVisible, props}) => {
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
-        activeOpacity={0.8}
+        activeOpacity={0.5}
         style={{marginTop: 4}}
         onPress={() => {
           setData(item);

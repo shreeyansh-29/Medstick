@@ -73,6 +73,7 @@ const AppointmentReminders = ({navigation, route}) => {
         updatedList.map((item, index) => {
           if (item.prescriptionId === prescriptionId) {
             updatedList[index].appointmentList.push(obj);
+            updatedList[index].isModified = true;
           }
         });
         AddMedicine(updatedList);
@@ -245,7 +246,6 @@ const AppointmentReminders = ({navigation, route}) => {
                 </View>
                 <DateTimePickerModal
                   isVisible={saveTimeOpen}
-                  minuteInterval={10}
                   mode="time"
                   onConfirm={date => {
                     let minutes =

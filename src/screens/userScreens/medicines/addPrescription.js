@@ -51,6 +51,7 @@ const AddPrescription = ({navigation}) => {
       location: values.location.trim(),
       prescriptionUrl: values.image,
       appointmentList: [],
+      flag: false,
     };
 
     getPrescription().then(data => {
