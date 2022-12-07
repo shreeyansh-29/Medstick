@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   medName: {fontSize: 20, fontWeight: '600', color: colorPalette.basicColor},
-  itemHeading: {fontSize: 16, fontWeight: '600', color: 'grey'},
+  itemHeading: {fontSize: 16, fontWeight: '600', color: 'gray'},
   itemWidth: {width: '50%'},
   itemView: {flexDirection: 'row', paddingVertical: 12, width: '100%'},
   itemData: {
@@ -277,21 +277,5 @@ const styles = StyleSheet.create({
   prescriptionView: {
     width: '100%',
   },
-  prescriptionText: {fontSize: 21},
+  prescriptionText: {fontSize: 21, color: colorPalette.black},
 });
-
-// {
-//   navigation?.navigate('AddMedicineStack', {
-//     screen: 'AddMedicine',
-//     params: {
-//       itemDescription: item.medicineDescription,
-//       itemDosageType: item.dosageQuantity,
-//       itemDosageUnit: item.dosageUnit,
-//       Stock: item.stock,
-//       doctorName: item.doctorName,
-//       contact: item.contact,
-//       specialization: item.specialization,
-//       loaction: item.location,
-//     },
-//   });
-// }

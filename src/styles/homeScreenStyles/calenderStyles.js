@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     paddingBottom: verticalScale(15),
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
-    backgroundColor:colorPalette.backgroundColor,
+    backgroundColor: colorPalette.backgroundColor,
   },
   calenderHeaderStyle: {
     color: colorPalette.mainColor,
@@ -17,7 +17,11 @@ export const styles = StyleSheet.create({
     paddingBottom: verticalScale(28),
   },
   calendarColor: colorPalette.basicColor,
-  dateNumberStyle: {color: colorPalette.mainColor, fontSize: 14, fontWeight:'700'},
+  dateNumberStyle: {
+    color: colorPalette.mainColor,
+    fontSize: 14,
+    fontWeight: '700',
+  },
   dateNameStyle: {color: colorPalette.mainColor, fontSize: 11.5},
   daySelection: {
     type: 'background',

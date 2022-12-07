@@ -14,12 +14,11 @@ export const colorPalette = {
   redColor: '#ff0000',
   grey: '#f8f8f8',
   darkGrey: '#505050',
-  blackColor: '#000',
+  black: '#000',
   redColor: '#ff2e2e',
   redColors: '#ff0000',
   greyColor: '#f0f0f0',
   lightWhite: '#e3f2fd',
   shadowColor: '#e3f2fd',
-  green1: '#4267B2',
   red1: '#e53935',
 };

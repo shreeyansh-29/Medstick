@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: colorPalette.basicColor,
   },
   dateContainer: {width: '100%', paddingVertical: 20},
-  dateText: {fontSize: 20, fontWeight: '600'},
+  dateText: {fontSize: 20, fontWeight: '600', color: colorPalette.black},
   dateText1: {
     fontSize: 16,
     color: 'black',
@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 17,
     fontWeight: '500',
+    color: 'gray',
   },
   checkView: {
     width: '40%',

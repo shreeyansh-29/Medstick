@@ -16,8 +16,7 @@ import {colorPalette} from './colorPalette';
 import {verticalScale} from './constant';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {saveInternetConnectivityStatus} from '../../redux/action/loginAction/saveInternetConnectivity';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn';
+
 
 const Styles = StyleSheet.create({
   container: {

@@ -275,7 +275,7 @@ const Report = ({navigation}) => {
               color={'grey'}
               shadowColor={'lightgrey'}
               bgColor={colorPalette.backgroundColor}>
-              <Text style={{fontSize: 16, color: colorPalette.blackColor}}>
+              <Text style={{fontSize: 16, color: colorPalette.black}}>
                 {date.day}
               </Text>
             </ProgressCircle>
@@ -361,14 +361,7 @@ const Report = ({navigation}) => {
                   theme={styles.theme}
                   initialDate={startDate}
                   minDate={'2012-05-10'}
-                  // maxDate={'2222-12-30'}
-                  onDayLongPress={day => {
-                    // console.log('selected day', day);
-                  }}
                   monthFormat={'yyyy MM'}
-                  onMonthChange={month => {
-                    // console.log('month changed', month);
-                  }}
                   hideArrows={false}
                   hideExtraDays={true}
                   disableMonthChange={true}

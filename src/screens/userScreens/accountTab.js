@@ -126,10 +126,10 @@ const AccountTab = ({navigation}) => {
             btnStyles={styles.btnStyles}
             contStyles={styles.contStyles}
             handleSubmit={() => {
-              navigation.navigate('Logout');
               imgstate('https://i.stack.imgur.com/l60Hf.png');
               setName('Please Login First');
               setIsLoggedIn(false);
+              navigation.navigate('Logout');
             }}
           />
         ) : (

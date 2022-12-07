@@ -630,7 +630,12 @@ const Reminder = ({route, navigation}) => {
                 justifyContent: 'flex-start',
                 paddingVertical: 6,
               }}>
-              <Text style={{fontSize: 16, fontWeight: '700'}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: '700',
+                  color: colorPalette.black,
+                }}>
                 Take Medicine:
               </Text>
             </View>
@@ -703,6 +708,7 @@ const Reminder = ({route, navigation}) => {
           <Divider></Divider>
           <View style={{marginBottom: 10}}>
             <Text style={styles.title}>Select Days</Text>
+
             <CheckBox
               style={styles.days}
               onClick={() => {
@@ -712,7 +718,7 @@ const Reminder = ({route, navigation}) => {
               isChecked={check1}
               checkBoxColor={colorPalette.appColor}
               leftText={'Everyday'}
-              leftTextStyle={{fontSize: 16}}
+              leftTextStyle={{fontSize: 16, color: 'gray'}}
             />
             <CheckBox
               style={styles.days}
@@ -723,7 +729,7 @@ const Reminder = ({route, navigation}) => {
               isChecked={check2}
               checkBoxColor={colorPalette.appColor}
               leftText={'Selected days'}
-              leftTextStyle={{fontSize: 16}}
+              leftTextStyle={{fontSize: 16, color: 'gray'}}
             />
             {check2 && (
               <SectionedMultiSelect

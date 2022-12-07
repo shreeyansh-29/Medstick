@@ -63,6 +63,8 @@ const Calender = props => {
         iconStyle={styles.iconStyle}
         datesBlacklist={dateBlackList}
         dayComponentHeight={40}
+        disabledDateNameStyle={{color: 'black'}}
+        disabledDateNumberStyle={{color: 'black'}}
         maxDate={new Date(endDate)}
         // minDate={new Date(startDate)}
       />
