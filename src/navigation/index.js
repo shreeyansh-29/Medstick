@@ -9,11 +9,24 @@ import AddMedicineStack from './stacks/AddMedicineStack';
 import MedicinePanelStack from './stacks/MedicinePanelStack';
 import HomeStack from './stacks/HomeStack';
 import Logout from '../Logout';
+import {useDispatch} from 'react-redux';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {saveUserLoggedIn} from '../redux/action/loginAction/saveUserLoggedIn';
 
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {
   const [showSplashScreen, setShowSplashScreen] = useState(true);
+  const dispatch = useDispatch();
+  const getUser = async () => {
+    const user = await GoogleSignin.getCurrentUser();
+    if (user !== null) dispatch(saveUserLoggedIn(true));
+  };
+
+  useEffect(() => {
+    getUser();
+    return () => {};
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {

@@ -26,7 +26,6 @@ const HomeScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const load = useSelector(state => state.userInfo?.data);
-
   let td_da = moment().format('YYYY-MM-DD');
 
   // useEffect(() => {

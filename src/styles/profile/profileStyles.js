@@ -80,13 +80,12 @@ const styles = StyleSheet.create({
   },
   editBtn: {
     alignSelf: 'flex-end',
-    // marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    // backgroundColor: 'red',
     position: 'absolute',
     right: 14,
     bottom: 10,
+    padding: 2,
   },
   editText: {color: 'white', marginRight: 6, fontSize: 16},
 

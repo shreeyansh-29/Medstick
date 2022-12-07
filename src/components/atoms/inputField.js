@@ -22,6 +22,7 @@ const InputField = props => {
       autoComplete="off"
       keyboardType={props.keyboardType}
       right={props.right}
+      scrollEnabled={false}
     />
   );
 };

@@ -51,6 +51,7 @@ const RenderModalVisible = ({
         position: 'top',
       });
     }
+    return () => {};
   }, [res]);
 
   const handleClick = values => {
@@ -111,8 +112,7 @@ const RenderModalVisible = ({
               }}
               validationSchema={profileValidationSchema}
               onSubmit={values => {
-                console.log(values);
-                // handleClick(values);
+                handleClick(values);
               }}>
               {({
                 handleChange,

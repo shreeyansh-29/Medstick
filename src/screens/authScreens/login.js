@@ -12,21 +12,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {useIsFocused} from '@react-navigation/native';
 import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn';
+import {encryptData} from '../../components/atoms/crypto';
 
 const Login = ({navigation}) => {
   const res = useSelector(state => state.signIn.data);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  const connected = useSelector(state => state.internetConnectivity?.data);
 
   const getResponse = async () => {
     if (res?.status === 'Success') {
       await AsyncStorage.setItem('user_id', res.userList[0].id);
       await AsyncStorage.setItem('user_name', res.userList[0].userName);
       await AsyncStorage.setItem('user_email', res.userList[0].email);
-      await AsyncStorage.setItem('accessToken', res.accessToken);
-      const user = await GoogleSignin.getCurrentUser();
-      if (user !== null) dispatch(saveUserLoggedIn(true));
+      let token = encryptData(res?.accessToken);
+      await AsyncStorage.setItem('accessToken', token);
+      dispatch(saveUserLoggedIn(true));
 
       Toast.show({
         type: 'success',
@@ -58,24 +58,22 @@ const Login = ({navigation}) => {
   }, [isFocused, res]);
 
   const login = async () => {
-    if (connected) {
-      try {
-        await GoogleSignin.hasPlayServices();
-        const userInfo = await GoogleSignin.signIn();
-        const token = await messaging().getToken();
-        const {email, photo} = userInfo.user;
-        await AsyncStorage.setItem('user_photo', photo);
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const token = await messaging().getToken();
+      const {email, photo} = userInfo.user;
+      await AsyncStorage.setItem('user_photo', photo);
 
-        dispatch(loginRequest({email, token}));
-      } catch (err) {
-        if (await GoogleSignin.isSignedIn()) {
-          await GoogleSignin.signOut();
-        }
-        Toast.show({
-          type: 'info',
-          text1: 'Something Went Wrong',
-        });
+      dispatch(loginRequest({email, token}));
+    } catch (err) {
+      if (await GoogleSignin.isSignedIn()) {
+        await GoogleSignin.signOut();
       }
+      Toast.show({
+        type: 'info',
+        text1: 'Something Went Wrong',
+      });
     }
   };
 

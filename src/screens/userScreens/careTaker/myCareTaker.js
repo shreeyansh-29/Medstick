@@ -94,19 +94,19 @@ const MyCareTaker = ({navigation}) => {
               onEndReachedThreshold={0.01}
               keyExtractor={(item, index) => index.toString()}
               showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(myCaretakerClear());
-                    setRefresh(false);
-                    setPageNo(0);
-                    setCaretaker([]);
-                  }}
-                />
-              }
+              // refreshControl={
+              //   <RefreshControl
+              //     colors={[colorPalette.mainColor]}
+              //     tintColor={[colorPalette.mainColor]}
+              //     refreshing={refresh}
+              //     onRefresh={() => {
+              //       dispatch(myCaretakerClear());
+              //       setRefresh(false);
+              //       setPageNo(0);
+              //       setCaretaker([]);
+              //     }}
+              //   />
+              // }
             />
           )}
 

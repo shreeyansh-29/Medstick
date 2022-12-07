@@ -24,7 +24,7 @@ const ProfileForm = props => {
           text="bio"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={props.values.bio.trim()}
+          value={props.values.bio}
           multiline={true}
           selectTextOnFocus={true}
         />
@@ -44,7 +44,7 @@ const ProfileForm = props => {
           text="contact"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={props.values.contact.trim()}
+          value={props.values.contact}
           keyboardType="numeric"
           selectTextOnFocus={true}
         />
@@ -98,7 +98,7 @@ const ProfileForm = props => {
           text="address"
           activeOutlineColor={colorPalette.mainColor}
           {...props}
-          value={props.values.address.trim()}
+          value={props.values.address}
           selectTextOnFocus={true}
         />
         {props.errors.address && props.touched.address && (
@@ -117,7 +117,7 @@ const ProfileForm = props => {
             text="state"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.state.trim()}
+            value={props.values.state}
             selectTextOnFocus={true}
           />
           {props.errors.state && props.touched.state && (
@@ -134,7 +134,7 @@ const ProfileForm = props => {
             text="country"
             activeOutlineColor={colorPalette.mainColor}
             {...props}
-            value={props.values.country.trim()}
+            value={props.values.country}
             selectTextOnFocus={true}
           />
           {props.errors.country && props.touched.country && (

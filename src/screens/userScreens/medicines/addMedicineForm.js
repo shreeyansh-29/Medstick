@@ -11,27 +11,13 @@ import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import CustomModal from '../../../components/molecules/customModal';
 import {styles} from '../../../styles/medicinePanelStyles/medicineFormStyles';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
-import {useIsFocused} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import RenderModalView from './renderModalView';
 import {useSelector} from 'react-redux';
 
 const AddMedicineForm = props => {
   const [visible, setVisible] = useState(false);
-  const focused = useIsFocused();
-  const [load, setLoad] = useState(false);
+  const load = useSelector(state => state.userInfo?.data);
   const connected = useSelector(state => state.internetConnectivity?.data);
-
-  const getUser = async () => {
-    const user = await GoogleSignin.getCurrentUser();
-    if (user !== null) setLoad(true);
-  };
-
-  useEffect(() => {
-    if (focused) {
-      getUser();
-    }
-  }, [focused]);
 
   let obj = {
     doctorName: null,

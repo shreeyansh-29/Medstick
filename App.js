@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import MainNavigation from './src/navigation/index';
-import {Alert, BackHandler, StatusBar} from 'react-native';
+import {StatusBar} from 'react-native';
 import {colorPalette} from './src/components/atoms/colorPalette';
 import store from './src/redux/store';
 import './ignoreWarnings';
