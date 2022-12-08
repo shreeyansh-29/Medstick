@@ -91,12 +91,11 @@ const AppointmentReminderList = ({navigation}) => {
           });
           setAppointments(reminderList);
         }
-      });
-    });
-
+      })
+    })
     PushNotification.getScheduledLocalNotifications(rn => {
       for (let i = 0; i < rn.length; i++) {
-        if ( deleteId === rn[i].number ) {
+        if ( deleteId === rn[i].id ) {
           PushNotification.cancelLocalNotification({id: rn[i].id});
         }
       }

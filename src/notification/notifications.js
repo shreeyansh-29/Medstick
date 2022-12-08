@@ -43,17 +43,17 @@ class Notifications {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take '+name+' at '+time,
+        message: 'Take '+name,
         date: date,
         repeatType: 'day',
-        number:name
+        // number:name
       });
     } else {
       PushNotification.localNotificationSchedule({
-        number: name,
+        // number: name,
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name+' at '+time,
+        message: 'Take ' + name,
         date: date,
         repeatType: currentTime2 <= enddate ? 'day' : null,
         
@@ -61,13 +61,13 @@ class Notifications {
     }
   }
   schduleNotification2(date, Id) {
+    let userId= parseInt(Id);
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Appointment!',
       message: 'You have an appointment scheduled',
       date: date,
-      number: Id,
-      shortcutId: 'shortcut-id',
+      id: Id,
     });
   }
 }
