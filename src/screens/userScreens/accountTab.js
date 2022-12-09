@@ -14,17 +14,15 @@ import {
   faCameraRetro,
 } from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../styles/otherScreensStyles/accountTabStyles';
-import {colorPallete} from '../../components/atoms/colorPallete';
 import {Divider} from 'react-native-paper';
 import CustomButton from '../../components/atoms/customButton';
-import {verticalScale} from '../../components/atoms/constant';
 
 const AccountTab = ({navigation}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name, setName] = useState('Please Login First');
   const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
 
-  useFocusEffect(() => {
+  useEffect(() => {
     async function checkforlog() {
       const checkforlogin = await AsyncStorage.getItem('user_id');
       if (checkforlogin !== null) {
@@ -34,7 +32,8 @@ const AccountTab = ({navigation}) => {
       }
     }
     checkforlog();
-  });
+    return () => {};
+  }, []);
 
   useEffect(() => {
     GoogleSignin.configure({

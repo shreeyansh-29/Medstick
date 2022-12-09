@@ -162,6 +162,7 @@ const MedicinePanel = ({navigation}) => {
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
+        console.log(data);
         if (data !== null && data.length !== 0) {
           setMedicineResponse(data);
         }

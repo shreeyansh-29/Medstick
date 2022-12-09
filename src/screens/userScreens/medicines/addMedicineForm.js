@@ -110,7 +110,7 @@ const AddMedicineForm = props => {
             text="dosageQuantity"
             activeOutlineColor={colorPallete.mainColor}
             {...props}
-            value={props.values.dosageQuantity.trim()}
+            value={props.values.dosageQuantity}
             keyboardType="numeric"
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
@@ -125,7 +125,7 @@ const AddMedicineForm = props => {
             styles={[styles.field, {width: '97%'}]}
             text="dosagePower"
             label="Dosage Power"
-            value={props.values.dosagePower.trim()}
+            value={props.values.dosagePower}
             mode="outlined"
             outlineColor="lightgrey"
             keyboardType="numeric"
@@ -164,7 +164,7 @@ const AddMedicineForm = props => {
             text="stocks"
             activeOutlineColor={colorPallete.mainColor}
             {...props}
-            value={props.values.stocks.trim()}
+            value={props.values.stocks}
             keyboardType="numeric"
           />
           {props.errors.stocks && props.touched.stocks && (
@@ -187,7 +187,7 @@ const AddMedicineForm = props => {
             text="notify"
             activeOutlineColor={colorPallete.mainColor}
             {...props}
-            value={props.values.notify.trim()}
+            value={props.values.notify}
             keyboardType="numeric"
           />
           {props.errors.notify && props.touched.notify && (

@@ -10,7 +10,7 @@ import CheckBox from 'react-native-check-box';
 import {deviceWidth} from '../../../components/atoms/constant';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
-import {day_data, months} from './pushNotification/timeData';
+import {day_data, months, todayDay} from './pushNotification/timeData';
 import CustomButton from '../../../components/atoms/customButton';
 import CircleCheckBox from 'react-native-circle-checkbox';
 
@@ -54,7 +54,7 @@ const ReminderDuration = ({route, navigation}) => {
               alignItems: 'flex-start',
             }}>
             <Text style={styles.dateText1}>
-              {day_data[0].children[startDate.getDay()].id +
+              {todayDay[startDate.getDay()] +
                 ' ' +
                 startDate.getDate() +
                 ' ' +
@@ -168,7 +168,7 @@ const ReminderDuration = ({route, navigation}) => {
           <Text style={styles.dateText1}>
             {check1
               ? 'No End Date'
-              : day_data[0].children[endDate.getDay()].id +
+              : todayDay[endDate.getDay()] +
                 ' ' +
                 endDate.getDate() +
                 ' ' +

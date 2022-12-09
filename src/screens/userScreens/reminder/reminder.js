@@ -5,7 +5,7 @@ import {Divider} from 'react-native-elements/dist/divider/Divider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {day_data, months} from './pushNotification/timeData';
+import {day_data, months, todayDay} from './pushNotification/timeData';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {TextInput} from 'react-native-paper';
@@ -82,7 +82,8 @@ const Reminder = ({route, navigation}) => {
     console.log(reminderTime);
 
     for (let i = 0; i < reminderTime.length; i++) {
-      if(reminderTime[i] !== "") number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
+      if (reminderTime[i] !== '')
+        number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
     }
 
     let endDate1 =
@@ -278,10 +279,7 @@ const Reminder = ({route, navigation}) => {
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
 
-    // setReminderWithSelectedDate(title, fDatePrimary, fDateSecondary);
-
     frequencyHandler();
-    // console.log(frequency, 'freq  ');
     const frequencyTemp = frequency.toString();
 
     if (endDate === 'No End Date') {
@@ -318,27 +316,27 @@ const Reminder = ({route, navigation}) => {
 
     handlePushNotification(obj, check1, endDate);
 
-    // getMedicine().then(data => {
-    //   const temp = data;
-    //   if (temp[route.params.index].reminderId !== null) {
-    //     temp[route.params.index] = obj;
-    //   } else {
-    //     obj.reminderId = uuid.v4();
-    //     temp[route.params.index] = obj;
-    //   }
-    //   AddMedicine(temp);
-    // });
+    getMedicine().then(data => {
+      const temp = data;
+      if (temp[route.params.index].reminderId !== null) {
+        temp[route.params.index] = obj;
+      } else {
+        obj.reminderId = uuid.v4();
+        temp[route.params.index] = obj;
+      }
+      AddMedicine(temp);
+    });
     loadstate(false);
 
-    // Toast.show({
-    //   text1: 'Reminder Saved',
-    //   type: 'success',
-    //   position: 'bottom',
-    // });
+    Toast.show({
+      text1: 'Reminder Saved',
+      type: 'success',
+      position: 'bottom',
+    });
 
-    // setTimeout(() => {
-    //   navigation.pop();
-    // }, 1000);
+    setTimeout(() => {
+      navigation.pop();
+    }, 1000);
   };
 
   return (
@@ -359,7 +357,7 @@ const Reminder = ({route, navigation}) => {
               <View style={styles.mainView}>
                 <View style={styles.subView}>
                   <Text style={styles.dateText1}>
-                    {day_data[0].children[startDate.getDay()].id +
+                    {todayDay[startDate.getDay()] +
                       ' ' +
                       startDate.getDate() +
                       ' ' +
@@ -393,7 +391,7 @@ const Reminder = ({route, navigation}) => {
                   <Text style={styles.dateText1}>
                     {fDateSecondary == 'No End Date'
                       ? 'No End Date'
-                      : day_data[0].children[endDate.getDay()].id +
+                      : todayDay[endDate.getDay()] +
                         ' ' +
                         endDate.getDate() +
                         ' ' +
