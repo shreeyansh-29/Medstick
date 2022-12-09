@@ -51,7 +51,7 @@ const AccountTab = ({navigation}) => {
           activeOpacity={0.8}
           onPress={() => {
             isLoggedIn
-              ? navigation.navigate('EditProfile')
+              ? navigation.navigate('AccountStack', {screen: 'EditProfile'})
               : navigation.navigate('AuthScreen');
           }}>
           {isLoggedIn ? (
