@@ -36,9 +36,6 @@ class Notifications {
       '-' +
       currentTime.getDate();
 
-    console.log(currentTime2, 'current timeee');
-    console.log(enddate,"enddateeee");
-
     if (check1) {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
@@ -46,11 +43,9 @@ class Notifications {
         message: 'Take '+name,
         date: date,
         repeatType: 'day',
-        // number:name
       });
     } else {
       PushNotification.localNotificationSchedule({
-        // number: name,
         channelId: 'reminders',
         title: 'Reminder!',
         message: 'Take ' + name,
