@@ -23,7 +23,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {AddMedicine, getMedicine} from '../../utils/storage';
 import uuid from 'react-native-uuid';
-import Notifications from '../../notification/notifications';
+import Notifications from '../../pushNotification/pushNotifications';
 import {colorPallete} from '../../components/atoms/colorPalette';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
@@ -65,15 +65,16 @@ const AppointmentReminders = ({navigation, route}) => {
       (d.getMonth() + 1) +
       '-' +
       (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
-    const time1 = moment(obj.time, ['h:mm A']).format('HH:mm');
-    const time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
+
+    let time1 = moment(obj.time, ['h:mm A']).format('HH:mm');
+    let time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
 
     let hour =
       parseInt(time1.split(':')[0]) === 0
         ? 23
         : parseInt(time1.split(':')[0] - 1);
 
-    let reminderTime = hour + ':' + parseInt(time1.split(':')[1]);
+    let reminderTime = hour + ':' + time1.split(':')[1];
 
     if (currentDate === obj.date) {
       time1 > time2
@@ -87,7 +88,9 @@ const AppointmentReminders = ({navigation, route}) => {
                 }
               });
               AddMedicine(updatedList);
-              handlePushNotification(obj, reminderTime, obj.time);
+              reminderTime > time2
+                ? handlePushNotification(obj, reminderTime, obj.time)
+                : null;
               handlePushNotification(obj, time1, obj.time);
               Toast.show({
                 type: 'success',
@@ -111,7 +114,9 @@ const AppointmentReminders = ({navigation, route}) => {
             }
           });
           AddMedicine(updatedList);
-          handlePushNotification(obj, reminderTime, obj.time);
+          reminderTime > time2
+            ? handlePushNotification(obj, reminderTime, obj.time)
+            : null;
           handlePushNotification(obj, time1, obj.time);
           Toast.show({
             type: 'success',

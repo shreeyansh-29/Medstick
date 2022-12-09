@@ -230,7 +230,10 @@ const AppointmentReminderList = ({navigation}) => {
                       </TouchableOpacity>
                     </>
                   ) : (
-                    <Text style={{color: 'gray'}}>Expired</Text>
+                    <Text
+                      style={{color: 'gray', fontSize: 16, fontWeight: '500'}}>
+                      Expired
+                    </Text>
                   )}
                 </>
               ) : (

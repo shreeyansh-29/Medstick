@@ -12,6 +12,24 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: colorPallete.black,
   },
+  startDateContainer: {
+    justifyContent: 'flex-start',
+    width: '35%',
+  },
+  endDateContainer: {
+    width: '35%',
+    alignItems: 'flex-start',
+  },
+  mainView: {
+    width: '65%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  subView: {
+    justifyContent: 'flex-end',
+    width: '90%',
+    alignItems: 'flex-end',
+  },
   dateText1: {
     fontSize: 17,
     marginLeft: 8,
@@ -63,6 +81,47 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     marginTop: 35,
+  },
+  frequencyTouchable: {
+    borderRadius: 3,
+    alignItems: 'center',
+    borderColor: colorPallete.mainColor,
+    backgroundColor: colorPallete.greyColor,
+    padding: 6,
+    marginTop: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  medicineContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '95%',
+    alignSelf: 'center',
+    marginVertical: 10,
+    height: '8%',
+  },
+  takeMedicine: {
+    width: '35%',
+  },
+  takeMedicineText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colorPallete.black,
+  },
+  touchableButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '65%',
+    alignSelf: 'center',
+  },
+  buttonStyles: {
+    borderWidth: 1,
+    borderColor: colorPallete.mainColor,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 6,
+    width: '46.5%',
   },
 });
 export default styles;

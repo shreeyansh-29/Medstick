@@ -20,7 +20,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Toast from 'react-native-toast-message';
 import {hour} from '../../constants/constants';
 import {AddMedicine, getMedicine} from '../../utils/storage';
-import Notifications from '../../notification/notifications';
+import Notifications from '../../pushNotification/pushNotifications';
 import PushNotification from 'react-native-push-notification';
 import {colorPallete} from '../../components/atoms/colorPalette';
 
@@ -96,7 +96,9 @@ const UpdateAppointment = ({
                         }
                       }
                     });
-                    handlePushNotification(obj, reminderTime, obj.time);
+                    reminderTime > time2
+                      ? handlePushNotification(obj, reminderTime, obj.time)
+                      : null;
                     handlePushNotification(obj, time1, obj.time);
                     item.appointmentList[index] = obj;
                     item.isModified = true;
@@ -152,7 +154,9 @@ const UpdateAppointment = ({
                     }
                   }
                 });
-                handlePushNotification(obj, reminderTime, obj.time);
+                reminderTime > time2
+                  ? handlePushNotification(obj, reminderTime, obj.time)
+                  : null;
                 handlePushNotification(obj, time1, obj.time);
                 item.appointmentList[index] = obj;
                 item.isModified = true;
