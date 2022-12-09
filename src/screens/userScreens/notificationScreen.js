@@ -4,7 +4,7 @@ import SubHeader from '../../components/molecules/headers/subHeader';
 import NotificationCard from '../../components/molecules/notificationCard';
 import {useDispatch, useSelector} from 'react-redux';
 import {loadGetAllNotification} from '../../redux/action/notification/getAllNotification';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import Loader from '../../components/atoms/loader';
 import CustomImage from '../../components/atoms/customImage';
 
@@ -63,8 +63,8 @@ const NotificationScreen = ({navigation}) => {
               )}
               refreshControl={
                 <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
+                  colors={[colorPallete.mainColor]}
+                  tintColor={[colorPallete.mainColor]}
                   refreshing={refresh}
                   onRefresh={() => {
                     dispatch(loadGetAllNotification(pageNo));
@@ -81,7 +81,7 @@ const NotificationScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  container: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   imgContainer: {
     flex: 1,
     alignItems: 'center',

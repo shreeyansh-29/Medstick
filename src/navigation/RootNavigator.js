@@ -1,6 +1,6 @@
 import React from 'react';
 import 'react-native-gesture-handler';
-import {isReadyRef, navigationRef} from '@navigation/RootNavigation';
+import {isReadyRef, navigationRef} from './RootNavigation';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './AppNavigator';
 

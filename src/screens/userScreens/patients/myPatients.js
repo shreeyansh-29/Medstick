@@ -11,7 +11,7 @@ import {
 } from '../../../redux/action/patients/myPatientsAction';
 import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPallete';
 
 const MyPatients = ({
   navigation,
@@ -36,7 +36,6 @@ const MyPatients = ({
   useEffect(() => {
     pageNo === 0 ? dispatch(myPatientsRequest(pageNo)) : null;
   }, [pageNo]);
-
 
   useEffect(() => {
     if (res?.data !== null) {
@@ -104,8 +103,8 @@ const MyPatients = ({
               onEndReachedThreshold={0.01}
               // refreshControl={
               //   <RefreshControl
-              //     colors={[colorPalette.mainColor]}
-              //     tintColor={[colorPalette.mainColor]}
+              //     colors={[colorPallete.mainColor]}
+              //     tintColor={[colorPallete.mainColor]}
               //     refreshing={refresh}
               //     onRefresh={() => {
               //       dispatch(myPatientsClear());

@@ -11,7 +11,7 @@ import {
 } from '../../../redux/action/caretaker/myCaretakerAction';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPallete';
 
 const MyCareTaker = ({navigation}) => {
   const dispatch = useDispatch();
@@ -94,19 +94,19 @@ const MyCareTaker = ({navigation}) => {
               onEndReachedThreshold={0.01}
               keyExtractor={(item, index) => index.toString()}
               showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(myCaretakerClear());
-                    setRefresh(false);
-                    setPageNo(0);
-                    setCaretaker([]);
-                  }}
-                />
-              }
+              // refreshControl={
+              //   <RefreshControl
+              //     colors={[colorPallete.mainColor]}
+              //     tintColor={[colorPallete.mainColor]}
+              //     refreshing={refresh}
+              //     onRefresh={() => {
+              //       dispatch(myCaretakerClear());
+              //       setRefresh(false);
+              //       setPageNo(0);
+              //       setCaretaker([]);
+              //     }}
+              //   />
+              // }
             />
           )}
 

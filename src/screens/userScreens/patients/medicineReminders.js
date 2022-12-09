@@ -3,7 +3,7 @@ import React from 'react';
 import {Card, Divider} from 'react-native-paper';
 import styles from '../../../styles/patientStyles/medicineReportStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const Reminder = ({item, index}) => {
   const nottaken = item.notTaken.split(',');
@@ -32,8 +32,8 @@ const Reminder = ({item, index}) => {
             radius={20}
             borderWidth={3}
             styles={{
-              shadowColor: colorPalette.restPercentageColor,
-              bgColor: colorPalette.basicColor,
+              shadowColor: colorPallete.restPercentageColor,
+              bgColor: colorPallete.basicColor,
               percentage: {fontSize: 10},
             }}
             text={Math.round((tl / (tl + nt)) * 100) + '%'}

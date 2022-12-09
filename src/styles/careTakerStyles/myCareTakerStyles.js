@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
@@ -22,11 +22,11 @@ export const styles = StyleSheet.create({
   // icon: {alignItems: 'center'},
 
   //main
-  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  container: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   img: {height: verticalScale(230), width: horizontalScale(230)},
   imgView: {
     flex: 1,
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
     alignItems: 'center',
     justifyContent: 'center',
   },

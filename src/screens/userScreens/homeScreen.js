@@ -16,8 +16,9 @@ import {
   getPercentageDetails,
   savePercentageDetails,
 } from '../../utils/storage';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import moment from 'moment';
+import {syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -26,24 +27,16 @@ const HomeScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const load = useSelector(state => state.userInfo?.data);
-
   let td_da = moment().format('YYYY-MM-DD');
 
   // useEffect(() => {
-  //   const backAction = () => {
-  //     Alert.alert('Hold On!', 'Are you sure you want to exit?', [
-  //       {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-  //       {text: 'Yes', onPress: () => BackHandler.exitApp()},
-  //     ]);
-  //     return true;
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
-  //   return () => backHandler.remove();
-  // }, []);
+  //   getMedicine().then(data => {
+  //     if (data !== null && data.length !== 0) {
+  //       let updatedList = data;
+  //       dispatch(syncDataRequest(updatedList));
+  //     }
+  //   });
+  // }, [connected, load]);
 
   useEffect(() => {
     if (connected && load) dispatch(myCaretakerRequest(0));
@@ -87,7 +80,7 @@ const HomeScreen = ({navigation}) => {
           if (item.date === td_da) {
             item.percentage = Math.floor((cc / tr) * 100);
             obj[index] = item;
-            console.log('zzz', obj);
+            // console.log('zzz', obj);
           } else if (!obj.some(a) && tr !== 0) {
             temp.date = td_da;
             temp.percentage = Math.floor((cc / tr) * 100);

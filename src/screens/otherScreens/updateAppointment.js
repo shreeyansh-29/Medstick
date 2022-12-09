@@ -5,9 +5,9 @@ import {
   KeyboardAvoidingView,
   Dimensions,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
-import {colorPalette} from '../../components/atoms/colorPalette';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import {Divider} from 'react-native-paper';
@@ -20,8 +20,9 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Toast from 'react-native-toast-message';
 import {hour} from '../../constants/constants';
 import {AddMedicine, getMedicine} from '../../utils/storage';
-import Notifications from '../../notification/notifications';
+import Notifications from '../../pushNotification/pushNotifications';
 import PushNotification from 'react-native-push-notification';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -35,35 +36,18 @@ const UpdateAppointment = ({
 }) => {
   const [dateOpen, setDateOpen] = useState(false);
   const [timeOpen, setTimeOpen] = useState(false);
-  console.log(appointmentId, 'ID');
+  const showAlert = () => {
+    Alert.alert('Please add valid time', '', [
+      {
+        text: 'Ok',
+        onPress: () => {},
+      },
+    ]);
+  };
 
-  const handlePushNotification = (temp, time1, appointmentId) => {
-    let d = new Date();
-    let currentTime = d.getHours() + ':' + d.getMinutes();
-    let currentDate =
-      d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-    const number = moment(time1, ['h:mm A']).format('HH:mm');
-    console.log(number, 'number');
-
-    let chosenDate = new Date(temp).getTime() + 24 * 60 * 60 * 1000;
-    let chosenDate1 = new Date(chosenDate);
-    let chosenDate2 =
-      chosenDate1.getFullYear() +
-      '-' +
-      (chosenDate1.getMonth() + 1) +
-      '-' +
-      chosenDate1.getDate();
-    console.log(currentDate, chosenDate2);
-
-    if (number < currentTime && currentDate >= temp) {
-      let dateTime = moment(chosenDate2 + ' ' + number);
-      console.log(dateTime._d, 'dateTime1');
-      Notifications.schduleNotification2(dateTime._d, appointmentId);
-    } else {
-      let dateTime = moment(temp + ' ' + number);
-      console.log(dateTime._d, 'dateTime2');
-      Notifications.schduleNotification2(dateTime._d, appointmentId);
-    }
+  const handlePushNotification = (obj, reminderTime, time) => {
+    let dateTime = moment(obj.date + ' ' + reminderTime);
+    Notifications.schduleNotification2(dateTime._d, obj.appointmentId, time);
   };
 
   const updateAppointment = values => {
@@ -74,52 +58,136 @@ const UpdateAppointment = ({
       appointmentId: appointmentId,
     };
 
-    console.log(obj.time, obj.date, obj.appointmentId, '..........');
-    getMedicine().then(data => {
-      let updatedList = data;
-      updatedList.map(item => {
-        if (item.appointmentList.length !== 0) {
-          item.appointmentList.map((ele, index) => {
-            if (ele.appointmentId === appointmentId) {
-              item.appointmentList[index] = obj;
-            }
-          });
-        }
-        AddMedicine(updatedList);
-        Toast.show({
-          type: 'success',
-          text1: 'Updated Successfully',
-        });
+    let d = new Date();
+    let currentTime = d.getHours() + ':' + d.getMinutes();
+    let currentDate =
+      d.getFullYear() +
+      '-' +
+      (d.getMonth() + 1) +
+      '-' +
+      (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
+    const time1 = moment(obj.time, ['h:mm A']).format('HH:mm');
+    const time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
+    let reminderTime =
+      parseInt(time1.split(':')[0] - 1) + ':' + parseInt(time1.split(':')[1]);
 
-        getMedicine().then(data => {
-          if (data !== null && data.length !== 0) {
-            let reminderList = [];
-            data.map(item => {
+    if (currentDate === obj.date) {
+      time1 > time2
+        ? getMedicine().then(data => {
+            let localTime;
+            let updatedList = data;
+            updatedList.map(item => {
               if (item.appointmentList.length !== 0) {
-                item.appointmentList.map(ele => {
-                  reminderList.push(ele);
+                item.appointmentList.map((ele, index) => {
+                  if (ele.appointmentId === appointmentId) {
+                    localTime = ele.time;
+                    PushNotification.getScheduledLocalNotifications(rn => {
+                      for (let i = 0; i < rn.length; i++) {
+                        if (
+                          'You have an appointment scheduled at' +
+                            ' ' +
+                            localTime ===
+                            rn[i].message &&
+                          rn[i].title === 'Appointment!'
+                        ) {
+                          PushNotification.cancelLocalNotification({
+                            id: rn[i].id,
+                          });
+                        }
+                      }
+                    });
+                    reminderTime > time2
+                      ? handlePushNotification(obj, reminderTime, obj.time)
+                      : null;
+                    handlePushNotification(obj, time1, obj.time);
+                    item.appointmentList[index] = obj;
+                    item.isModified = true;
+                  }
                 });
               }
+              AddMedicine(updatedList);
+              Toast.show({
+                type: 'success',
+                text1: 'Updated Successfully',
+              });
+
+              getMedicine().then(data => {
+                if (data !== null && data.length !== 0) {
+                  let reminderList = [];
+                  data.map(item => {
+                    if (item.appointmentList.length !== 0) {
+                      item.appointmentList.map(ele => {
+                        reminderList.push(ele);
+                      });
+                    }
+                  });
+                  setAppointments(reminderList);
+                }
+              });
             });
-            setAppointments(reminderList);
+            setTimeout(() => {
+              setModalVisible(false);
+            }, 1000);
+          })
+        : showAlert();
+    } else {
+      getMedicine().then(data => {
+        let localTime;
+        let updatedList = data;
+        updatedList.map(item => {
+          if (item.appointmentList.length !== 0) {
+            item.appointmentList.map((ele, index) => {
+              if (ele.appointmentId === appointmentId) {
+                localTime = ele.time;
+                PushNotification.getScheduledLocalNotifications(rn => {
+                  for (let i = 0; i < rn.length; i++) {
+                    if (
+                      'You have an appointment scheduled at' +
+                        ' ' +
+                        localTime ===
+                        rn[i].message &&
+                      rn[i].title === 'Appointment!'
+                    ) {
+                      PushNotification.cancelLocalNotification({
+                        id: rn[i].id,
+                      });
+                    }
+                  }
+                });
+                reminderTime > time2
+                  ? handlePushNotification(obj, reminderTime, obj.time)
+                  : null;
+                handlePushNotification(obj, time1, obj.time);
+                item.appointmentList[index] = obj;
+                item.isModified = true;
+              }
+            });
           }
+          AddMedicine(updatedList);
+          Toast.show({
+            type: 'success',
+            text1: 'Updated Successfully',
+          });
+
+          getMedicine().then(data => {
+            if (data !== null && data.length !== 0) {
+              let reminderList = [];
+              data.map(item => {
+                if (item.appointmentList.length !== 0) {
+                  item.appointmentList.map(ele => {
+                    reminderList.push(ele);
+                  });
+                }
+              });
+              setAppointments(reminderList);
+            }
+          });
         });
+        setTimeout(() => {
+          setModalVisible(false);
+        }, 1000);
       });
-    });
-
-    PushNotification.getScheduledLocalNotifications(rn => {
-      for (let i = 0; i < rn.length; i++) {
-        if (obj.appointmentId === rn[i].id) {
-          PushNotification.cancelLocalNotification({id: rn[obj.appointmentId]});
-        }
-      }
-    });
-
-    handlePushNotification(obj.date, obj.time, obj.appointmentId);
-
-    setTimeout(() => {
-      setModalVisible(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -131,7 +199,7 @@ const UpdateAppointment = ({
           style={styles.closeBtn}>
           <FontAwesomeIcon
             icon={faCircleXmark}
-            color={colorPalette.mainColor}
+            color={colorPallete.mainColor}
             size={24}
           />
         </TouchableOpacity>
@@ -176,7 +244,7 @@ const UpdateAppointment = ({
                     mode="outlined"
                     outlineColor="lightgrey"
                     text="notes"
-                    activeOutlineColor={colorPalette.mainColor}
+                    activeOutlineColor={colorPallete.mainColor}
                     value={values.notes}
                     styles={styles.field}
                     multiline={true}
@@ -350,7 +418,7 @@ const styles = StyleSheet.create({
   },
   contStyles: {marginVertical: 18},
   btnStyles: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     borderRadius: 5,
     paddingHorizontal: 30,
   },

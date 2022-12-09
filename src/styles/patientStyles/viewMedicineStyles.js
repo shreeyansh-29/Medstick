@@ -1,8 +1,8 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 export const style = StyleSheet.create({
-  mainCont: {flex: 1, backgroundColor: colorPalette.basicColor},
+  mainCont: {flex: 1, backgroundColor: colorPallete.basicColor},
   imgCont: {
     flex: 1,
     backgroundColor: 'white',
@@ -11,7 +11,7 @@ export const style = StyleSheet.create({
   },
   flatList: {
     flex: 1,
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     paddingTop: 2,
   },
   card: {
@@ -37,7 +37,7 @@ export const style = StyleSheet.create({
   imagesbtn: {
     marginRight: 18,
     borderRadius: 4,
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
   },
   imagesText: {padding: 8, fontSize: 16, color: 'white'},
   ripple: {

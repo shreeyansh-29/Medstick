@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
@@ -7,14 +7,14 @@ export const styles = StyleSheet.create({
     height: verticalScale(56),
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
   },
   header: {
     width: '69%',
   },
   headerFont: {
     fontSize: 24,
-    color: colorPalette.basicColor,
+    color: colorPallete.basicColor,
   },
   appIcon: {
     alignItems: 'center',
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   },
   background: {
     position: 'absolute',
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     height: '50%',
     width: '200%',
     borderBottomEndRadius: 530,

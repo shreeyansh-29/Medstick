@@ -2,7 +2,7 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import LottieView from 'lottie-react-native';
 import SubHeader from './components/molecules/headers/subHeader';
-import {colorPalette} from './components/atoms/colorPalette';
+import {colorPallete} from './components/atoms/colorPalette';
 import {StyleSheet} from 'react-native';
 
 const ErrorBoundary = ({navigation}) => {
@@ -27,7 +27,7 @@ const ErrorBoundary = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  container: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   mainView: {
     alignItems: 'center',
     justifyContent: 'center',

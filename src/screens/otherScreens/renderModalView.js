@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import CustomModal from '../../components/molecules/customModal';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -61,6 +61,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
         updateList[index].location = obj.location;
         updateList[index].prescriptionUrl = obj.prescriptionUrl;
         updateList[index].appointmentList = obj.appointmentList;
+        updateList[index].modified = true;
 
         AddMedicine(updateList);
       }
@@ -104,7 +105,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
                 activeOpacity={1}>
                 <FontAwesomeIcon
                   icon={faCircleXmark}
-                  color={colorPalette.mainColor}
+                  color={colorPallete.mainColor}
                   size={26}
                 />
               </TouchableOpacity>
@@ -127,7 +128,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
           onPress={() => setEdit(false)}>
           <FontAwesomeIcon
             icon={faArrowLeft}
-            color={colorPalette.mainColor}
+            color={colorPallete.mainColor}
             size={22}
           />
         </TouchableOpacity>
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     alignSelf: 'flex-start',
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     marginLeft: 14,
     marginTop: 16,
   },

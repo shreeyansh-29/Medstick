@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import {loadMedicineList} from '../../../redux/action/userMedicine/medicineListAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../components/atoms/loader';
@@ -75,7 +75,7 @@ const ViewMedicines = ({navigation, route}) => {
             <FontAwesomeIcon
               icon={faPills}
               size={36}
-              color={colorPalette.mainColor}
+              color={colorPallete.mainColor}
             />
             <ListItem.Content style={{}}>
               <ListItem.Title style={style.title} numberOfLines={1}>
@@ -115,7 +115,7 @@ const ViewMedicines = ({navigation, route}) => {
                 rippleContainerBorderRadius={100}>
                 <FontAwesomeIcon
                   icon={faBell}
-                  color={colorPalette.mainColor}
+                  color={colorPallete.mainColor}
                   size={24}
                 />
               </Ripple>
@@ -150,8 +150,8 @@ const ViewMedicines = ({navigation, route}) => {
                 renderItem={renderItem}
                 refreshControl={
                   <RefreshControl
-                    colors={[colorPalette.mainColor]}
-                    tintColor={[colorPalette.mainColor]}
+                    colors={[colorPallete.mainColor]}
+                    tintColor={[colorPallete.mainColor]}
                     refreshing={refresh}
                     onRefresh={() => {
                       setRefresh(false);

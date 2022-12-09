@@ -14,7 +14,7 @@ import Loader from '../../../components/atoms/loader';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomModal from '../../../components/molecules/customModal';
 import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const PatientRequest = ({
   patients,
@@ -49,14 +49,11 @@ const PatientRequest = ({
     }
   }, [res]);
 
-  console.log(currentPage, 'hoja');
-
   useEffect(() => {
     currentPage === 0 ? dispatch(patientsReqRequest(currentPage)) : null;
   }, [currentPage]);
 
   const onEnd = () => {
-    console.log('ye call hora h');
     let a = currentPage + 1;
     if (patients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
       dispatch(patientsReqRequest(a));
@@ -129,7 +126,7 @@ const PatientRequest = ({
                 }}
                 title="Confirm"
                 buttonStyle={styles.confirmButton}
-                color={colorPalette.green1}
+                color={colorPallete.green1}
               />
               <View style={styles.space} />
               <Button
@@ -138,7 +135,7 @@ const PatientRequest = ({
                 }}
                 title="Delete"
                 buttonStyle={styles.deleteButton}
-                color={colorPalette.red1}
+                color={colorPallete.red1}
               />
             </View>
           </View>
@@ -175,7 +172,6 @@ const PatientRequest = ({
                 keyExtractor={(index, item) => index.toString()}
                 onEndReached={onEnd}
                 onEndReachedThreshold={0.01}
-                style={{backgroundColor: 'yellow'}}
               />
             </View>
           )}

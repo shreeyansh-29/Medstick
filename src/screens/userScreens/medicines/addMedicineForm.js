@@ -1,7 +1,7 @@
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import InputField from '../../../components/atoms/inputField';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {Picker} from '@react-native-picker/picker';
 import {Divider, TextInput} from 'react-native-paper';
@@ -11,27 +11,13 @@ import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import CustomModal from '../../../components/molecules/customModal';
 import {styles} from '../../../styles/medicinePanelStyles/medicineFormStyles';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
-import {useIsFocused} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import RenderModalView from './renderModalView';
 import {useSelector} from 'react-redux';
 
 const AddMedicineForm = props => {
   const [visible, setVisible] = useState(false);
-  const focused = useIsFocused();
-  const [load, setLoad] = useState(false);
+  const load = useSelector(state => state.userInfo?.data);
   const connected = useSelector(state => state.internetConnectivity?.data);
-
-  const getUser = async () => {
-    const user = await GoogleSignin.getCurrentUser();
-    if (user !== null) setLoad(true);
-  };
-
-  useEffect(() => {
-    if (focused) {
-      getUser();
-    }
-  }, [focused]);
 
   let obj = {
     doctorName: null,
@@ -59,7 +45,7 @@ const AddMedicineForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="medicineName"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.medicineName}
           right={
@@ -70,7 +56,7 @@ const AddMedicineForm = props => {
                   <FontAwesomeIcon
                     size={20}
                     icon={faSearch}
-                    color={colorPalette.mainColor}
+                    color={colorPallete.mainColor}
                   />
                 )}
               />
@@ -88,7 +74,7 @@ const AddMedicineForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="description"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.description}
           multiline={true}
@@ -122,7 +108,7 @@ const AddMedicineForm = props => {
             mode="outlined"
             outlineColor="lightgrey"
             text="dosageQuantity"
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
             value={props.values.dosageQuantity.trim()}
             keyboardType="numeric"
@@ -144,7 +130,7 @@ const AddMedicineForm = props => {
             outlineColor="lightgrey"
             keyboardType="numeric"
             placeholderTextColor={'grey'}
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
           />
           {props.errors.dosagePower && props.touched.dosagePower && (
@@ -176,7 +162,7 @@ const AddMedicineForm = props => {
             mode="outlined"
             outlineColor="lightgrey"
             text="stocks"
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
             value={props.values.stocks.trim()}
             keyboardType="numeric"
@@ -199,7 +185,7 @@ const AddMedicineForm = props => {
             mode="outlined"
             outlineColor="lightgrey"
             text="notify"
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
             value={props.values.notify.trim()}
             keyboardType="numeric"
@@ -220,7 +206,7 @@ const AddMedicineForm = props => {
             <CustomButton
               title={'Added'}
               btnStyles={styles.secondaryBtn}
-              titleStyle={{color: colorPalette.mainColor}}
+              titleStyle={{color: colorPallete.mainColor}}
             />
             <TouchableOpacity
               activeOpacity={0.9}
@@ -230,7 +216,7 @@ const AddMedicineForm = props => {
               }}>
               <FontAwesomeIcon
                 icon={faCircleXmark}
-                color={colorPalette.redPercentageColor}
+                color={colorPallete.redPercentageColor}
                 size={20}
               />
             </TouchableOpacity>

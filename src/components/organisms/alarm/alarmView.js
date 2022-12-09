@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Switch, Text, TouchableOpacity, View} from 'react-native';
-import { colorPalette } from '../../atoms/colorPalette';
+import {colorPallete} from '../../atoms/colorPallete';
 
 export default function ({
   uid,
@@ -26,7 +26,7 @@ export default function ({
       <View style={styles.rightInnerContainer}>
         <Switch
           ios_backgroundColor={'black'}
-          trackColor={{false: colorPalette.GREY, true: colorPalette.BLUE}}
+          trackColor={{false: colorPallete.GREY, true: colorPallete.BLUE}}
           value={isActive}
           onValueChange={onChange}
         />

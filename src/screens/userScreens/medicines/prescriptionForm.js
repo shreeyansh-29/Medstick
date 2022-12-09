@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import InputField from '../../../components/atoms/inputField';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import CustomButton from '../../../components/atoms/customButton';
 import {Divider} from 'react-native-paper';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -42,7 +42,7 @@ const PrescriptionForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="doctorName"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.doctorName}
         />
@@ -58,7 +58,7 @@ const PrescriptionForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="specialization"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.specialization}
         />
@@ -74,7 +74,7 @@ const PrescriptionForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="contact"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.contact}
           keyboardType="numeric"
@@ -91,7 +91,7 @@ const PrescriptionForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="location"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.location}
         />
@@ -149,7 +149,7 @@ const PrescriptionForm = props => {
                   <FontAwesomeIcon
                     icon={faCircleXmark}
                     size={18}
-                    color={colorPalette.redPercentageColor}
+                    color={colorPallete.redPercentageColor}
                   />
                 </TouchableOpacity>
               </View>
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   contStyles: {alignItems: 'center', marginVertical: 40},
   btnStyles: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     width: '50%',
     borderRadius: 5,
   },

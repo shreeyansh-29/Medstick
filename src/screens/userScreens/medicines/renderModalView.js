@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   searchMedicineClear,
@@ -34,7 +34,7 @@ const RenderModalView = ({setVisible, props}) => {
   const activityIndicator = () => {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color={colorPalette.mainColor} />
+        <ActivityIndicator size="large" color={colorPallete.mainColor} />
       </View>
     );
   };
@@ -76,7 +76,7 @@ const RenderModalView = ({setVisible, props}) => {
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
-        activeOpacity={0.8}
+        activeOpacity={0.5}
         style={{marginTop: 4}}
         onPress={() => {
           setData(item);
@@ -118,7 +118,7 @@ const RenderModalView = ({setVisible, props}) => {
           <FontAwesomeIcon
             icon={faArrowLeft}
             size={22}
-            color={colorPalette.mainColor}
+            color={colorPallete.mainColor}
           />
         </TouchableOpacity>
       </View>
@@ -132,8 +132,8 @@ const RenderModalView = ({setVisible, props}) => {
             setTempSearch([]);
             setPageNo(0);
           }}
-          outlineColor={colorPalette.mainColor}
-          activeOutlineColor={colorPalette.mainColor}
+          outlineColor={colorPallete.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           style={styles.field}
           value={med}
           right={
@@ -144,7 +144,7 @@ const RenderModalView = ({setVisible, props}) => {
                   <FontAwesomeIcon
                     size={20}
                     icon={faSearch}
-                    color={colorPalette.mainColor}
+                    color={colorPallete.mainColor}
                   />
                 )}
               />
@@ -162,7 +162,7 @@ const RenderModalView = ({setVisible, props}) => {
                 <FontAwesomeIcon
                   size={20}
                   icon={faXmark}
-                  color={colorPalette.mainColor}
+                  color={colorPallete.mainColor}
                 />
               )}
             />
@@ -190,7 +190,7 @@ const RenderModalView = ({setVisible, props}) => {
                     data={tempSearch}
                     renderItem={renderItem}
                     contentContainerStyle={{
-                      backgroundColor: colorPalette.backgroundColor,
+                      backgroundColor: colorPallete.backgroundColor,
                     }}
                     style={{width: '100%'}}
                     onEndReached={onEnd}

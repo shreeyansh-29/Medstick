@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../components/atoms/loader';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import {myPrescriptionsRequest} from '../../../redux/action/otherScreenAction/prescriptionsAction';
 import CustomImage from '../../../components/atoms/customImage';
 import * as Animatable from 'react-native-animatable';
@@ -65,7 +65,7 @@ const ViewPrescriptions = ({navigation, route}) => {
               <FontAwesomeIcon
                 icon={faChevronRight}
                 size={16}
-                color={colorPalette.mainColor}
+                color={colorPallete.mainColor}
               />
             </TouchableOpacity>
           </ListItem>
@@ -97,8 +97,8 @@ const ViewPrescriptions = ({navigation, route}) => {
               renderItem={renderItem}
               refreshControl={
                 <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
+                  colors={[colorPallete.mainColor]}
+                  tintColor={[colorPallete.mainColor]}
                   refreshing={refresh}
                   onRefresh={() => {
                     setRefresh(false);

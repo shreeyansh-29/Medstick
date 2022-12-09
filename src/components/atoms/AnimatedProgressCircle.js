@@ -1,18 +1,18 @@
 import {View, Animated, StyleSheet, TextInput} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import Svg, {G, Circle} from 'react-native-svg';
-import {colorPalette} from './colorPalette';
+import {colorPallete} from './colorPalette';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const Animatedinput = Animated.createAnimatedComponent(TextInput);
 
 function ColorCode(percentage) {
   if (percentage < 60) {
-    return colorPalette.redPercentageColor;
+    return colorPallete.redPercentageColor;
   } else if (61 <= percentage && percentage < 85) {
     return 'orange';
   } else {
-    return colorPalette.greenPercentageColor;
+    return colorPallete.greenPercentageColor;
   }
 }
 
@@ -46,7 +46,7 @@ const AnimatedProgressCircle = ({
     animation(percentage);
     animatedValue.addListener(v => {
       if (circleRef?.current) {
-        const maxPerc = (100 * v.value)/max;
+        const maxPerc = (100 * v.value) / max;
         const strokeDashoffset =
           circumference - (circumference * maxPerc) / 100;
         circleRef.current.setNativeProps({

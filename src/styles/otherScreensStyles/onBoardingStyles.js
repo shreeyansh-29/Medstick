@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     justifyContent: 'center',
     alignItems: 'center',
   },

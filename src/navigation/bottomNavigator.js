@@ -11,13 +11,13 @@ import {
   faFileContract,
   faHouseMedical,
 } from '@fortawesome/free-solid-svg-icons';
-import {colorPalette} from '../components/atoms/colorPalette';
 import AddMedicineLocal from '../screens/userScreens/medicines/addMedicineLocal';
 import AccountTab from '../screens/userScreens/accountTab';
 import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
 import AddButton from '../components/atoms/addButton';
 import {styles} from '../styles/navigationStyles';
 import Report from '../screens/userScreens/report/report';
+import {colorPallete} from '../components/atoms/colorPalette';
 
 const TabBar = [
   {route: 'Home', component: HomeScreen, iconName: faHouseMedical},
@@ -32,15 +32,17 @@ const BottomNavigator = ({navigation}) => {
   const TabBarButton = props => {
     const {onPress, accessibilityState, item} = props;
     const focused = accessibilityState.selected;
-    size = 26;
-    fontSize = 12;
-    colors = focused ? colorPalette.colorTabs : colorPalette.colorTabsOutline;
+    let size = 26;
+    let fontSize = 12;
+    let colors = focused
+      ? colorPallete.appColor
+      : colorPallete.colorTabsOutline;
     return (
       <Ripple
         onPress={onPress}
         style={styles.ripple}
         rippleCentered={true}
-        rippleColor={colorPalette.colorTabs}
+        rippleColor={colorPallete.colorTabs}
         rippleDuration={700}
         rippleOpacity={0.87}
         rippleContainerBorderRadius={400}>
@@ -58,7 +60,7 @@ const BottomNavigator = ({navigation}) => {
       screenOptions={{
         tabBarStyle: {
           height: 58,
-          backgroundColor: colorPalette.basicColor,
+          backgroundColor: colorPallete.basicColor,
           paddingHorizontal: 16,
         },
         tabBarShowLabel: false,

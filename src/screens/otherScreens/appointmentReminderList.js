@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   Alert,
   StyleSheet,
+  Text,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
@@ -11,7 +12,6 @@ import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import CustomImage from '../../components/atoms/customImage';
 import {faPenToSquare} from '@fortawesome/free-solid-svg-icons';
-import {colorPalette} from '../../components/atoms/colorPalette';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
 import {useIsFocused} from '@react-navigation/native';
@@ -20,6 +20,8 @@ import Loader from '../../components/atoms/loader';
 import PushNotification from 'react-native-push-notification';
 import {faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {monthName} from '../../constants/constants';
+import {colorPallete} from '../../components/atoms/colorPalette';
+import moment from 'moment';
 
 const AppointmentReminderList = ({navigation}) => {
   const isFocused = useIsFocused();
@@ -31,6 +33,18 @@ const AppointmentReminderList = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [doctorName, setDoctorName] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
+
+  let todayDate = new Date();
+  let currentTime = todayDate?.getHours() + ':' + todayDate?.getMinutes();
+
+  todayDate =
+    todayDate.getFullYear() +
+    '-' +
+    (todayDate.getMonth() + 1) +
+    '-' +
+    (todayDate.getDate() < 10
+      ? '0' + todayDate.getDate()
+      : todayDate.getDate());
 
   useEffect(() => {
     setTimeout(() => {
@@ -49,15 +63,6 @@ const AppointmentReminderList = ({navigation}) => {
           let updatedList = data;
           let doctorList = [];
           let reminderList = [];
-          let todayDate = new Date();
-          todayDate =
-            todayDate.getFullYear() +
-            '-' +
-            (todayDate.getMonth() + 1) +
-            '-' +
-            (todayDate.getDate() < 10
-              ? '0' + todayDate.getDate()
-              : todayDate.getDate());
 
           updatedList.map(item => {
             if (item.doctorName !== null && item.medicineName !== null) {
@@ -87,11 +92,14 @@ const AppointmentReminderList = ({navigation}) => {
   const onClickDeleteAppointment = deleteId => {
     getMedicine().then(data => {
       let updatedList = data;
+      let time;
       updatedList.map(a => {
         if (a.appointmentList.length !== 0) {
           a.appointmentList.map((r, index) => {
             if (r.appointmentId === deleteId) {
+              time = r.time;
               a.appointmentList.splice(index, 1);
+              a.isModified = true;
             }
           });
         }
@@ -110,14 +118,17 @@ const AppointmentReminderList = ({navigation}) => {
           setAppointments(reminderList);
         }
       });
-    });
-
-    PushNotification.getScheduledLocalNotifications(rn => {
-      for (let i = 0; i < rn.length; i++) {
-        if (deleteId === rn[i].number) {
-          PushNotification.cancelLocalNotification({id: rn[i].id});
+      PushNotification.getScheduledLocalNotifications(rn => {
+        for (let i = 0; i < rn.length; i++) {
+          if (
+            'You have an appointment scheduled at' + ' ' + time ===
+              rn[i].message &&
+            rn[i].title === 'Appointment!'
+          ) {
+            PushNotification.cancelLocalNotification({id: rn[i].id});
+          }
         }
-      }
+      });
     });
   };
 
@@ -126,6 +137,9 @@ const AppointmentReminderList = ({navigation}) => {
       let dob = date.split('-');
       return dob[2] + '-' + monthName[dob[1]] + '-' + dob[0];
     };
+
+    let localTime = moment(item.time, ['h:mm A']).format('HH:mm');
+
     return (
       <View style={styles.top}>
         <ListItem>
@@ -169,43 +183,100 @@ const AppointmentReminderList = ({navigation}) => {
               </View>
             </View>
             <View style={styles.subView}>
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => {
-                  setModalVisible(true);
-                  setTemp(item.date);
-                  setTime1(item.time);
-                  setNotes1(item.notes);
-                  setAppointmentId(item?.appointmentId);
-                }}>
-                <FontAwesomeIcon
-                  icon={faPenToSquare}
-                  size={19}
-                  color={colorPalette.mainColor}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => {
-                  Alert.alert('Are you sure!!!', 'Click ok to proceed', [
-                    {
-                      text: 'Ok',
-                      onPress: () => {
-                        onClickDeleteAppointment(item?.appointmentId);
-                      },
-                    },
-                    {
-                      text: 'Cancel',
-                      onPress: () => {},
-                    },
-                  ]);
-                }}>
-                <FontAwesomeIcon
-                  icon={faTrashAlt}
-                  size={19}
-                  color={colorPalette.mainColor}
-                />
-              </TouchableOpacity>
+              {item?.date === todayDate ? (
+                <>
+                  {localTime >= currentTime ? (
+                    <>
+                      <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => {
+                          setModalVisible(true);
+                          setTemp(item.date);
+                          setTime1(item.time);
+                          setNotes1(item.notes);
+                          setAppointmentId(item?.appointmentId);
+                        }}>
+                        <FontAwesomeIcon
+                          icon={faPenToSquare}
+                          size={19}
+                          color={colorPallete.mainColor}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => {
+                          Alert.alert(
+                            'Are you sure!!!',
+                            'Click ok to proceed',
+                            [
+                              {
+                                text: 'Ok',
+                                onPress: () => {
+                                  onClickDeleteAppointment(item?.appointmentId);
+                                },
+                              },
+                              {
+                                text: 'Cancel',
+                                onPress: () => {},
+                              },
+                            ],
+                          );
+                        }}>
+                        <FontAwesomeIcon
+                          icon={faTrashAlt}
+                          size={19}
+                          color={colorPallete.mainColor}
+                        />
+                      </TouchableOpacity>
+                    </>
+                  ) : (
+                    <Text
+                      style={{color: 'gray', fontSize: 16, fontWeight: '500'}}>
+                      Expired
+                    </Text>
+                  )}
+                </>
+              ) : (
+                <>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                      setModalVisible(true);
+                      setTemp(item.date);
+                      setTime1(item.time);
+                      setNotes1(item.notes);
+                      setAppointmentId(item?.appointmentId);
+                    }}>
+                    <FontAwesomeIcon
+                      icon={faPenToSquare}
+                      size={19}
+                      color={colorPallete.mainColor}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                      Alert.alert('Are you sure!!!', 'Click ok to proceed', [
+                        {
+                          text: 'Ok',
+                          onPress: () => {
+                            onClickDeleteAppointment(item?.appointmentId);
+                          },
+                        },
+                        {
+                          text: 'Cancel',
+                          onPress: () => {},
+                        },
+                      ]);
+                    }}>
+                    <FontAwesomeIcon
+                      icon={faTrashAlt}
+                      size={19}
+                      color={colorPallete.mainColor}
+                    />
+                  </TouchableOpacity>
+                </>
+              )}
             </View>
           </ListItem.Content>
         </ListItem>
@@ -265,7 +336,7 @@ const AppointmentReminderList = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  mainContainer: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   imgCont: {
     flex: 1,
     justifyContent: 'center',

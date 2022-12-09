@@ -6,7 +6,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import {KeyboardAvoidingView} from 'react-native';
@@ -87,6 +87,8 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
       obj.dosagePower = values.dosagePower.trim() + ' ' + values.doseType;
       obj.leftStock = values.notify.trim();
       obj.stock = values.stocks.trim();
+      obj.isModified = true;
+
       if (prescriptionObj.doctorName !== doctorName) {
         obj.prescriptionId = prescriptionObj.prescriptionId;
         obj.doctorName = prescriptionObj.doctorName;
@@ -126,7 +128,7 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
           onPress={() => setEdit(false)}>
           <FontAwesomeIcon
             icon={faArrowLeft}
-            color={colorPalette.mainColor}
+            color={colorPallete.mainColor}
             size={22}
           />
         </TouchableOpacity>

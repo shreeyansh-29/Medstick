@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {
   verticalScale,
   horizontalScale,
@@ -52,7 +52,7 @@ const Styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: verticalScale(16),
   },
-  medName: {fontWeight: '600', fontSize: 17, },
+  medName: {fontWeight: '600', fontSize: 17},
   icon: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -60,7 +60,7 @@ const Styles = StyleSheet.create({
   rem: {padding: 10},
   background: {
     position: 'absolute',
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     height: '50%',
     width: '200%',
     borderBottomEndRadius: 530,
@@ -89,17 +89,17 @@ const Styles = StyleSheet.create({
     flex: 1,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
   },
   addMedicinesHeader: {
     width: '100%',
     height: '30%',
-    backgroundColor: colorPalette.appColor,
+    backgroundColor: colorPallete.appColor,
   },
   addMedicinesLogo: {
     width: '100%',
     height: '80%',
-    backgroundColor: colorPalette.appColor,
+    backgroundColor: colorPallete.appColor,
   },
   // saveButton: {
   //   width: '100%',
@@ -137,10 +137,10 @@ const Styles = StyleSheet.create({
     padding: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
   },
   addMedicinePage: {
-    backgroundColor: colorPalette.appColor,
+    backgroundColor: colorPallete.appColor,
     flex: 1,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
@@ -182,7 +182,7 @@ const Styles = StyleSheet.create({
   },
   medicineNameBox: {
     width: '100%',
-    borderColor: colorPalette.appColor,
+    borderColor: colorPallete.appColor,
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,
@@ -216,7 +216,7 @@ const Styles = StyleSheet.create({
   addbutton: {
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: colorPalette.appColor,
+    borderColor: colorPallete.appColor,
     margin: 5,
     height: 40,
   },
@@ -241,7 +241,7 @@ const Styles = StyleSheet.create({
     borderWidth: 1.2,
     padding: '4%',
     borderRadius: 5,
-    borderColor: colorPalette.mainColor,
+    borderColor: colorPallete.mainColor,
   },
   box1: {
     margin: '2.6%',
@@ -252,7 +252,7 @@ const Styles = StyleSheet.create({
     borderRadius: 5,
     paddingBottom: '5%',
     paddingHorizontal: '0.5%',
-    borderColor: colorPalette.mainColor,
+    borderColor: colorPallete.mainColor,
   },
   text: {
     fontSize: 17,
@@ -268,7 +268,7 @@ const Styles = StyleSheet.create({
     paddingRight: '3.5%',
     borderRadius: 5,
     paddingHorizontal: 2,
-    borderColor: colorPalette.mainColor,
+    borderColor: colorPallete.mainColor,
   },
   box: {
     margin: '3.6%',
@@ -276,26 +276,26 @@ const Styles = StyleSheet.create({
     borderWidth: 1.2,
     padding: '4%',
     borderRadius: 5,
-    borderColor: colorPalette.mainColor,
+    borderColor: colorPallete.mainColor,
   },
   addPrescriptionHeader: {
-    backgroundColor: colorPalette.appColor,
+    backgroundColor: colorPallete.appColor,
     flexDirection: 'row',
     padding: 10,
   },
   addPrescriptionHeaderText: {
-    color: colorPalette.basicColor,
+    color: colorPallete.basicColor,
     paddingLeft: 10,
     fontSize: 20,
   },
   uploadPrescriptionText: {
-    color: colorPalette.appColor,
+    color: colorPallete.appColor,
     fontSize: 20,
     paddingVertical: 20,
   },
   uploadPrescriptionBox: {
     borderWidth: 2,
-    borderColor: colorPalette.appColor,
+    borderColor: colorPallete.appColor,
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -309,7 +309,7 @@ const Styles = StyleSheet.create({
     padding: 100,
   },
   prescriptionText: {
-    color: colorPalette.appColor,
+    color: colorPallete.appColor,
     fontSize: 26,
     padding: 20,
   },
@@ -318,7 +318,7 @@ const Styles = StyleSheet.create({
     padding: 5,
     elevation: 2,
     marginTop: 5,
-    borderColor: colorPalette.appColor,
+    borderColor: colorPallete.appColor,
     borderStartWidth: 4,
   },
   prescriptionText1: {

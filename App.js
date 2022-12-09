@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import MainNavigation from './src/navigation/index';
-import {Alert, BackHandler, StatusBar} from 'react-native';
-import {colorPalette} from './src/components/atoms/colorPalette';
+import {StatusBar} from 'react-native';
+import {colorPallete} from './src/components/atoms/colorPalette';
 import store from './src/redux/store';
 import './ignoreWarnings';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -15,7 +15,7 @@ const App = () => {
       <ErrorBoundary>
         <Provider store={store}>
           <OfflineBar />
-          <StatusBar backgroundColor={colorPalette.mainColor} />
+          <StatusBar backgroundColor={colorPallete.mainColor} />
           <MainNavigation />
         </Provider>
       </ErrorBoundary>
