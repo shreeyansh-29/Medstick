@@ -17,7 +17,7 @@ import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCi
 import {useIsFocused} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
 import {getMedicine} from '../../../utils/storage';
 import {useEffect} from 'react';
@@ -92,7 +92,6 @@ const Report = ({navigation}) => {
         })
         .then(() => {
           if (getUserMedicine.length !== 0 && medicineId !== null) {
-            console.log('medicine Id', getUserMedicine[0].userMedicineId);
             getHistory(medicineId);
           }
         })
@@ -273,8 +272,8 @@ const Report = ({navigation}) => {
               borderWidth={3}
               color={'grey'}
               shadowColor={'lightgrey'}
-              bgColor={colorPalette.backgroundColor}>
-              <Text style={{fontSize: 16, color: colorPalette.blackColor}}>
+              bgColor={colorPallete.backgroundColor}>
+              <Text style={{fontSize: 16, color: colorPallete.black}}>
                 {date.day}
               </Text>
             </ProgressCircle>
@@ -337,7 +336,7 @@ const Report = ({navigation}) => {
               <View style={styles.reportContainer}>
                 <View style={styles.analytics}>
                   <View style={styles.container1Text}>
-                    <Text style={styles.font}>Overall Performance</Text>
+                    <Text style={styles.font}>Overall Percentage</Text>
                     <Text style={styles.fontSmall}>
                       This percentage shows your overall adherence rate.
                     </Text>
@@ -360,14 +359,7 @@ const Report = ({navigation}) => {
                   theme={styles.theme}
                   initialDate={startDate}
                   minDate={'2012-05-10'}
-                  // maxDate={'2222-12-30'}
-                  onDayLongPress={day => {
-                    // console.log('selected day', day);
-                  }}
                   monthFormat={'yyyy MM'}
-                  onMonthChange={month => {
-                    // console.log('month changed', month);
-                  }}
                   hideArrows={false}
                   hideExtraDays={true}
                   disableMonthChange={true}

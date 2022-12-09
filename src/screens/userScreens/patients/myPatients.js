@@ -1,45 +1,68 @@
 import {View, TouchableOpacity, FlatList, RefreshControl} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import AddButton from '../../../components/atoms/addButton';
-import {colorPalette} from '../../../components/atoms/colorPalette';
 import {ListItem} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
 import {styles} from '../../../styles/patientStyles/myPatientsStyles';
 import {useDispatch, useSelector} from 'react-redux';
-import {myPatientsRequest} from '../../../redux/action/patients/myPatientsAction';
+import {
+  myPatientsClear,
+  myPatientsRequest,
+} from '../../../redux/action/patients/myPatientsAction';
 import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
-import {useIsFocused} from '@react-navigation/native';
+import {colorPallete} from '../../../components/atoms/colorPallete';
 
-const MyPatients = ({navigation}) => {
+const MyPatients = ({
+  navigation,
+  myPatients,
+  setMyPatients,
+  pageNo,
+  setPageNo,
+}) => {
   const dispatch = useDispatch();
-  const [pageNo, setPageNo] = useState(0);
-  const [myPatients, setMyPatients] = useState([]);
-  const [refresh, setRefresh] = useState(false);
+  // const [pageNo, setPageNo] = useState(0);
+  // const [myPatients, setMyPatients] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const res = useSelector(state => state.myPatients);
-  const isFocused = useIsFocused();
+  // const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    pageNo === 0 ? dispatch(myPatientsRequest(pageNo)) : null;
+  }, [pageNo]);
 
   useEffect(() => {
     if (res?.data !== null) {
-      setMyPatients(res.data);
+      setMyPatients([...myPatients, ...res.data]);
+      dispatch(myPatientsClear());
     }
   }, [res]);
 
-  useEffect(() => {
-    if (isFocused) {
-      dispatch(myPatientsRequest(pageNo));
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (myPatients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+      dispatch(myPatientsRequest(a));
     }
-  }, [isFocused]);
+    setPageNo(a);
+  };
 
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
+        key={item.contact}
         activeOpacity={1}
         style={styles.top}
         onPress={() => {
           navigation.navigate('PatientProfile', {profile: item});
         }}>
         <ListItem
+          key={item.contact + '1'}
           style={styles.list}
           hasTVPreferredFocus={undefined}
           tvParallaxProperties={undefined}>
@@ -58,7 +81,7 @@ const MyPatients = ({navigation}) => {
   };
   return (
     <View style={styles.mainCont}>
-      {res?.isLoading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <>
@@ -76,17 +99,21 @@ const MyPatients = ({navigation}) => {
               data={myPatients}
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(myPatientsRequest(pageNo));
-                    setRefresh(false);
-                  }}
-                />
-              }
+              onEndReached={onEnd}
+              onEndReachedThreshold={0.01}
+              // refreshControl={
+              //   <RefreshControl
+              //     colors={[colorPallete.mainColor]}
+              //     tintColor={[colorPallete.mainColor]}
+              //     refreshing={refresh}
+              //     onRefresh={() => {
+              //       dispatch(myPatientsClear());
+              //       setRefresh(false);
+              //       setPageNo(0);
+              //       setMyPatients([]);
+              //     }}
+              //   />
+              // }
             />
           )}
           <View style={styles.bottomView}>

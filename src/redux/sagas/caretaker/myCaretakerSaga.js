@@ -4,11 +4,11 @@ import {
   myCaretakerError,
   myCaretakerSuccess,
 } from '../../action/caretaker/myCaretakerAction';
-import myCaretakerService from '../../../network/networkServices/caretaker/myCaretakerService';
+import networkService from '../../../network/networkService';
 
 export function* myCaretakerSaga(data) {
   try {
-    let response = yield call(myCaretakerService.getMyCaretaker, data);
+    let response = yield call(networkService.getMyCaretaker, data);
     yield put(myCaretakerSuccess(response?.data));
   } catch (error) {
     yield put(myCaretakerError(error));

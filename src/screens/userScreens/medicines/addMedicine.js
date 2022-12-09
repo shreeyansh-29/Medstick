@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {styles} from '../../../styles/homeScreenStyles/headerStyles';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPallete';
 import {faSearch, faXmark} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
@@ -315,7 +315,7 @@ const AddMedicines = ({navigation, route}) => {
         visible={modal}
         onRequestClose={() => setModal(false)}
         transparent={true}>
-        <View style={{flex: 1, backgroundColor: colorPalette.mainColor}}>
+        <View style={{flex: 1, backgroundColor: colorPallete.mainColor}}>
           <TouchableOpacity onPress={() => setModal(false)}>
             <Ionicons name="close" size={30} color={'white'} />
           </TouchableOpacity>
@@ -361,7 +361,7 @@ const AddMedicines = ({navigation, route}) => {
                       <FontAwesomeIcon
                         size={25}
                         icon={faSearch}
-                        color={colorPalette.mainColor}
+                        color={colorPallete.mainColor}
                       />
                     </TouchableOpacity>
                   </View>
@@ -402,7 +402,7 @@ const AddMedicines = ({navigation, route}) => {
             <FontAwesomeIcon
               icon={faArrowLeft}
               size={22}
-              color={colorPalette.mainColor}
+              color={colorPallete.mainColor}
             />
           </TouchableOpacity>
           <View style={{marginTop: '4%'}}>
@@ -411,8 +411,8 @@ const AddMedicines = ({navigation, route}) => {
               mode="outlined"
               multiline={true}
               onChangeText={text => search(text)}
-              outlineColor={colorPalette.mainColor}
-              activeOutlineColor={colorPalette.mainColor}
+              outlineColor={colorPallete.mainColor}
+              activeOutlineColor={colorPallete.mainColor}
             />
           </View>
         </View>
@@ -421,8 +421,8 @@ const AddMedicines = ({navigation, route}) => {
             label="Search Medicine"
             mode="outlined"
             onChangeText={text => search(text)}
-            outlineColor={colorPalette.mainColor}
-            activeOutlineColor={colorPalette.mainColor}
+            outlineColor={colorPallete.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             style={{width: '90%', alignSelf: 'center'}}
             right={
               <TextInput.Icon
@@ -431,7 +431,7 @@ const AddMedicines = ({navigation, route}) => {
                   <FontAwesomeIcon
                     size={20}
                     icon={faXmark}
-                    color={colorPalette.mainColor}
+                    color={colorPallete.mainColor}
                   />
                 )}
               />
@@ -452,6 +452,20 @@ const AddMedicines = ({navigation, route}) => {
         </View>
       </Modal>
 
+      {/* <View style={Styles.addMedicinesHeader}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => {
+            navigation?.pop();
+          }}>
+          <FontAwesomeIcon
+            icon={faArrowLeft}
+            size={30}
+            color={colorPallete.basicColor}
+          />
+        </TouchableOpacity>
+        <AddMedicinesHeader navigation={navigation} />
+      </View> */}
       <SubHeader navigation={navigation} title={'Add Medicine'} />
       <View
         style={{

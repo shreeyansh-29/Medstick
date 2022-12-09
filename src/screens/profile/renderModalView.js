@@ -16,7 +16,7 @@ import {
 } from '../../redux/action/profileAction/editProfileAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import {bloodGroup, gender} from '../../constants/pickerItem';
 
@@ -51,19 +51,20 @@ const RenderModalVisible = ({
         position: 'top',
       });
     }
+    return () => {};
   }, [res]);
 
   const handleClick = values => {
     dispatch(
       editProfileRequest({
-        bio: values?.bio,
+        bio: values?.bio.trim(),
         dateOfBirth: values?.dateofBirth,
         gender: values?.gender,
         bloodGroup: values?.bloodGroup,
-        country: values?.country,
-        state: values?.state,
-        address: values?.address,
-        contact: values?.contact,
+        country: values?.country.trim(),
+        state: values?.state.trim(),
+        address: values?.address.trim(),
+        contact: values?.contact.trim(),
         date: values?.date,
       }),
     );
@@ -79,7 +80,7 @@ const RenderModalVisible = ({
                 <FontAwesomeIcon
                   icon={faCircleXmark}
                   size={26}
-                  color={colorPalette.mainColor}
+                  color={colorPallete.mainColor}
                 />
               </TouchableOpacity>
             </>
@@ -100,12 +101,10 @@ const RenderModalVisible = ({
                 contact: result?.contact,
                 dateofBirth: result?.dateOfBirth,
                 gender:
-                  result?.gender.length === 0
-                    ? gender[0].value
-                    : result?.gender,
+                  result?.gender === null ? gender[0].value : result?.gender,
                 country: result?.country,
                 bloodGroup:
-                  result?.bloodGroup.length === 0
+                  result?.bloodGroup === null
                     ? bloodGroup[0].value
                     : result?.bloodGroup,
                 address: result?.address,
@@ -113,8 +112,7 @@ const RenderModalVisible = ({
               }}
               validationSchema={profileValidationSchema}
               onSubmit={values => {
-                console.log(values);
-                // handleClick(values);
+                handleClick(values);
               }}>
               {({
                 handleChange,

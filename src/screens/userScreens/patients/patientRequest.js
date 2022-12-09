@@ -1,4 +1,4 @@
-import {View, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
+import {View, FlatList, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
@@ -12,21 +12,23 @@ import {acceptPatientReqRequest} from '../../../redux/action/patients/acceptPati
 import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import {colorPalette} from '../../../components/atoms/colorPalette';
 import CustomModal from '../../../components/molecules/customModal';
 import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
-import {myPatientsRequest} from '../../../redux/action/patients/myPatientsAction';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 
-const PatientRequest = () => {
+const PatientRequest = ({
+  patients,
+  setPatients,
+  currentPage,
+  setCurrentPage,
+  setPageNo,
+  setMyPatients,
+}) => {
   const dispatch = useDispatch();
-  const [patients, setPatients] = useState([]);
-  const [pageNo, setPageNo] = useState(0);
-  const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.patientsRequest);
-  console.log(res);
-  const loading = useSelector(state => state.patientsRequest.isLoading);
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const images = [
     {
@@ -35,14 +37,29 @@ const PatientRequest = () => {
   ];
 
   useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
     if (res?.data !== null) {
-      setPatients(res.data);
+      setPatients([...patients, ...res.data]);
+      dispatch(patientsReqClear());
     }
   }, [res]);
 
   useEffect(() => {
-    dispatch(patientsReqRequest(pageNo));
-  }, []);
+    currentPage === 0 ? dispatch(patientsReqRequest(currentPage)) : null;
+  }, [currentPage]);
+
+  const onEnd = () => {
+    let a = currentPage + 1;
+    if (patients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+      dispatch(patientsReqRequest(a));
+    }
+    setCurrentPage(a);
+  };
 
   const acceptRequest = requestId => {
     let a = b => b.requestId == requestId;
@@ -50,10 +67,13 @@ const PatientRequest = () => {
     dispatch(acceptPatientReqRequest(requestId));
     dispatch(patientsReqClear());
     patients.splice(index, 1);
+    setPageNo(0);
+    setCurrentPage(0);
+    setMyPatients([]);
+    setPatients([]);
 
     setTimeout(() => {
-      dispatch(patientsReqRequest(0));
-      dispatch(myPatientsRequest(0));
+      dispatch(patientsReqRequest(currentPage));
     }, 500);
   };
 
@@ -63,11 +83,12 @@ const PatientRequest = () => {
     patients.splice(index, 1);
     dispatch(deletePatientReqRequest(requestId));
     dispatch(patientsReqClear());
+    setCurrentPage(0);
+    // setPatients([]);
 
     setTimeout(() => {
-      dispatch(patientsReqRequest(0));
-      dispatch(myPatientsRequest(0));
-    }, 500);
+      dispatch(patientsReqRequest(currentPage));
+    }, 1000);
   };
 
   const renderItem = ({item}) => {
@@ -105,7 +126,7 @@ const PatientRequest = () => {
                 }}
                 title="Confirm"
                 buttonStyle={styles.confirmButton}
-                color="#4267B2"
+                color={colorPallete.green1}
               />
               <View style={styles.space} />
               <Button
@@ -114,7 +135,7 @@ const PatientRequest = () => {
                 }}
                 title="Delete"
                 buttonStyle={styles.deleteButton}
-                color="#e53935"
+                color={colorPallete.red1}
               />
             </View>
           </View>
@@ -130,7 +151,7 @@ const PatientRequest = () => {
         onRequestClose={() => setVisible(!visible)}
         modalView={<ImageViewer imageUrls={images} />}
       />
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <>
@@ -143,23 +164,16 @@ const PatientRequest = () => {
               />
             </View>
           ) : (
-            <FlatList
-              data={patients}
-              renderItem={renderItem}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(index, item) => index.toString()}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(patientsReqRequest(pageNo));
-                    setRefresh(false);
-                  }}
-                />
-              }
-            />
+            <View style={{flex: 1}}>
+              <FlatList
+                data={patients}
+                renderItem={renderItem}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(index, item) => index.toString()}
+                onEndReached={onEnd}
+                onEndReachedThreshold={0.01}
+              />
+            </View>
           )}
         </>
       )}

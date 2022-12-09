@@ -1,13 +1,16 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import { colorPalette } from '../atoms/colorPalette';
+import {colorPallete} from '../atoms/colorPallete';
 
-export default function CustomButton({ onPress, title, fill = false }) {
+export default function CustomButton({onPress, title, fill = false}) {
   return (
     <TouchableOpacity
-      style={[styles.container, fill ? styles.fillContainer : styles.normalContainer]}
+      style={[
+        styles.container,
+        fill ? styles.fillContainer : styles.normalContainer,
+      ]}
       onPress={onPress}
-      underlayColor='#fff'>
+      underlayColor="#fff">
       <Text
         style={[styles.buttonText, fill ? styles.fillText : styles.normalText]}>
         {title}
@@ -23,23 +26,22 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     borderWidth: 2,
-    borderColor: colorPalette.BLUE,
-    borderRadius: 25
+    borderColor: colorPallete.BLUE,
+    borderRadius: 25,
   },
   fillContainer: {
-    backgroundColor: colorPalette.BLUE,
+    backgroundColor: colorPallete.BLUE,
   },
   normalContainer: {
     backgroundColor: 'transparent',
   },
   buttonText: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   fillText: {
     color: 'white',
   },
   normalText: {
-    color: colorPalette.BLUE
-  }
+    color: colorPallete.BLUE,
+  },
 });
-

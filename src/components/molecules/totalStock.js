@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import {TextInput} from 'react-native-paper';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
-import {colorPalette} from '../atoms/colorPalette';
+import {colorPallete} from '../atoms/colorPallete';
 
 const TotalStock = props => {
   const showAlert = () => {
@@ -47,7 +47,7 @@ const TotalStock = props => {
         <Feather
           size={30}
           name="minus"
-          color={colorPalette.mainColor}
+          color={colorPallete.mainColor}
           Stroke
           width={0.5}
         />
@@ -66,7 +66,7 @@ const TotalStock = props => {
       <TouchableOpacity
         onPress={() => valueChangePlus()}
         style={Styles.addbutton}>
-        <Feather size={30} name="plus" color={colorPalette.mainColor} />
+        <Feather size={30} name="plus" color={colorPallete.mainColor} />
       </TouchableOpacity>
     </View>
   );

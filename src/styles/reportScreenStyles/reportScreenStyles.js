@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
-import {horizontalScale, verticalScale} from '../../components/atoms/constant';
+import {colorPallete} from '../../components/atoms/colorPalette';
+import {horizontalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     height: '50%',
     width: '200%',
     // borderRadius: 180,
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   report: {
     flex: 1,
-    // backgroundColor: colorPalette.basicColor,
+    // backgroundColor: colorPallete.basicColor,
   },
   reportContainer: {
     justifyContent: 'center',
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: '92%',
     borderRadius: 12,
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     justifyContent: 'center',
     elevation: 8,
     flexDirection: 'row',
@@ -40,11 +40,11 @@ export const styles = StyleSheet.create({
   },
   container1Text: {
     width: '65%',
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     paddingLeft: horizontalScale(20),
   },
   font: {
-    color: colorPalette.mainColor,
+    color: colorPallete.mainColor,
     fontSize: 22,
     fontWeight: '600',
   },
@@ -55,15 +55,15 @@ export const styles = StyleSheet.create({
   progressView: {
     width: '35%',
     alignItems: 'center',
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
   },
-  percentage: {fontSize: 16, color: colorPalette.greenPercentageColor},
-  color: colorPalette.greenPercentageColor,
+  percentage: {fontSize: 16, color: colorPallete.greenPercentageColor},
+  color: colorPallete.greenPercentageColor,
   shadowColor: 'lightgrey',
-  bgColor: colorPalette.basicColor,
+  bgColor: colorPallete.basicColor,
   outerCircle: {bottom: 2},
   performance: {
-    color: colorPalette.hightlightedColor,
+    color: colorPallete.hightlightedColor,
     marginTop: 20,
     fontSize: 24,
     paddingTop: 10,
@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#EEEEEE',
   },
   header: {
-    color: colorPalette.hightlightedColor,
+    color: colorPallete.hightlightedColor,
     fontSize: 20,
     marginLeft: 10,
     marginTop: 10,
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
   lottie: {height: 40, width: 40},
   theme: {
     backgroundColor: 'yellow',
-    calendarBackground: colorPalette.backgroundColor,
+    calendarBackground: colorPallete.backgroundColor,
     textSectionTitleColor: '#b6c1cd',
     textSectionTitleDisabledColor: '#d9e1e8',
     selectedDayBackgroundColor: '#00adf5',
@@ -114,7 +114,7 @@ export const styles = StyleSheet.create({
     textDisabledColor: '#d9e1e8',
     dotColor: '#00adf5',
     selectedDotColor: '#ffffff',
-    arrowColor: colorPalette.appColor,
+    arrowColor: colorPallete.appColor,
     disabledArrowColor: '#d9e1e8',
     monthTextColor: 'blue',
     indicatorColor: 'blue',
@@ -137,7 +137,7 @@ export const styles = StyleSheet.create({
     elevation: 6,
     borderRadius: 7,
     width: horizontalScale(320),
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     borderWidth: 2,
     borderColor: 'white',
     paddingBottom: 10,
@@ -158,11 +158,11 @@ export const styles = StyleSheet.create({
   modalContainer: {
     width: '98%',
     height: '75%',
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
 
     borderRadius: 20,
     borderWidth: 1.5,
-    borderColor: colorPalette.appColor,
+    borderColor: colorPallete.appColor,
   },
   progressBar: {
     justifyContent: 'center',
@@ -173,7 +173,7 @@ export const styles = StyleSheet.create({
   },
   modalHeaderText: {
     fontSize: 20,
-    color: colorPalette.appColor,
+    color: colorPallete.appColor,
     fontWeight: '500',
   },
   modalSubHeader: {
@@ -183,7 +183,7 @@ export const styles = StyleSheet.create({
     margin: 15,
   },
   timeSlot: {
-    backgroundColor: colorPalette.appColor,
+    backgroundColor: colorPallete.appColor,
     borderRadius: 70,
     width: '30%',
     height: '15%',
@@ -192,21 +192,21 @@ export const styles = StyleSheet.create({
     marginEnd: 10,
   },
   timeSlotText: {
-    color: colorPalette.basicColor,
+    color: colorPallete.basicColor,
     fontSize: 20,
   },
   picker: {
     borderWidth: 2,
-    borderColor: colorPalette.appColor,
-    backgroundColor: colorPalette.basicColor,
+    borderColor: colorPallete.appColor,
+    backgroundColor: colorPallete.basicColor,
     borderRadius: 10,
     marginHorizontal: 13,
     marginTop: 8,
   },
   picker: {
     borderWidth: 2,
-    borderColor: colorPalette.appColor,
-    backgroundColor: colorPalette.basicColor,
+    borderColor: colorPallete.appColor,
+    backgroundColor: colorPallete.basicColor,
     borderRadius: 10,
     paddingHorizontal: 20,
   },
@@ -216,7 +216,7 @@ export const styles = StyleSheet.create({
     color: '#000',
   },
   takenText: {
-    color: colorPalette.redColor,
+    color: colorPallete.redColor,
     fontSize: 20,
     paddingLeft: 20,
     paddingTop: 10,

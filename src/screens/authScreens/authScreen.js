@@ -1,38 +1,17 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import SignUp from './signUp';
 import Login from './login';
 import Toast from 'react-native-toast-message';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {Divider} from 'react-native-paper';
 import {useIsFocused} from '@react-navigation/native';
-import NetInfo from '@react-native-community/netinfo';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 const AuthScreen = ({navigation}) => {
-  const [connected, setConnected] = useState(false);
   const isFocused = useIsFocused();
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      setConnected(state.isConnected);
-
-      if (!state.isConnected) {
-        setVisible(true);
-        setTimeout(() => {
-          setVisible(false);
-        }, 4000);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -45,14 +24,14 @@ const AuthScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.skipBtn}
         activeOpacity={1}
         onPress={() => {
           navigation.navigate('Home');
         }}>
         <Text style={styles.text}>Skip</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         style={styles.backBtn}
         activeOpacity={1}
@@ -67,7 +46,7 @@ const AuthScreen = ({navigation}) => {
           <Text style={styles.content}>Sign up to access the app!</Text>
         </View>
 
-        <SignUp navigation={navigation} connected={connected} />
+        <SignUp navigation={navigation} />
 
         <View style={styles.dividerCont}>
           <Divider style={styles.divider} />
@@ -78,25 +57,9 @@ const AuthScreen = ({navigation}) => {
         <View style={styles.loginView}>
           <Text style={styles.loginText}>Already have an account!</Text>
         </View>
-        <Login navigation={navigation} connected={connected} />
+        <Login navigation={navigation} />
       </View>
       <Toast visibilityTime={1000} />
-      {visible && (
-        <View style={styles.online}>
-          <View style={styles.onlineCont}>
-            <MaterialIcons name={'wifi'} color={'white'} size={20} />
-            <Text style={styles.onlineText}>Back Online</Text>
-          </View>
-        </View>
-      )}
-      {!connected && (
-        <View style={styles.offline}>
-          <View style={styles.offlineCont}>
-            <MaterialIcons name={'wifi-off'} color={'white'} size={20} />
-            <Text style={styles.offlineText}>No Internet</Text>
-          </View>
-        </View>
-      )}
     </View>
   );
 };
@@ -144,7 +107,7 @@ const styles = StyleSheet.create({
   online: {
     position: 'absolute',
     bottom: 0,
-    backgroundColor: colorPalette.greenPercentageColor,
+    backgroundColor: colorPallete.greenPercentageColor,
     height: 22,
     width: '100%',
     alignItems: 'center',

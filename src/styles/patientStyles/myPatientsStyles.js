@@ -1,13 +1,13 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 export const styles = StyleSheet.create({
   //main
   container: {backgroundColor: 'white', height: '100%'},
-  mainCont: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  mainCont: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   imgCont: {
     flex: 1,
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
     alignItems: 'center',
     justifyContent: 'center',
   },

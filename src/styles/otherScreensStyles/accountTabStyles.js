@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {
   horizontalScale,
   moderateScale,
@@ -7,7 +7,7 @@ import {
 } from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  container: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   profile: {
     flexDirection: 'row',
     padding: moderateScale(20),
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: colorPalette.mainColor,
+    color: colorPallete.mainColor,
     fontWeight: '600',
   },
   subTitle: {
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
   btnStyles: {
     borderRadius: 5,
     padding: 12,
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     width: '40%',
     alignItems: 'center',
     marginVertical: 40,

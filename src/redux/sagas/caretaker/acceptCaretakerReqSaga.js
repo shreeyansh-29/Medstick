@@ -4,11 +4,11 @@ import {
   acceptCaretakerReqError,
   acceptCaretakerReqSuccess,
 } from '../../action/caretaker/acceptCaretakerReqAction';
-import acceptCaretakerReqService from '../../../network/networkServices/common/acceptRequestService';
+import networkService from '../../../network/networkService';
 
 export function* acceptCaretakerRequestSaga(data) {
   try {
-    let response = yield call(acceptCaretakerReqService.putAcceptRequest, data);
+    let response = yield call(networkService.putAcceptRequest, data);
     yield put(acceptCaretakerReqSuccess(response));
   } catch (error) {
     yield put(acceptCaretakerReqError(error));

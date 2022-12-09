@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import React, {useState, useRef} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {faPencil} from '@fortawesome/free-solid-svg-icons';
 import {faNoteSticky} from '@fortawesome/free-regular-svg-icons';
@@ -38,6 +38,7 @@ const MedicineList = ({route, navigation}) => {
               <View style={styles.iconView}>
                 <TouchableOpacity
                   activeOpacity={1}
+                  style={{padding: 2}}
                   onPress={() => {
                     setEdit(true);
                     setMedData(item);
@@ -45,10 +46,11 @@ const MedicineList = ({route, navigation}) => {
                   <FontAwesomeIcon
                     icon={faPencil}
                     size={20}
-                    color={colorPalette.basicColor}
+                    color={colorPallete.basicColor}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
+                  style={{padding: 2}}
                   activeOpacity={1}
                   onPress={() => {
                     setVisible(true);
@@ -57,7 +59,7 @@ const MedicineList = ({route, navigation}) => {
                   <FontAwesomeIcon
                     icon={faNoteSticky}
                     size={20}
-                    color={colorPalette.basicColor}
+                    color={colorPallete.basicColor}
                   />
                 </TouchableOpacity>
               </View>
@@ -76,7 +78,7 @@ const MedicineList = ({route, navigation}) => {
                 </View>
                 <View style={styles.itemView}>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemHeading}>Dosage Type : </Text>
+                    <Text style={styles.itemHeading}>Dosage Quantity : </Text>
                   </View>
                   <View style={styles.itemWidth}>
                     <Text style={styles.itemData}>{item.dosageQuantity}</Text>
@@ -205,7 +207,7 @@ const MedicineList = ({route, navigation}) => {
           }}
           inactiveDotOpacity={1}
           inactiveDotScale={0.6}
-          dotColor={colorPalette.appColor}
+          dotColor={colorPallete.appColor}
           inactiveDotColor={'grey'}
         />
       </View>
@@ -217,7 +219,7 @@ export default MedicineList;
 
 const styles = StyleSheet.create({
   container1: {
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     flex: 1,
   },
   carouselContainer: {
@@ -225,16 +227,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     width: '100%',
     marginTop: 20,
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
   },
   container: {
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
   },
   top: {
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     width: '100%',
     borderRadius: 10,
     height: '92%',
@@ -242,14 +244,13 @@ const styles = StyleSheet.create({
     opacity: 1,
   },
   medNameContainer: {
-    backgroundColor: colorPalette.appColor,
+    backgroundColor: colorPallete.appColor,
     padding: 10,
     alignItems: 'center',
     width: '100%',
     flexDirection: 'row',
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,
-    justifyContent: 'space-evenly',
   },
   medNameView: {width: '70%', left: 10},
   iconView: {
@@ -257,8 +258,8 @@ const styles = StyleSheet.create({
     width: '30%',
     justifyContent: 'space-evenly',
   },
-  medName: {fontSize: 20, fontWeight: '600', color: colorPalette.basicColor},
-  itemHeading: {fontSize: 16, fontWeight: '600', color: 'grey'},
+  medName: {fontSize: 20, fontWeight: '600', color: colorPallete.basicColor},
+  itemHeading: {fontSize: 16, fontWeight: '600', color: 'gray'},
   itemWidth: {width: '50%'},
   itemView: {flexDirection: 'row', paddingVertical: 12, width: '100%'},
   itemData: {
@@ -276,21 +277,5 @@ const styles = StyleSheet.create({
   prescriptionView: {
     width: '100%',
   },
-  prescriptionText: {fontSize: 21},
+  prescriptionText: {fontSize: 21, color: colorPallete.black},
 });
-
-// {
-//   navigation?.navigate('AddMedicineStack', {
-//     screen: 'AddMedicine',
-//     params: {
-//       itemDescription: item.medicineDescription,
-//       itemDosageType: item.dosageQuantity,
-//       itemDosageUnit: item.dosageUnit,
-//       Stock: item.stock,
-//       doctorName: item.doctorName,
-//       contact: item.contact,
-//       specialization: item.specialization,
-//       loaction: item.location,
-//     },
-//   });
-// }

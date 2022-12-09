@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {verticalScale} from '../../components/atoms/constant';
 
 const styles = StyleSheet.create({
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 14,
     borderTopWidth: 3,
-    borderTopColor: colorPalette.mainColor,
+    borderTopColor: colorPallete.mainColor,
   },
   cardView: {
     flexDirection: 'row',
@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
   performanceContainer: {
     alignItems: 'center',
     padding: verticalScale(8),
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
   },
   outerCircle: {},
-  percentage: {fontSize: 18, color: colorPalette.redPercentageColor},
+  percentage: {fontSize: 18, color: colorPallete.redPercentageColor},
   performance: {
     color: 'white',
     fontSize: 24,
@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
     margin: 2,
     fontWeight: '600',
   },
-  color: colorPalette.redPercentageColor,
-  shadowColor: colorPalette.restPercentageColor,
-  bgColor: colorPalette.basicColor,
-  mainCont: {flex: 1, backgroundColor: colorPalette.mainColor},
+  color: colorPallete.redPercentageColor,
+  shadowColor: colorPallete.restPercentageColor,
+  bgColor: colorPallete.basicColor,
+  mainCont: {flex: 1, backgroundColor: colorPallete.mainColor},
   progress: {backgroundColor: 'white'},
   bottomSheet: {
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     flex: 1,
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   animatedCircle: {
     alignItems: 'center',
     padding: verticalScale(8),
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     height: 200,
   },
 });

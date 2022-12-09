@@ -1,7 +1,7 @@
 import {View} from 'react-native';
 import React from 'react';
 import LottieView from 'lottie-react-native';
-import {colorPalette} from './colorPalette';
+import {colorPallete} from './colorPallete';
 
 const Loader = () => {
   return (

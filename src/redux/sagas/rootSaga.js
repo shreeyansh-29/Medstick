@@ -5,19 +5,10 @@ import {watchSignUpSaga} from './signUpSaga/signUpSaga';
 import {watchEditProfileSaga} from './profileSaga/editProfileSaga';
 import {watchPatientsRequestSaga} from './patients/patientsRequestSaga';
 import {watchAcceptPatientReqSaga} from './patients/acceptPatientReqSaga';
-import {addMedicineWatcherSaga} from './userMedicine/addMedicineWatcherSaga';
-import {getPrescriptionWatcherSaga} from './doctorPrescriptionSaga/getPrescriptionWatcherSaga';
-import {saveDoctorPrescriptionWatcherSaga} from './doctorPrescriptionSaga/saveDoctorPrescriptionWatcherSaga';
-import {saveUserMedicineWatcherSaga} from './userMedicine/saveUserMedicineWatcherSaga';
 import {watchSendSnapSaga} from './otherScreenSaga/sendSnapSaga';
 import {medicineListWatcherSaga} from './userMedicine/medicineListWatcherSaga';
-import {watchDeleteMedicineSaga} from './userMedicine/deleteMedicineSaga';
-import {appointmentReminderWatcherSaga} from './userMedicine/appointmentReminderWatcherSaga';
-import {getAppointmentWatcherSaga} from './appointmentSaga/getAppointmentWatcherSaga';
 import {watchMyPrescriptionsSaga} from './otherScreenSaga/myPrescriptionsSaga';
 import {watchGetUserProfileSaga} from './profileSaga/getUserProfileSaga';
-import {saveAppointmentWatcherSaga} from './appointmentSaga/saveAppointmentReminderWatcherSaga';
-import {deleteAppointmentWatcherSaga} from './appointmentSaga/deleteAppointmentWatcherSaga';
 import {getAllNotificationWatcherSaga} from './notification/getAllNotificationWatcherSaga';
 import {deleteNotificationWatcherSaga} from './notification/deleteNotificationWatcherSaga';
 import {watchMyCaretakerSaga} from './caretaker/myCaretakerSaga';
@@ -30,14 +21,9 @@ import {watchNotifyUserSaga} from './patients/notifyUserSaga';
 import {watchMedicineImagesSaga} from './patients/medicineImagesSaga';
 import {watchGetMedicinesHistorySaga} from './patients/getMedsHistorySaga';
 import {watchDownloadPdf} from './otherScreenSaga/downloadPdfSaga';
-import {getUserMedicineWatcherSaga} from './userMedicine/getUserMedicineWatcherSaga';
-import {getMedicineHistoryWatcherSaga} from './userMedicine/getMedicineHistoryWatcherSaga';
-import {getMedicineHistoryByDateWatcherSaga} from './userMedicine/getMedicineHistoryByDateWatcherSaga';
 import {searchMedicineWatcherSaga} from './userMedicine/searchMedicineWatcherSaga';
-import {saveReminderWatcherSaga} from './saveReminder/saveReminderWatcherSaga';
-import {getReminderWatcherSaga} from './saveReminder/getReminderWatcherSaga';
-import {watchUpdateAppointmentSaga} from './appointmentSaga/updateAppointmentWatcherSaga';
 import {watchDeletePatientReqSaga} from './patients/deletePatientReqSaga';
+import {watchSyncDataSaga} from './userMedicine/syncDataSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -48,15 +34,8 @@ export default function* RootSaga() {
     watchPatientsRequestSaga(),
     watchAcceptPatientReqSaga(),
     watchDeletePatientReqSaga(),
-    addMedicineWatcherSaga(),
-    getPrescriptionWatcherSaga(),
-    saveDoctorPrescriptionWatcherSaga(),
-    saveUserMedicineWatcherSaga(),
     watchSendSnapSaga(),
     medicineListWatcherSaga(),
-    watchDeleteMedicineSaga(),
-    appointmentReminderWatcherSaga(),
-    getAppointmentWatcherSaga(),
     watchMyPrescriptionsSaga(),
     watchGetUserProfileSaga(),
     getAllNotificationWatcherSaga(),
@@ -64,8 +43,6 @@ export default function* RootSaga() {
     watchCaretakerRequestSaga(),
     watchAcceptCaretakerReqSaga(),
     watchDeleteCaretakerReqSaga(),
-    saveAppointmentWatcherSaga(),
-    deleteAppointmentWatcherSaga(),
     watchGetUserSaga(),
     watchSendReqSaga(),
     watchNotifyUserSaga(),
@@ -73,13 +50,7 @@ export default function* RootSaga() {
     deleteNotificationWatcherSaga(),
     watchGetMedicinesHistorySaga(),
     watchDownloadPdf(),
-    getUserMedicineWatcherSaga(),
-    getMedicineHistoryWatcherSaga(),
-    getMedicineHistoryByDateWatcherSaga(),
-    saveUserMedicineWatcherSaga(),
     searchMedicineWatcherSaga(),
-    saveReminderWatcherSaga(),
-    getReminderWatcherSaga(),
-    watchUpdateAppointmentSaga(),
+    watchSyncDataSaga(),
   ]);
 }

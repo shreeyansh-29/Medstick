@@ -3,8 +3,12 @@ import React from 'react';
 import Styles from '../../styles/medicinePanelStyles/medicinePanelStyles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import DatePicker from 'react-native-date-picker';
-import {faCalendarDays, faClock, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
-import {colorPalette} from '../atoms/colorPalette';
+import {
+  faCalendarDays,
+  faClock,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
+import {colorPallete} from '../atoms/colorPallete';
 import {useState} from 'react';
 
 const DateTime = ({temp, time1}) => {
@@ -28,7 +32,7 @@ const DateTime = ({temp, time1}) => {
             <FontAwesomeIcon
               icon={faCalendarDays}
               size={28}
-              color={colorPalette.mainColor}
+              color={colorPallete.mainColor}
             />
             <DatePicker
               modal
@@ -51,7 +55,7 @@ const DateTime = ({temp, time1}) => {
 
         {date == Date() ? (
           <View style={Styles.box2}>
-            <Text style={{fontSize:20}} >{temp}</Text>
+            <Text style={{fontSize: 20}}>{temp}</Text>
           </View>
         ) : (
           <View style={Styles.box2}>
@@ -79,7 +83,7 @@ const DateTime = ({temp, time1}) => {
             <FontAwesomeIcon
               icon={faClock}
               size={28}
-              color={colorPalette.mainColor}
+              color={colorPallete.mainColor}
             />
             <DatePicker
               modal
@@ -99,7 +103,7 @@ const DateTime = ({temp, time1}) => {
         </TouchableOpacity>
         {date == Date() ? (
           <View style={Styles.box2}>
-            <Text style={{fontSize:20}} >{time1}</Text>
+            <Text style={{fontSize: 20}}>{time1}</Text>
           </View>
         ) : (
           <View style={Styles.box2}>

@@ -4,51 +4,67 @@ import {
   ActivityIndicator,
   FlatList,
   Text,
+  StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import {useSelector, useDispatch} from 'react-redux';
 import {
   searchMedicineClear,
   searchMedicineRequest,
 } from '../../../redux/action/userMedicine/searchMedicineAction';
 import {TextInput} from 'react-native-paper';
-import {faArrowLeft, faXmark} from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faSearch,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import {ListItem} from 'react-native-elements';
 
 const RenderModalView = ({setVisible, props}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.searchMedicine?.data);
-  const error = useSelector(state => state.searchMedicine?.error);
-  const loading = useSelector(state => state.searchMedicine?.isLoading);
+  const error = useSelector(state => state.searchMedicine?.error?.data);
   const [pageNo, setPageNo] = useState(0);
   const [tempSearch, setTempSearch] = useState([]);
   const [med, setMed] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const activityIndicator = () => {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <ActivityIndicator size="large" color={colorPalette.mainColor} />
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color={colorPallete.mainColor} />
       </View>
     );
   };
 
   useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
     if (res !== null) {
-      setTempSearch(res);
-    } else if (res === null) {
-      setTempSearch([]);
+      setTempSearch([...tempSearch, ...res]);
     }
   }, [res]);
 
-  useEffect(() => {
+  const apiCall = () => {
     if (med.length !== 0) {
-      setTimeout(() => {
-        dispatch(searchMedicineRequest({med, pageNo}));
-      }, 1000);
+      let medicineName = med.trim();
+      dispatch(searchMedicineRequest({medicineName, pageNo}));
     }
-  }, [med]);
+  };
+
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (tempSearch.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+      apiCall(med, a);
+    }
+    setPageNo(a);
+  };
 
   const setData = item => {
     setVisible(false);
@@ -60,7 +76,7 @@ const RenderModalView = ({setVisible, props}) => {
   const renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
-        activeOpacity={0.8}
+        activeOpacity={0.5}
         style={{marginTop: 4}}
         onPress={() => {
           setData(item);
@@ -89,78 +105,79 @@ const RenderModalView = ({setVisible, props}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
-      <View
-        style={{
-          alignSelf: 'flex-start',
-          marginTop: 16,
-          marginLeft: 10,
-          marginBottom: 2,
-        }}>
+    <View style={styles.container}>
+      <View style={styles.backBtnCont}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
             setVisible(false);
             dispatch(searchMedicineClear());
+            setPageNo(0);
+            setTempSearch([]);
           }}>
           <FontAwesomeIcon
             icon={faArrowLeft}
             size={22}
-            color={colorPalette.mainColor}
+            color={colorPallete.mainColor}
           />
         </TouchableOpacity>
       </View>
 
-      <View style={{marginVertical: 10, width: '96%'}}>
+      <View style={styles.textContainer}>
         <TextInput
-          label="Search Medicine"
+          placeholder="Search Medicine"
           mode="outlined"
-          onChangeText={text => setMed(text)}
-          outlineColor={colorPalette.mainColor}
-          activeOutlineColor={colorPalette.mainColor}
-          style={{width: '100%', alignSelf: 'center'}}
+          onChangeText={text => {
+            setMed(text);
+            setTempSearch([]);
+            setPageNo(0);
+          }}
+          outlineColor={colorPallete.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
+          style={styles.field}
           value={med}
           right={
+            med.length !== 0 ? (
+              <TextInput.Icon
+                onPress={() => apiCall()}
+                name={() => (
+                  <FontAwesomeIcon
+                    size={20}
+                    icon={faSearch}
+                    color={colorPallete.mainColor}
+                  />
+                )}
+              />
+            ) : null
+          }
+          left={
             <TextInput.Icon
               onPress={() => {
                 setMed('');
                 dispatch(searchMedicineClear());
+                setPageNo(0);
+                setTempSearch([]);
               }}
               name={() => (
                 <FontAwesomeIcon
                   size={20}
                   icon={faXmark}
-                  color={colorPalette.mainColor}
+                  color={colorPallete.mainColor}
                 />
               )}
             />
           }
+          clearTextOnFocus={true}
         />
       </View>
       {loading ? (
         activityIndicator()
       ) : (
         <>
-          {error?.status === 404 ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'white',
-              }}>
-              <Text style={{color: 'black', fontSize: 20, fontWeight: '500'}}>
-                Medicine Not Found
-              </Text>
-              <Text
-                style={{
-                  color: 'black',
-                  fontSize: 14,
-                  fontWeight: '500',
-                  marginTop: 10,
-                }}>
-                (Please Enter Manually)
-              </Text>
+          {error?.status === 'Failed' ? (
+            <View style={styles.errorCont}>
+              <Text style={styles.text1}>Medicine Not Found</Text>
+              <Text style={styles.text2}>(Please Enter Manually)</Text>
             </View>
           ) : (
             <>
@@ -173,10 +190,11 @@ const RenderModalView = ({setVisible, props}) => {
                     data={tempSearch}
                     renderItem={renderItem}
                     contentContainerStyle={{
-                      flex: 1,
-                      backgroundColor: colorPalette.backgroundColor,
+                      backgroundColor: colorPallete.backgroundColor,
                     }}
                     style={{width: '100%'}}
+                    onEndReached={onEnd}
+                    onEndReachedThreshold={0.01}
                   />
                 </>
               )}
@@ -187,5 +205,31 @@ const RenderModalView = ({setVisible, props}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {flex: 1, backgroundColor: 'white', alignItems: 'center'},
+  backBtnCont: {
+    alignSelf: 'flex-start',
+    marginTop: 16,
+    marginLeft: 10,
+    marginBottom: 2,
+  },
+  textContainer: {marginVertical: 10, width: '96%'},
+  field: {width: '100%', alignSelf: 'center'},
+  errorCont: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+  text1: {color: 'black', fontSize: 20, fontWeight: '500'},
+  text2: {
+    color: 'black',
+    fontSize: 14,
+    fontWeight: '500',
+    marginTop: 10,
+  },
+  loader: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+});
 
 export default RenderModalView;

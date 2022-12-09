@@ -7,7 +7,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {PermissionsAndroid} from 'react-native';
 import Downloadpdf from '../../../components/organisms/downloadPdf';
@@ -22,7 +22,6 @@ import LottieView from 'lottie-react-native';
 import HistoryDetail from './historyDetail';
 import CustomModal from '../../../components/molecules/customModal';
 import AnimatedProgessCircle from '../../../components/atoms/AnimatedProgressCircle';
-import AdherencePercentage from './adherenceHistory';
 
 let detailData = {};
 
@@ -36,6 +35,7 @@ const MedicineReport = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [showDetail, showDetailState] = useState(false);
   const [percentage, setPercentage] = useState(0);
+  const [pageNo, setPageNo] = useState(0);
 
   useEffect(() => {
     if (res?.status === 'OK') {
@@ -68,8 +68,8 @@ const MedicineReport = ({navigation, route}) => {
         dateObj.month = months[currentDate.getMonth()];
         dateObj.color =
           currentDate < todayDate
-            ? colorPalette.mainColor
-            : colorPalette.lightWhite;
+            ? colorPallete.mainColor
+            : colorPallete.lightWhite;
         dateObj.year = currentDate.getFullYear();
         alldates.push(dateObj);
       }
@@ -80,7 +80,8 @@ const MedicineReport = ({navigation, route}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(getMedsHistoryRequest(item?.userMedicineId));
+      let med = item?.userMedicineId;
+      dispatch(getMedsHistoryRequest({med, pageNo}));
       return () => {
         true;
       };
@@ -112,6 +113,15 @@ const MedicineReport = ({navigation, route}) => {
     }
     showDetailState(true);
     setModalVisible(true);
+  };
+
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (historyData?.length % 5 === 0 && a !== 0 && res?.result?.length !== 0) {
+      let med = item?.userMedicineId;
+      dispatch(getMedsHistoryRequest({med, pageNo}));
+    }
+    setPageNo(a);
   };
 
   return (
@@ -161,7 +171,7 @@ const MedicineReport = ({navigation, route}) => {
       </View>
       <View style={styles.bottomSheet}>
         <View style={styles.mainView}>
-          <Text style={styles.heading}>
+          <Text style={styles.heading} numberOfLines={1}>
             Scheduled Dates for {item?.medicineName}
           </Text>
           <ScrollView
@@ -218,6 +228,8 @@ const MedicineReport = ({navigation, route}) => {
           }}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={{padding: 8}}
+          onEndReachedThreshold={0.01}
+          onEndReached={onEnd}
         />
       </View>
     </View>

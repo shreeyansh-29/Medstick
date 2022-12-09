@@ -1,9 +1,9 @@
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {StyleSheet} from 'react-native';
 import {verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  container: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   mainCont: {
     alignItems: 'center',
   },

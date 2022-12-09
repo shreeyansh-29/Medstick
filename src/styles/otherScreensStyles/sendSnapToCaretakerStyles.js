@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {
   horizontalScale,
   moderateScale,
@@ -7,7 +7,7 @@ import {
 } from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.mainColor},
+  container: {flex: 1, backgroundColor: colorPallete.mainColor},
   lottieView: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
     color: 'black',
   },
   btnStyle: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     borderRadius: 6,
     paddingHorizontal: 40,
     paddingVertical: 10,

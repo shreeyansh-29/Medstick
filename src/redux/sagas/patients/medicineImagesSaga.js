@@ -4,11 +4,11 @@ import {
   medicineImagesError,
   medicineImagesSuccess,
 } from '../../action/patients/medicineImagesAction';
-import getMedImagesService from '../../../network/networkServices/patients/medicineImagesService';
+import networkService from '../../../network/networkService';
 
 export function* medicineImagesSaga(data) {
   try {
-    let response = yield call(getMedImagesService.getMedicineImages, data);
+    let response = yield call(networkService.getMedicineImages, data);
     yield put(medicineImagesSuccess(response?.data));
   } catch (error) {
     yield put(medicineImagesError(error));

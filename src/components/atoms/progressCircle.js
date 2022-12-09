@@ -1,15 +1,15 @@
 import {Text} from 'react-native';
 import React from 'react';
 import ProgressCircle from 'react-native-progress-circle';
-import {colorPalette} from './colorPalette';
+import {colorPallete} from './colorPalette';
 
 function ColorCode(percentage) {
   if (percentage < 60) {
-    return colorPalette.redPercentageColor;
+    return colorPallete.redPercentageColor;
   } else if (61 <= percentage && percentage < 90) {
     return 'orange';
   } else {
-    return colorPalette.greenPercentageColor;
+    return colorPallete.greenPercentageColor;
   }
 }
 

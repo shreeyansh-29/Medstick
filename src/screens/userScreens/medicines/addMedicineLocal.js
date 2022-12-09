@@ -10,7 +10,7 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Formik} from 'formik';
 import AddMedicineForm from './addMedicineForm';
 import {addMedicineSchema} from '../../../constants/validations';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import Toast from 'react-native-toast-message';
 import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
@@ -78,8 +78,8 @@ const AddMedicineLocal = ({navigation}) => {
       let obj = {
         userMedicineId: userMedicineId,
         medicineId: medicineId,
-        medicineName: values.medicineName,
-        medicineDescription: values.description,
+        medicineName: values.medicineName.trim(),
+        medicineDescription: values.description.trim(),
         prescriptionId: prescriptionObj.prescriptionId,
         doctorName: prescriptionObj.doctorName,
         prescriptionUrl: prescriptionObj.prescriptionUrl,
@@ -88,10 +88,10 @@ const AddMedicineLocal = ({navigation}) => {
         contact: prescriptionObj.contact,
         present: 'true',
         dosageType: pill,
-        dosageQuantity: values.dosageQuantity,
-        dosagePower: values.dosagePower + ' ' + values.doseType,
-        leftStock: values.notify,
-        stock: values.stocks,
+        dosageQuantity: values.dosageQuantity.trim(),
+        dosagePower: values.dosagePower.trim() + ' ' + values.doseType,
+        leftStock: values.notify.trim(),
+        stock: values.stocks.trim(),
         reminderId: null,
         startDate: null,
         endDate: null,
@@ -108,6 +108,7 @@ const AddMedicineLocal = ({navigation}) => {
         historyList: [],
         appointmentList: prescriptionObj.appointmentList,
         notes: '',
+        isModified: false,
       };
 
       getMedicine().then(data => {
@@ -209,7 +210,7 @@ const AddMedicineLocal = ({navigation}) => {
 
 const Styles = StyleSheet.create({
   addMedicinePage: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     flex: 1,
   },
   keyboardView: {

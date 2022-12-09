@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {useState} from 'react';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -12,6 +12,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
 import {day_data, months} from './pushNotification/timeData';
 import CustomButton from '../../../components/atoms/customButton';
+import CircleCheckBox from 'react-native-circle-checkbox';
 
 const ReminderDuration = ({route, navigation}) => {
   const [endDate, endDateState] = useState(new Date());
@@ -43,7 +44,7 @@ const ReminderDuration = ({route, navigation}) => {
     endDateState(startDate);
   };
   return (
-    <>
+    <View style={styles.container}>
       <SubHeader navigation={navigation} title={'Duration'} />
       <View style={{marginHorizontal: 20}}>
         <View style={styles.dateContainer}>
@@ -70,16 +71,15 @@ const ReminderDuration = ({route, navigation}) => {
               <Text style={styles.itemText}>No End Date </Text>
             </View>
             <View style={styles.checkView}>
-              <CheckBox
-                style={styles.days}
-                onClick={() => {
+              <CircleCheckBox
+                checked={check1}
+                onToggle={() => {
                   setCheck1(!check1);
                   setCheck2(false);
                   setCheck3(false);
                   handleEndDate();
                 }}
-                isChecked={check1}
-                checkBoxColor={colorPalette.appColor}
+                styleCheckboxContainer={styles.days}
               />
             </View>
           </View>
@@ -88,7 +88,17 @@ const ReminderDuration = ({route, navigation}) => {
               <Text style={styles.itemText}>Untill This Date </Text>
             </View>
             <View style={styles.checkView}>
-              <CheckBox
+              <CircleCheckBox
+                checked={check2}
+                onToggle={() => {
+                  setCheck2(!check2);
+                  setCheck3(false);
+                  setCheck1(false);
+                  pickerstate(true);
+                }}
+                styleCheckboxContainer={styles.days}
+              />
+              {/* <CheckBox
                 style={styles.days}
                 onClick={() => {
                   setCheck2(!check2);
@@ -97,8 +107,8 @@ const ReminderDuration = ({route, navigation}) => {
                   pickerstate(true);
                 }}
                 isChecked={check2}
-                checkBoxColor={colorPalette.appColor}
-              />
+                checkBoxColor={colorPallete.appColor}
+              /> */}
             </View>
           </View>
           {check2 && (
@@ -117,15 +127,14 @@ const ReminderDuration = ({route, navigation}) => {
               <Text style={styles.itemText}>For X No. of Days - {days}</Text>
             </View>
             <View style={styles.checkView}>
-              <CheckBox
-                style={styles.days}
-                onClick={() => {
+              <CircleCheckBox
+                checked={check3}
+                onToggle={() => {
                   setCheck3(!check3);
                   setCheck2(false);
                   setCheck1(false);
                 }}
-                isChecked={check3}
-                checkBoxColor={colorPalette.appColor}
+                styleCheckboxContainer={styles.days}
               />
             </View>
           </View>
@@ -138,7 +147,7 @@ const ReminderDuration = ({route, navigation}) => {
               step={1}
               customMarker={() => (
                 <FontAwesomeIcon
-                  color={colorPalette.appColor}
+                  color={colorPallete.appColor}
                   size={20}
                   icon={faCircle}
                 />
@@ -181,12 +190,12 @@ const ReminderDuration = ({route, navigation}) => {
             width: '30%',
           }}
           btnStyles={{
-            backgroundColor: colorPalette.mainColor,
+            backgroundColor: colorPallete.mainColor,
             borderRadius: 5,
           }}
         />
       </View>
-    </>
+    </View>
   );
 };
 
@@ -194,11 +203,10 @@ export default ReminderDuration;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colorPalette.backgroundColor,
-    alignItems: 'center',
+    backgroundColor: colorPallete.basicColor,
   },
   dateContainer: {width: '100%', paddingVertical: 20},
-  dateText: {fontSize: 20, fontWeight: '600'},
+  dateText: {fontSize: 20, fontWeight: '600', color: colorPallete.black},
   dateText1: {
     fontSize: 16,
     color: 'black',
@@ -211,6 +219,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 17,
     fontWeight: '500',
+    color: 'gray',
   },
   checkView: {
     width: '40%',
