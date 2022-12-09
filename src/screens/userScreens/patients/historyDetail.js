@@ -97,7 +97,6 @@ const HistoryDetail = ({data, onPress}) => {
             timeStyle={style.timeStyle}
             isUsingFlatlist={true}
             innerCircle={'dot'}
-            // listViewContainerStyle={{backgroundColor: 'green'}}
             detailContainerStyle={style.detailContainerStyle}
           />
         </View>

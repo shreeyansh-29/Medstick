@@ -1,4 +1,3 @@
-/* eslint-disable react/self-closing-comp */
 import React, {useState} from 'react';
 import MyPatients from './myPatients';
 import PatientRequest from './patientRequest';

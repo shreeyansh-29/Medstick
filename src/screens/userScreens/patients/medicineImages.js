@@ -212,7 +212,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
 
-  //main main return
   mainView: {flex: 1, backgroundColor: 'white'},
   imgCont: {
     flex: 1,

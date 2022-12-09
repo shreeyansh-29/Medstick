@@ -14,7 +14,7 @@ const Downloadpdf = async globalmedId => {
   const options = {
     fileCache: true,
     addAndroidDownloads: {
-      useDownloadManager: true, // true will use native manager and be shown on notification bar.
+      useDownloadManager: true, 
       notification: true,
       path: downloadPath,
       description: 'Downloading your report',

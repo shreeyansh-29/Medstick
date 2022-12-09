@@ -193,7 +193,6 @@ const Report = ({navigation}) => {
       }
     });
     let totalCount = notTakenLength + takenLength;
-    // console.log(Math.floor((takenLength / totalCount) * 100));
     return Math.floor((takenLength / totalCount) * 100);
   };
 
@@ -246,7 +245,6 @@ const Report = ({navigation}) => {
   };
 
   const dayComponent = (date, state) => {
-    // console.log('date', date.dateString);
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
     // console.log('1234', dataMap);

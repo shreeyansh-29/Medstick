@@ -18,9 +18,9 @@ import moment from 'moment';
 import {AddMedicine, getMedicine} from '../../../utils/storage.js';
 import uuid from 'react-native-uuid';
 import {hour} from '../../../constants/constants';
-import Notifications from '../../../notification/notifications';
 import PushNotification from 'react-native-push-notification';
 import Toast from 'react-native-toast-message';
+import Notifications from '../../../pushNotification/pushNotifications';
 
 const Reminder = ({route, navigation}) => {
   const [picker, pickerstate] = useState(false);
@@ -73,10 +73,25 @@ const Reminder = ({route, navigation}) => {
     time_picker_mode_state(false);
   };
 
-  const handlePushNotification = (obj, check1) => {
+  const handlePushNotification = (obj, check1, endDate) => {
     let d = new Date(); // for now
     let currentTime = d.getHours() + ':' + d.getMinutes();
-    const number = moment(obj.reminderTime, ['h:mm A']).format('HH:mm');
+    let number = [];
+
+    let reminderTime = obj.reminderTime.split(',');
+    console.log(reminderTime);
+
+    for (let i = 0; i < reminderTime.length; i++) {
+      if(reminderTime[i] !== "") number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
+    }
+
+    let endDate1 =
+      endDate.getFullYear() +
+      '-' +
+      (endDate.getMonth() + 1) +
+      '-' +
+      endDate.getDate();
+    console.log(endDate1, 'endDate111');
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
@@ -86,25 +101,27 @@ const Reminder = ({route, navigation}) => {
       (chosenDate1.getMonth() + 1) +
       '-' +
       chosenDate1.getDate();
+    console.log(number.length, 'length');
 
-    if (number < currentTime) {
-      let dateTime = moment(chosenDate2 + ' ' + number);
-      Notifications.schduleNotification(
-        dateTime._d,
-        check1,
-        obj.medicineName,
-        obj.userMedicineId,
-        obj.reminderTime,
-      );
-    } else {
-      let dateTime = moment(obj.startDate + ' ' + number);
-      Notifications.schduleNotification(
-        dateTime._d,
-        check1,
-        obj.medicineName,
-        obj.userMedicineId,
-        obj.reminderTime,
-      );
+    for (let i = 0; i < number.length; i++) {
+      if (number[i] < currentTime && number[i] == 'Invalid date') {
+        let dateTime = moment(chosenDate2 + ' ' + number[i]);
+        Notifications.schduleNotification(
+          dateTime._d,
+          number,
+          check1,
+          obj.medicineName,
+          endDate1,
+        );
+      } else {
+        let dateTime = moment(obj.startDate + ' ' + number[i]);
+        Notifications.schduleNotification(
+          dateTime._d,
+          check1,
+          obj.medicineName,
+          endDate1,
+        );
+      }
     }
   };
 
@@ -287,41 +304,41 @@ const Reminder = ({route, navigation}) => {
     obj.currentCount = currentCount;
     obj.isModified = true;
 
+    let name = route.params.data.medicineName;
+
     if (reminderStatus == true) {
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
-          if (obj.userMedicineId === rn[i].id) {
-            PushNotification.cancelLocalNotification({
-              id: rn[obj.userMedicineId],
-            });
+          if ('Take ' + name === rn[i].message) {
+            PushNotification.cancelLocalNotification({id: rn[i].id});
           }
         }
       });
     }
 
-    handlePushNotification(obj, check1);
+    handlePushNotification(obj, check1, endDate);
 
-    getMedicine().then(data => {
-      const temp = data;
-      if (temp[route.params.index].reminderId !== null) {
-        temp[route.params.index] = obj;
-      } else {
-        obj.reminderId = uuid.v4();
-        temp[route.params.index] = obj;
-      }
-      AddMedicine(temp);
-    });
+    // getMedicine().then(data => {
+    //   const temp = data;
+    //   if (temp[route.params.index].reminderId !== null) {
+    //     temp[route.params.index] = obj;
+    //   } else {
+    //     obj.reminderId = uuid.v4();
+    //     temp[route.params.index] = obj;
+    //   }
+    //   AddMedicine(temp);
+    // });
     loadstate(false);
 
-    Toast.show({
-      text1: 'Reminder Saved',
-      type: 'success',
-      position: 'bottom',
-    });
+    // Toast.show({
+    //   text1: 'Reminder Saved',
+    //   type: 'success',
+    //   position: 'bottom',
+    // });
 
-    setTimeout(() => {
-      navigation.pop();
-    }, 1000);
+    // setTimeout(() => {
+    //   navigation.pop();
+    // }, 1000);
   };
 
   return (
@@ -668,15 +685,15 @@ const Reminder = ({route, navigation}) => {
                     name: 'keyboard-arrow-up',
                   },
                   arrowDown: {
-                    name: 'keyboard-arrow-down', // dropdown toggle
+                    name: 'keyboard-arrow-down',
                     size: 22,
                   },
                   check: {
-                    name: 'check', // selected item
+                    name: 'check',
                     size: 22,
                   },
                   close: {
-                    name: 'close', // chip close
+                    name: 'close',
                     size: 16,
                   },
                 }}

@@ -27,35 +27,41 @@ class Notifications {
     });
   }
 
-  schduleNotification(date, check1, name, userId, time) {
-    let Id1 = parseInt(userId);
+  schduleNotification(date, check1, name, time, enddate) {
+    let currentTime = new Date();
+    let currentTime2 =
+      currentTime.getFullYear() +
+      '-' +
+      (currentTime.getMonth() + 1) +
+      '-' +
+      currentTime.getDate();
+
     if (check1) {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name + ' at ' + time,
+        message: 'Take '+name,
         date: date,
         repeatType: 'day',
-        id: Id1,
       });
     } else {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name + ' at ' + time,
+        message: 'Take ' + name,
         date: date,
-        id: Id1,
+        repeatType: currentTime2 <= enddate ? 'day' : null,
+        
       });
     }
   }
-  schduleNotification2(date, id, time) {
+  schduleNotification2(date, Id) {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Appointment!',
       message: 'You have an appointment scheduled at' + ' ' + time,
       date: date,
-      vibrate: true,
-      vibration: 300,
+      id: Id,
     });
   }
 }

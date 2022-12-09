@@ -29,7 +29,6 @@ const ReminderDuration = ({route, navigation}) => {
   };
 
   const handleConfirm = date => {
-    // console.log(date);
     pickerstate(false);
     endDateState(date);
   };

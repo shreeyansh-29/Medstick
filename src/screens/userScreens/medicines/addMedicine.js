@@ -66,16 +66,7 @@ const AddMedicines = ({navigation, route}) => {
   const [array, setArray] = useState('');
   const [flag, setFlag] = useState('');
 
-  // useEffect(() => {
-  //   getSaveMedicine().then(data => setArray(data));
-  // }, []);
-
-  // useEffect(() => {
-  //   getMedicine().then(data => setArr(data));
-  // }, []);
-
   const searchMedicine = useSelector(state => state.searchMedicine);
-  // console.log(tempSearch, 'search');
 
   useEffect(() => {
     if (searchMedicine.data !== null) {
@@ -84,7 +75,6 @@ const AddMedicines = ({navigation, route}) => {
   }, [searchMedicine]);
 
   const payload = {pill, dosageQuantity, doseType, stock, remainingStock};
-  // console.log(payload, 'all');
   const getTokenId = async () => {
     try {
       const tokentemp = await AsyncStorage.getItem('accessToken');
@@ -92,17 +82,12 @@ const AddMedicines = ({navigation, route}) => {
         setToken(tokentemp);
       }
     } catch (error) {
-      // console.log(error, 'error');
     }
     const tempId = await AsyncStorage.getItem('user_id');
     setId(tempId);
   };
 
   const progress = useRef(new Animated.Value(0)).current;
-
-  // useEffect(() => {
-  //   dispatch(searchMedicineRequest(searchMedicineByName));
-  // }, [searchMedicineByName]);
 
   const search = data => {
     setSearchMedicineByName(data);
@@ -501,32 +486,7 @@ const AddMedicines = ({navigation, route}) => {
             <TouchableOpacity onPress={() => setModal(true)}>
               <SelectMedicineName medicineName={medicineName} />
             </TouchableOpacity>
-            {/* ) : (
-              <View>
-                <TextInput
-                  style={{width: '100%'}}
-                  id="name"
-                  label="Medicine Name"
-                  value={userMedicineName}
-                  mode="outlined"
-                  onChangeText={text => setUserMedicineName(text)}
-                  outlineColor="#02aba6"
-                  activeOutlineColor="#02aba6"
-                />
-                <TextInput
-                  style={{width: '100%'}}
-                  id="name"
-                  label="Medicine description"
-                  value={userMedicineDescription}
-                  mode="outlined"
-                  onChangeText={text => setUserMedicineDescription(text)}
-                  outlineColor="#02aba6"
-                  activeOutlineColor="#02aba6"
-                  multiline={true}
-                  numberOfLines={6}
-                />
-              </View>
-            )} */}
+           
             <View style={Styles.textView1}>
               <View style={{width: '48%'}}>
                 <View style={Styles.picker}>
@@ -626,24 +586,6 @@ const AddMedicines = ({navigation, route}) => {
                 />
               </TouchableOpacity>
             </View>
-
-            {/* <TouchableOpacity
-              style={Styles.touchableOpacity}
-              onPress={() =>
-                addMedicineInLocalStorage(
-                  id,
-                  token,
-                  prescriptionId,
-                  medicineId,
-                  pill,
-                  // dose,
-                  doseType,
-                  stock,
-                  remainingStock,
-                )
-              }>
-              <SaveButton />
-            </TouchableOpacity> */}
           </KeyboardAvoidingView>
         </ScrollView>
       </View>

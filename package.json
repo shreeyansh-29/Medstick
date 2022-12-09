@@ -8,10 +8,16 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "np": "np --no-publish",
+    "postversion": "react-native-version",
     "build": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android/ && ./gradlew assembleRelease -x bundleReleaseJsAndAssets",
     "run": "gnome-terminal --tab -e 'npm start --reset-cache' --tab -e 'npm run android'",
     "gradle": "cd android/ && ./gradlew clean && cd ..",
     "refresh_node_modules": "rm -rf node_modules/ && rm package-lock.json && npm i"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nineleaps-training/MedStick_FE"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
@@ -100,6 +106,8 @@
     "eslint": "^7.32.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.67.0",
+    "np": "^7.6.2",
+    "react-native-version": "^4.0.0",
     "react-test-renderer": "17.0.2"
   },
   "jest": {
