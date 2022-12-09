@@ -1,8 +1,8 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 export const style = StyleSheet.create({
-  mainCont: {flex: 1, backgroundColor: colorPalette.basicColor},
+  mainCont: {flex: 1, backgroundColor: colorPallete.basicColor},
   imgCont: {
     flex: 1,
     backgroundColor: 'white',
@@ -12,7 +12,7 @@ export const style = StyleSheet.create({
   flatList: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
   },
   list: {
     flexDirection: 'row',

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const styles = StyleSheet.create({
   scrollView: {flex: 1, backgroundColor: 'white'},
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 8,
     fontWeight: '700',
-    color: colorPalette.black,
+    color: colorPallete.black,
   },
   dateText1: {
     fontSize: 17,
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginTop: 10,
     fontWeight: '700',
-    color: colorPalette.black,
+    color: colorPallete.black,
   },
   titleText: {margin: 8, marginBottom: 10, fontSize: 16},
   timeTouch: {flexDirection: 'row', marginTop: 10},
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   durationText: {fontWeight: '700'},
   multiSlider: {alignItems: 'center'},
-  buttonStyle: {backgroundColor: colorPalette.appColor, width: '50%'},
+  buttonStyle: {backgroundColor: colorPallete.appColor, width: '50%'},
   buttonContainer: {
     alignItems: 'center',
     width: '100%',

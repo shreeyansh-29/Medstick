@@ -12,19 +12,18 @@ import {
 import DeviceInfo from 'react-native-device-info';
 import NetInfo from '@react-native-community/netinfo';
 import {useDispatch} from 'react-redux';
-import {colorPalette} from './colorPalette';
+import {colorPallete} from './colorPalette';
 import {verticalScale} from './constant';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {saveInternetConnectivityStatus} from '../../redux/action/loginAction/saveInternetConnectivity';
 
-
 const Styles = StyleSheet.create({
   container: {
-    backgroundColor: colorPalette.redPercentageColor,
+    backgroundColor: colorPallete.redPercentageColor,
     paddingBottom: Platform.OS === 'ios' ? (DeviceInfo.hasNotch() ? 37 : 0) : 0,
   },
   offlineText: {
-    color: colorPalette.basicColor,
+    color: colorPallete.basicColor,
     padding: verticalScale(10),
     textAlign: 'center',
   },
@@ -97,7 +96,7 @@ const OfflineBar = () => {
   return !isConnected ? (
     <SafeAreaView style={[Styles.container]}>
       <View>
-        <StatusBar backgroundColor={colorPalette.redPercentageColor} />
+        <StatusBar backgroundColor={colorPallete.redPercentageColor} />
         <View
           style={{
             flexDirection: 'row',

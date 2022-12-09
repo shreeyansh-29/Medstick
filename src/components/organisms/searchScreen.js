@@ -11,7 +11,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import SubHeader from '../molecules/headers/subHeader';
 import {styles} from '../../styles/organisms/searchScreenStyles';
 import LottieView from 'lottie-react-native';
-import {colorPalette} from '../atoms/colorPalette';
+import {colorPallete} from '../atoms/colorPalette';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import UserAvatar from 'react-native-user-avatar';
@@ -48,7 +48,7 @@ const SearchScreen = ({navigation}) => {
   const activityIndicator = () => {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <ActivityIndicator size="large" color={colorPalette.mainColor} />
+        <ActivityIndicator size="large" color={colorPallete.mainColor} />
       </View>
     );
   };
@@ -196,16 +196,16 @@ const SearchScreen = ({navigation}) => {
                   }}
                   inputStyle={{
                     fontSize: 18,
-                    color: colorPalette.mainColor,
+                    color: colorPallete.mainColor,
                   }}
                   lightTheme="true"
-                  placeholderTextColor={colorPalette.mainColor}
+                  placeholderTextColor={colorPallete.mainColor}
                   clearIcon={
                     <Icon
                       size={22}
                       name="search"
                       type="font-awesome"
-                      color={colorPalette.mainColor}
+                      color={colorPallete.mainColor}
                       onPress={() => handleSubmit()}
                       containerStyle={{marginLeft: 10}}
                     />
@@ -219,7 +219,7 @@ const SearchScreen = ({navigation}) => {
                         setData([]);
                         setFieldValue('email', '');
                       }}
-                      color={colorPalette.mainColor}
+                      color={colorPallete.mainColor}
                       containerStyle={{marginLeft: 10}}
                     />
                   }

@@ -5,12 +5,12 @@ import {
   ScrollView,
   StyleSheet,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import moment from 'moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import SubHeader from '../../components/molecules/headers/subHeader';
-import {colorPalette} from '../../components/atoms/colorPalette';
 import {Picker} from '@react-native-picker/picker';
 import {Formik} from 'formik';
 import {appointmentValidationSchema} from '../../constants/validations';
@@ -24,6 +24,7 @@ import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {AddMedicine, getMedicine} from '../../utils/storage';
 import uuid from 'react-native-uuid';
 import Notifications from '../../notification/notifications';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -32,29 +33,18 @@ const AppointmentReminders = ({navigation, route}) => {
   const [saveTimeOpen, setSaveTimeOpen] = useState(false);
   let doctor = route.params.notes;
 
-  const handlePushNotification = obj => {
-    let d = new Date();
-    let currentTime = d.getHours() + ':' + d.getMinutes();
-    let currentDate =
-      d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-    const number = moment(obj.time, ['h:mm A']).format('HH:mm');
+  const showAlert = () => {
+    Alert.alert('Please add valid time', '', [
+      {
+        text: 'Ok',
+        onPress: () => {},
+      },
+    ]);
+  };
 
-    let chosenDate = new Date(obj?.date).getTime() + 24 * 60 * 60 * 1000;
-    let chosenDate1 = new Date(chosenDate);
-    let chosenDate2 =
-      chosenDate1.getFullYear() +
-      '-' +
-      (chosenDate1.getMonth() + 1) +
-      '-' +
-      chosenDate1.getDate();
-
-    if (number < currentTime && currentDate >= obj?.date) {
-      let dateTime = moment(chosenDate2 + ' ' + number);
-      Notifications.schduleNotification2(dateTime._d, obj.appointmentId);
-    } else {
-      let dateTime = moment(obj.date + ' ' + number);
-      Notifications.schduleNotification2(dateTime._d, obj.appointmentId);
-    }
+  const handlePushNotification = (obj, reminderTime, time) => {
+    let dateTime = moment(obj.date + ' ' + reminderTime);
+    Notifications.schduleNotification2(dateTime._d, obj.appointmentId, time);
   };
 
   const saveAppointment = values => {
@@ -67,27 +57,73 @@ const AppointmentReminders = ({navigation, route}) => {
       appointmentId: appointmentId,
     };
 
-    getMedicine().then(data => {
-      if (data !== null && data.length !== 0) {
-        let updatedList = data;
-        updatedList.map((item, index) => {
-          if (item.prescriptionId === prescriptionId) {
-            updatedList[index].appointmentList.push(obj);
-            updatedList[index].isModified = true;
-          }
-        });
-        AddMedicine(updatedList);
-        Toast.show({
-          type: 'success',
-          text1: 'Appointment Saved Successfully',
-          position: 'bottom',
-        });
-      }
-    });
-    setTimeout(() => {
-      navigation.pop();
-    }, 1000);
-    handlePushNotification(obj);
+    let d = new Date();
+    let currentTime = d.getHours() + ':' + d.getMinutes();
+    let currentDate =
+      d.getFullYear() +
+      '-' +
+      (d.getMonth() + 1) +
+      '-' +
+      (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
+    const time1 = moment(obj.time, ['h:mm A']).format('HH:mm');
+    const time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
+
+    let hour =
+      parseInt(time1.split(':')[0]) === 0
+        ? 23
+        : parseInt(time1.split(':')[0] - 1);
+
+    let reminderTime = hour + ':' + parseInt(time1.split(':')[1]);
+
+    if (currentDate === obj.date) {
+      time1 > time2
+        ? getMedicine().then(data => {
+            if (data !== null && data.length !== 0) {
+              let updatedList = data;
+              updatedList.map((item, index) => {
+                if (item.prescriptionId === prescriptionId) {
+                  updatedList[index].appointmentList.push(obj);
+                  updatedList[index].isModified = true;
+                }
+              });
+              AddMedicine(updatedList);
+              handlePushNotification(obj, reminderTime, obj.time);
+              handlePushNotification(obj, time1, obj.time);
+              Toast.show({
+                type: 'success',
+                text1: 'Appointment Saved Successfully',
+                position: 'bottom',
+              });
+            }
+            setTimeout(() => {
+              navigation.pop();
+            }, 1000);
+          })
+        : showAlert();
+    } else {
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          let updatedList = data;
+          updatedList.map((item, index) => {
+            if (item.prescriptionId === prescriptionId) {
+              updatedList[index].appointmentList.push(obj);
+              updatedList[index].isModified = true;
+            }
+          });
+          AddMedicine(updatedList);
+          handlePushNotification(obj, reminderTime, obj.time);
+          handlePushNotification(obj, time1, obj.time);
+          Toast.show({
+            type: 'success',
+            text1: 'Appointment Saved Successfully',
+            position: 'bottom',
+          });
+        }
+        setTimeout(() => {
+          navigation.pop();
+        }, 1000);
+      });
+    }
   };
 
   return (
@@ -161,7 +197,7 @@ const AppointmentReminders = ({navigation, route}) => {
                     mode="outlined"
                     outlineColor="lightgrey"
                     text="notes"
-                    activeOutlineColor={colorPalette.mainColor}
+                    activeOutlineColor={colorPallete.mainColor}
                     value={values.notes}
                     styles={styles.field}
                     multiline={true}
@@ -280,7 +316,7 @@ const AppointmentReminders = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  mainView: {flex: 1, backgroundColor: colorPalette.mainColor},
+  mainView: {flex: 1, backgroundColor: colorPallete.mainColor},
   container1: {
     marginBottom: 15,
     width: '92%',
@@ -366,7 +402,7 @@ const styles = StyleSheet.create({
   },
   contStyles: {marginVertical: 18, width: '25%'},
   btnStyles: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     borderRadius: 5,
     alignItems: 'center',
   },

@@ -14,7 +14,7 @@ import Loader from '../../../components/atoms/loader';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomModal from '../../../components/molecules/customModal';
 import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const PatientRequest = ({
   patients,
@@ -126,7 +126,7 @@ const PatientRequest = ({
                 }}
                 title="Confirm"
                 buttonStyle={styles.confirmButton}
-                color={colorPalette.green1}
+                color={colorPallete.green1}
               />
               <View style={styles.space} />
               <Button
@@ -135,7 +135,7 @@ const PatientRequest = ({
                 }}
                 title="Delete"
                 buttonStyle={styles.deleteButton}
-                color={colorPalette.red1}
+                color={colorPallete.red1}
               />
             </View>
           </View>

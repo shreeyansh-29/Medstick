@@ -29,16 +29,14 @@ const HomeScreen = ({navigation}) => {
   const load = useSelector(state => state.userInfo?.data);
   let td_da = moment().format('YYYY-MM-DD');
 
-  useEffect(() => {
-   
-      getMedicine().then(data => {
-        if (data !== null && data.length !== 0) {
-          let updatedList = data;
-          dispatch(syncDataRequest(updatedList));
-        }
-      });
-    
-  }, [connected, load]);
+  // useEffect(() => {
+  //   getMedicine().then(data => {
+  //     if (data !== null && data.length !== 0) {
+  //       let updatedList = data;
+  //       dispatch(syncDataRequest(updatedList));
+  //     }
+  //   });
+  // }, [connected, load]);
 
   useEffect(() => {
     if (connected && load) dispatch(myCaretakerRequest(0));

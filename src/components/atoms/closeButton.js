@@ -1,7 +1,7 @@
 import {View, TouchableOpacity, Alert} from 'react-native';
 import React from 'react';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import {colorPalette} from './colorPalette';
+import {colorPallete} from './colorPalette';
 import {useDispatch} from 'react-redux';
 import {loadDeleteNotification} from '../../redux/action/notification/deleteNotificationAction';
 import {loadGetAllNotification} from '../../redux/action/notification/getAllNotification';
@@ -32,7 +32,7 @@ const CloseButton = ({notificationId}) => {
       <TouchableOpacity onPress={() => deleteNotification(notificationId)}>
         <AntIcon
           name="close"
-          color={colorPalette.redPercentageColor}
+          color={colorPallete.redPercentageColor}
           size={20}
         />
       </TouchableOpacity>

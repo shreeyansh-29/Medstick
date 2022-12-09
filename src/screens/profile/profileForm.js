@@ -1,6 +1,6 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import InputField from '../../components/atoms/inputField';
 import styles from '../../styles/profile/profileStyles';
 import PickerField from '../../components/atoms/customPicker';
@@ -22,7 +22,7 @@ const ProfileForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="bio"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.bio}
           multiline={true}
@@ -42,7 +42,7 @@ const ProfileForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="contact"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.contact}
           keyboardType="numeric"
@@ -96,7 +96,7 @@ const ProfileForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="address"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.address}
           selectTextOnFocus={true}
@@ -115,7 +115,7 @@ const ProfileForm = props => {
             mode="outlined"
             outlineColor="lightgrey"
             text="state"
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
             value={props.values.state}
             selectTextOnFocus={true}
@@ -132,7 +132,7 @@ const ProfileForm = props => {
             mode="outlined"
             outlineColor="lightgrey"
             text="country"
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
             value={props.values.country}
             selectTextOnFocus={true}

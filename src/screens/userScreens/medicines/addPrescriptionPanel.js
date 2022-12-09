@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Divider} from 'react-native-paper';
 import CustomImage from '../../../components/atoms/customImage';
@@ -100,7 +100,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   <FontAwesomeIcon
                     icon={faImage}
                     size={20}
-                    color={colorPalette.mainColor}
+                    color={colorPallete.mainColor}
                   />
                 </TouchableOpacity>
 
@@ -109,13 +109,13 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                     icon={faSquareCheck}
                     size={20}
                     setSelected
-                    color={colorPalette.mainColor}
+                    color={colorPallete.mainColor}
                   />
                 ) : (
                   <FontAwesomeIcon
                     icon={faSquare}
                     size={20}
-                    color={colorPalette.mainColor}
+                    color={colorPallete.mainColor}
                   />
                 )}
               </View>
@@ -219,13 +219,13 @@ const AddPrescriptionPanel = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
-  mainView: {flex: 1, backgroundColor: colorPalette.basicColor},
+  mainView: {flex: 1, backgroundColor: colorPallete.basicColor},
   textContainer: {
     marginTop: 10,
     alignItems: 'center',
   },
   text: {
-    color: colorPalette.mainColor,
+    color: colorPallete.mainColor,
     fontSize: 20,
     fontWeight: '400',
   },
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {fontSize: 18},
   btnStyles: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     width: '50%',
     borderRadius: 5,
   },

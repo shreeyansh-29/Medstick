@@ -1,4 +1,4 @@
-export const colorPalette = {
+export const colorPallete = {
   mainColor: '#02A6AB',
   basicColor: '#FFF',
   GREY: '#d0d5dc',

@@ -8,7 +8,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUserFriends, faHospitalUser} from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../../styles/patientStyles/patientsStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPallete';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';

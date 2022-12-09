@@ -12,7 +12,7 @@ import {acceptCaretakerReqRequest} from '../../../redux/action/caretaker/acceptC
 import {deleteCaretakerReqRequest} from '../../../redux/action/caretaker/deleteCaretakerReqAction';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomModal from '../../../components/molecules/customModal';
 import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAction';
@@ -119,7 +119,7 @@ const CareTakerRequest = () => {
                 }}
                 title="Confirm"
                 buttonStyle={styles.confirmButton}
-                color={colorPalette.green1}
+                color={colorPallete.green1}
               />
               <View style={styles.space} />
 
@@ -129,7 +129,7 @@ const CareTakerRequest = () => {
                 }}
                 title="Delete"
                 buttonStyle={styles.deleteButton}
-                color={colorPalette.red1}
+                color={colorPallete.red1}
               />
             </View>
           </View>

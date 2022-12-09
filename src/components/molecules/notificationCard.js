@@ -5,15 +5,15 @@ import NotificationHeading from '../atoms/notificationHeading';
 import NotificationMessage from '../atoms/notificationMessage';
 import CloseButton from '../atoms/closeButton';
 import BellIcon from '../atoms/bellIcon';
-import {colorPalette} from '../atoms/colorPalette';
+import {colorPallete} from '../atoms/colorPalette';
 
 const NotificationCard = ({text, date, time, notificationId, sender}) => {
   return (
     <View
       style={{
         width: '98%',
-        borderColor: colorPalette.appColor,
-        backgroundColor: colorPalette.basicColor,
+        borderColor: colorPallete.appColor,
+        backgroundColor: colorPallete.basicColor,
         paddingHorizontal: 20,
         paddingVertical: 10,
         marginBottom: 4,

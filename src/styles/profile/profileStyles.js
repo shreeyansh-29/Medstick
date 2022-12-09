@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
-import {deviceHeight} from '../../components/atoms/constant';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 const styles = StyleSheet.create({
   //saved Details
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
   },
   childCont: {
     height: 180,
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     borderBottomLeftRadius: 50,
     flexDirection: 'row',
     alignItems: 'center',
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
   },
   editButtonContainer: {alignItems: 'center', marginVertical: 40},
   editButton: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     width: '50%',
     borderRadius: 5,
   },

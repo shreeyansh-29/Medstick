@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {useState} from 'react';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -108,7 +108,7 @@ const ReminderDuration = ({route, navigation}) => {
                   pickerstate(true);
                 }}
                 isChecked={check2}
-                checkBoxColor={colorPalette.appColor}
+                checkBoxColor={colorPallete.appColor}
               /> */}
             </View>
           </View>
@@ -148,7 +148,7 @@ const ReminderDuration = ({route, navigation}) => {
               step={1}
               customMarker={() => (
                 <FontAwesomeIcon
-                  color={colorPalette.appColor}
+                  color={colorPallete.appColor}
                   size={20}
                   icon={faCircle}
                 />
@@ -191,7 +191,7 @@ const ReminderDuration = ({route, navigation}) => {
             width: '30%',
           }}
           btnStyles={{
-            backgroundColor: colorPalette.mainColor,
+            backgroundColor: colorPallete.mainColor,
             borderRadius: 5,
           }}
         />
@@ -204,10 +204,10 @@ export default ReminderDuration;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
   },
   dateContainer: {width: '100%', paddingVertical: 20},
-  dateText: {fontSize: 20, fontWeight: '600', color: colorPalette.black},
+  dateText: {fontSize: 20, fontWeight: '600', color: colorPallete.black},
   dateText1: {
     fontSize: 16,
     color: 'black',

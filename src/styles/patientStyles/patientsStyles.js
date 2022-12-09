@@ -1,13 +1,13 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 export const styles = StyleSheet.create({
   tabIndicator: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     height: 3,
   },
-  tab: {backgroundColor: colorPalette.mainColor},
-  tabItem: {backgroundColor: colorPalette.basicColor},
-  tabTitle: {fontSize: 12, color: colorPalette.mainColor},
-  tabItems: {backgroundColor: colorPalette.basicColor, width: '100%'},
+  tab: {backgroundColor: colorPallete.mainColor},
+  tabItem: {backgroundColor: colorPallete.basicColor},
+  tabTitle: {fontSize: 12, color: colorPallete.mainColor},
+  tabItems: {backgroundColor: colorPallete.basicColor, width: '100%'},
 });

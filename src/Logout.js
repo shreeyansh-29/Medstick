@@ -1,7 +1,7 @@
 import {View, Text, ActivityIndicator} from 'react-native';
 import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {colorPalette} from './components/atoms/colorPalette';
+import {colorPallete} from './components/atoms/colorPalette';
 import {resetLogin} from './redux/action/loginAction/loginAction';
 import {resetSignUp} from './redux/action/signUpAction/signUpAction';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -35,12 +35,12 @@ const Logout = ({navigation}) => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: colorPalette.mainColor,
+        backgroundColor: colorPallete.mainColor,
       }}>
       <Text
         style={{
           fontWeight: '500',
-          color: colorPalette.basicColor,
+          color: colorPallete.basicColor,
           fontSize: 20,
           marginBottom: 10,
         }}>

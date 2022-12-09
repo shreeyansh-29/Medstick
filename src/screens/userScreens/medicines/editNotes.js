@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import CustomButton from '../../../components/atoms/customButton';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import Toast from 'react-native-toast-message';
 import {Formik} from 'formik';
 import {updateNotesSchema} from '../../../constants/validations';
@@ -66,7 +66,7 @@ const EditNotes = ({userMedicineId, setVisible}) => {
           style={styles.closeButton}>
           <FontAwesomeIcon
             icon={faCircleXmark}
-            color={colorPalette.redPercentageColor}
+            color={colorPallete.redPercentageColor}
             size={24}
           />
         </TouchableOpacity>
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     width: '30%',
   },
   btnStyles: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     borderRadius: 5,
     paddingHorizontal: 20,
   },

@@ -1,7 +1,7 @@
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import * as Animatable from 'react-native-animatable';
 import {styles} from '../../styles/otherScreensStyles/prescriptionsStyles';
 import CustomImage from '../../components/atoms/customImage';
@@ -38,6 +38,10 @@ const Prescriptions = ({navigation}) => {
         }
       });
     }
+    
+    return () => {
+      false;
+    };
   }, [isFocused]);
 
   const RenderItem = ({item, index}) => {
@@ -71,7 +75,7 @@ const Prescriptions = ({navigation}) => {
               <FontAwesomeIcon
                 icon={faChevronRight}
                 size={18}
-                color={colorPalette.mainColor}
+                color={colorPallete.mainColor}
               />
             </TouchableOpacity>
           </ListItem>

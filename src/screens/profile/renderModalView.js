@@ -16,7 +16,7 @@ import {
 } from '../../redux/action/profileAction/editProfileAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import {bloodGroup, gender} from '../../constants/pickerItem';
 
@@ -80,7 +80,7 @@ const RenderModalVisible = ({
                 <FontAwesomeIcon
                   icon={faCircleXmark}
                   size={26}
-                  color={colorPalette.mainColor}
+                  color={colorPallete.mainColor}
                 />
               </TouchableOpacity>
             </>

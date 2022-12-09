@@ -7,7 +7,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {PermissionsAndroid} from 'react-native';
 import Downloadpdf from '../../../components/organisms/downloadPdf';
@@ -68,8 +68,8 @@ const MedicineReport = ({navigation, route}) => {
         dateObj.month = months[currentDate.getMonth()];
         dateObj.color =
           currentDate < todayDate
-            ? colorPalette.mainColor
-            : colorPalette.lightWhite;
+            ? colorPallete.mainColor
+            : colorPallete.lightWhite;
         dateObj.year = currentDate.getFullYear();
         alldates.push(dateObj);
       }

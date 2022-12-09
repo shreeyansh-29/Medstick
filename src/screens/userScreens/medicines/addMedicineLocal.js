@@ -10,7 +10,7 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Formik} from 'formik';
 import AddMedicineForm from './addMedicineForm';
 import {addMedicineSchema} from '../../../constants/validations';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import Toast from 'react-native-toast-message';
 import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
@@ -210,7 +210,7 @@ const AddMedicineLocal = ({navigation}) => {
 
 const Styles = StyleSheet.create({
   addMedicinePage: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     flex: 1,
   },
   keyboardView: {

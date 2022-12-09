@@ -1,13 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
-import { colorPalette } from '../atoms/colorPalette';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
+import {colorPallete} from '../atoms/colorPallete';
 
-
-export default function ({ activeDays = [], onChange = () => null }) {
+export default function ({activeDays = [], onChange = () => null}) {
   // NOTICE: days doesn't change if prop activeDays changes
   const [days, setDays] = useState(activeDays);
 
-  function onDayChange (dayIndex) {
+  function onDayChange(dayIndex) {
     let selectedBtn = getSelected(days);
     selectedBtn[dayIndex] = !selectedBtn[dayIndex];
     const newDays = getDays(selectedBtn);
@@ -31,13 +30,20 @@ export default function ({ activeDays = [], onChange = () => null }) {
   );
 }
 
-function Day ({ isActive, dayIndex, onUpdate }) {
+function Day({isActive, dayIndex, onUpdate}) {
   return (
     <View style={{flex: 1}}>
       <TouchableOpacity
-        style={[isActive ? styles.selectedBtn : styles.unselectedBtn, styles.btnContainer]}
+        style={[
+          isActive ? styles.selectedBtn : styles.unselectedBtn,
+          styles.btnContainer,
+        ]}
         onPress={() => onUpdate(dayIndex)}>
-        <Text style={[styles.text, isActive ? styles.selectedText : styles.unselectedText]}>
+        <Text
+          style={[
+            styles.text,
+            isActive ? styles.selectedText : styles.unselectedText,
+          ]}>
           {getDay(dayIndex)}
         </Text>
       </TouchableOpacity>
@@ -45,7 +51,7 @@ function Day ({ isActive, dayIndex, onUpdate }) {
   );
 }
 
-export function getSelected (activeDays) {
+export function getSelected(activeDays) {
   let selectedBtn = new Array(7).fill(false);
   for (let i = 0; i < activeDays.length; i++) {
     selectedBtn[activeDays[i]] = true;
@@ -53,7 +59,7 @@ export function getSelected (activeDays) {
   return selectedBtn;
 }
 
-export function getDays (selectedBtn) {
+export function getDays(selectedBtn) {
   let activeDays = [];
   for (let i = 0; i < selectedBtn.length; i++) {
     if (selectedBtn[i]) activeDays.push(i);
@@ -61,7 +67,7 @@ export function getDays (selectedBtn) {
   return activeDays;
 }
 
-function getDay (number) {
+function getDay(number) {
   let weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   return weekdays[number];
 }
@@ -71,11 +77,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'flex-start',
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
   },
   innerContainer: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   btnContainer: {
     width: 40,
@@ -83,25 +89,25 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   selectedBtn: {
     color: 'black',
     fontWeight: 'bold',
-    backgroundColor: colorPalette.BLUE
+    backgroundColor: colorPallete.BLUE,
   },
   unselectedBtn: {
     color: 'black',
     borderWidth: 1,
-    borderColor: colorPalette.GREY
+    borderColor: colorPallete.GREY,
   },
   text: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   selectedText: {
-    color: 'white'
+    color: 'white',
   },
   unselectedText: {
-    color: 'black'
-  }
+    color: 'black',
+  },
 });

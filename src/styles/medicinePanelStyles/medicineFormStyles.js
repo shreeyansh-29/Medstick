@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 export const styles = StyleSheet.create({
   mainView: {
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btnStyles: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
   divider: {height: 1, marginTop: 8},
   contStyles: {alignItems: 'center', marginVertical: 24},
   saveBtn: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     width: '50%',
     borderRadius: 5,
   },
@@ -73,6 +73,6 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 20,
     borderWidth: 1,
-    borderColor: colorPalette.mainColor,
+    borderColor: colorPallete.mainColor,
   },
 });

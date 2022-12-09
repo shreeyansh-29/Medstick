@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
@@ -9,23 +9,23 @@ export const styles = StyleSheet.create({
     paddingBottom: verticalScale(15),
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
   },
   calenderHeaderStyle: {
-    color: colorPalette.mainColor,
+    color: colorPallete.mainColor,
     fontSize: 24,
     paddingBottom: verticalScale(28),
   },
-  calendarColor: colorPalette.basicColor,
+  calendarColor: colorPallete.basicColor,
   dateNumberStyle: {
-    color: colorPalette.mainColor,
+    color: colorPallete.mainColor,
     fontSize: 14,
     fontWeight: '700',
   },
-  dateNameStyle: {color: colorPalette.mainColor, fontSize: 11.5},
+  dateNameStyle: {color: colorPallete.mainColor, fontSize: 11.5},
   daySelection: {
     type: 'background',
-    highlightColor: colorPalette.mainColor,
+    highlightColor: colorPallete.mainColor,
   },
   icon: {flex: 0.13},
   iconStyle: {
@@ -33,12 +33,12 @@ export const styles = StyleSheet.create({
     width: 24,
   },
   highlightedDateNumber: {
-    color: colorPalette.basicColor,
+    color: colorPallete.basicColor,
     fontSize: 14,
     fontWeight: '900',
   },
   highlightedDateName: {
-    color: colorPalette.basicColor,
+    color: colorPallete.basicColor,
     fontSize: 11,
     fontWeight: '900',
   },

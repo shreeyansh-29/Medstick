@@ -8,7 +8,7 @@ import {Divider} from 'react-native-paper';
 import {useIsFocused} from '@react-navigation/native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 const AuthScreen = ({navigation}) => {
   const isFocused = useIsFocused();
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   online: {
     position: 'absolute',
     bottom: 0,
-    backgroundColor: colorPalette.greenPercentageColor,
+    backgroundColor: colorPallete.greenPercentageColor,
     height: 22,
     width: '100%',
     alignItems: 'center',

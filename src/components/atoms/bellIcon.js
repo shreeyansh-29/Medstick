@@ -1,13 +1,13 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {colorPalette} from './colorPalette';
+import {colorPallete} from './colorPalette';
 const BellIcon = () => {
   return (
     <View>
       <MaterialCommunityIcons
         name="bell-circle"
-        color={colorPalette.appColor}
+        color={colorPallete.appColor}
         size={35}
       />
     </View>

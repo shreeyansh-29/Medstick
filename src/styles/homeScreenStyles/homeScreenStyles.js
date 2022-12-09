@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
   background: {
     position: 'absolute',
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     height: '50%',
     width: '200%',
     borderBottomEndRadius: 530,
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     shadowColor: 'black',
     elevation: 6,
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     borderColor: 'white',
     marginBottom: 15,
     height: '40%',
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
   progressCircleContainer: {
     alignItems: 'center',
     paddingBottom: verticalScale(12),
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,
     height: verticalScale(150),
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   },
   progressText: {fontSize: 20, fontWeight: '600', color: 'black'},
   font: {
-    color: colorPalette.mainColor,
+    color: colorPallete.mainColor,
     fontSize: 22,
     marginHorizontal: horizontalScale(20),
     alignSelf: 'flex-start',
@@ -86,13 +86,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: 'center',
   },
-  modalTouch:{
+  modalTouch: {
     alignItems: 'flex-end',
     justifyContent: 'center',
     padding: 5,
     paddingHorizontal: 10,
   },
-  modalHeading:{
+  modalHeading: {
     fontSize: 20,
     color: 'black',
     alignSelf: 'flex-start',
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
     padding: 5,
     paddingHorizontal: 10,
   },
-  info:{
+  info: {
     width: '15%',
     justifyContent: 'center',
   },

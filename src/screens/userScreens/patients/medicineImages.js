@@ -8,7 +8,7 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {Dimensions} from 'react-native';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import {monthName} from '../../../constants/constants';
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
   },
   inactiveDot: {
     backgroundColor: 'black',

@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {View, Text} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/userScreens/homeScreen';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -11,17 +11,13 @@ import {
   faFileContract,
   faHouseMedical,
 } from '@fortawesome/free-solid-svg-icons';
-import {colorPalette} from '../components/atoms/colorPalette';
 import AddMedicineLocal from '../screens/userScreens/medicines/addMedicineLocal';
 import AccountTab from '../screens/userScreens/accountTab';
 import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
 import AddButton from '../components/atoms/addButton';
 import {styles} from '../styles/navigationStyles';
 import Report from '../screens/userScreens/report/report';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {saveUserLoggedIn} from '../redux/action/loginAction/saveUserLoggedIn';
-import {useDispatch} from 'react-redux';
-import {useIsFocused} from '@react-navigation/native';
+import {colorPallete} from '../components/atoms/colorPalette';
 
 const TabBar = [
   {route: 'Home', component: HomeScreen, iconName: faHouseMedical},
@@ -33,30 +29,20 @@ const TabBar = [
 const Tab = createBottomTabNavigator();
 
 const BottomNavigator = ({navigation}) => {
-  const dispatch = useDispatch();
-  const isFocused = useIsFocused();
-  const getUser = async () => {
-    const user = await GoogleSignin.getCurrentUser();
-    if (user !== null) dispatch(saveUserLoggedIn(true));
-  };
-
-  useEffect(() => {
-    if (isFocused) getUser();
-    return () => {};
-  }, [isFocused]);
-
   const TabBarButton = props => {
     const {onPress, accessibilityState, item} = props;
     const focused = accessibilityState.selected;
-    size = 26;
-    fontSize = 12;
-    colors = focused ? colorPalette.colorTabs : colorPalette.colorTabsOutline;
+    let size = 26;
+    let fontSize = 12;
+    let colors = focused
+      ? colorPallete.appColor
+      : colorPallete.colorTabsOutline;
     return (
       <Ripple
         onPress={onPress}
         style={styles.ripple}
         rippleCentered={true}
-        rippleColor={colorPalette.colorTabs}
+        rippleColor={colorPallete.colorTabs}
         rippleDuration={700}
         rippleOpacity={0.87}
         rippleContainerBorderRadius={400}>
@@ -74,7 +60,7 @@ const BottomNavigator = ({navigation}) => {
       screenOptions={{
         tabBarStyle: {
           height: 58,
-          backgroundColor: colorPalette.basicColor,
+          backgroundColor: colorPallete.basicColor,
           paddingHorizontal: 16,
         },
         tabBarShowLabel: false,

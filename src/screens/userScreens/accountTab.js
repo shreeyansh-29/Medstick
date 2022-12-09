@@ -14,7 +14,7 @@ import {
   faCameraRetro,
 } from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../styles/otherScreensStyles/accountTabStyles';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPallete';
 import {Divider} from 'react-native-paper';
 import CustomButton from '../../components/atoms/customButton';
 import {verticalScale} from '../../components/atoms/constant';
@@ -51,7 +51,7 @@ const AccountTab = ({navigation}) => {
           activeOpacity={0.8}
           onPress={() => {
             isLoggedIn
-              ? navigation.navigate('AccountStack', {screen: 'EditProfile'})
+              ? navigation.navigate('EditProfile')
               : navigation.navigate('AuthScreen');
           }}>
           {isLoggedIn ? (

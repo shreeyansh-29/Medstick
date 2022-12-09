@@ -7,14 +7,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import {StyleSheet} from 'react-native';
 
 function Caretaker_nurse() {
   return (
     <FontAwesomeIcon
       style={{marginBottom: 6}}
-      color={colorPalette.mainColor}
+      color={colorPallete.mainColor}
       icon={faUserNurse}></FontAwesomeIcon>
   );
 }
@@ -33,7 +33,7 @@ function Userfriend() {
   return (
     <FontAwesomeIcon
       style={{marginBottom: 6}}
-      color={colorPalette.mainColor}
+      color={colorPallete.mainColor}
       icon={faUserFriends}></FontAwesomeIcon>
   );
 }
@@ -41,7 +41,7 @@ const Iconcomp1 = () => {
   return (
     <FontAwesomeIcon
       style={styles.icon}
-      color={colorPalette.mainColor}
+      color={colorPallete.mainColor}
       icon={faHospitalUser}
     />
   );
@@ -51,7 +51,7 @@ const Iconcomp2 = () => {
   return (
     <FontAwesomeIcon
       style={styles.icon}
-      color={colorPalette.mainColor}
+      color={colorPallete.mainColor}
       icon={faUserFriends}
     />
   );

@@ -2,8 +2,8 @@ import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import React from 'react';
 import {Styles} from '../../styles/twoTouchableStyles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../atoms/colorPalette';
 import {useSelector} from 'react-redux';
+import {colorPallete} from '../atoms/colorPalette';
 
 const TwoTouchable = ({icon, title, navigation, navigationTitle}) => {
   const load = useSelector(state => state.userInfo?.data);
@@ -42,7 +42,7 @@ const TwoTouchable = ({icon, title, navigation, navigationTitle}) => {
           <FontAwesomeIcon
             icon={icon}
             size={21}
-            color={colorPalette.mainColor}
+            color={colorPallete.mainColor}
           />
         </View>
         <View style={Styles.name}>

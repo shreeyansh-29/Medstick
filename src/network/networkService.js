@@ -217,7 +217,7 @@ class NetworkService {
     const id = await AsyncStorage.getItem('user_id');
     const {pageNo} = payload;
     return await RequestService.getRequest(
-      `${apiUrl.GET_ALL_NOTIFICATION}?Id=${id}&userId=${id}&pageNo=${pageNo}&pageSize=3`,
+      `${apiUrl.GET_ALL_NOTIFICATION}?Id=${id}&userId=${id}&pageNo=${pageNo}&pageSize=8`,
     );
   }
 
@@ -232,7 +232,6 @@ class NetworkService {
   async syncData(payload) {
     const id = await AsyncStorage.getItem('user_id');
     let data = payload.payload;
-    console.log(data);
     return await RequestService.postRequest(
       `${apiUrl.SYNC_DATA}?userId=${id}&Id=${id}`,
       {data},

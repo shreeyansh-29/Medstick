@@ -11,7 +11,7 @@ import {
 } from '../../../redux/action/caretaker/myCaretakerAction';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPallete';
 
 const MyCareTaker = ({navigation}) => {
   const dispatch = useDispatch();
@@ -96,8 +96,8 @@ const MyCareTaker = ({navigation}) => {
               showsVerticalScrollIndicator={false}
               // refreshControl={
               //   <RefreshControl
-              //     colors={[colorPalette.mainColor]}
-              //     tintColor={[colorPalette.mainColor]}
+              //     colors={[colorPallete.mainColor]}
+              //     tintColor={[colorPallete.mainColor]}
               //     refreshing={refresh}
               //     onRefresh={() => {
               //       dispatch(myCaretakerClear());

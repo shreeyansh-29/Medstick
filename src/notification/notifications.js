@@ -3,7 +3,7 @@ import PushNotification from 'react-native-push-notification';
 class Notifications {
   constructor() {
     PushNotification.configure({
-      onRegister: function (token) { },
+      onRegister: function (token) {},
       onNotification: function (notification) {
         console.log('Notification:', notification);
       },
@@ -33,7 +33,7 @@ class Notifications {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name+ ' at '+time,
+        message: 'Take ' + name + ' at ' + time,
         date: date,
         repeatType: 'day',
         id: Id1,
@@ -42,20 +42,20 @@ class Notifications {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name+ ' at '+time,
+        message: 'Take ' + name + ' at ' + time,
         date: date,
         id: Id1,
       });
     }
   }
-  schduleNotification2(date, Id) {
+  schduleNotification2(date, id, time) {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Appointment!',
-      message: 'You have an appointment scheduled',
+      message: 'You have an appointment scheduled at' + ' ' + time,
       date: date,
-      number: Id,
-      shortcutId: "shortcut-id",
+      vibrate: true,
+      vibration: 300,
     });
   }
 }
