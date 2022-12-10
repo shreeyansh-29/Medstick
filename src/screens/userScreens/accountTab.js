@@ -20,7 +20,8 @@ import CustomButton from '../../components/atoms/customButton';
 const AccountTab = ({navigation}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name, setName] = useState('Please Login First');
-  const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
+
+  const [img, imgstate] = useState('');
 
   useEffect(() => {
     async function checkforlog() {
@@ -63,7 +64,10 @@ const AccountTab = ({navigation}) => {
             </View>
           ) : (
             <View style={styles.profile}>
-              <Image source={{uri: img}} style={styles.img}></Image>
+              <Image
+                source={require('../../assets/images/nouser.png')}
+                style={styles.img}
+              />
               <View style={styles.heading}>
                 <Text style={styles.title}>{name}</Text>
                 <Text style={styles.subTitle}>See your profile</Text>
