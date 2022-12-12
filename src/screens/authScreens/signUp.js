@@ -16,6 +16,7 @@ import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn'
 const SignUp = ({navigation}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.signUp.data);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   const isFocused = useIsFocused();
 
   const getResponse = async () => {
@@ -58,23 +59,25 @@ const SignUp = ({navigation}) => {
   };
 
   const signUp = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const token = await messaging().getToken();
+    if (connected) {
+      try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        const token = await messaging().getToken();
 
-      const {name, email, photo} = userInfo.user;
-      await AsyncStorage.setItem('user_photo', photo);
+        const {name, email, photo} = userInfo.user;
+        await AsyncStorage.setItem('user_photo', photo);
 
-      dispatch(signUpRequest({name, email, photo, token}));
-    } catch (err) {
-      if (await GoogleSignin.isSignedIn()) {
-        await GoogleSignin.signOut();
+        dispatch(signUpRequest({name, email, photo, token}));
+      } catch (err) {
+        if (await GoogleSignin.isSignedIn()) {
+          await GoogleSignin.signOut();
+        }
+        Toast.show({
+          type: 'info',
+          text1: 'Something Went Wrong',
+        });
       }
-      Toast.show({
-        type: 'info',
-        text1: 'Something Went Wrong',
-      });
     }
   };
 

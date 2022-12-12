@@ -19,6 +19,7 @@ import {encryptData} from '../../components/atoms/crypto';
 
 const Login = ({navigation}) => {
   const res = useSelector(state => state.signIn.data);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
@@ -69,22 +70,24 @@ const Login = ({navigation}) => {
   };
 
   const login = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const token = await messaging().getToken();
-      const {email, photo} = userInfo.user;
-      await AsyncStorage.setItem('user_photo', photo);
+    if (connected) {
+      try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        const token = await messaging().getToken();
+        const {email, photo} = userInfo.user;
+        await AsyncStorage.setItem('user_photo', photo);
 
-      dispatch(loginRequest({email, token}));
-    } catch (err) {
-      if (await GoogleSignin.isSignedIn()) {
-        await GoogleSignin.signOut();
+        dispatch(loginRequest({email, token}));
+      } catch (err) {
+        if (await GoogleSignin.isSignedIn()) {
+          await GoogleSignin.signOut();
+        }
+        Toast.show({
+          type: 'info',
+          text1: 'Something Went Wrong',
+        });
       }
-      Toast.show({
-        type: 'info',
-        text1: 'Something Went Wrong',
-      });
     }
   };
 

@@ -9,9 +9,12 @@ import {useIsFocused} from '@react-navigation/native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import {colorPallete} from '../../components/atoms/colorPalette';
+import OfflineBar from '../../components/atoms/offlineBar';
+import {useSelector} from 'react-redux';
 
 const AuthScreen = ({navigation}) => {
   const isFocused = useIsFocused();
+  const connected = useSelector(state => state.internetConnectivity?.data);
 
   useEffect(() => {
     if (isFocused) {
@@ -24,6 +27,7 @@ const AuthScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <OfflineBar />
       {/* <TouchableOpacity
         style={styles.skipBtn}
         activeOpacity={1}
@@ -38,7 +42,11 @@ const AuthScreen = ({navigation}) => {
         onPress={() => {
           navigation.pop();
         }}>
-        <FontAwesomeIcon icon={faArrowLeft} size={20} color={'gray'} />
+        <FontAwesomeIcon
+          icon={faArrowLeft}
+          size={20}
+          color={connected ? 'gray' : 'white'}
+        />
       </TouchableOpacity>
       <View style={styles.mainView}>
         <View style={styles.textContainer}>
