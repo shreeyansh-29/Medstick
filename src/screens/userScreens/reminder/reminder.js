@@ -79,7 +79,6 @@ const Reminder = ({route, navigation}) => {
     let number = [];
 
     let reminderTime = obj.reminderTime.split(',');
-    console.log(reminderTime);
 
     for (let i = 0; i < reminderTime.length; i++) {
       if (reminderTime[i] !== '')
@@ -92,7 +91,6 @@ const Reminder = ({route, navigation}) => {
       (endDate.getMonth() + 1) +
       '-' +
       endDate.getDate();
-    console.log(endDate1, 'endDate111');
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
@@ -102,7 +100,6 @@ const Reminder = ({route, navigation}) => {
       (chosenDate1.getMonth() + 1) +
       '-' +
       chosenDate1.getDate();
-    console.log(number.length, 'length');
 
     for (let i = 0; i < number.length; i++) {
       if (number[i] < currentTime && number[i] == 'Invalid date') {

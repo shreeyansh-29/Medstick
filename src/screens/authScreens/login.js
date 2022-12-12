@@ -41,6 +41,9 @@ const Login = ({navigation}) => {
         type: 'error',
         text1: 'Error While Login',
       });
+      if (await GoogleSignin.isSignedIn()) {
+        await GoogleSignin.signOut();
+      }
     }
   };
 
@@ -53,6 +56,9 @@ const Login = ({navigation}) => {
           type: 'info',
           text1: 'User Not Found',
         });
+        if (GoogleSignin.isSignedIn()) {
+          GoogleSignin.signOut();
+        }
       }
     }
   }, [isFocused, res]);

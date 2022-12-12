@@ -56,7 +56,6 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
         break;
       }
       case 'Syrup': {
-        item;
         setDoseType('ml');
         break;
       }

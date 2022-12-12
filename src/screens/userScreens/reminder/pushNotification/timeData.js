@@ -6,7 +6,7 @@ export const day_data = [
       {name: 'Monday', id: 'Mon'},
       {name: 'Tuesday', id: 'Tue'},
       {name: 'Wednesday', id: 'Wed'},
-      {name: 'Thursday', id: 'Thur'},
+      {name: 'Thursday', id: 'Thu'},
       {name: 'Friday', id: 'Fri'},
       {name: 'Saturday', id: 'Sat'},
       {name: 'Sunday', id: 'Sun'},

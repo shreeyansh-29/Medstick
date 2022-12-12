@@ -47,7 +47,7 @@ const UpdateAppointment = ({
 
   const handlePushNotification = (obj, reminderTime, time) => {
     let dateTime = moment(obj.date + ' ' + reminderTime);
-    Notifications.schduleNotification2(dateTime._d, obj.appointmentId, time);
+    Notifications.schduleNotification2(dateTime._d, time);
   };
 
   const updateAppointment = values => {

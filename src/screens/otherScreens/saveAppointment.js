@@ -44,7 +44,7 @@ const AppointmentReminders = ({navigation, route}) => {
 
   const handlePushNotification = (obj, reminderTime, time) => {
     let dateTime = moment(obj.date + ' ' + reminderTime);
-    Notifications.schduleNotification2(dateTime._d, obj.appointmentId, time);
+    Notifications.schduleNotification2(dateTime._d, time);
   };
 
   const saveAppointment = values => {
