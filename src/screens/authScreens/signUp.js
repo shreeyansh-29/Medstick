@@ -3,7 +3,10 @@ import React, {useEffect} from 'react';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {styles} from '../../styles/authScreensStyles/loginScreenStyles';
 import {useDispatch, useSelector} from 'react-redux';
-import {signUpRequest} from '../../redux/action/signUpAction/signUpAction';
+import {
+  resetSignUp,
+  signUpRequest,
+} from '../../redux/action/signUpAction/signUpAction';
 import Toast from 'react-native-toast-message';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,7 +33,7 @@ const SignUp = ({navigation}) => {
 
     setTimeout(() => {
       navigation.navigate('Home');
-    }, 500);
+    }, 2500);
   };
 
   useEffect(() => {
@@ -38,13 +41,21 @@ const SignUp = ({navigation}) => {
       if (res?.status === 'Success') {
         getResponse();
       } else if (res?.status === 'Failed') {
+        logout();
         Toast.show({
           type: 'error',
           text1: 'User already exists',
         });
+        dispatch(resetSignUp());
       }
     }
   }, [isFocused, res]);
+
+  const logout = async () => {
+    if (await GoogleSignin.isSignedIn()) {
+      await GoogleSignin.signOut();
+    }
+  };
 
   const signUp = async () => {
     try {

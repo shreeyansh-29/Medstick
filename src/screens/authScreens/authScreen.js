@@ -59,7 +59,7 @@ const AuthScreen = ({navigation}) => {
         </View>
         <Login navigation={navigation} />
       </View>
-      <Toast visibilityTime={1000} />
+      <Toast visibilityTime={2000} />
     </View>
   );
 };

@@ -23,7 +23,7 @@ const AccountTab = ({navigation}) => {
 
   const [img, imgstate] = useState('');
 
-  useEffect(() => {
+  useFocusEffect(() => {
     async function checkforlog() {
       const checkforlogin = await AsyncStorage.getItem('user_id');
       if (checkforlogin !== null) {
@@ -34,7 +34,7 @@ const AccountTab = ({navigation}) => {
     }
     checkforlog();
     return () => {};
-  }, []);
+  });
 
   useEffect(() => {
     GoogleSignin.configure({

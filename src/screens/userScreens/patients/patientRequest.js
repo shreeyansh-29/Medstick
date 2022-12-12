@@ -15,6 +15,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomModal from '../../../components/molecules/customModal';
 import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
 import {colorPallete} from '../../../components/atoms/colorPalette';
+import NoInternet from '../../../components/atoms/noInternet';
 
 const PatientRequest = ({
   patients,
@@ -29,6 +30,7 @@ const PatientRequest = ({
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const connected = useSelector(state => state.internetConnectivity?.data);
 
   const images = [
     {
@@ -175,6 +177,7 @@ const PatientRequest = ({
               />
             </View>
           )}
+          {connected ? null : <NoInternet />}
         </>
       )}
     </View>

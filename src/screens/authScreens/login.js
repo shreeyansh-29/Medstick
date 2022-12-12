@@ -6,7 +6,10 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {styles} from '../../styles/authScreensStyles/loginScreenStyles';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginRequest} from '../../redux/action/loginAction/loginAction';
+import {
+  loginRequest,
+  resetLogin,
+} from '../../redux/action/loginAction/loginAction';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
@@ -35,15 +38,12 @@ const Login = ({navigation}) => {
 
       setTimeout(() => {
         navigation.navigate('Home');
-      }, 800);
+      }, 2500);
     } else {
       Toast.show({
         type: 'error',
         text1: 'Error While Login',
       });
-      if (await GoogleSignin.isSignedIn()) {
-        await GoogleSignin.signOut();
-      }
     }
   };
 
@@ -52,16 +52,21 @@ const Login = ({navigation}) => {
       if (res?.status === 'Success') {
         getResponse();
       } else if (res?.status === 'Failed') {
+        logout();
         Toast.show({
           type: 'info',
           text1: 'User Not Found',
         });
-        if (GoogleSignin.isSignedIn()) {
-          GoogleSignin.signOut();
-        }
+        dispatch(resetLogin());
       }
     }
   }, [isFocused, res]);
+
+  const logout = async () => {
+    if (await GoogleSignin.isSignedIn()) {
+      await GoogleSignin.signOut();
+    }
+  };
 
   const login = async () => {
     try {

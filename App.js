@@ -14,7 +14,7 @@ const App = () => {
     <SafeAreaView style={{flex: 1}}>
       <ErrorBoundary>
         <Provider store={store}>
-          <OfflineBar />
+          {/* <OfflineBar /> */}
           <StatusBar backgroundColor={colorPallete.mainColor} />
           <MainNavigation />
         </Provider>

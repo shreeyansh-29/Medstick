@@ -12,10 +12,12 @@ import {
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
 import {colorPallete} from '../../../components/atoms/colorPallete';
+import NoInternet from '../../../components/atoms/noInternet';
 
 const MyCareTaker = ({navigation}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.myCaretaker);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   const [pageNo, setPageNo] = useState(0);
   const [caretaker, setCaretaker] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -94,30 +96,21 @@ const MyCareTaker = ({navigation}) => {
               onEndReachedThreshold={0.01}
               keyExtractor={(item, index) => index.toString()}
               showsVerticalScrollIndicator={false}
-              // refreshControl={
-              //   <RefreshControl
-              //     colors={[colorPallete.mainColor]}
-              //     tintColor={[colorPallete.mainColor]}
-              //     refreshing={refresh}
-              //     onRefresh={() => {
-              //       dispatch(myCaretakerClear());
-              //       setRefresh(false);
-              //       setPageNo(0);
-              //       setCaretaker([]);
-              //     }}
-              //   />
-              // }
             />
           )}
 
-          <View style={styles.button}>
-            <AddButton
-              text="Patient"
-              routeName={'SearchScreen'}
-              navigation={navigation}
-              styles={styles.addBtn}
-            />
-          </View>
+          {connected ? (
+            <View style={styles.button}>
+              <AddButton
+                text="Patient"
+                routeName={'SearchScreen'}
+                navigation={navigation}
+                styles={styles.addBtn}
+              />
+            </View>
+          ) : (
+            <NoInternet />
+          )}
         </>
       )}
     </View>

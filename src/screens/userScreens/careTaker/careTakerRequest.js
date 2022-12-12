@@ -16,6 +16,7 @@ import {colorPallete} from '../../../components/atoms/colorPalette';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomModal from '../../../components/molecules/customModal';
 import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAction';
+import NoInternet from '../../../components/atoms/noInternet';
 
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const CareTakerRequest = () => {
   const [visible, setVisible] = useState(false);
   const [uri, setUri] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const connected = useSelector(state => state.internetConnectivity?.data);
 
   const images = [
     {
@@ -170,6 +172,7 @@ const CareTakerRequest = () => {
           )}
         </>
       )}
+      {connected ? null : <NoInternet />}
     </View>
   );
 };

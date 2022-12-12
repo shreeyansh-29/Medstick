@@ -12,6 +12,7 @@ import {
 import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
 import {colorPallete} from '../../../components/atoms/colorPallete';
+import NoInternet from '../../../components/atoms/noInternet';
 
 const MyPatients = ({
   navigation,
@@ -25,6 +26,7 @@ const MyPatients = ({
   // const [myPatients, setMyPatients] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const res = useSelector(state => state.myPatients);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   // const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
@@ -101,29 +103,20 @@ const MyPatients = ({
               keyExtractor={(item, index) => index.toString()}
               onEndReached={onEnd}
               onEndReachedThreshold={0.01}
-              // refreshControl={
-              //   <RefreshControl
-              //     colors={[colorPallete.mainColor]}
-              //     tintColor={[colorPallete.mainColor]}
-              //     refreshing={refresh}
-              //     onRefresh={() => {
-              //       dispatch(myPatientsClear());
-              //       setRefresh(false);
-              //       setPageNo(0);
-              //       setMyPatients([]);
-              //     }}
-              //   />
-              // }
             />
           )}
-          <View style={styles.bottomView}>
-            <AddButton
-              text="Caretaker"
-              routeName={'SearchScreen'}
-              navigation={navigation}
-              styles={styles.addBtn}
-            />
-          </View>
+          {connected ? (
+            <View style={styles.bottomView}>
+              <AddButton
+                text="Caretaker"
+                routeName={'SearchScreen'}
+                navigation={navigation}
+                styles={styles.addBtn}
+              />
+            </View>
+          ) : (
+            <NoInternet />
+          )}
         </>
       )}
     </View>

@@ -43,7 +43,6 @@ class Notifications {
         message: 'Take ' + name,
         date: date,
         repeatType: 'day',
-        actions: ['Open app to mark', 'Skip'],
       });
     } else {
       PushNotification.localNotificationSchedule({
@@ -52,7 +51,6 @@ class Notifications {
         message: 'Take ' + name,
         date: date,
         repeatType: currentTime2 <= enddate ? 'day' : null,
-        actions: ['Open app to mark', 'Skip'],
       });
     }
   }
@@ -62,9 +60,6 @@ class Notifications {
       title: 'Appointment!',
       message: 'You have an appointment scheduled at' + ' ' + time,
       date: date,
-      playSound: true,
-      vibrate: true,
-      soundName: 'android.resource://com.project/raw/soundName.mp3',
     });
   }
 }

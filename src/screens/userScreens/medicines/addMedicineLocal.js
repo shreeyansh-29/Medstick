@@ -165,7 +165,7 @@ const AddMedicineLocal = ({navigation}) => {
               dosagePower: '',
               doseType: '',
               stocks: '0',
-              notify: '0',
+              notify: '',
             }}
             validationSchema={addMedicineSchema}
             onSubmit={values => {

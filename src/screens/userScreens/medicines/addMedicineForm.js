@@ -177,6 +177,7 @@ const AddMedicineForm = props => {
       <View style={Styles.textView1}>
         <View style={Styles.textbox}>
           <Text style={Styles.text}>Notify me when only </Text>
+          <Text style={styles.subText}>(Optional)</Text>
         </View>
         <View style={styles.unitBox}>
           <InputField
