@@ -194,7 +194,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   });
                   setTimeout(() => {
                     navigation.pop();
-                  }, 1000);
+                  }, 1500);
                 }
               }}
             />
@@ -213,7 +213,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
           </>
         )}
       </View>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

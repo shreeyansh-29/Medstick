@@ -82,6 +82,8 @@ const EditMedicineForm = props => {
             {...props}
             value={props.values.dosageQuantity}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
             <Text style={styles.errorText}>{props.errors.dosageQuantity}</Text>
@@ -102,6 +104,8 @@ const EditMedicineForm = props => {
             placeholderTextColor={'grey'}
             activeOutlineColor={colorPallete.mainColor}
             {...props}
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.dosagePower && props.touched.dosagePower && (
             <Text style={styles.errorText}>{props.errors.dosagePower}</Text>
@@ -135,6 +139,8 @@ const EditMedicineForm = props => {
             {...props}
             value={props.values.stocks}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.stocks && props.touched.stocks && (
             <Text style={styles.errorText}>{props.errors.stocks}</Text>
@@ -156,6 +162,8 @@ const EditMedicineForm = props => {
             {...props}
             value={props.values.notify}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.notify && props.touched.notify && (
             <Text style={styles.errorText}>{props.errors.notify}</Text>

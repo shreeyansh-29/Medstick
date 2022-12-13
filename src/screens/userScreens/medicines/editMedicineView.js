@@ -82,10 +82,10 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
       obj.medicineName = values.medicineName.trim();
       obj.medicineDescription = values.description.trim();
       obj.dosageType = values.pill;
-      obj.dosageQuantity = values.dosageQuantity.trim();
-      obj.dosagePower = values.dosagePower.trim() + ' ' + values.doseType;
-      obj.leftStock = values.notify.trim();
-      obj.stock = values.stocks.trim();
+      obj.dosageQuantity = values.dosageQuantity;
+      obj.dosagePower = values.dosagePower + ' ' + values.doseType;
+      obj.leftStock = values.notify;
+      obj.stock = values.stocks;
       obj.isModified = true;
 
       if (prescriptionObj.doctorName !== doctorName) {

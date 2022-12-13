@@ -62,11 +62,10 @@ export const addMedicineSchema = yup.object().shape({
     .max(120, ({max}) => `Description can be only of ${max} characters*`)
     .required('Description is Required*'),
   dosageQuantity: yup
-    .string()
+    .number()
     .min(1, ({min}) => `Should be more than ${min}`)
-    .required('Dosage Quantity is Required*')
-    .matches(/^[0-9.]+$/, 'Must be only digits'),
-
+    .max(5, ({max}) => `Should be less than ${max}`)
+    .required('Dosage Quantity is Required*'),
   dosagePower: yup
     .number()
     .required('Dosage Power is Required*')

@@ -100,7 +100,7 @@ const AppointmentReminders = ({navigation, route}) => {
             }
             setTimeout(() => {
               navigation.pop();
-            }, 1000);
+            }, 1500);
           })
         : showAlert();
     } else {
@@ -315,7 +315,7 @@ const AppointmentReminders = ({navigation, route}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

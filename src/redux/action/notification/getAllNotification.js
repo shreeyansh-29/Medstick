@@ -21,9 +21,15 @@ const errorGetAllNotification = err => {
     payload: err,
   };
 };
+const clearAllNotification = () => {
+  return {
+    type: getAllNotification.clearAllNotification,
+  };
+};
 
 export {
   loadGetAllNotification,
   successGetAllNotification,
   errorGetAllNotification,
+  clearAllNotification,
 };

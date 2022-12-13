@@ -5,6 +5,7 @@ import {
   Alert,
   StyleSheet,
   Text,
+  BackHandler,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
@@ -35,7 +36,12 @@ const AppointmentReminderList = ({navigation}) => {
   const [showLoader, setShowLoader] = useState(true);
 
   let todayDate = new Date();
-  let currentTime = todayDate?.getHours() + ':' + todayDate?.getMinutes();
+  let currentTime =
+    todayDate?.getHours() +
+    ':' +
+    (todayDate?.getMinutes() < 10
+      ? '0' + todayDate.getMinutes()
+      : todayDate.getMinutes());
 
   todayDate =
     todayDate.getFullYear() +
@@ -56,6 +62,17 @@ const AppointmentReminderList = ({navigation}) => {
     };
   }, []);
 
+  // const backAction = () => {
+  //   setDoctorName([]);
+  // };
+
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, []);
+
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
@@ -63,7 +80,6 @@ const AppointmentReminderList = ({navigation}) => {
           let updatedList = data;
           let doctorList = [];
           let reminderList = [];
-
           updatedList.map(item => {
             if (item.doctorName !== null && item.medicineName !== null) {
               doctorList.push({
@@ -82,8 +98,17 @@ const AppointmentReminderList = ({navigation}) => {
               });
             }
           });
-          setAppointments(reminderList);
-          setDoctorName(doctorList);
+          const key1 = 'doctorName';
+          const uniqueDoctor = [
+            ...new Map(doctorList.map(item => [item[key1], item])).values(),
+          ];
+          setDoctorName(uniqueDoctor);
+
+          const key2 = 'date';
+          const uniqueReminder = [
+            ...new Map(reminderList.map(item => [item[key2], item])).values(),
+          ];
+          setAppointments(uniqueReminder);
         }
       });
     }
@@ -115,7 +140,11 @@ const AppointmentReminderList = ({navigation}) => {
               });
             }
           });
-          setAppointments(reminderList);
+          const key2 = 'date';
+          const uniqueReminder = [
+            ...new Map(reminderList.map(item => [item[key2], item])).values(),
+          ];
+          setAppointments(uniqueReminder);
         }
       });
       PushNotification.getScheduledLocalNotifications(rn => {

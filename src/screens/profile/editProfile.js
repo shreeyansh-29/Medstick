@@ -85,7 +85,7 @@ const EditProfile = ({navigation}) => {
                 }}
                 setModalVisible={setModalVisible}
                 setEdit={setEdit}
-                result={res}
+                result={res?.data}
               />
             }
           />

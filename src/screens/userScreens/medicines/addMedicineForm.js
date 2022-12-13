@@ -26,7 +26,6 @@ const AddMedicineForm = props => {
     prescriptionUrl: null,
     location: null,
     specialization: null,
-    appointmentList: [],
   };
 
   return (
@@ -112,6 +111,8 @@ const AddMedicineForm = props => {
             {...props}
             value={props.values.dosageQuantity}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
             <Text style={styles.errorText}>{props.errors.dosageQuantity}</Text>
@@ -166,6 +167,8 @@ const AddMedicineForm = props => {
             {...props}
             value={props.values.stocks}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.stocks && props.touched.stocks && (
             <Text style={{color: 'red', marginTop: 4}}>
@@ -177,7 +180,7 @@ const AddMedicineForm = props => {
       <View style={Styles.textView1}>
         <View style={Styles.textbox}>
           <Text style={Styles.text}>Notify me when only </Text>
-          <Text style={styles.subText}>(Optional)</Text>
+          {/* <Text style={styles.subText}>(Optional)</Text> */}
         </View>
         <View style={styles.unitBox}>
           <InputField
@@ -190,6 +193,8 @@ const AddMedicineForm = props => {
             {...props}
             value={props.values.notify}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.notify && props.touched.notify && (
             <Text style={styles.errorText}>{props.errors.notify}</Text>
