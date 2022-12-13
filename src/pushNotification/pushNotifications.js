@@ -51,11 +51,10 @@ class Notifications {
         message: 'Take ' + name,
         date: date,
         repeatType: currentTime2 <= enddate ? 'day' : null,
-        
       });
     }
   }
-  schduleNotification2(date, Id) {
+  schduleNotification2(date, Id, time) {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Appointment!',

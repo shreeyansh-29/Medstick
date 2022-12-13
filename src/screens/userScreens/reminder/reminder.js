@@ -79,7 +79,6 @@ const Reminder = ({route, navigation}) => {
     let number = [];
 
     let reminderTime = obj.reminderTime.split(',');
-    console.log(reminderTime);
 
     for (let i = 0; i < reminderTime.length; i++) {
       if(reminderTime[i] !== "") number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
@@ -91,7 +90,6 @@ const Reminder = ({route, navigation}) => {
       (endDate.getMonth() + 1) +
       '-' +
       endDate.getDate();
-    console.log(endDate1, 'endDate111');
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
@@ -101,14 +99,11 @@ const Reminder = ({route, navigation}) => {
       (chosenDate1.getMonth() + 1) +
       '-' +
       chosenDate1.getDate();
-    console.log(number.length, 'length');
-
     for (let i = 0; i < number.length; i++) {
-      if (number[i] < currentTime && number[i] == 'Invalid date') {
+      if (number[i] < currentTime || number[i] == 'Invalid date') {
         let dateTime = moment(chosenDate2 + ' ' + number[i]);
         Notifications.schduleNotification(
           dateTime._d,
-          number,
           check1,
           obj.medicineName,
           endDate1,
@@ -318,27 +313,27 @@ const Reminder = ({route, navigation}) => {
 
     handlePushNotification(obj, check1, endDate);
 
-    // getMedicine().then(data => {
-    //   const temp = data;
-    //   if (temp[route.params.index].reminderId !== null) {
-    //     temp[route.params.index] = obj;
-    //   } else {
-    //     obj.reminderId = uuid.v4();
-    //     temp[route.params.index] = obj;
-    //   }
-    //   AddMedicine(temp);
-    // });
+    getMedicine().then(data => {
+      const temp = data;
+      if (temp[route.params.index].reminderId !== null) {
+        temp[route.params.index] = obj;
+      } else {
+        obj.reminderId = uuid.v4();
+        temp[route.params.index] = obj;
+      }
+      AddMedicine(temp);
+    });
     loadstate(false);
 
-    // Toast.show({
-    //   text1: 'Reminder Saved',
-    //   type: 'success',
-    //   position: 'bottom',
-    // });
+    Toast.show({
+      text1: 'Reminder Saved',
+      type: 'success',
+      position: 'bottom',
+    });
 
-    // setTimeout(() => {
-    //   navigation.pop();
-    // }, 1000);
+    setTimeout(() => {
+      navigation.pop();
+    }, 1000);
   };
 
   return (
