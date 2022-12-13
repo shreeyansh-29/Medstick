@@ -50,7 +50,13 @@ const Reminder = ({route, navigation}) => {
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
-  const [fDateSecondary, setfDate] = useState('');
+  const [fDateSecondary, setfDate] = useState(
+    startDate.getFullYear() +
+      '-' +
+      (startDate.getMonth() + 1) +
+      '-' +
+      startDate.getDate(),
+  );
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -209,7 +215,7 @@ const Reminder = ({route, navigation}) => {
       ]);
       return;
     } else if (!check1 && !check2) {
-      Alert.alert('Please select Days', ' ', [
+      Alert.alert('Please Select Days', ' ', [
         {
           text: 'OK',
           onPress: () => {},
@@ -262,6 +268,16 @@ const Reminder = ({route, navigation}) => {
     }
     setTime(time);
     if (check2) {
+      if (selecteddaysItems.length === 0) {
+        Alert.alert('Please select chosen days', ' ', [
+          {
+            text: 'OK',
+            onPress: () => {},
+          },
+        ]);
+        loadstate(false);
+        return;
+      }
       for (let i = 0; i < selecteddaysItems.length; i++) {
         if (i == selecteddaysItems.length - 1) {
           days += selecteddaysItems[i];
@@ -269,10 +285,8 @@ const Reminder = ({route, navigation}) => {
           days += selecteddaysItems[i] + ',';
         }
       }
-      console.log(days, ' final days ');
     } else if (check1) {
       days += 'Everyday';
-
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
 
@@ -333,7 +347,7 @@ const Reminder = ({route, navigation}) => {
 
     setTimeout(() => {
       navigation.pop();
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -386,7 +400,7 @@ const Reminder = ({route, navigation}) => {
               <View style={styles.mainView}>
                 <View style={styles.subView}>
                   <Text style={styles.dateText1}>
-                    {fDateSecondary == 'No End Date'
+                    {fDateSecondary === 'No End Date'
                       ? 'No End Date'
                       : todayDay[endDate.getDay()] +
                         ' ' +
@@ -738,7 +752,7 @@ const Reminder = ({route, navigation}) => {
           />
         </View>
       </ScrollView>
-      <Toast visibilityTime={800} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

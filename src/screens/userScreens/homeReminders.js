@@ -25,7 +25,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   let tempList = new Set();
 
   useEffect(() => {
-    if (medData != null) {
+    if (medData !== null) {
       display();
     }
     return () => {};
@@ -64,8 +64,8 @@ const Reminders = ({showAlert, setPercentage, data}) => {
       item.historyList.map(r => {
         if (r.date === td_da) {
           r.notTaken.split(',').map(z => {
-            const a = b => b.historyId == r.historyId;
-            const index = reminderList.findIndex(a);
+            // const a = b => b.historyId == r.historyId;
+            // const index = reminderList.findIndex(a);
             if (!r.taken.includes(z)) {
               let temp = {};
               temp.userMedicineId = item.userMedicineId;
