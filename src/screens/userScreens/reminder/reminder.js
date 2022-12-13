@@ -106,13 +106,11 @@ const Reminder = ({route, navigation}) => {
       (chosenDate1.getMonth() + 1) +
       '-' +
       chosenDate1.getDate();
-
     for (let i = 0; i < number.length; i++) {
-      if (number[i] < currentTime && number[i] == 'Invalid date') {
+      if (number[i] < currentTime || number[i] == 'Invalid date') {
         let dateTime = moment(chosenDate2 + ' ' + number[i]);
         Notifications.schduleNotification(
           dateTime._d,
-          number,
           check1,
           obj.medicineName,
           endDate1,
