@@ -27,7 +27,7 @@ class Notifications {
     });
   }
 
-  schduleNotification(date, check1, name, time, enddate) {
+  schduleNotification(date, check1, name, enddate) {
     let currentTime = new Date();
     let currentTime2 =
       currentTime.getFullYear() +

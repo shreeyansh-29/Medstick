@@ -132,7 +132,9 @@ const Reminders = ({showAlert, setPercentage, data}) => {
           <View style={styles.avatarView}>
             <View style={styles.medNameView}>
               <ListItem.Title style={styles.medName}>{time}</ListItem.Title>
-              <ListItem.Subtitle style={{marginVertical: 2, fontSize: 16}}>
+              <ListItem.Subtitle
+                style={{marginVertical: 2, fontSize: 16, color: 'gray'}}
+                numberOfLines={1}>
                 {medName}
               </ListItem.Subtitle>
             </View>
@@ -141,6 +143,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              width: '30%',
             }}
             key={item.item.medName + 6}>
             <TouchableOpacity

@@ -393,7 +393,7 @@ const Reminder = ({route, navigation}) => {
             style={styles.containerTouch}>
             <View style={styles.dateContainer}>
               <View style={styles.endDateContainer}>
-                <Text style={styles.dateText}>Select Duration</Text>
+                <Text style={styles.dateText}>End Date</Text>
               </View>
               <View style={styles.mainView}>
                 <View style={styles.subView}>
