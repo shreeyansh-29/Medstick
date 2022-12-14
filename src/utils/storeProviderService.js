@@ -12,7 +12,7 @@ class StoreProviderService {
     return this.getStore().getState();
   }
   get internetStatus() {
-    return this.state.login.isNetworkConnected;
+    return this.state.internetConnectivity?.data;
   }
   get dispatch() {
     return this.getStore().dispatch;

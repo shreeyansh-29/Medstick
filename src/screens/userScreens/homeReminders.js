@@ -143,7 +143,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              width: '30%',
+              width: '28%',
             }}
             key={item.item.medName + 6}>
             <TouchableOpacity

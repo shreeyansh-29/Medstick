@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   avatarView: {
     flexDirection: 'row',
     backgroundColor: colorPallete.backgroundColor,
-    width: '70%',
+    width: '72%',
   },
   medNameView: {flexDirection: 'column', width: '100%'},
   medName: {fontWeight: '600', fontSize: 20},
