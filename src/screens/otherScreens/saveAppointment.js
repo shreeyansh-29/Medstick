@@ -88,16 +88,16 @@ const AppointmentReminders = ({navigation, route}) => {
                 }
               });
               AddMedicine(updatedList);
-              reminderTime > time2
-                ? handlePushNotification(obj, reminderTime, obj.time)
-                : null;
-              handlePushNotification(obj, time1, obj.time);
               Toast.show({
                 type: 'success',
                 text1: 'Appointment Saved Successfully',
                 position: 'bottom',
               });
             }
+            reminderTime > time2
+              ? handlePushNotification(obj, reminderTime, obj.time)
+              : null;
+            handlePushNotification(obj, time1, obj.time);
             setTimeout(() => {
               navigation.pop();
             }, 1500);
@@ -114,16 +114,17 @@ const AppointmentReminders = ({navigation, route}) => {
             }
           });
           AddMedicine(updatedList);
-          reminderTime > time2
-            ? handlePushNotification(obj, reminderTime, obj.time)
-            : null;
-          handlePushNotification(obj, time1, obj.time);
+
           Toast.show({
             type: 'success',
             text1: 'Appointment Saved Successfully',
             position: 'bottom',
           });
         }
+        reminderTime > time2
+          ? handlePushNotification(obj, reminderTime, obj.time)
+          : null;
+        handlePushNotification(obj, time1, obj.time);
         setTimeout(() => {
           navigation.pop();
         }, 1000);
