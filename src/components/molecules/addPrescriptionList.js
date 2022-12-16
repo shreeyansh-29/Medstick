@@ -18,25 +18,23 @@ import {Alert} from 'react-native';
 import {showInvalidMessage} from '../atoms/invaliMessage';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import uuid from 'react-native-uuid'
-import { getPrescription, savePrescription } from '../../utils/storage';
-const AddPrescriptionList = ({ navigation }) => {
-
+import uuid from 'react-native-uuid';
+import {getPrescription, savePrescription} from '../../utils/storage';
+const AddPrescriptionList = ({navigation}) => {
   const [doctorName, setDoctorName] = useState('');
   const [specialization, setSpecialization] = useState('');
   const [number, setNumber] = useState('');
   const [locations, setLocation] = useState('');
-  const [id, setId] = useState('')
-  const [token, setToken] = useState('')
-  const [selectedImage, setSelectedImage] = useState('')
-  const [arr, setArr] = useState('')
-  console.log('array', arr)
-  const dispatch = useDispatch()
-  
-  useEffect(() => {
-    getPrescription().then(data => setArr(data))
-  }, [])
+  const [id, setId] = useState('');
+  const [token, setToken] = useState('');
+  const [selectedImage, setSelectedImage] = useState('');
+  const [arr, setArr] = useState('');
+  console.log('array', arr);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    getPrescription().then(data => setArr(data));
+  }, []);
 
   // useEffect(() => {
   //   if (saveDoctorPrescriptiondata?.status === 'Success') {
@@ -80,37 +78,37 @@ const AddPrescriptionList = ({ navigation }) => {
   };
 
   const successfullyPrescriptionAdded = () => {
-
-
-    showSuccesMessage()
-    navigation.navigate('AddMedicine')
-
-  }
+    showSuccesMessage();
+    navigation.navigate('AddMedicine');
+  };
 
   const savePrescriptionLocal = async () => {
-    if (doctorName === '' || specialization === '' || number === '' || locations === '' || selectedImage === '') {
-      showInvalidMessage()
-    }
-
-
-    else {
+    if (
+      doctorName === '' ||
+      specialization === '' ||
+      number === '' ||
+      locations === '' ||
+      selectedImage === ''
+    ) {
+      showInvalidMessage();
+    } else {
       let obj = {
         prescriptionId: uuid.v4(),
         doctorName: doctorName,
         specialization: specialization,
         contact: number,
         location: locations,
-        prescriptionUrl: selectedImage.path
-      }
+        prescriptionUrl: selectedImage.path,
+      };
       if (arr !== null) {
-        setArr([...arr, obj])
+        setArr([...arr, obj]);
       }
     }
   };
 
   useEffect(() => {
-    savePrescription(arr)
-  }, [arr])
+    savePrescription(arr);
+  }, [arr]);
 
   const progress = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -260,7 +258,7 @@ const AddPrescriptionList = ({ navigation }) => {
                   <FontAwesomeIcon
                     icon={faCalendarDays}
                     size={28}
-                    color={colorPalette.mainColor}
+                    color={colorPallete.mainColor}
                   />
                   <DatePicker
                     modal
@@ -303,7 +301,9 @@ const AddPrescriptionList = ({ navigation }) => {
             </View>
           </View> */}
         </KeyboardAvoidingView>
-        <TouchableOpacity style={Styles.saveButtonArea} onPress={() => savePrescriptionLocal()}>
+        <TouchableOpacity
+          style={Styles.saveButtonArea}
+          onPress={() => savePrescriptionLocal()}>
           <SaveButton />
         </TouchableOpacity>
       </ScrollView>

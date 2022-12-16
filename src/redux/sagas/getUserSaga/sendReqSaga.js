@@ -4,11 +4,11 @@ import {
   sendReqSuccess,
 } from '../../action/getUserAction/sendReqAction';
 import * as types from '../../actionTypes';
-import sendRequestService from '../../../network/networkServices/getUser/sendReqService';
+import networkService from '../../../network/networkService';
 
 export function* sendReqSaga(data) {
   try {
-    let response = yield call(sendRequestService.sendReq, data);
+    let response = yield call(networkService.sendReq, data);
     yield put(sendReqSuccess(response?.data));
   } catch (error) {
     yield put(sendReqError(error));

@@ -5,43 +5,48 @@ import {styles} from '../../../styles/careTakerStyles/myCareTakerStyles';
 import {ListItem} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
 import {useDispatch, useSelector} from 'react-redux';
-import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAction';
+import {
+  myCaretakerClear,
+  myCaretakerRequest,
+} from '../../../redux/action/caretaker/myCaretakerAction';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
-import {colorPalette} from '../../../components/atoms/colorPalette';
-import {useIsFocused} from '@react-navigation/native';
+import {colorPallete} from '../../../components/atoms/colorPallete';
+import NoInternet from '../../../components/atoms/noInternet';
 
 const MyCareTaker = ({navigation}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.myCaretaker);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   const [pageNo, setPageNo] = useState(0);
   const [caretaker, setCaretaker] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
-  const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (res?.data !== null) {
-      setCaretaker(res.data);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    pageNo === 0 ? dispatch(myCaretakerRequest(pageNo)) : null;
+  }, [pageNo]);
+
+  useEffect(() => {
+    if (res?.data !== null && res.data.length !== 0) {
+      setCaretaker([...caretaker, ...res.data]);
+      dispatch(myCaretakerClear());
     }
   }, [res]);
 
-  useEffect(() => {
-    if (isFocused) {
-      dispatch(myCaretakerRequest(pageNo));
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (caretaker?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+      dispatch(myPatientsRequest(a));
     }
-  }, [isFocused]);
-
-  // const fetchCaretaker = () => {
-  //   dispatch(myCaretakerRequest(pageNo));
-  // };
-
-  // const loadMoreItem = () => {
-  //   if (res?.data?.length === 7) {
-  //     let a = pageNo + 1;
-  //     dispatch(myCaretakerRequest(a));
-  //     setPageNo(a);
-  //   }
-  // };
+    setPageNo(a);
+  };
 
   const renderItem = ({item}) => {
     return (
@@ -71,7 +76,7 @@ const MyCareTaker = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {res?.isLoading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <>
@@ -87,33 +92,25 @@ const MyCareTaker = ({navigation}) => {
             <FlatList
               data={caretaker}
               renderItem={renderItem}
-              // onEndReached={loadMoreItem}
-              // onEndReachedThreshold={0.5}
+              onEndReached={onEnd}
+              onEndReachedThreshold={0.01}
               keyExtractor={(item, index) => index.toString()}
-              // numColumns={1}
               showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(myCaretakerRequest(pageNo));
-                    setRefresh(false);
-                  }}
-                />
-              }
             />
           )}
 
-          <View style={styles.button}>
-            <AddButton
-              text="Patient"
-              routeName={'SearchScreen'}
-              navigation={navigation}
-              styles={styles.addBtn}
-            />
-          </View>
+          {connected ? (
+            <View style={styles.button}>
+              <AddButton
+                text="Patient"
+                routeName={'SearchScreen'}
+                navigation={navigation}
+                styles={styles.addBtn}
+              />
+            </View>
+          ) : (
+            <NoInternet />
+          )}
         </>
       )}
     </View>

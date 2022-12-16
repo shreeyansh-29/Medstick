@@ -9,14 +9,13 @@ import React, {useEffect, useState} from 'react';
 import {styles} from '../../styles/homeScreenStyles/reminderStyles';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {
   faCircleCheck,
   faCircleXmark,
 } from '@fortawesome/free-regular-svg-icons';
 import {AddMedicine, getPercentageDetails} from '../../utils/storage';
 import moment from 'moment';
-
 
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
@@ -26,7 +25,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   let tempList = new Set();
 
   useEffect(() => {
-    if (medData != null) {
+    if (medData !== null) {
       display();
     }
     return () => {};
@@ -41,7 +40,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         }
       })
       .then(() => {
-        if (medData.length != 0) {
+        if (medData.length !== 0) {
           dailyReminders(medData);
         }
       })
@@ -65,8 +64,8 @@ const Reminders = ({showAlert, setPercentage, data}) => {
       item.historyList.map(r => {
         if (r.date === td_da) {
           r.notTaken.split(',').map(z => {
-            const a = b => b.historyId == r.historyId;
-            const index = reminderList.findIndex(a);
+            // const a = b => b.historyId == r.historyId;
+            // const index = reminderList.findIndex(a);
             if (!r.taken.includes(z)) {
               let temp = {};
               temp.userMedicineId = item.userMedicineId;
@@ -109,7 +108,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         item.medicineName == medName
       ) {
         item.historyList.map(r => {
-          console.log(r, historyId);
           if (r.historyId === historyId && !r.taken.includes(time)) {
             r.taken = r.taken + time + ',';
             let arr = r.notTaken.split(',');
@@ -119,7 +117,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             item.stock -= item.dosageQuantity;
           }
         });
-        console.log('After updating reminders ', item);
       }
     });
     let percent = getPercentage(medData);
@@ -135,7 +132,9 @@ const Reminders = ({showAlert, setPercentage, data}) => {
           <View style={styles.avatarView}>
             <View style={styles.medNameView}>
               <ListItem.Title style={styles.medName}>{time}</ListItem.Title>
-              <ListItem.Subtitle style={{marginVertical: 2, fontSize: 16}}>
+              <ListItem.Subtitle
+                style={{marginVertical: 2, fontSize: 16, color: 'gray'}}
+                numberOfLines={1}>
                 {medName}
               </ListItem.Subtitle>
             </View>
@@ -144,6 +143,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              width: '28%',
             }}
             key={item.item.medName + 6}>
             <TouchableOpacity
@@ -157,7 +157,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               }}>
               <FontAwesomeIcon
                 icon={faCircleCheck}
-                color={colorPalette.mainColor}
+                color={colorPallete.mainColor}
                 size={30}
               />
             </TouchableOpacity>
@@ -170,7 +170,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               activeOpacity={1}>
               <FontAwesomeIcon
                 icon={faCircleXmark}
-                color={colorPalette.redPercentageColor}
+                color={colorPallete.redPercentageColor}
                 size={30}
               />
             </TouchableOpacity>
@@ -199,7 +199,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             style={{
               width: '100%',
               height: '100%',
-              backgroundColor: colorPalette.backgroundColor,
+              backgroundColor: colorPallete.backgroundColor,
               borderRadius: 10,
               alignSelf: 'center',
             }}>

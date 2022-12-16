@@ -10,52 +10,37 @@ import {faInfo} from '@fortawesome/free-solid-svg-icons';
 import CustomModal from '../../components/molecules/customModal';
 import {useDispatch, useSelector} from 'react-redux';
 import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction';
-import CheckConnection from '../../connectivity/checkConnection';
 import {verticalScale} from '../../components/atoms/constant';
 import {
   getMedicine,
   getPercentageDetails,
   savePercentageDetails,
 } from '../../utils/storage';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import moment from 'moment';
+import {syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
-  const [connected, connectedstate] = useState(false);
   const [percentage, setPercentage] = useState(0);
   const [medData, setMedData] = useState([]);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const connected = useSelector(state => state.internetConnectivity?.data);
+  const load = useSelector(state => state.userInfo?.data);
   let td_da = moment().format('YYYY-MM-DD');
 
-  const checkconnection = async () => {
-    let conn = await CheckConnection();
-    connectedstate(conn);
-  };
-
   // useEffect(() => {
-  //   const backAction = () => {
-  //     Alert.alert('Hold On!', 'Are you sure you want to exit?', [
-  //       {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-  //       {text: 'Yes', onPress: () => BackHandler.exitApp()},
-  //     ]);
-  //     return true;
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
-  //   return () => backHandler.remove();
-  // }, []);
+  //   getMedicine().then(data => {
+  //     if (data !== null && data.length !== 0) {
+  //       let updatedList = data;
+  //       dispatch(syncDataRequest(updatedList));
+  //     }
+  //   });
+  // }, [connected, load]);
 
   useEffect(() => {
-    checkconnection();
-  }, []);
-
-  useEffect(() => {
-    dispatch(myCaretakerRequest(0));
-  }, []);
+    if (connected && load) dispatch(myCaretakerRequest(0));
+  }, [connected, load]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -69,7 +54,7 @@ const HomeScreen = ({navigation}) => {
     let cc = 0;
     data.map(item => {
       item.historyList.map(k => {
-        if (k.date == td_da) {
+        if (k.date === td_da && item.reminderTime !== '') {
           tr += item.reminderTime.split(',').length;
           let temp = k.taken.split(',');
           temp.map(i => {
@@ -88,36 +73,34 @@ const HomeScreen = ({navigation}) => {
         temp.percentage = Math.floor((cc / tr) * 100);
         obj.push(temp);
         savePercentageDetails(obj);
-      } else if (data !== null && data.length !==0) {
-        obj=data;
+      } else if (data !== null && data.length !== 0) {
+        obj = data;
         obj.map((item, index) => {
           const a = b => b.date == td_da;
           if (item.date === td_da) {
             item.percentage = Math.floor((cc / tr) * 100);
             obj[index] = item;
-            console.log('zzz', obj);
+            // console.log('zzz', obj);
           } else if (!obj.some(a) && tr !== 0) {
             temp.date = td_da;
             temp.percentage = Math.floor((cc / tr) * 100);
             obj.push(temp);
           }
         });
-        savePercentageDetails(obj);
-        // console.log('Percent in local', data);
+        savePercentageDetails(data);
       }
     });
-    console.log('tr total reminders=>', tr, ' ,cc=> ', cc);
     return Math.floor((cc / tr) * 100);
   }
 
   function getData() {
     getMedicine().then(data => {
-      if (data.length === 0 || data === null) {
-        setPercentage(0);
-      } else {
+      if (data.length !== 0 && data !== null) {
         setMedData(data);
         let p = getPercentage(data);
         setPercentage(p);
+      } else {
+        setPercentage(0);
       }
     });
   }
@@ -139,9 +122,9 @@ const HomeScreen = ({navigation}) => {
   }
 
   let res = useSelector(state => state.myCaretaker?.data);
-  const [modalVisible, setModalVisible] = useState(false);
+
   const showAlert = () => {
-    if (connected) {
+    if (connected && load) {
       if (res?.length === 0) {
         Alert.alert('Need to add caretaker first', '', [
           {

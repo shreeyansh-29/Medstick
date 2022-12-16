@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(13),
   },
   imgContainer: {
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   list: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     marginHorizontal: 8,
     marginVertical: 6,
     elevation: 3,
@@ -41,8 +41,9 @@ export const styles = StyleSheet.create({
   img: {width: '60%'},
   avatarView: {
     flexDirection: 'row',
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
+    width: '72%',
   },
-  medNameView: {flexDirection: 'column'},
+  medNameView: {flexDirection: 'column', width: '100%'},
   medName: {fontWeight: '600', fontSize: 20},
 });

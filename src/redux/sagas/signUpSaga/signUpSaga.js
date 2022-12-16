@@ -4,12 +4,12 @@ import {
   signUpSuccess,
 } from '../../action/signUpAction/signUpAction.js';
 import * as types from '../../actionTypes';
-import signUpNetworkService from '../../../network/networkServices/authNetworkServices/signUpNetworkService';
+import networkService from '../../../network/networkService.js';
 
 export function* signUpSaga(data) {
   try {
-    let response = yield call(signUpNetworkService.signUp, data);
-    yield put(signUpSuccess(response));
+    let response = yield call(networkService.signUp, data);
+    yield put(signUpSuccess(response?.data));
   } catch (error) {
     yield put(signUpError(error));
   }

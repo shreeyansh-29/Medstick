@@ -11,49 +11,18 @@ import {
   faStopwatch,
   faGear,
   faHospitalUser,
+  faCameraRetro,
 } from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../styles/otherScreensStyles/accountTabStyles';
-import {colorPalette} from '../../components/atoms/colorPalette';
 import {Divider} from 'react-native-paper';
 import CustomButton from '../../components/atoms/customButton';
-import {verticalScale} from '../../components/atoms/constant';
 
 const AccountTab = ({navigation}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name, setName] = useState('Please Login First');
-  const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
 
-  // useFocusEffect(() => {
-  //   async function checkforlog() {
-  //     const checkforlogin = await AsyncStorage.getItem('user_id');
+  const [img, imgstate] = useState('');
 
-  //     if (checkforlogin === null) {
-  //       Alert.alert(
-  //         'Sign in first to use this feature',
-  //         'Click ok to proceed',
-  //         [
-  //           {
-  //             text: 'Ok',
-  //             onPress: () => {
-  //               navigation.navigate('AuthScreen');
-  //             },
-  //           },
-  //           {
-  //             text: 'Cancel',
-  //             onPress: () => {
-  //               navigation.navigate('Home');
-  //             },
-  //           },
-  //         ],
-  //       );
-  //     } else {
-  //       setName(await AsyncStorage.getItem('user_name'));
-  //       imgstate(await AsyncStorage.getItem('user_photo'));
-  //       setIsLoggedIn(true);
-  //     }
-  //   }
-  //   checkforlog();
-  // });
   useFocusEffect(() => {
     async function checkforlog() {
       const checkforlogin = await AsyncStorage.getItem('user_id');
@@ -64,6 +33,7 @@ const AccountTab = ({navigation}) => {
       }
     }
     checkforlog();
+    return () => {};
   });
 
   useEffect(() => {
@@ -94,7 +64,10 @@ const AccountTab = ({navigation}) => {
             </View>
           ) : (
             <View style={styles.profile}>
-              <Image source={{uri: img}} style={styles.img}></Image>
+              <Image
+                source={require('../../assets/images/nouser.png')}
+                style={styles.img}
+              />
               <View style={styles.heading}>
                 <Text style={styles.title}>{name}</Text>
                 <Text style={styles.subTitle}>See your profile</Text>
@@ -141,13 +114,6 @@ const AccountTab = ({navigation}) => {
             navigationTitle="Settings"
           />
           <Divider style={styles.divider} />
-
-          {/* <TwoTouchable
-            icon={faCameraRetro}
-            title="Send Snap"
-            navigation={navigation}
-            navigationTitle="SendSnapToCaretaker"
-          /> */}
         </View>
 
         {isLoggedIn ? (
@@ -156,10 +122,10 @@ const AccountTab = ({navigation}) => {
             btnStyles={styles.btnStyles}
             contStyles={styles.contStyles}
             handleSubmit={() => {
-              navigation.navigate('Logout');
               imgstate('https://i.stack.imgur.com/l60Hf.png');
               setName('Please Login First');
               setIsLoggedIn(false);
+              navigation.navigate('Logout');
             }}
           />
         ) : (

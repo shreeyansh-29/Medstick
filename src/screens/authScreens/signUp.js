@@ -3,22 +3,29 @@ import React, {useEffect} from 'react';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {styles} from '../../styles/authScreensStyles/loginScreenStyles';
 import {useDispatch, useSelector} from 'react-redux';
-import {signUpRequest} from '../../redux/action/signUpAction/signUpAction';
+import {
+  resetSignUp,
+  signUpRequest,
+} from '../../redux/action/signUpAction/signUpAction';
 import Toast from 'react-native-toast-message';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
+import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn';
 
-const SignUp = ({navigation, connected}) => {
+const SignUp = ({navigation}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.signUp.data);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   const isFocused = useIsFocused();
 
   const getResponse = async () => {
     await AsyncStorage.setItem('user_id', res.userList[0].id);
     await AsyncStorage.setItem('user_name', res.userList[0].userName);
     await AsyncStorage.setItem('user_email', res.userList[0].email);
-    await AsyncStorage.setItem('accessToken', res.accessToken);
+    let token = encryptData(res?.accessToken);
+    await AsyncStorage.setItem('accessToken', token);
+    dispatch(saveUserLoggedIn(true));
 
     Toast.show({
       type: 'success',
@@ -27,7 +34,7 @@ const SignUp = ({navigation, connected}) => {
 
     setTimeout(() => {
       navigation.navigate('Home');
-    }, 500);
+    }, 2500);
   };
 
   useEffect(() => {
@@ -35,13 +42,21 @@ const SignUp = ({navigation, connected}) => {
       if (res?.status === 'Success') {
         getResponse();
       } else if (res?.status === 'Failed') {
+        logout();
         Toast.show({
           type: 'error',
           text1: 'User already exists',
         });
+        dispatch(resetSignUp());
       }
     }
   }, [isFocused, res]);
+
+  const logout = async () => {
+    if (await GoogleSignin.isSignedIn()) {
+      await GoogleSignin.signOut();
+    }
+  };
 
   const signUp = async () => {
     if (connected) {
@@ -63,18 +78,16 @@ const SignUp = ({navigation, connected}) => {
           text1: 'Something Went Wrong',
         });
       }
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Please Connect to Internet',
-      });
     }
   };
 
   return (
     <>
       <View style={styles.signUpCont}>
-        <TouchableOpacity style={styles.signUpView} onPress={() => signUp()}>
+        <TouchableOpacity
+          style={styles.signUpView}
+          onPress={() => signUp()}
+          activeOpacity={1}>
           <Image
             source={require('../../assets/images/g1.png')}
             style={styles.img}

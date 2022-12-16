@@ -8,13 +8,12 @@ import {
 } from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 
 const HistoryDetail = ({data, onPress}) => {
   const [filterData, setfilterData] = useState([]);
 
-  console.log('history',data)
   function findTime(ele) {
     let time = parseInt(ele.split(':')[0]),
       period = ele.split(' ')[1],
@@ -44,7 +43,7 @@ const HistoryDetail = ({data, onPress}) => {
             time: ele,
             title: <Text style={{color: 'black'}}>{mtitle}</Text>,
             description: (
-              <Text style={{color: colorPalette.redPercentageColor}}>
+              <Text style={{color: colorPallete.redPercentageColor}}>
                 Not Taken
               </Text>
             ),
@@ -61,7 +60,7 @@ const HistoryDetail = ({data, onPress}) => {
             time: ele,
             title: <Text style={{color: 'black'}}>{mtitle}</Text>,
             description: (
-              <Text style={{color: colorPalette.greenPercentageColor}}>
+              <Text style={{color: colorPallete.greenPercentageColor}}>
                 Taken
               </Text>
             ),
@@ -80,7 +79,7 @@ const HistoryDetail = ({data, onPress}) => {
           <FontAwesomeIcon
             size={26}
             icon={faCircleXmark}
-            color={colorPalette.mainColor}
+            color={colorPallete.mainColor}
           />
         </TouchableOpacity>
       </View>
@@ -91,14 +90,13 @@ const HistoryDetail = ({data, onPress}) => {
             style={style.timelineCont}
             data={filterData}
             circleSize={20}
-            circleColor={colorPalette.mainColor}
-            lineColor={colorPalette.mainColor}
+            circleColor={colorPallete.mainColor}
+            lineColor={colorPallete.mainColor}
             listViewStyle={style.listViewStyle}
             timeContainerStyle={style.timeContainerStyle}
             timeStyle={style.timeStyle}
             isUsingFlatlist={true}
             innerCircle={'dot'}
-            // listViewContainerStyle={{backgroundColor: 'green'}}
             detailContainerStyle={style.detailContainerStyle}
           />
         </View>
@@ -111,7 +109,7 @@ const style = StyleSheet.create({
   container: {
     height: '52%',
     width: '90%',
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     borderRadius: 20,
     alignItems: 'center',
   },
@@ -149,7 +147,7 @@ const style = StyleSheet.create({
   timeStyle: {
     textAlign: 'center',
     color: 'white',
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     padding: 5,
     marginBottom: 70,
     borderRadius: 20,

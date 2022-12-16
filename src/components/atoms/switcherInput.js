@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Switch, Text, StyleSheet} from 'react-native';
-import {colorPalette} from './colorPalette';
+import {colorPallete} from './colorPallete';
 
 export default function ({value, onChange, description}) {
   return (
@@ -11,7 +11,7 @@ export default function ({value, onChange, description}) {
       <View style={styles.rightContainer}>
         <Switch
           ios_backgroundColor={'black'}
-          trackColor={{false: colorPalette.GREY, true: colorPalette.BLUE}}
+          trackColor={{false: colorPallete.GREY, true: colorPallete.BLUE}}
           value={value}
           onValueChange={value => onChange(value)}
         />
@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontWeight: 'bold',
-    color: colorPalette.BLUE,
+    color: colorPallete.BLUE,
   },
 });

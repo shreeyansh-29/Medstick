@@ -9,8 +9,6 @@ import {Divider} from 'react-native-paper';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
 import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction';
-import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import {
   sendSnapClear,
@@ -19,6 +17,7 @@ import {
 import CustomButton from '../../components/atoms/customButton';
 import CustomModal from '../../components/molecules/customModal';
 import ImagePicker from 'react-native-image-crop-picker';
+import {getMedicine} from '../../utils/storage';
 
 const SendSnapToCaretaker = ({navigation}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -26,16 +25,12 @@ const SendSnapToCaretaker = ({navigation}) => {
   const [medsArray, medsArrayState] = useState([]);
   const dispatch = useDispatch();
   let res = useSelector(state => state.myCaretaker);
-  let meds = useSelector(state => state.medicineList);
   let res1 = useSelector(state => state.sendSnap?.data);
+  console.log(res1, 'res1');
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');
   const [selectedCaketakerId, setSelectedCaketakerId] = useState('');
-
-  const userMeds = async () => {
-    dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
-  };
 
   const [image, setImage] = useState('');
 
@@ -69,8 +64,8 @@ const SendSnapToCaretaker = ({navigation}) => {
         text1: 'Something Went Wrong',
         text2: 'Try Again',
       });
-      dispatch(sendSnapClear());
     }
+    dispatch(sendSnapClear());
   }, [res1]);
 
   useEffect(() => {
@@ -78,8 +73,24 @@ const SendSnapToCaretaker = ({navigation}) => {
     userMeds();
   }, []);
 
+  const userMeds = () => {
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        medsArrayState(
+          data.map(item => {
+            return {
+              label: item.medicineName,
+              value: item.medicineName,
+              id: item.userMedicineId,
+            };
+          }),
+        );
+      }
+    });
+  };
+
   useEffect(() => {
-    if (res?.data !== null && meds?.data !== null) {
+    if (res?.data !== null) {
       mycaretakerstate(
         res?.data?.map(item => {
           return {
@@ -89,17 +100,8 @@ const SendSnapToCaretaker = ({navigation}) => {
           };
         }),
       );
-      medsArrayState(
-        meds?.data?.map(item => {
-          return {
-            label: item.medicineName,
-            value: item.medicineName,
-            medId: item.userMedicineId,
-          };
-        }),
-      );
     }
-  }, [res, meds]);
+  }, [res]);
 
   useEffect(() => {
     Animated.timing(progress, {
@@ -122,7 +124,7 @@ const SendSnapToCaretaker = ({navigation}) => {
       email: 'email@example.com',
       social: Share.Social.EMAIL,
       failOnCancel: false,
-      // urls: [image_uri],
+      urls: [image],
     };
     await Share.open(shareOptions);
   };
@@ -210,7 +212,7 @@ const SendSnapToCaretaker = ({navigation}) => {
               value={selectMedicine}
               onChange={item => {
                 setSelectMedicine(item.value);
-                setSelectedMedId(item.medId);
+                setSelectedMedId(item.id);
               }}
               itemTextStyle={{color: 'black'}}
             />

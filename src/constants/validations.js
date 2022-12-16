@@ -64,8 +64,8 @@ export const addMedicineSchema = yup.object().shape({
   dosageQuantity: yup
     .number()
     .min(1, ({min}) => `Should be more than ${min}`)
-    .required('Dosage Quantity is Required*')
-    .integer('Must be only digits'),
+    .max(5, ({max}) => `Should be less than ${max}`)
+    .required('Dosage Quantity is Required*'),
   dosagePower: yup
     .number()
     .required('Dosage Power is Required*')
@@ -75,11 +75,17 @@ export const addMedicineSchema = yup.object().shape({
     .number()
     .required('Stocks are Required*')
     .min(1, ({min}) => `Should be atleast ${min}`)
-    .integer('Must be only digits'),
+    .integer('Must be only digits')
+    .test('no-leading-zero', 'Invalid Entry', (value, context) => {
+      return context.originalValue && !context.originalValue.startsWith('0');
+    }),
   notify: yup
     .number()
-    // .min(1, ({min}) => `Should be atleast ${min}`)
+    .min(1, ({min}) => `Should be atleast ${min}`)
     .integer('Must be only digits')
+    .test('no-leading-zero', 'Invalid Entry', (value, context) => {
+      return context.originalValue && !context.originalValue.startsWith('0');
+    })
     .nullable(),
 });
 

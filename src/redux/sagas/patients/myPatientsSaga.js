@@ -4,14 +4,14 @@ import {
   myPatientsError,
   myPatientsSuccess,
 } from '../../action/patients/myPatientsAction';
-import myPatientsService from '../../../network/networkServices/patients/myPatientsService';
+import networkService from '../../../network/networkService';
 
 export function* myPatientsSaga(data) {
   try {
-    let response = yield call(myPatientsService.getMyPatients, data);
+    let response = yield call(networkService.getMyPatients, data);
     yield put(myPatientsSuccess(response?.data));
   } catch (error) {
-    yield put(myPatientsError(error));
+    yield put(myPatientsError(error.response));
   }
 }
 

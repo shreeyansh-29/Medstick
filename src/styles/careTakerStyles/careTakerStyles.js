@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 export const styles = StyleSheet.create({
   //Add a caretaker screen
@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   imgView: {position: 'absolute', alignSelf: 'center', top: 90},
   sdIcon: {name: 'add', color: 'white'},
   sdIconOpen: {name: 'close', color: 'white'},
-  sdButton: {backgroundColor: colorPalette.mainColor},
+  sdButton: {backgroundColor: colorPallete.mainColor},
   sdDeleteIcon: {name: 'delete', color: 'white'},
   sdHeight: {height: 50},
   button: {backgroundColor: 'white'},
@@ -33,12 +33,12 @@ export const styles = StyleSheet.create({
   iconTouch: {paddingVertical: 15},
 
   //caretaker component
-  tab: {backgroundColor: colorPalette.mainColor},
+  tab: {backgroundColor: colorPallete.mainColor},
   tabIndicator: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     height: 3,
   },
-  tabItemContainer: {backgroundColor: colorPalette.basicColor},
-  tabItemTitle: {fontSize: 12, color: colorPalette.mainColor},
-  tabItem: {backgroundColor: colorPalette.basicColor, width: '100%'},
+  tabItemContainer: {backgroundColor: colorPallete.basicColor},
+  tabItemTitle: {fontSize: 12, color: colorPallete.mainColor},
+  tabItem: {backgroundColor: colorPallete.basicColor, width: '100%'},
 });

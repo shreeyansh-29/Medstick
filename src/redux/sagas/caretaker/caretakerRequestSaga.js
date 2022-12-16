@@ -4,12 +4,12 @@ import {
   caretakerReqError,
   caretakerReqSuccess,
 } from '../../action/caretaker/caretakerRequestAction';
-import caretakerRequestService from '../../../network/networkServices/caretaker/caretakerRequestService';
+import networkService from '../../../network/networkService';
 
 export function* caretakerRequestSaga(data) {
   try {
     let response = yield call(
-      caretakerRequestService.getCaretakerRequest,
+      networkService.getCaretakerRequest,
       data,
     );
     yield put(caretakerReqSuccess(response?.data));

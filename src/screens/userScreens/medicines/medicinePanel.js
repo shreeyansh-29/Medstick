@@ -13,7 +13,6 @@ import {Card} from 'react-native-paper';
 import {ListItem} from 'react-native-elements';
 import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../../../components/atoms/colorPalette';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
@@ -23,7 +22,7 @@ import uuid from 'react-native-uuid';
 import PushNotification from 'react-native-push-notification';
 import Loader from '../../../components/atoms/loader';
 import moment from 'moment';
-
+import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const MedicinePanel = ({navigation}) => {
   const [medicineResponse, setMedicineResponse] = useState([]);
@@ -117,7 +116,6 @@ const MedicinePanel = ({navigation}) => {
             data[i].historyList[index] = history;
             data[i].totalReminders = 0;
             data[i].currentCount = 0;
-            // console.log('history updated', data[i]);
           } else if (index < 0) {
             history.historyId = uuid.v4();
             history.date = td_da;
@@ -156,10 +154,6 @@ const MedicinePanel = ({navigation}) => {
       }
 
       updateArray.push(data[i]);
-      console.log(
-        '<================ FINAL DATA ================>',
-        updateArray,
-      );
     }
     AddMedicine(updateArray);
   };
@@ -167,6 +161,7 @@ const MedicinePanel = ({navigation}) => {
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
+        // console.log(data);
         if (data !== null && data.length !== 0) {
           setMedicineResponse(data);
         }
@@ -177,7 +172,7 @@ const MedicinePanel = ({navigation}) => {
   const deleteRem = name => {
     PushNotification.getScheduledLocalNotifications(rn => {
       for (let i = 0; i < rn.length; i++) {
-        if ('Take ' + name === rn[i].message) {
+        if (name === rn[i].number) {
           PushNotification.cancelLocalNotification({id: rn[i].id});
         }
       }
@@ -213,10 +208,12 @@ const MedicinePanel = ({navigation}) => {
                       <FontAwesomeIcon
                         icon={faPills}
                         size={36}
-                        color={colorPalette.mainColor}
+                        color={colorPallete.mainColor}
                       />
                       <View style={Styles.medNameView}>
-                        <ListItem.Title style={Styles.medName}>
+                        <ListItem.Title
+                          style={Styles.medName}
+                          numberOfLines={1}>
                           {item.medicineName}
                         </ListItem.Title>
                         <ListItem.Subtitle>
@@ -251,10 +248,10 @@ const MedicinePanel = ({navigation}) => {
                         icon={faClock}
                         color={
                           item.reminderStatus
-                            ? colorPalette.mainColor
+                            ? colorPallete.mainColor
                             : 'lightgrey'
                         }
-                        size={24}
+                        size={21}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -276,8 +273,8 @@ const MedicinePanel = ({navigation}) => {
                       }}>
                       <FontAwesomeIcon
                         icon={faTrash}
-                        color={colorPalette.mainColor}
-                        size={24}
+                        color={colorPallete.mainColor}
+                        size={21}
                       />
                     </TouchableOpacity>
                   </View>
@@ -292,7 +289,6 @@ const MedicinePanel = ({navigation}) => {
 
   return (
     <View style={Styles.container}>
-      {/* <View style={Styles.background} /> */}
       <MainHeader title={'Medicine'} navigation={navigation} />
       {showLoader ? (
         <Loader />
@@ -300,7 +296,6 @@ const MedicinePanel = ({navigation}) => {
         <>
           {medicineResponse.length === 0 ? (
             <View style={Styles.lottie}>
-              {/* {clearLocal()} */}
               <CustomImage
                 resizeMode="contain"
                 source={require('../../../assets/images/nomeds.png')}

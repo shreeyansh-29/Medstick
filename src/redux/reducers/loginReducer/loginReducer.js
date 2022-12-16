@@ -9,18 +9,18 @@ import {
 const initialState = {
   data: null,
   isLoading: false,
-  error: '',
+  error: null,
 };
 export const signInReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
       return {...state, isLoading: true};
     case LOGIN_SUCCESS:
-      return {...state, data: action.payload.data, isLoading: false};
+      return {...state, data: action.payload, isLoading: false};
     case LOGIN_ERROR:
-      return {...state, error: action, isLoading: false};
+      return {...state, error: action.payload, isLoading: false};
     case RESET_LOGIN:
-      return {data: null, isLoading: false, error: ''};
+      return {data: null, isLoading: false, error: null};
     default:
       return state;
   }

@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  container: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   imgView: {
     flex: 1,
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -52,12 +52,12 @@ export const styles = StyleSheet.create({
     width: 80,
     borderRadius: 25,
     // marginBottom: 10,
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
   },
   space: {margin: 5},
   deleteButton: {
     width: 80,
     borderRadius: 25,
-    backgroundColor: colorPalette.redPercentageColor,
+    backgroundColor: colorPallete.redPercentageColor,
   },
 });

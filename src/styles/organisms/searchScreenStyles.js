@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  container: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   form: {
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     width: '100%',
     alignItems: 'center',
   },
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     borderWidth: 0.6,
     borderRadius: 5,
-    borderColor: colorPalette.mainColor,
+    borderColor: colorPallete.mainColor,
   },
   field: {
     marginLeft: 10,
@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
   lottie: {
     width: 300,
     height: 300,
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
   },
   text: {
     color: 'red',
@@ -44,11 +44,11 @@ export const styles = StyleSheet.create({
   },
   flatList: {width: '100%'},
   listButton: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     padding: 10,
     borderRadius: 4,
   },
-  text1: {color: colorPalette.backgroundColor},
+  text1: {color: colorPallete.backgroundColor},
   card: {
     borderRadius: 16,
     borderColor: 'lightgrey',
@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     shadowColor: 'black',
     marginVertical: verticalScale(5),
     marginHorizontal: horizontalScale(17),
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
   },
   mainView: {margin: 3},
   listView: {marginHorizontal: 8},

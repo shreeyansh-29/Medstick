@@ -10,7 +10,7 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Formik} from 'formik';
 import AddMedicineForm from './addMedicineForm';
 import {addMedicineSchema} from '../../../constants/validations';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import Toast from 'react-native-toast-message';
 import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
@@ -27,7 +27,6 @@ const AddMedicineLocal = ({navigation}) => {
     prescriptionUrl: null,
     location: null,
     specialization: null,
-    appointmentList: [],
   });
   const [add, setAdd] = useState(false);
 
@@ -78,8 +77,8 @@ const AddMedicineLocal = ({navigation}) => {
       let obj = {
         userMedicineId: userMedicineId,
         medicineId: medicineId,
-        medicineName: values.medicineName,
-        medicineDescription: values.description,
+        medicineName: values.medicineName.trim(),
+        medicineDescription: values.description.trim(),
         prescriptionId: prescriptionObj.prescriptionId,
         doctorName: prescriptionObj.doctorName,
         prescriptionUrl: prescriptionObj.prescriptionUrl,
@@ -106,8 +105,9 @@ const AddMedicineLocal = ({navigation}) => {
         totalReminders: null,
         currentCount: null,
         historyList: [],
-        appointmentList: prescriptionObj.appointmentList,
+        appointmentList: [],
         notes: '',
+        isModified: false,
       };
 
       getMedicine().then(data => {
@@ -138,7 +138,7 @@ const AddMedicineLocal = ({navigation}) => {
       });
       setTimeout(() => {
         navigation.navigate('Home');
-      }, 1000);
+      }, 1500);
     }
   };
 
@@ -202,14 +202,14 @@ const AddMedicineLocal = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };
 
 const Styles = StyleSheet.create({
   addMedicinePage: {
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
     flex: 1,
   },
   keyboardView: {

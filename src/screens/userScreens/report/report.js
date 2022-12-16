@@ -17,7 +17,7 @@ import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCi
 import {useIsFocused} from '@react-navigation/native';
 import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
 import {getMedicine} from '../../../utils/storage';
 import {useEffect} from 'react';
@@ -92,7 +92,6 @@ const Report = ({navigation}) => {
         })
         .then(() => {
           if (getUserMedicine.length !== 0 && medicineId !== null) {
-            console.log('medicine Id', getUserMedicine[0].userMedicineId);
             getHistory(medicineId);
           }
         })
@@ -107,6 +106,15 @@ const Report = ({navigation}) => {
   let startDate = new Date(
     td.getFullYear() + '-' + (td.getMonth() + 1) + '-' + (td.getDate() + 1),
   ).toISOString();
+
+  let todayDate = new Date();
+  todayDate.getFullYear() +
+    '-' +
+    (todayDate.getMonth() + 1) +
+    '-' +
+    (todayDate.getDate() < 10
+      ? '0' + todayDate.getDate()
+      : todayDate.getDate());
 
   const showAlert = () => {
     Alert.alert('Add Medicine First', 'Click Ok to proceed', [
@@ -194,7 +202,6 @@ const Report = ({navigation}) => {
       }
     });
     let totalCount = notTakenLength + takenLength;
-    // console.log(Math.floor((takenLength / totalCount) * 100));
     return Math.floor((takenLength / totalCount) * 100);
   };
 
@@ -231,7 +238,7 @@ const Report = ({navigation}) => {
   };
 
   const alertFunction = () => {
-    Alert.alert('You have no reminder of this date', '', [
+    Alert.alert('You have no adhrence of this date', '', [
       {
         text: 'Ok',
         onPress: () => {},
@@ -242,15 +249,13 @@ const Report = ({navigation}) => {
   const getHistorydata = date => {
     const a = b => b.date == date.dateString;
     const historyIndex = historyListData.findIndex(a);
-    // console.log('his', historyListData[historyIndex]);
     setHistoryData(historyListData[historyIndex]);
   };
 
   const dayComponent = (date, state) => {
-    // console.log('date', date.dateString);
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
-    // console.log('1234', dataMap);
+
     return (
       <>
         {dataMap.some(a) ? (
@@ -275,8 +280,8 @@ const Report = ({navigation}) => {
               borderWidth={3}
               color={'grey'}
               shadowColor={'lightgrey'}
-              bgColor={colorPalette.backgroundColor}>
-              <Text style={{fontSize: 16, color: colorPalette.blackColor}}>
+              bgColor={colorPallete.backgroundColor}>
+              <Text style={{fontSize: 16, color: colorPallete.black}}>
                 {date.day}
               </Text>
             </ProgressCircle>
@@ -339,7 +344,7 @@ const Report = ({navigation}) => {
               <View style={styles.reportContainer}>
                 <View style={styles.analytics}>
                   <View style={styles.container1Text}>
-                    <Text style={styles.font}>Overall Performance</Text>
+                    <Text style={styles.font}>Overall Percentage</Text>
                     <Text style={styles.fontSmall}>
                       This percentage shows your overall adherence rate.
                     </Text>
@@ -362,14 +367,7 @@ const Report = ({navigation}) => {
                   theme={styles.theme}
                   initialDate={startDate}
                   minDate={'2012-05-10'}
-                  // maxDate={'2222-12-30'}
-                  onDayLongPress={day => {
-                    // console.log('selected day', day);
-                  }}
                   monthFormat={'yyyy MM'}
-                  onMonthChange={month => {
-                    // console.log('month changed', month);
-                  }}
                   hideArrows={false}
                   hideExtraDays={true}
                   disableMonthChange={true}

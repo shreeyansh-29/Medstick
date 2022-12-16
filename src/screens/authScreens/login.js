@@ -6,14 +6,20 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {styles} from '../../styles/authScreensStyles/loginScreenStyles';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginRequest} from '../../redux/action/loginAction/loginAction';
+import {
+  loginRequest,
+  resetLogin,
+} from '../../redux/action/loginAction/loginAction';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {useIsFocused} from '@react-navigation/native';
+import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn';
+import {encryptData} from '../../components/atoms/crypto';
 
-const Login = ({navigation, connected}) => {
+const Login = ({navigation}) => {
   const res = useSelector(state => state.signIn.data);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
@@ -22,7 +28,9 @@ const Login = ({navigation, connected}) => {
       await AsyncStorage.setItem('user_id', res.userList[0].id);
       await AsyncStorage.setItem('user_name', res.userList[0].userName);
       await AsyncStorage.setItem('user_email', res.userList[0].email);
-      await AsyncStorage.setItem('accessToken', res.accessToken);
+      let token = encryptData(res?.accessToken);
+      await AsyncStorage.setItem('accessToken', token);
+      dispatch(saveUserLoggedIn(true));
 
       Toast.show({
         type: 'success',
@@ -31,7 +39,7 @@ const Login = ({navigation, connected}) => {
 
       setTimeout(() => {
         navigation.navigate('Home');
-      }, 500);
+      }, 2500);
     } else {
       Toast.show({
         type: 'error',
@@ -45,13 +53,21 @@ const Login = ({navigation, connected}) => {
       if (res?.status === 'Success') {
         getResponse();
       } else if (res?.status === 'Failed') {
+        logout();
         Toast.show({
           type: 'info',
           text1: 'User Not Found',
         });
+        dispatch(resetLogin());
       }
     }
   }, [isFocused, res]);
+
+  const logout = async () => {
+    if (await GoogleSignin.isSignedIn()) {
+      await GoogleSignin.signOut();
+    }
+  };
 
   const login = async () => {
     if (connected) {
@@ -72,11 +88,6 @@ const Login = ({navigation, connected}) => {
           text1: 'Something Went Wrong',
         });
       }
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Please connect to Internet',
-      });
     }
   };
 

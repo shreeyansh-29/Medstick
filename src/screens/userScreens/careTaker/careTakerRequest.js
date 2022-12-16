@@ -12,21 +12,21 @@ import {acceptCaretakerReqRequest} from '../../../redux/action/caretaker/acceptC
 import {deleteCaretakerReqRequest} from '../../../redux/action/caretaker/deleteCaretakerReqAction';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomModal from '../../../components/molecules/customModal';
 import {myCaretakerRequest} from '../../../redux/action/caretaker/myCaretakerAction';
+import NoInternet from '../../../components/atoms/noInternet';
 
 const CareTakerRequest = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.caretakerRequest);
-  console.log(res);
   const [pageNo, setPageNo] = useState(0);
   const [caretakers, setCaretakers] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const [visible, setVisible] = useState(false);
   const [uri, setUri] = useState('');
-  const loading = useSelector(state => state.caretakerRequest.isLoading);
+  const [isLoading, setIsLoading] = useState(true);
+  const connected = useSelector(state => state.internetConnectivity?.data);
 
   const images = [
     {
@@ -35,8 +35,15 @@ const CareTakerRequest = () => {
   ];
 
   useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
     if (res?.data !== null) {
-      setCaretakers(res.data);
+      setCaretakers([...caretakers, ...res.data]);
+      dispatch(caretakerReqClear());
     }
   }, [res]);
 
@@ -44,17 +51,13 @@ const CareTakerRequest = () => {
     dispatch(caretakerReqRequest(pageNo));
   }, []);
 
-  // const loadMoreItem = () => {
-  //   if (res?.data?.length === 7) {
-  //     let a = pageNo + 1;
-  //     dispatch(caretakerReqRequest(a));
-  //     setPageNo(a);
-  //   }
-  // };
-
-  // const fetchCaretakerReq = () => {
-  //   dispatch(caretakerReqRequest(pageNo));
-  // };
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (caretakers?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+      dispatch(caretakerReqRequest(a));
+    }
+    setPageNo(a);
+  };
 
   const acceptRequest = requestId => {
     let a = b => b.requestId == requestId;
@@ -62,10 +65,10 @@ const CareTakerRequest = () => {
     caretakers.splice(index, 1);
     dispatch(acceptCaretakerReqRequest(requestId));
     dispatch(caretakerReqClear());
+    setPageNo(0);
 
     setTimeout(() => {
-      dispatch(caretakerReqRequest(0));
-      dispatch(myCaretakerRequest(0));
+      dispatch(caretakerReqRequest(pageNo));
     }, 500);
   };
 
@@ -75,10 +78,10 @@ const CareTakerRequest = () => {
     caretakers.splice(index, 1);
     dispatch(deleteCaretakerReqRequest(requestId));
     dispatch(caretakerReqClear());
+    setPageNo(0);
 
     setTimeout(() => {
-      dispatch(caretakerReqRequest(0));
-      dispatch(myCaretakerRequest(0));
+      dispatch(caretakerReqRequest(pageNo));
     }, 500);
   };
 
@@ -118,17 +121,17 @@ const CareTakerRequest = () => {
                 }}
                 title="Confirm"
                 buttonStyle={styles.confirmButton}
-                color={colorPalette.green1}
+                color={colorPallete.green1}
               />
               <View style={styles.space} />
-              
+
               <Button
                 onPress={() => {
                   deleteRequest(item.requestId);
                 }}
                 title="Delete"
                 buttonStyle={styles.deleteButton}
-                color={colorPalette.red1}
+                color={colorPallete.red1}
               />
             </View>
           </View>
@@ -145,7 +148,7 @@ const CareTakerRequest = () => {
         onRequestClose={() => setVisible(!visible)}
         modalView={<ImageViewer imageUrls={images} />}
       />
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <>
@@ -162,24 +165,14 @@ const CareTakerRequest = () => {
               data={caretakers}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
-              // onEndReached={loadMoreItem}
-              // onEndReachedThreshold={0.5}
+              onEndReached={onEnd}
+              onEndReachedThreshold={0.01}
               keyExtractor={(item, index) => index.toString()}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(caretakerReqRequest(pageNo));
-                    setRefresh(false);
-                  }}
-                />
-              }
             />
           )}
         </>
       )}
+      {connected ? null : <NoInternet />}
     </View>
   );
 };

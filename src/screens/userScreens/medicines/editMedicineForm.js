@@ -1,7 +1,7 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import InputField from '../../../components/atoms/inputField';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import {Picker} from '@react-native-picker/picker';
 import {Divider, TextInput} from 'react-native-paper';
 import CustomButton from '../../../components/atoms/customButton';
@@ -23,12 +23,13 @@ const EditMedicineForm = props => {
     <View style={styles.mainView}>
       <View style={styles.inputField}>
         <InputField
+          disabled={true}
           styles={styles.field}
           label="Medicine Name"
           mode="outlined"
           outlineColor="lightgrey"
           text="medicineName"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.medicineName}
         />
@@ -43,7 +44,7 @@ const EditMedicineForm = props => {
           mode="outlined"
           outlineColor="lightgrey"
           text="description"
-          activeOutlineColor={colorPalette.mainColor}
+          activeOutlineColor={colorPallete.mainColor}
           {...props}
           value={props.values.description}
           multiline={true}
@@ -77,10 +78,12 @@ const EditMedicineForm = props => {
             mode="outlined"
             outlineColor="lightgrey"
             text="dosageQuantity"
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
             value={props.values.dosageQuantity}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
             <Text style={styles.errorText}>{props.errors.dosageQuantity}</Text>
@@ -99,8 +102,10 @@ const EditMedicineForm = props => {
             outlineColor="lightgrey"
             keyboardType="numeric"
             placeholderTextColor={'grey'}
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.dosagePower && props.touched.dosagePower && (
             <Text style={styles.errorText}>{props.errors.dosagePower}</Text>
@@ -130,10 +135,12 @@ const EditMedicineForm = props => {
             mode="outlined"
             outlineColor="lightgrey"
             text="stocks"
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
             value={props.values.stocks}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.stocks && props.touched.stocks && (
             <Text style={styles.errorText}>{props.errors.stocks}</Text>
@@ -151,10 +158,12 @@ const EditMedicineForm = props => {
             mode="outlined"
             outlineColor="lightgrey"
             text="notify"
-            activeOutlineColor={colorPalette.mainColor}
+            activeOutlineColor={colorPallete.mainColor}
             {...props}
             value={props.values.notify}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.notify && props.touched.notify && (
             <Text style={styles.errorText}>{props.errors.notify}</Text>
@@ -173,7 +182,7 @@ const EditMedicineForm = props => {
             <CustomButton
               title={'Added'}
               btnStyles={styles.secondaryBtn}
-              titleStyle={{color: colorPalette.mainColor}}
+              titleStyle={{color: colorPallete.mainColor}}
             />
             <TouchableOpacity
               activeOpacity={0.9}
@@ -183,7 +192,7 @@ const EditMedicineForm = props => {
               }}>
               <FontAwesomeIcon
                 icon={faCircleXmark}
-                color={colorPalette.redPercentageColor}
+                color={colorPallete.redPercentageColor}
                 size={20}
               />
             </TouchableOpacity>

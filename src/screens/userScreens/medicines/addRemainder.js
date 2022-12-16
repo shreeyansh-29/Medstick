@@ -79,16 +79,11 @@ const AddRemainder = props => {
   };
 
   return (
-    // <ScrollView>
     <>
       <View
         style={{
           flex: 1,
-          // padding: 20
         }}>
-        {/* <TouchableOpacity onPress={()=>exitCard()}>
-          <Icon name="arrowleft" color="#fff" size={28} />
-        </TouchableOpacity> */}
         <Text style={styles.title}>Add Remainder</Text>
         <View style={{left: 30, borderRadius: 20}}>
           <TextInput
@@ -103,7 +98,6 @@ const AddRemainder = props => {
           />
         </View>
         <View style={{flexDirection: 'row', paddingTop: 20}}>
-          {/* <TextInput style={{fontSize: 17}} placeholder="Medicine Amount" /> */}
           <TextInput
             id="Doctor's Name"
             style={styles.textInput}
@@ -164,7 +158,6 @@ const AddRemainder = props => {
         />
       </View>
     </>
-    // </ScrollView>
   );
 };
 

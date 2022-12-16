@@ -9,16 +9,47 @@ import AddMedicineStack from './stacks/AddMedicineStack';
 import MedicinePanelStack from './stacks/MedicinePanelStack';
 import HomeStack from './stacks/HomeStack';
 import Logout from '../Logout';
+import NetInfo from '@react-native-community/netinfo';
+import {useDispatch} from 'react-redux';
+import {saveInternetConnectivityStatus} from '../redux/action/loginAction/saveInternetConnectivity';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {saveUserLoggedIn} from '../redux/action/loginAction/saveUserLoggedIn';
 
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {
+  const dispatch = useDispatch();
   const [showSplashScreen, setShowSplashScreen] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
       setShowSplashScreen(false);
     }, 3000);
+  }, []);
+
+  useEffect(() => {
+    checkNetworkHandler();
+  }, []);
+
+  const checkNetworkHandler = () => {
+    let intenetInfo;
+    if (!intenetInfo) {
+      intenetInfo = NetInfo.addEventListener(state => {
+        dispatch(saveInternetConnectivityStatus(state.isConnected));
+      });
+    }
+    return () => {
+      intenetInfo && intenetInfo();
+    };
+  };
+
+  const getUserLoggedIn = async () => {
+    const user = await GoogleSignin.getCurrentUser();
+    if (user !== null) dispatch(saveUserLoggedIn(true));
+  };
+
+  useEffect(() => {
+    getUserLoggedIn();
   }, []);
 
   return (

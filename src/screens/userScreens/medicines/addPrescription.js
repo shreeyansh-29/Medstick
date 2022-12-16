@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Formik} from 'formik';
 import PrescriptionForm from './prescriptionForm';
@@ -45,12 +45,12 @@ const AddPrescription = ({navigation}) => {
 
     let obj = {
       prescriptionId: prescription_id,
-      doctorName: values.doctorName,
-      specialization: values.specialization,
-      contact: values.contact,
-      location: values.location,
+      doctorName: values.doctorName.trim(),
+      specialization: values.specialization.trim(),
+      contact: values.contact.trim(),
+      location: values.location.trim(),
       prescriptionUrl: values.image,
-      appointmentList: [],
+      flag: false,
     };
 
     getPrescription().then(data => {
@@ -81,7 +81,7 @@ const AddPrescription = ({navigation}) => {
     });
     setTimeout(() => {
       navigation.pop();
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -97,7 +97,7 @@ const AddPrescription = ({navigation}) => {
                 activeOpacity={1}>
                 <FontAwesomeIcon
                   icon={faCircleXmark}
-                  color={colorPalette.mainColor}
+                  color={colorPallete.mainColor}
                   size={26}
                 />
               </TouchableOpacity>
@@ -159,13 +159,13 @@ const AddPrescription = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.mainColor},
+  container: {flex: 1, backgroundColor: colorPallete.mainColor},
   modalView: {width: '100%', marginTop: 10},
   touchable: {alignSelf: 'flex-end', marginRight: 6},
   customStyles: {

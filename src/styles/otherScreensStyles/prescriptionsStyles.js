@@ -1,14 +1,14 @@
 import {StyleSheet} from 'react-native';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
     flex: 1,
   },
   noPrescription: {
     flex: 1,
-    backgroundColor: colorPalette.basicColor,
+    backgroundColor: colorPallete.basicColor,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   flatList: {
     paddingTop: 4,
-    backgroundColor: colorPalette.backgroundColor,
+    backgroundColor: colorPallete.backgroundColor,
   },
   top: {flexDirection: 'row'},
   list: {
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
   //doctor Prescription
   container1: {
     flex: 1,
-    backgroundColor: colorPalette.mainColor,
+    backgroundColor: colorPallete.mainColor,
   },
   lottieCont: {alignItems: 'center', justifyContent: 'center'},
   lottie: {width: '70%'},

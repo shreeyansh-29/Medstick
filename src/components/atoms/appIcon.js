@@ -3,7 +3,7 @@ import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleUser} from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../styles/homeScreenStyles/headerStyles';
-import {colorPalette} from './colorPalette';
+import {colorPallete} from './colorPalette';
 
 const AppIcon = () => {
   return (
@@ -11,7 +11,7 @@ const AppIcon = () => {
       <FontAwesomeIcon
         icon={faCircleUser}
         size={36}
-        color={colorPalette.basicColor}
+        color={colorPallete.basicColor}
       />
     </View>
   );

@@ -1,19 +1,22 @@
-import {View, FlatList, RefreshControl, StyleSheet} from 'react-native';
+import {View, FlatList, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import NotificationCard from '../../components/molecules/notificationCard';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadGetAllNotification} from '../../redux/action/notification/getAllNotification';
-import {colorPalette} from '../../components/atoms/colorPalette';
+import {
+  clearAllNotification,
+  loadGetAllNotification,
+} from '../../redux/action/notification/getAllNotification';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import Loader from '../../components/atoms/loader';
 import CustomImage from '../../components/atoms/customImage';
 
 const NotificationScreen = ({navigation}) => {
   const dispatch = useDispatch();
-  const pageNo = 0;
+  const [pageNo, setPageNo] = useState(0);
   const [notification, setNotification] = useState([]);
+  const [scrollEnd, setScrollEnd] = useState(true);
 
-  const [refresh, setRefresh] = useState(false);
   const res = useSelector(state => state.getAllNotificationReducer?.data);
 
   const loading = useSelector(
@@ -22,13 +25,30 @@ const NotificationScreen = ({navigation}) => {
 
   useEffect(() => {
     if (res?.object.length !== 0 && res !== null) {
-      setNotification(res?.object);
+      setNotification([...notification, ...res?.object]);
+      dispatch(clearAllNotification());
     }
   }, [res]);
 
   useEffect(() => {
     dispatch(loadGetAllNotification(pageNo));
   }, []);
+
+  const onEnd = () => {
+    if (!scrollEnd) {
+      setScrollEnd(true);
+    } else {
+      let a = pageNo + 1;
+      if (
+        notification.length % 8 === 0 &&
+        a !== 0 &&
+        res?.object.length !== 0
+      ) {
+        dispatch(loadGetAllNotification(a));
+        setPageNo(a);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -50,8 +70,8 @@ const NotificationScreen = ({navigation}) => {
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
-              keyExtractor={(index, item) => index.toString()}
               data={notification}
+              keyExtractor={item => item.notificationId}
               renderItem={({item}) => (
                 <NotificationCard
                   text={item.message}
@@ -61,17 +81,11 @@ const NotificationScreen = ({navigation}) => {
                   sender={item.sender}
                 />
               )}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPalette.mainColor]}
-                  tintColor={[colorPalette.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    dispatch(loadGetAllNotification(pageNo));
-                    setRefresh(false);
-                  }}
-                />
-              }
+              onEndReached={onEnd}
+              onEndReachedThreshold={0.01}
+              onMomentumScrollBegin={() => {
+                setScrollEnd(false);
+              }}
             />
           )}
         </>
@@ -81,7 +95,7 @@ const NotificationScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: colorPalette.backgroundColor},
+  container: {flex: 1, backgroundColor: colorPallete.backgroundColor},
   imgContainer: {
     flex: 1,
     alignItems: 'center',

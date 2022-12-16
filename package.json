@@ -8,10 +8,16 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "np": "np --no-publish",
+    "postversion": "react-native-version",
     "build": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android/ && ./gradlew assembleRelease -x bundleReleaseJsAndAssets",
     "run": "gnome-terminal --tab -e 'npm start --reset-cache' --tab -e 'npm run android'",
     "gradle": "cd android/ && ./gradlew clean && cd ..",
     "refresh_node_modules": "rm -rf node_modules/ && rm package-lock.json && npm i"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nineleaps-training/MedStick_FE"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
@@ -34,6 +40,7 @@
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.8.0",
     "axios": "^0.27.2",
+    "crypto-js": "^4.1.1",
     "deprecated-react-native-prop-types": "^2.3.0",
     "entities": "^4.4.0",
     "formik": "^2.2.9",
@@ -47,7 +54,9 @@
     "react-native-calendar-strip": "^2.2.6",
     "react-native-calendars": "^1.1289.0",
     "react-native-check-box": "^2.1.7",
+    "react-native-circle-checkbox": "^0.1.6",
     "react-native-date-picker": "^4.2.5",
+    "react-native-device-info": "^10.3.0",
     "react-native-element-dropdown": "^2.3.1",
     "react-native-elements": "^3.4.2",
     "react-native-error-boundary": "^1.1.16",
@@ -97,6 +106,8 @@
     "eslint": "^7.32.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.67.0",
+    "np": "^7.6.2",
+    "react-native-version": "^4.0.0",
     "react-test-renderer": "17.0.2"
   },
   "jest": {

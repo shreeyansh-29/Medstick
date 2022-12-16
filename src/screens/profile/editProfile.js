@@ -11,20 +11,22 @@ import styles from '../../styles/profile/profileStyles';
 import RenderModalView from './renderModalView';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserProfileRequest} from '../../redux/action/profileAction/getUserProfileAction';
+import NoInternet from '../../components/atoms/noInternet';
 
 const EditProfile = ({navigation}) => {
   const dispatch = useDispatch();
-  const res = useSelector(state => state.getUserProfile?.data);
-
-  useEffect(() => {
-    dispatch(getUserProfileRequest());
-  }, []);
-
+  const res = useSelector(state => state.getUserProfile);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   const [name, namestate] = useState({
     user: {name: '', photo: '', email: ''},
   });
   const focused = useIsFocused();
   const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
+
+  useEffect(() => {
+    dispatch(getUserProfileRequest());
+    return () => {};
+  }, []);
 
   const getUser = async () => {
     const user = await GoogleSignin.getCurrentUser();
@@ -36,6 +38,7 @@ const EditProfile = ({navigation}) => {
     if (focused) {
       getUser();
     }
+    return () => {};
   }, [focused]);
 
   const [edit, setEdit] = useState(false);
@@ -54,6 +57,7 @@ const EditProfile = ({navigation}) => {
 
         {edit ? null : (
           <TouchableOpacity
+            disabled={!connected}
             activeOpacity={1}
             onPress={() => {
               setEdit(true);
@@ -66,6 +70,7 @@ const EditProfile = ({navigation}) => {
           </TouchableOpacity>
         )}
       </View>
+
       {edit ? (
         <>
           <CustomModal
@@ -80,7 +85,7 @@ const EditProfile = ({navigation}) => {
                 }}
                 setModalVisible={setModalVisible}
                 setEdit={setEdit}
-                result={res}
+                result={res?.data}
               />
             }
           />
@@ -88,6 +93,8 @@ const EditProfile = ({navigation}) => {
       ) : (
         <SavedDetails />
       )}
+
+      {connected ? null : <NoInternet />}
     </View>
   );
 };

@@ -4,11 +4,11 @@ import {
   sendSnapSuccess,
 } from '../../action/otherScreenAction/sendSnapAction';
 import * as types from '../../actionTypes';
-import sendSnapService from '../../../network/networkServices/otherServices/sendSnapService';
+import networkService from '../../../network/networkService';
 
 export function* sendSnapSaga(data) {
   try {
-    let response = yield call(sendSnapService.sendSnap, data);
+    let response = yield call(networkService.sendSnap, data);
     yield put(sendSnapSuccess(response?.data));
   } catch (error) {
     yield put(sendSnapError(error));

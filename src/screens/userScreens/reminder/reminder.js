@@ -5,7 +5,7 @@ import {Divider} from 'react-native-elements/dist/divider/Divider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {day_data, months} from './pushNotification/timeData';
+import {day_data, months, todayDay} from './pushNotification/timeData';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {TextInput} from 'react-native-paper';
@@ -13,14 +13,14 @@ import CheckBox from 'react-native-check-box';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import styles from './reminderStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-import {colorPalette} from '../../../components/atoms/colorPalette';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import moment from 'moment';
 import {AddMedicine, getMedicine} from '../../../utils/storage.js';
 import uuid from 'react-native-uuid';
 import {hour} from '../../../constants/constants';
-import Notifications from '../../../notification/notifications';
 import PushNotification from 'react-native-push-notification';
 import Toast from 'react-native-toast-message';
+import Notifications from '../../../pushNotification/pushNotifications';
 
 const Reminder = ({route, navigation}) => {
   const [picker, pickerstate] = useState(false);
@@ -50,7 +50,13 @@ const Reminder = ({route, navigation}) => {
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
-  const [fDateSecondary, setfDate] = useState('');
+  const [fDateSecondary, setfDate] = useState(
+    startDate.getFullYear() +
+      '-' +
+      (startDate.getMonth() + 1) +
+      '-' +
+      startDate.getDate(),
+  );
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -73,10 +79,24 @@ const Reminder = ({route, navigation}) => {
     time_picker_mode_state(false);
   };
 
-  const handlePushNotification = (obj, check1) => {
+  const handlePushNotification = (obj, check1, endDate) => {
     let d = new Date(); // for now
     let currentTime = d.getHours() + ':' + d.getMinutes();
-    const number = moment(obj.reminderTime, ['h:mm A']).format('HH:mm');
+    let number = [];
+
+    let reminderTime = obj.reminderTime.split(',');
+
+    for (let i = 0; i < reminderTime.length; i++) {
+      if (reminderTime[i] !== '')
+        number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
+    }
+
+    let endDate1 =
+      endDate.getFullYear() +
+      '-' +
+      (endDate.getMonth() + 1) +
+      '-' +
+      endDate.getDate();
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
@@ -86,25 +106,24 @@ const Reminder = ({route, navigation}) => {
       (chosenDate1.getMonth() + 1) +
       '-' +
       chosenDate1.getDate();
-
-    if (number < currentTime) {
-      let dateTime = moment(chosenDate2 + ' ' + number);
-      Notifications.schduleNotification(
-        dateTime._d,
-        check1,
-        obj.medicineName,
-        obj.userMedicineId,
-        obj.reminderTime,
-      );
-    } else {
-      let dateTime = moment(obj.startDate + ' ' + number);
-      Notifications.schduleNotification(
-        dateTime._d,
-        check1,
-        obj.medicineName,
-        obj.userMedicineId,
-        obj.reminderTime,
-      );
+    for (let i = 0; i < number.length; i++) {
+      if (number[i] < currentTime || number[i] == 'Invalid date') {
+        let dateTime = moment(chosenDate2 + ' ' + number[i]);
+        Notifications.schduleNotification(
+          dateTime._d,
+          check1,
+          obj.medicineName,
+          endDate1,
+        );
+      } else {
+        let dateTime = moment(obj.startDate + ' ' + number[i]);
+        Notifications.schduleNotification(
+          dateTime._d,
+          check1,
+          obj.medicineName,
+          endDate1,
+        );
+      }
     }
   };
 
@@ -131,9 +150,6 @@ const Reminder = ({route, navigation}) => {
   };
 
   const handleConfirmfortime = date => {
-    // let minutes =
-    //   date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-
     if (date.getHours() > 11) {
       timearray[currentIndex] =
         hour[date.getHours()] + ':' + date.getMinutes() + ' PM';
@@ -171,8 +187,6 @@ const Reminder = ({route, navigation}) => {
     food,
     totalReminders,
     currentCount,
-    timelist,
-    setTimelist,
   ) => {
     if (title.length === 0) {
       Alert.alert('Please enter a valid Title', ' ', [
@@ -199,7 +213,7 @@ const Reminder = ({route, navigation}) => {
       ]);
       return;
     } else if (!check1 && !check2) {
-      Alert.alert('Please select Days', ' ', [
+      Alert.alert('Please Select Days', ' ', [
         {
           text: 'OK',
           onPress: () => {},
@@ -252,6 +266,16 @@ const Reminder = ({route, navigation}) => {
     }
     setTime(time);
     if (check2) {
+      if (selecteddaysItems.length === 0) {
+        Alert.alert('Please select chosen days', ' ', [
+          {
+            text: 'OK',
+            onPress: () => {},
+          },
+        ]);
+        loadstate(false);
+        return;
+      }
       for (let i = 0; i < selecteddaysItems.length; i++) {
         if (i == selecteddaysItems.length - 1) {
           days += selecteddaysItems[i];
@@ -259,17 +283,12 @@ const Reminder = ({route, navigation}) => {
           days += selecteddaysItems[i] + ',';
         }
       }
-      console.log(days, ' final days ');
     } else if (check1) {
       days += 'Everyday';
-
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
 
-    // setReminderWithSelectedDate(title, fDatePrimary, fDateSecondary);
-
     frequencyHandler();
-    // console.log(frequency, 'freq  ');
     const frequencyTemp = frequency.toString();
 
     if (endDate === 'No End Date') {
@@ -286,24 +305,25 @@ const Reminder = ({route, navigation}) => {
     obj.reminderTime = time;
     obj.beforeAfter = food;
     obj.everyday = check1;
-    obj.reminderTitle = title;
+    obj.reminderTitle = title.trim();
     obj.startDate = fDatePrimary;
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;
+    obj.isModified = true;
+
+    let name = route.params.data.medicineName;
 
     if (reminderStatus == true) {
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
-          if (obj.userMedicineId === rn[i].id) {
-            PushNotification.cancelLocalNotification({
-              id: rn[obj.userMedicineId],
-            });
+          if ('Take ' + name === rn[i].message) {
+            PushNotification.cancelLocalNotification({id: rn[i].id});
           }
         }
       });
     }
 
-    handlePushNotification(obj, check1);
+    handlePushNotification(obj, check1, endDate);
 
     getMedicine().then(data => {
       const temp = data;
@@ -325,7 +345,7 @@ const Reminder = ({route, navigation}) => {
 
     setTimeout(() => {
       navigation.pop();
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -340,23 +360,13 @@ const Reminder = ({route, navigation}) => {
             }}
             style={styles.containerTouch}>
             <View style={styles.dateContainer}>
-              <View style={{justifyContent: 'flex-start', width: '35%'}}>
+              <View style={styles.startDateContainer}>
                 <Text style={styles.dateText}>Start Date</Text>
               </View>
-              <View
-                style={{
-                  width: '65%',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{
-                    justifyContent: 'flex-end',
-                    width: '90%',
-                    alignItems: 'flex-end',
-                  }}>
+              <View style={styles.mainView}>
+                <View style={styles.subView}>
                   <Text style={styles.dateText1}>
-                    {day_data[0].children[startDate.getDay()].id +
+                    {todayDay[startDate.getDay()] +
                       ' ' +
                       startDate.getDate() +
                       ' ' +
@@ -366,15 +376,12 @@ const Reminder = ({route, navigation}) => {
                   </Text>
                 </View>
                 <View style={styles.arrow}>
-                  <FontAwesomeIcon
-                    icon={faCaretDown}
-                    style={styles.downIcon}
-                    color=""></FontAwesomeIcon>
+                  <FontAwesomeIcon icon={faCaretDown} style={styles.downIcon} />
                 </View>
               </View>
             </View>
           </TouchableOpacity>
-          <Divider></Divider>
+          <Divider />
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
@@ -383,36 +390,32 @@ const Reminder = ({route, navigation}) => {
                 endDate: getEndDate,
               });
             }}
-            style={{paddingVertical: 15, flexDirection: 'row', width: '100%'}}>
-            <View
-              style={{
-                justifyContent: 'flex-start',
-                width: '40%',
-                alignItems: 'flex-start',
-              }}>
-              <Text style={styles.dateText}>Select Duration</Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'flex-end',
-                width: '60%',
-                alignItems: 'center',
-                paddingRight: 4,
-              }}>
-              <Text style={styles.dateText1}>
-                {fDateSecondary == 'No End Date'
-                  ? 'No End Date'
-                  : day_data[0].children[endDate.getDay()].id +
-                    ' ' +
-                    endDate.getDate() +
-                    ' ' +
-                    months[endDate.getMonth()] +
-                    ', ' +
-                    endDate.getFullYear()}
-              </Text>
+            style={styles.containerTouch}>
+            <View style={styles.dateContainer}>
+              <View style={styles.endDateContainer}>
+                <Text style={styles.dateText}>End Date</Text>
+              </View>
+              <View style={styles.mainView}>
+                <View style={styles.subView}>
+                  <Text style={styles.dateText1}>
+                    {fDateSecondary === 'No End Date'
+                      ? 'No End Date'
+                      : todayDay[endDate.getDay()] +
+                        ' ' +
+                        endDate.getDate() +
+                        ' ' +
+                        months[endDate.getMonth()] +
+                        ', ' +
+                        endDate.getFullYear()}
+                  </Text>
+                </View>
+                <View style={styles.arrow}>
+                  <FontAwesomeIcon icon={faCaretDown} style={styles.downIcon} />
+                </View>
+              </View>
             </View>
           </TouchableOpacity>
-          <Divider></Divider>
+          <Divider />
           <DateTimePicker
             isVisible={picker}
             mode="date"
@@ -435,9 +438,9 @@ const Reminder = ({route, navigation}) => {
             onChangeText={txt => {
               titlechange(txt);
             }}
-            selectionColor={colorPalette.appColor}
-            outlineColor={colorPalette.appColor}
-            activeOutlineColor={colorPalette.appColor}
+            selectionColor={colorPallete.appColor}
+            outlineColor={colorPallete.appColor}
+            activeOutlineColor={colorPallete.appColor}
           />
           <Divider></Divider>
           <View>
@@ -456,10 +459,10 @@ const Reminder = ({route, navigation}) => {
                   style={{
                     borderRadius: breakfast ? 3 : 0,
                     alignItems: 'center',
-                    borderColor: colorPalette.mainColor,
+                    borderColor: colorPallete.mainColor,
                     backgroundColor: breakfast
-                      ? colorPalette.mainColor
-                      : colorPalette.greyColor,
+                      ? colorPallete.mainColor
+                      : colorPallete.greyColor,
                   }}
                   onPress={() => {
                     setBreakfastTouchable(!breakfastTouchable);
@@ -477,16 +480,7 @@ const Reminder = ({route, navigation}) => {
                 {breakfastTouchable ? (
                   <TouchableOpacity
                     activeOpacity={1}
-                    style={{
-                      borderRadius: 3,
-                      alignItems: 'center',
-                      borderColor: colorPalette.mainColor,
-                      backgroundColor: colorPalette.greyColor,
-                      padding: 6,
-                      marginTop: 6,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
+                    style={styles.frequencyTouchable}
                     onPress={() => {
                       time_picker_mode_state(true);
                       setCurrentIndex(0);
@@ -498,7 +492,7 @@ const Reminder = ({route, navigation}) => {
                       <FontAwesomeIcon
                         icon={faCaretDown}
                         style={styles.downIcon}
-                        color=""></FontAwesomeIcon>
+                      />
                     </View>
                   </TouchableOpacity>
                 ) : (
@@ -512,10 +506,10 @@ const Reminder = ({route, navigation}) => {
                   style={{
                     borderRadius: lunch ? 3 : 0,
                     alignItems: 'center',
-                    borderColor: colorPalette.mainColor,
+                    borderColor: colorPallete.mainColor,
                     backgroundColor: lunch
-                      ? colorPalette.mainColor
-                      : colorPalette.greyColor,
+                      ? colorPallete.mainColor
+                      : colorPallete.greyColor,
                   }}
                   onPress={() => {
                     setLunchTouchable(!lunchTouchable);
@@ -533,16 +527,7 @@ const Reminder = ({route, navigation}) => {
                 {lunchTouchable ? (
                   <TouchableOpacity
                     activeOpacity={1}
-                    style={{
-                      alignItems: 'center',
-                      borderRadius: 3,
-                      borderColor: colorPalette.mainColor,
-                      backgroundColor: colorPalette.greyColor,
-                      padding: 6,
-                      marginTop: 6,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
+                    style={styles.frequencyTouchable}
                     onPress={() => {
                       time_picker_mode_state(true);
                       setCurrentIndex(1);
@@ -567,10 +552,10 @@ const Reminder = ({route, navigation}) => {
                   style={{
                     borderRadius: dinner ? 3 : 0,
                     alignItems: 'center',
-                    borderColor: colorPalette.mainColor,
+                    borderColor: colorPallete.mainColor,
                     backgroundColor: dinner
-                      ? colorPalette.mainColor
-                      : colorPalette.greyColor,
+                      ? colorPallete.mainColor
+                      : colorPallete.greyColor,
                   }}
                   onPress={() => {
                     setDinnerTouchable(!dinnerTouchable);
@@ -588,16 +573,7 @@ const Reminder = ({route, navigation}) => {
                 {dinnerTouchable ? (
                   <TouchableOpacity
                     activeOpacity={1}
-                    style={{
-                      alignItems: 'center',
-                      borderRadius: 3,
-                      borderColor: colorPalette.mainColor,
-                      backgroundColor: colorPalette.greyColor,
-                      padding: 6,
-                      marginTop: 6,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
+                    style={styles.frequencyTouchable}
                     onPress={() => {
                       time_picker_mode_state(true);
                       setCurrentIndex(2);
@@ -616,50 +592,22 @@ const Reminder = ({route, navigation}) => {
               </View>
             </View>
           </View>
-          <Divider></Divider>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '95%',
-              alignSelf: 'center',
-              marginVertical: 10,
-            }}>
-            <View
-              style={{
-                width: '35%',
-                marginTop: 10,
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                paddingVertical: 6,
-              }}>
-              <Text style={{fontSize: 16, fontWeight: '700'}}>
-                Take Medicine:
-              </Text>
+          <Divider />
+          <View style={styles.medicineContainer}>
+            <View style={styles.takeMedicine}>
+              <Text style={styles.takeMedicineText}>Take Medicine</Text>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 10,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '65%',
-                alignSelf: 'center',
-              }}>
+            <View style={styles.touchableButton}>
               <TouchableOpacity
                 activeOpacity={1}
-                style={{
-                  borderWidth: 1,
-                  borderColor: colorPalette.mainColor,
-                  borderRadius: 6,
-                  backgroundColor: foodBefore
-                    ? colorPalette.mainColor
-                    : 'white',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingVertical: 6,
-                  width: '46.5%',
-                }}
+                style={[
+                  styles.buttonStyles,
+                  {
+                    backgroundColor: foodBefore
+                      ? colorPallete.mainColor
+                      : 'white',
+                  },
+                ]}
                 onPress={() => {
                   setFood('Before');
                   setFoodBefore(!foodBefore);
@@ -676,15 +624,14 @@ const Reminder = ({route, navigation}) => {
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={1}
-                style={{
-                  borderWidth: 1,
-                  borderColor: colorPalette.mainColor,
-                  backgroundColor: foodAfter ? colorPalette.mainColor : 'white',
-                  borderRadius: 6,
-                  justifyContent: 'center',
-                  paddingVertical: 6,
-                  width: '46.5%',
-                }}
+                style={[
+                  styles.buttonStyles,
+                  {
+                    backgroundColor: foodAfter
+                      ? colorPallete.mainColor
+                      : 'white',
+                  },
+                ]}
                 onPress={() => {
                   setFood('After');
                   setFoodAfter(!foodAfter);
@@ -706,6 +653,7 @@ const Reminder = ({route, navigation}) => {
           <Divider></Divider>
           <View style={{marginBottom: 10}}>
             <Text style={styles.title}>Select Days</Text>
+
             <CheckBox
               style={styles.days}
               onClick={() => {
@@ -713,9 +661,9 @@ const Reminder = ({route, navigation}) => {
                 setCheck2(false);
               }}
               isChecked={check1}
-              checkBoxColor={colorPalette.appColor}
+              checkBoxColor={colorPallete.appColor}
               leftText={'Everyday'}
-              leftTextStyle={{fontSize: 16}}
+              leftTextStyle={{fontSize: 16, color: 'gray'}}
             />
             <CheckBox
               style={styles.days}
@@ -724,9 +672,9 @@ const Reminder = ({route, navigation}) => {
                 setCheck1(false);
               }}
               isChecked={check2}
-              checkBoxColor={colorPalette.appColor}
+              checkBoxColor={colorPallete.appColor}
               leftText={'Selected days'}
-              leftTextStyle={{fontSize: 16}}
+              leftTextStyle={{fontSize: 16, color: 'gray'}}
             />
             {check2 && (
               <SectionedMultiSelect
@@ -744,15 +692,15 @@ const Reminder = ({route, navigation}) => {
                     name: 'keyboard-arrow-up',
                   },
                   arrowDown: {
-                    name: 'keyboard-arrow-down', // dropdown toggle
+                    name: 'keyboard-arrow-down',
                     size: 22,
                   },
                   check: {
-                    name: 'check', // selected item
+                    name: 'check',
                     size: 22,
                   },
                   close: {
-                    name: 'close', // chip close
+                    name: 'close',
                     size: 16,
                   },
                 }}
@@ -762,13 +710,13 @@ const Reminder = ({route, navigation}) => {
                   backdrop: {height: 400},
                   modalWrapper: {height: 400},
                   button: {
-                    backgroundColor: colorPalette.appColor,
+                    backgroundColor: colorPallete.appColor,
                   },
                   cancelButton: {
                     backgroundColor: 'white',
                   },
                   chipContainer: {
-                    backgroundColor: colorPalette.appColor,
+                    backgroundColor: colorPallete.appColor,
                   },
                 }}
                 colors={{
@@ -802,7 +750,7 @@ const Reminder = ({route, navigation}) => {
           />
         </View>
       </ScrollView>
-      <Toast visibilityTime={800} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

@@ -2,7 +2,7 @@ import {View, TouchableOpacity, Text} from 'react-native';
 import React from 'react';
 import {styles} from '../../../styles/homeScreenStyles/subHeaderStyles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {colorPalette} from '../../atoms/colorPalette';
+import {colorPallete} from '../../atoms/colorPalette';
 import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import AddAppointment from '../../atoms/addAppointment';
 import ShareButton from '../../atoms/shareButton';
@@ -36,7 +36,7 @@ const SubHeader = ({
         <FontAwesomeIcon
           icon={faArrowLeft}
           size={20}
-          color={colorPalette.basicColor}
+          color={colorPallete.basicColor}
         />
       </TouchableOpacity>
       <View style={styles.header}>
