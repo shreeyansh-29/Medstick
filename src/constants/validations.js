@@ -64,7 +64,7 @@ export const addMedicineSchema = yup.object().shape({
   dosageQuantity: yup
     .number()
     .min(1, ({min}) => `Should be more than ${min}`)
-    .max(5, ({max}) => `Should be less than ${max}`)
+    // .max(5, ({max}) => `Should be less than ${max}`)
     .required('Dosage Quantity is Required*'),
   dosagePower: yup
     .number()

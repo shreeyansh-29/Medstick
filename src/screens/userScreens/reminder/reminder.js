@@ -175,6 +175,7 @@ const Reminder = ({route, navigation}) => {
       frequency.push('Dinner');
     }
   }
+  console.log(timearray);
 
   const savereminder = (
     fDatePrimary,
@@ -188,7 +189,15 @@ const Reminder = ({route, navigation}) => {
     totalReminders,
     currentCount,
   ) => {
-    if (title.length === 0) {
+    if (fDatePrimary > fDateSecondary) {
+      Alert.alert('Start Date should be less than End Date', ' ', [
+        {
+          text: 'OK',
+          onPress: () => {},
+        },
+      ]);
+      return;
+    } else if (title.length === 0) {
       Alert.alert('Please enter a valid Title', ' ', [
         {
           text: 'OK',
@@ -485,19 +494,14 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(0);
                     }}>
-                    <Text style={{fontSize: 16, textAlign: 'center'}}>
-                      {timearray[0]}
+                    <Text style={{fontSize: 15}}>
+                      {timearray[0] ? timearray[0] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
-                      <FontAwesomeIcon
-                        icon={faCaretDown}
-                        style={styles.downIcon}
-                      />
+                      <FontAwesomeIcon icon={faCaretDown} />
                     </View>
                   </TouchableOpacity>
-                ) : (
-                  <></>
-                )}
+                ) : null}
               </View>
 
               <View style={{flexDirection: 'column', width: '30%'}}>
@@ -532,19 +536,14 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(1);
                     }}>
-                    <Text style={{fontSize: 16, textAlign: 'center'}}>
-                      {timearray[1]}
+                    <Text style={{fontSize: 15}}>
+                      {timearray[1] ? timearray[1] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
-                      <FontAwesomeIcon
-                        icon={faCaretDown}
-                        style={styles.downIcon}
-                        color=""></FontAwesomeIcon>
+                      <FontAwesomeIcon icon={faCaretDown} />
                     </View>
                   </TouchableOpacity>
-                ) : (
-                  <></>
-                )}
+                ) : null}
               </View>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
@@ -578,17 +577,14 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(2);
                     }}>
-                    <Text style={styles.touchableText}>{timearray[2]}</Text>
+                    <Text style={{fontSize: 15}}>
+                      {timearray[2] ? timearray[2] : 'Select Time'}
+                    </Text>
                     <View style={styles.arrow}>
-                      <FontAwesomeIcon
-                        icon={faCaretDown}
-                        style={styles.downIcon}
-                        color=""></FontAwesomeIcon>
+                      <FontAwesomeIcon icon={faCaretDown} />
                     </View>
                   </TouchableOpacity>
-                ) : (
-                  <></>
-                )}
+                ) : null}
               </View>
             </View>
           </View>

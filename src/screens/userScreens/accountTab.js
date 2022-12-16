@@ -88,7 +88,7 @@ const AccountTab = ({navigation}) => {
             icon={faHospitalUser}
             title="My Patients"
             navigation={navigation}
-            navigationTitle="Patients"
+            navigationTitle="MyPatients"
           />
           <Divider style={styles.divider} />
           <TwoTouchable
@@ -122,7 +122,7 @@ const AccountTab = ({navigation}) => {
             btnStyles={styles.btnStyles}
             contStyles={styles.contStyles}
             handleSubmit={() => {
-              imgstate('https://i.stack.imgur.com/l60Hf.png');
+              imgstate(require('../../assets/images/nouser.png'));
               setName('Please Login First');
               setIsLoggedIn(false);
               navigation.navigate('Logout');

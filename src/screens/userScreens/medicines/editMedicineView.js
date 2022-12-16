@@ -95,7 +95,6 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
         obj.location = prescriptionObj.location;
         obj.specialization = prescriptionObj.specialization;
         obj.contact = prescriptionObj.contact;
-        obj.appointmentList = prescriptionObj.appointmentList;
       }
 
       getMedicine().then(data => {

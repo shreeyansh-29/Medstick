@@ -16,17 +16,15 @@ import CustomModal from '../../../components/molecules/customModal';
 import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import NoInternet from '../../../components/atoms/noInternet';
+import SubHeader from '../../../components/molecules/headers/subHeader';
+import Toast from 'react-native-toast-message';
+import {SuccessToast} from '../../../components/atoms/customToast';
 
-const PatientRequest = ({
-  patients,
-  setPatients,
-  currentPage,
-  setCurrentPage,
-  setPageNo,
-  setMyPatients,
-}) => {
+const PatientRequest = ({navigation}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.patientsRequest);
+  const [patients, setPatients] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,7 +40,7 @@ const PatientRequest = ({
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     if (res?.data !== null) {
@@ -59,22 +57,21 @@ const PatientRequest = ({
     let a = currentPage + 1;
     if (patients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
       dispatch(patientsReqRequest(a));
+      setCurrentPage(a);
     }
-    setCurrentPage(a);
   };
 
   const acceptRequest = requestId => {
     let a = b => b.requestId == requestId;
     let index = patients.findIndex(a);
     dispatch(acceptPatientReqRequest(requestId));
-    dispatch(patientsReqClear());
     patients.splice(index, 1);
-    setPageNo(0);
     setCurrentPage(0);
-    setMyPatients([]);
-    setPatients([]);
+    SuccessToast({text1: 'Request Accepted', position: 'bottom'});
 
     setTimeout(() => {
+      setIsLoading(true);
+      setPatients([]);
       dispatch(patientsReqRequest(currentPage));
     }, 500);
   };
@@ -147,6 +144,7 @@ const PatientRequest = ({
   };
   return (
     <View style={styles.container}>
+      <SubHeader navigation={navigation} title="Patient Requests" />
       <CustomModal
         text="imageViewer"
         modalVisible={visible}
@@ -180,6 +178,7 @@ const PatientRequest = ({
           {connected ? null : <NoInternet />}
         </>
       )}
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

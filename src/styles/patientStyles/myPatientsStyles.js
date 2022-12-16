@@ -12,7 +12,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   img: {width: '70%'},
-  bottomView: {position: 'absolute', bottom: 20, right: 16},
+  bottomView: {
+    position: 'absolute',
+    bottom:  10,
+    right: 0,
+  },
   addBtn: {height: 84, width: 84},
 
   //list of Patients

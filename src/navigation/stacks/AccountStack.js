@@ -21,6 +21,8 @@ import SaveAppointment from '../../screens/otherScreens/saveAppointment';
 import AppointmentReminderList from '../../screens/otherScreens/appointmentReminderList';
 import AuthScreen from '../../screens/authScreens/authScreen';
 import Feedback from '../../screens/otherScreens/feedback';
+import MyPatients from '../../screens/userScreens/patients/myPatients';
+import PatientRequest from '../../screens/userScreens/patients/patientRequest';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,7 +32,8 @@ const AccountStack = () => {
       screenOptions={{headerShown: false, orientation: 'portrait'}}>
       <Stack.Screen name="AccountScreen" component={AccountTab} />
       <Stack.Screen name="CareTaker" component={CareTaker} />
-      <Stack.Screen name="Patients" component={Patients} />
+      <Stack.Screen name="MyPatients" component={MyPatients} />
+      <Stack.Screen name="PatientRequest" component={PatientRequest} />
       <Stack.Screen name="PatientProfile" component={PatientProfile} />
       <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />

@@ -25,7 +25,7 @@ class NetworkService {
     const pageNo = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
     return await RequestService.getRequest(
-      `${apiUrl.MY_PATIENTS}?caretakerId=${id}&pageNo=${pageNo}&pageSize=8&Id=${id}`,
+      `${apiUrl.MY_PATIENTS}?caretakerId=${id}&pageNo=${pageNo}&pageSize=10&Id=${id}`,
     );
   }
   async getPatientsRequest(payload) {

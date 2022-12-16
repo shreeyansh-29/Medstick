@@ -36,5 +36,5 @@ export const todayDay = {
   4: 'Thu',
   5: 'Fri',
   6: 'Sat',
-  7: 'Sun',
+  0: 'Sun',
 };
