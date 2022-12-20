@@ -14,7 +14,7 @@ import {colorPallete} from '../../../components/atoms/colorPalette';
 import Toast from 'react-native-toast-message';
 import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
-import {ErrorToast, SuccesToast} from '../../../components/atoms/customToast';
+import {ErrorToast, SuccessToast} from '../../../components/atoms/customToast';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -116,10 +116,9 @@ const AddMedicineLocal = ({navigation}) => {
         if (data !== null && data.length !== 0) {
           //if yes, concatinating the new data
           const temp = [...data, obj];
-
           //pushing updatedList
           AddMedicine(temp);
-          SuccesToast({
+          SuccessToast({
             text1: 'Medicine Saved Successfully',
             position: 'bottom',
           });
@@ -129,7 +128,7 @@ const AddMedicineLocal = ({navigation}) => {
           let temp = [];
           temp.push(obj);
           AddMedicine(temp);
-          SuccesToast({
+          SuccessToast({
             text1: 'Medicine Saved Successfully',
             position: 'bottom',
           });

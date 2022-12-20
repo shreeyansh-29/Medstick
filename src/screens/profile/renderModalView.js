@@ -31,20 +31,19 @@ const RenderModalVisible = ({
   const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
   const dispatch = useDispatch();
   const res = useSelector(state => state.editProfile);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     if (res?.data?.status === 'Success') {
+      dispatch(resetProfile());
       SuccessToast({text1: 'Updated Successfully', position: 'bottom'});
 
       setTimeout(() => {
         setModalVisible(false);
         setEdit(false);
-        dispatch(resetProfile());
       }, 1500);
     } else if (res?.data?.status === 'Failed') {
-      ErrorToast({text1: 'Something Went Wrong!!!', position: 'bottom'});
       dispatch(resetProfile());
+      ErrorToast({text1: 'Something Went Wrong!!!', position: 'bottom'});
     }
     return () => {};
   }, [res]);
@@ -63,7 +62,6 @@ const RenderModalVisible = ({
         date: values?.date,
       }),
     );
-    setIsSubmitted(true);
   };
 
   return (
@@ -127,7 +125,6 @@ const RenderModalVisible = ({
                   setFieldValue={setFieldValue}
                   handleSubmit={handleSubmit}
                   values={values}
-                  isSubmitted={isSubmitted}
                 />
               )}
             </Formik>

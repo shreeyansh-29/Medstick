@@ -147,12 +147,16 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         ? '0' + bufferHour + ':' + bufferTime.split(':')[1]
         : bufferHour + ':' + bufferTime.split(':')[1];
     if (currentTime < remTime) {
-      Alert.alert('Cannot mark at this moment!!', '', [
-        {
-          text: 'Ok',
-          onPress: () => {},
-        },
-      ]);
+      Alert.alert(
+        "Can't mark at this moment",
+        'You can only mark after ' + remTime,
+        [
+          {
+            text: 'Ok',
+            onPress: () => {},
+          },
+        ],
+      );
     } else {
       return true;
     }
@@ -225,10 +229,11 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
-                notTakenCheck(item, index);
-                display();
-                reminderList.splice(index, 1);
-                setReminderList(reminderList);
+                check(time) &&
+                  (notTakenCheck(item, index),
+                  display(),
+                  reminderList.splice(index, 1),
+                  setReminderList(reminderList));
               }}>
               <FontAwesomeIcon
                 icon={faCircleXmark}
