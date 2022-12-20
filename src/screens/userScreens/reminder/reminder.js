@@ -25,7 +25,6 @@ import {SuccessToast} from '../../../components/atoms/customToast';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
-  // console.log('data', item.endDate);
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = useState(false);
@@ -92,9 +91,19 @@ const Reminder = ({route, navigation}) => {
     time_picker_mode_state(false);
   };
 
-  const handlePushNotification = (obj, check1, endDate) => {
+  const handlePushNotification = (
+    obj,
+    check1,
+    endDate,
+    check2,
+    lengthSelectedDays,
+  ) => {
     let d = new Date(); // for now
-    let currentTime = d.getHours() + ':' + d.getMinutes();
+    let currentTime =
+      d.getHours() +
+      ':' +
+      (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes());
+
     let number = [];
 
     let reminderTime = obj.reminderTime.split(',');
@@ -104,18 +113,6 @@ const Reminder = ({route, navigation}) => {
         number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
     }
 
-    console.log('endDate', endDate);
-    let endDate1 =
-      endDate !== 'No End Date'
-        ? endDate.getFullYear() +
-          '-' +
-          (endDate.getMonth() + 1) +
-          '-' +
-          endDate.getDate()
-        : endDate;
-
-    console.log('end date 1', endDate1);
-
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
     let chosenDate2 =
@@ -124,14 +121,17 @@ const Reminder = ({route, navigation}) => {
       (chosenDate1.getMonth() + 1) +
       '-' +
       chosenDate1.getDate();
+
     for (let i = 0; i < number.length; i++) {
-      if (number[i] < currentTime || number[i] == 'Invalid date') {
+      if (number[i] < currentTime) {
         let dateTime = moment(chosenDate2 + ' ' + number[i]);
         Notifications.schduleNotification(
           dateTime._d,
           check1,
           obj.medicineName,
-          endDate1,
+          endDate,
+          check2,
+          lengthSelectedDays,
         );
       } else {
         let dateTime = moment(obj.startDate + ' ' + number[i]);
@@ -139,7 +139,9 @@ const Reminder = ({route, navigation}) => {
           dateTime._d,
           check1,
           obj.medicineName,
-          endDate1,
+          endDate,
+          check2,
+          lengthSelectedDays,
         );
       }
     }
@@ -193,7 +195,6 @@ const Reminder = ({route, navigation}) => {
       frequency.push('Dinner');
     }
   }
-  console.log(timearray);
 
   const savereminder = (
     fDatePrimary,
@@ -330,10 +331,6 @@ const Reminder = ({route, navigation}) => {
     frequencyHandler();
     const frequencyTemp = frequency.toString();
 
-    if (endDate === 'No End Date') {
-      setfDate('null');
-    }
-
     let obj = route?.params?.data;
 
     obj.days = days;
@@ -352,7 +349,7 @@ const Reminder = ({route, navigation}) => {
 
     let name = route.params.data.medicineName;
 
-    if (reminderStatus == true) {
+    if (reminderStatus === true) {
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
           if ('Take ' + name === rn[i].message) {
@@ -361,7 +358,10 @@ const Reminder = ({route, navigation}) => {
         }
       });
     }
-    handlePushNotification(obj, check1, fDateSecondary);
+
+    let lengthSelectedDays = selecteddaysItems.length;
+
+    handlePushNotification(obj, check1, fDateSecondary, lengthSelectedDays);
 
     getMedicine().then(data => {
       const temp = data;
