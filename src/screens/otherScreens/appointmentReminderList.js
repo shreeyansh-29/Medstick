@@ -5,7 +5,7 @@ import {
   Alert,
   StyleSheet,
   Text,
-  BackHandler,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
@@ -34,6 +34,7 @@ const AppointmentReminderList = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [doctorName, setDoctorName] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   let todayDate = new Date();
   let currentTime =
@@ -73,44 +74,53 @@ const AppointmentReminderList = ({navigation}) => {
   //     BackHandler.removeEventListener('hardwareBackPress', backAction);
   // }, []);
 
+  const fetchData = () => {
+    setRefresh(true);
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        let updatedList = data;
+        let doctorList = [];
+        let reminderList = [];
+
+        updatedList.map(item => {
+          if (item.doctorName !== null && item.medicineName !== null) {
+            doctorList.push({
+              doctorName: item.doctorName,
+              prescriptionId: item.prescriptionId,
+            });
+          }
+          if (item.appointmentList.length !== 0) {
+            item.appointmentList.map(ele => {
+              if (ele?.date >= todayDate) {
+                reminderList.push(ele);
+              } else {
+                item.appointmentList.pop(ele);
+                AddMedicine(updatedList);
+              }
+            });
+          }
+        });
+
+        const key1 = 'prescriptionId';
+        const uniqueDoctor = [
+          ...new Map(doctorList.map(item => [item[key1], item])).values(),
+        ];
+
+        setDoctorName(uniqueDoctor);
+
+        const key2 = 'appointmentId';
+        const uniqueReminder = [
+          ...new Map(reminderList.map(item => [item[key2], item])).values(),
+        ];
+        setAppointments(uniqueReminder);
+      }
+    });
+    setRefresh(false);
+  };
+
   useEffect(() => {
     if (isFocused) {
-      getMedicine().then(data => {
-        if (data !== null && data.length !== 0) {
-          let updatedList = data;
-          let doctorList = [];
-          let reminderList = [];
-          updatedList.map(item => {
-            if (item.doctorName !== null && item.medicineName !== null) {
-              doctorList.push({
-                doctorName: item.doctorName,
-                prescriptionId: item.prescriptionId,
-              });
-            }
-            if (item.appointmentList.length !== 0) {
-              item.appointmentList.map(ele => {
-                if (ele?.date >= todayDate) {
-                  reminderList.push(ele);
-                } else {
-                  item.appointmentList.pop(ele);
-                  AddMedicine(updatedList);
-                }
-              });
-            }
-          });
-          const key1 = 'doctorName';
-          const uniqueDoctor = [
-            ...new Map(doctorList.map(item => [item[key1], item])).values(),
-          ];
-          setDoctorName(uniqueDoctor);
-
-          const key2 = 'date';
-          const uniqueReminder = [
-            ...new Map(reminderList.map(item => [item[key2], item])).values(),
-          ];
-          setAppointments(uniqueReminder);
-        }
-      });
+      fetchData();
     }
   }, [isFocused]);
 
@@ -140,7 +150,7 @@ const AppointmentReminderList = ({navigation}) => {
               });
             }
           });
-          const key2 = 'date';
+          const key2 = 'appointmentId';
           const uniqueReminder = [
             ...new Map(reminderList.map(item => [item[key2], item])).values(),
           ];
@@ -356,6 +366,14 @@ const AppointmentReminderList = ({navigation}) => {
               data={appointments}
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  onRefresh={fetchData}
+                  colors={[colorPallete.mainColor]}
+                  tintColor={colorPallete.mainColor}
+                />
+              }
             />
           )}
         </>

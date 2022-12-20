@@ -3,7 +3,7 @@ import {colorPallete} from '../../components/atoms/colorPalette';
 import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 
 export const styles = StyleSheet.create({
-  //list of Patients
+  //list of Caretaker
   top: {
     flexDirection: 'row',
     marginVertical: verticalScale(2),
@@ -14,16 +14,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   patientName: {
+    color: 'black',
     fontSize: 16,
     marginLeft: horizontalScale(3),
     fontWeight: 'bold',
   },
   subtitle: {marginLeft: horizontalScale(3)},
-  // icon: {alignItems: 'center'},
 
   //main
   container: {flex: 1, backgroundColor: colorPallete.backgroundColor},
-  img: {height: verticalScale(230), width: horizontalScale(230)},
+  img: {width: '70%'},
   imgView: {
     flex: 1,
     backgroundColor: colorPallete.basicColor,

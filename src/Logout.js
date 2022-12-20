@@ -23,7 +23,7 @@ const Logout = ({navigation}) => {
     dispatch(saveUserLoggedIn(false));
     setTimeout(() => {
       navigation.navigate('Home');
-    }, 3000);
+    }, 3500);
   };
 
   useEffect(() => {

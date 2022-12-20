@@ -28,8 +28,12 @@ const Login = ({navigation}) => {
       await AsyncStorage.setItem('user_id', res.userList[0].id);
       await AsyncStorage.setItem('user_name', res.userList[0].userName);
       await AsyncStorage.setItem('user_email', res.userList[0].email);
-      let token = encryptData(res?.accessToken);
-      await AsyncStorage.setItem('accessToken', token);
+      // let token = encryptData(res?.accessToken);
+      await AsyncStorage.setItem('accessToken', res?.accessToken);
+      await AsyncStorage.setItem(
+        'user_photo',
+        res?.userList[0].userDetails.picPath,
+      );
       dispatch(saveUserLoggedIn(true));
 
       Toast.show({
@@ -41,6 +45,7 @@ const Login = ({navigation}) => {
         navigation.navigate('Home');
       }, 2500);
     } else {
+      logout();
       Toast.show({
         type: 'error',
         text1: 'Error While Login',
@@ -75,8 +80,7 @@ const Login = ({navigation}) => {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
         const token = await messaging().getToken();
-        const {email, photo} = userInfo.user;
-        await AsyncStorage.setItem('user_photo', photo);
+        const {email} = userInfo.user;
 
         dispatch(loginRequest({email, token}));
       } catch (err) {

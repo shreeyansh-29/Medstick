@@ -1,21 +1,28 @@
 import Toast from 'react-native-toast-message';
 
-export default {
-  success(msg, position) {
-    Toast.show({text1: msg, position: position, type: 'success'});
-  },
-  info(msg, position) {
-    Toast.show({
-      type: 'info',
-      text1: msg,
-      position: position,
-    });
-  },
-  error(msg, position) {
-    Toast.show({
-      type: 'error',
-      text1: msg,
-      position: position,
-    });
-  },
+export const SuccessToast = ({text1, text2, position}) => {
+  Toast.show({
+    text1: text1,
+    text2: text2,
+    position: position,
+    type: 'success',
+  });
+};
+
+export const ErrorToast = ({text1, text2, position}) => {
+  Toast.show({
+    text1: text1,
+    text2: text2,
+    position: position,
+    type: 'error',
+  });
+};
+
+export const InfoToast = ({text1, text2, position}) => {
+  Toast.show({
+    text1: text1,
+    text2: text2,
+    position: position,
+    type: 'info',
+  });
 };

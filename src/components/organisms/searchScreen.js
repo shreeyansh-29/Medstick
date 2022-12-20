@@ -69,8 +69,8 @@ const SearchScreen = ({navigation}) => {
     } else if (res?.message === 'Invitation sent to user with given email id') {
       Toast.show({
         type: 'info',
-        text1: 'No User Found',
-        text2: 'Invitation sent to user with given email id',
+        text1: 'User Not Found',
+        // text2: 'Invitation sent to user with given email id',
         position: 'bottom',
       });
       setTimeout(() => {

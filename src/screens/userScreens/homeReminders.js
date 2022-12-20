@@ -27,7 +27,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
 
   useEffect(() => {
     display();
-    console.log('At Start');
     return () => {};
   }, [medData]);
 

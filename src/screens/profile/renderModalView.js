@@ -103,10 +103,10 @@ const RenderModalVisible = ({
                 contact: result?.contact,
                 dateofBirth: result?.dateOfBirth,
                 gender:
-                  result?.gender === null ? gender[0].value : result?.gender,
+                  result?.gender === '' ? gender[0].value : result?.gender,
                 country: result?.country,
                 bloodGroup:
-                  result?.bloodGroup === null
+                  result?.bloodGroup === ''
                     ? bloodGroup[0].value
                     : result?.bloodGroup,
                 address: result?.address,

@@ -23,8 +23,12 @@ const SignUp = ({navigation}) => {
     await AsyncStorage.setItem('user_id', res.userList[0].id);
     await AsyncStorage.setItem('user_name', res.userList[0].userName);
     await AsyncStorage.setItem('user_email', res.userList[0].email);
-    let token = encryptData(res?.accessToken);
-    await AsyncStorage.setItem('accessToken', token);
+    // let token = encryptData(res?.accessToken);
+    await AsyncStorage.setItem('accessToken', res?.accessToken);
+    await AsyncStorage.setItem(
+      'user_photo',
+      res?.userList[0].userDetails.picPath,
+    );
     dispatch(saveUserLoggedIn(true));
 
     Toast.show({
@@ -66,7 +70,6 @@ const SignUp = ({navigation}) => {
         const token = await messaging().getToken();
 
         const {name, email, photo} = userInfo.user;
-        await AsyncStorage.setItem('user_photo', photo);
 
         dispatch(signUpRequest({name, email, photo, token}));
       } catch (err) {
