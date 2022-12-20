@@ -18,7 +18,7 @@ const MainHeader = ({title, navigation, download}) => {
         <Title title={title} />
       </View>
       {title !== 'Medstick' ? null : <BellIcon navigation={navigation} />}
-      {title !== 'Report' ? null : (
+      {/* {title !== 'Report' ? null : (
         <>
           {load ? (
             <>
@@ -37,7 +37,7 @@ const MainHeader = ({title, navigation, download}) => {
             </>
           ) : null}
         </>
-      )}
+      )} */}
     </View>
   );
 };

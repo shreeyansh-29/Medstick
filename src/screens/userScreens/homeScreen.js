@@ -80,13 +80,13 @@ const HomeScreen = ({navigation}) => {
         savePercentageDetails(obj);
       } else if (data !== null && data.length !== 0) {
         obj = data;
-        console.log('percent data', data);
+        // console.log('percent data', data);
         obj.map((item, index) => {
           const a = b => b.date == td_da;
           if (item.date === td_da) {
             item.percentage = Math.floor((cc / tr) * 100);
             obj[index] = item;
-            console.log('zzz', obj);
+            // console.log('zzz', obj);
           } else if (!obj.some(a) && tr !== 0) {
             temp.date = td_da;
             temp.percentage = Math.floor((cc / tr) * 100);

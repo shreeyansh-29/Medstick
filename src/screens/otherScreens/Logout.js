@@ -1,12 +1,12 @@
 import {View, Text, ActivityIndicator} from 'react-native';
 import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {colorPallete} from './components/atoms/colorPalette';
-import {resetLogin} from './redux/action/loginAction/loginAction';
-import {resetSignUp} from './redux/action/signUpAction/signUpAction';
+import {colorPallete} from '../../components/atoms/colorPalette';
+import {resetLogin} from '../../redux/action/loginAction/loginAction';
+import {resetSignUp} from '../../redux/action/signUpAction/signUpAction';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {saveUserLoggedIn} from './redux/action/loginAction/saveUserLoggedIn';
+import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn';
 
 const Logout = ({navigation}) => {
   const dispatch = useDispatch();

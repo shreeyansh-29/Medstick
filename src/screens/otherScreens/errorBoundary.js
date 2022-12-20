@@ -1,9 +1,9 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import LottieView from 'lottie-react-native';
-import SubHeader from './components/molecules/headers/subHeader';
-import {colorPallete} from './components/atoms/colorPalette';
+import {colorPallete} from '../../components/atoms/colorPalette';
 import {StyleSheet} from 'react-native';
+import SubHeader from '../../components/molecules/headers/subHeader';
 
 const ErrorBoundary = ({navigation}) => {
   return (
@@ -13,7 +13,7 @@ const ErrorBoundary = ({navigation}) => {
         <LottieView
           style={styles.lottie}
           speed={0.8}
-          source={require('./assets/animation/wentWrong.json')}
+          source={require('../../assets/animation/wentWrong.json')}
           autoPlay
           loop
         />

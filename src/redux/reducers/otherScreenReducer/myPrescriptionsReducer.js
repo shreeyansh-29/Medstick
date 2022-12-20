@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import {
+  MY_PRESCRIPTIONS_CLEAR,
   MY_PRESCRIPTIONS_ERROR,
   MY_PRESCRIPTIONS_REQUEST,
   MY_PRESCRIPTIONS_SUCCESS,
@@ -18,6 +19,8 @@ export const myPrescriptionsReducer = (state = initialState, action) => {
       return {...state, data: action.payload.result, isLoading: false};
     case MY_PRESCRIPTIONS_ERROR:
       return {...state, error: action.payload, isLoading: false};
+    case MY_PRESCRIPTIONS_CLEAR:
+      return {data: null, isLoading: false, error: null};
     default:
       return state;
   }
