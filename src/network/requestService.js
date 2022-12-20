@@ -1,3 +1,4 @@
+import axios from 'axios';
 import instance from './instance';
 class RequestService {
   getRequest(url) {
@@ -11,6 +12,9 @@ class RequestService {
   }
   deleteRequest(url) {
     return instance.delete(url);
+  }
+  sendSnapRequest(url, object, header) {
+    return axios.post(url, object, header);
   }
 }
 export default new RequestService();

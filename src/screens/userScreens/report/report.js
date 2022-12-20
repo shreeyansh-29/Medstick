@@ -107,6 +107,15 @@ const Report = ({navigation}) => {
     td.getFullYear() + '-' + (td.getMonth() + 1) + '-' + (td.getDate() + 1),
   ).toISOString();
 
+  let todayDate = new Date();
+  todayDate.getFullYear() +
+    '-' +
+    (todayDate.getMonth() + 1) +
+    '-' +
+    (todayDate.getDate() < 10
+      ? '0' + todayDate.getDate()
+      : todayDate.getDate());
+
   const showAlert = () => {
     Alert.alert('Add Medicine First', 'Click Ok to proceed', [
       {
@@ -229,7 +238,7 @@ const Report = ({navigation}) => {
   };
 
   const alertFunction = () => {
-    Alert.alert('You have no reminder of this date', '', [
+    Alert.alert('You have no adhrence of this date', '', [
       {
         text: 'Ok',
         onPress: () => {},
@@ -240,14 +249,13 @@ const Report = ({navigation}) => {
   const getHistorydata = date => {
     const a = b => b.date == date.dateString;
     const historyIndex = historyListData.findIndex(a);
-    // console.log('his', historyListData[historyIndex]);
     setHistoryData(historyListData[historyIndex]);
   };
 
   const dayComponent = (date, state) => {
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
-    // console.log('1234', dataMap);
+
     return (
       <>
         {dataMap.some(a) ? (

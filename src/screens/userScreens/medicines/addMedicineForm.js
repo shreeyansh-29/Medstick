@@ -26,7 +26,6 @@ const AddMedicineForm = props => {
     prescriptionUrl: null,
     location: null,
     specialization: null,
-    appointmentList: [],
   };
 
   return (
@@ -110,8 +109,10 @@ const AddMedicineForm = props => {
             text="dosageQuantity"
             activeOutlineColor={colorPallete.mainColor}
             {...props}
-            value={props.values.dosageQuantity.trim()}
+            value={props.values.dosageQuantity}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
             <Text style={styles.errorText}>{props.errors.dosageQuantity}</Text>
@@ -125,7 +126,7 @@ const AddMedicineForm = props => {
             styles={[styles.field, {width: '97%'}]}
             text="dosagePower"
             label="Dosage Power"
-            value={props.values.dosagePower.trim()}
+            value={props.values.dosagePower}
             mode="outlined"
             outlineColor="lightgrey"
             keyboardType="numeric"
@@ -164,8 +165,10 @@ const AddMedicineForm = props => {
             text="stocks"
             activeOutlineColor={colorPallete.mainColor}
             {...props}
-            value={props.values.stocks.trim()}
+            value={props.values.stocks}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.stocks && props.touched.stocks && (
             <Text style={{color: 'red', marginTop: 4}}>
@@ -177,6 +180,7 @@ const AddMedicineForm = props => {
       <View style={Styles.textView1}>
         <View style={Styles.textbox}>
           <Text style={Styles.text}>Notify me when only </Text>
+          {/* <Text style={styles.subText}>(Optional)</Text> */}
         </View>
         <View style={styles.unitBox}>
           <InputField
@@ -187,8 +191,10 @@ const AddMedicineForm = props => {
             text="notify"
             activeOutlineColor={colorPallete.mainColor}
             {...props}
-            value={props.values.notify.trim()}
+            value={props.values.notify}
             keyboardType="numeric"
+            clearTextOnFocus={true}
+            selectTextOnFocus={true}
           />
           {props.errors.notify && props.touched.notify && (
             <Text style={styles.errorText}>{props.errors.notify}</Text>
@@ -229,6 +235,7 @@ const AddMedicineForm = props => {
                 if (props.values.medicineName.length !== 0) {
                   props.navigation.navigate('AddPrescriptionPanel', {
                     prescriptionObject: props.prescriptionObject,
+                    key: 'Add',
                   });
                 } else {
                   Alert.alert('Fill rest details first', '', [

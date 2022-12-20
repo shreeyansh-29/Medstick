@@ -9,15 +9,12 @@ import networkService from '../../../network/networkService';
 export function* deletePatientRequestSaga(data) {
   try {
     let response = yield call(networkService.putDeleteRequest, data);
-    yield put(deletePatientReqSuccess(response));
+    yield put(deletePatientReqSuccess(response?.data));
   } catch (error) {
     yield put(deletePatientReqError(error));
   }
 }
 
 export function* watchDeletePatientReqSaga() {
-  yield takeLatest(
-    types.DELETE_PATIENT_REQ_REQUEST,
-    deletePatientRequestSaga,
-  );
+  yield takeLatest(types.DELETE_PATIENT_REQ_REQUEST, deletePatientRequestSaga);
 }

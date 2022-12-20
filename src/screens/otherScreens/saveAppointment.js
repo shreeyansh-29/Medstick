@@ -44,7 +44,7 @@ const AppointmentReminders = ({navigation, route}) => {
 
   const handlePushNotification = (obj, reminderTime, time) => {
     let dateTime = moment(obj.date + ' ' + reminderTime);
-    Notifications.schduleNotification2(dateTime._d, obj.appointmentId, time);
+    Notifications.schduleNotification2(dateTime._d, time);
   };
 
   const saveAppointment = values => {
@@ -72,7 +72,7 @@ const AppointmentReminders = ({navigation, route}) => {
     let hour =
       parseInt(time1.split(':')[0]) === 0
         ? 23
-        : parseInt(time1.split(':')[0] - 1);
+        : parseInt(time1.split(':')[0]) - 1;
 
     let reminderTime = hour + ':' + time1.split(':')[1];
 
@@ -88,19 +88,19 @@ const AppointmentReminders = ({navigation, route}) => {
                 }
               });
               AddMedicine(updatedList);
-              reminderTime > time2
-                ? handlePushNotification(obj, reminderTime, obj.time)
-                : null;
-              handlePushNotification(obj, time1, obj.time);
               Toast.show({
                 type: 'success',
                 text1: 'Appointment Saved Successfully',
                 position: 'bottom',
               });
             }
+            reminderTime > time2
+              ? handlePushNotification(obj, reminderTime, obj.time)
+              : null;
+            handlePushNotification(obj, time1, obj.time);
             setTimeout(() => {
               navigation.pop();
-            }, 1000);
+            }, 1500);
           })
         : showAlert();
     } else {
@@ -114,16 +114,17 @@ const AppointmentReminders = ({navigation, route}) => {
             }
           });
           AddMedicine(updatedList);
-          reminderTime > time2
-            ? handlePushNotification(obj, reminderTime, obj.time)
-            : null;
-          handlePushNotification(obj, time1, obj.time);
+
           Toast.show({
             type: 'success',
             text1: 'Appointment Saved Successfully',
             position: 'bottom',
           });
         }
+        reminderTime > time2
+          ? handlePushNotification(obj, reminderTime, obj.time)
+          : null;
+        handlePushNotification(obj, time1, obj.time);
         setTimeout(() => {
           navigation.pop();
         }, 1000);
@@ -315,7 +316,7 @@ const AppointmentReminders = ({navigation, route}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

@@ -5,6 +5,7 @@ import {
   Alert,
   StyleSheet,
   Text,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
@@ -33,9 +34,15 @@ const AppointmentReminderList = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [doctorName, setDoctorName] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   let todayDate = new Date();
-  let currentTime = todayDate?.getHours() + ':' + todayDate?.getMinutes();
+  let currentTime =
+    todayDate?.getHours() +
+    ':' +
+    (todayDate?.getMinutes() < 10
+      ? '0' + todayDate.getMinutes()
+      : todayDate.getMinutes());
 
   todayDate =
     todayDate.getFullYear() +
@@ -56,36 +63,64 @@ const AppointmentReminderList = ({navigation}) => {
     };
   }, []);
 
+  // const backAction = () => {
+  //   setDoctorName([]);
+  // };
+
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
+
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, []);
+
+  const fetchData = () => {
+    setRefresh(true);
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        let updatedList = data;
+        let doctorList = [];
+        let reminderList = [];
+
+        updatedList.map(item => {
+          if (item.doctorName !== null && item.medicineName !== null) {
+            doctorList.push({
+              doctorName: item.doctorName,
+              prescriptionId: item.prescriptionId,
+            });
+          }
+          if (item.appointmentList.length !== 0) {
+            item.appointmentList.map(ele => {
+              if (ele?.date >= todayDate) {
+                reminderList.push(ele);
+              } else {
+                item.appointmentList.pop(ele);
+                AddMedicine(updatedList);
+              }
+            });
+          }
+        });
+
+        const key1 = 'prescriptionId';
+        const uniqueDoctor = [
+          ...new Map(doctorList.map(item => [item[key1], item])).values(),
+        ];
+
+        setDoctorName(uniqueDoctor);
+
+        const key2 = 'appointmentId';
+        const uniqueReminder = [
+          ...new Map(reminderList.map(item => [item[key2], item])).values(),
+        ];
+        setAppointments(uniqueReminder);
+      }
+    });
+    setRefresh(false);
+  };
+
   useEffect(() => {
     if (isFocused) {
-      getMedicine().then(data => {
-        if (data !== null && data.length !== 0) {
-          let updatedList = data;
-          let doctorList = [];
-          let reminderList = [];
-
-          updatedList.map(item => {
-            if (item.doctorName !== null && item.medicineName !== null) {
-              doctorList.push({
-                doctorName: item.doctorName,
-                prescriptionId: item.prescriptionId,
-              });
-            }
-            if (item.appointmentList.length !== 0) {
-              item.appointmentList.map(ele => {
-                if (ele?.date >= todayDate) {
-                  reminderList.push(ele);
-                } else {
-                  item.appointmentList.pop(ele);
-                  AddMedicine(updatedList);
-                }
-              });
-            }
-          });
-          setAppointments(reminderList);
-          setDoctorName(doctorList);
-        }
-      });
+      fetchData();
     }
   }, [isFocused]);
 
@@ -115,7 +150,11 @@ const AppointmentReminderList = ({navigation}) => {
               });
             }
           });
-          setAppointments(reminderList);
+          const key2 = 'appointmentId';
+          const uniqueReminder = [
+            ...new Map(reminderList.map(item => [item[key2], item])).values(),
+          ];
+          setAppointments(uniqueReminder);
         }
       });
       PushNotification.getScheduledLocalNotifications(rn => {
@@ -327,6 +366,14 @@ const AppointmentReminderList = ({navigation}) => {
               data={appointments}
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  onRefresh={fetchData}
+                  colors={[colorPallete.mainColor]}
+                  tintColor={colorPallete.mainColor}
+                />
+              }
             />
           )}
         </>

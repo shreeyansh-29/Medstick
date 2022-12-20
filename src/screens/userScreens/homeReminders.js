@@ -25,7 +25,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   let tempList = new Set();
 
   useEffect(() => {
-    if (medData != null) {
+    if (medData !== null) {
       display();
     }
     return () => {};
@@ -64,8 +64,8 @@ const Reminders = ({showAlert, setPercentage, data}) => {
       item.historyList.map(r => {
         if (r.date === td_da) {
           r.notTaken.split(',').map(z => {
-            const a = b => b.historyId == r.historyId;
-            const index = reminderList.findIndex(a);
+            // const a = b => b.historyId == r.historyId;
+            // const index = reminderList.findIndex(a);
             if (!r.taken.includes(z)) {
               let temp = {};
               temp.userMedicineId = item.userMedicineId;
@@ -132,7 +132,9 @@ const Reminders = ({showAlert, setPercentage, data}) => {
           <View style={styles.avatarView}>
             <View style={styles.medNameView}>
               <ListItem.Title style={styles.medName}>{time}</ListItem.Title>
-              <ListItem.Subtitle style={{marginVertical: 2, fontSize: 16}}>
+              <ListItem.Subtitle
+                style={{marginVertical: 2, fontSize: 16, color: 'gray'}}
+                numberOfLines={1}>
                 {medName}
               </ListItem.Subtitle>
             </View>
@@ -141,6 +143,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              width: '28%',
             }}
             key={item.item.medName + 6}>
             <TouchableOpacity

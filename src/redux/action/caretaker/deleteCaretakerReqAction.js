@@ -18,3 +18,8 @@ export const deleteCaretakerReqError = payload => {
     payload,
   };
 };
+export const clearRequestStatus = () => {
+  return {
+    type: types.CLEAR_REQUEST_STATUS,
+  };
+};

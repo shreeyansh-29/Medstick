@@ -50,7 +50,6 @@ const AddPrescription = ({navigation}) => {
       contact: values.contact.trim(),
       location: values.location.trim(),
       prescriptionUrl: values.image,
-      appointmentList: [],
       flag: false,
     };
 
@@ -82,7 +81,7 @@ const AddPrescription = ({navigation}) => {
     });
     setTimeout(() => {
       navigation.pop();
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -160,7 +159,7 @@ const AddPrescription = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

@@ -4,7 +4,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/userScreens/homeScreen';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Ripple from 'react-native-material-ripple';
-import '../../ignoreWarnings';
 import {
   faCapsules,
   faCircleUser,

@@ -85,6 +85,7 @@ const ProfileForm = props => {
         }}
         onCancel={() => setDateOpen(false)}
         date={moment(props.values.dateofBirth).toDate()}
+        maximumDate={new Date()}
       />
 
       <View style={styles.inputField}>

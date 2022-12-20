@@ -1,6 +1,7 @@
 import RequestService from './requestService';
 import * as apiUrl from '../constants/apiUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {decryptData} from '../components/atoms/crypto';
 
 class NetworkService {
   async login(payload) {
@@ -175,7 +176,18 @@ class NetworkService {
   async sendSnap(payload) {
     const formdata = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
-    return await RequestService.postRequest(`${SEND_SNAP}?Id=${id}`, formdata);
+    let token = decryptData(await AsyncStorage.getItem('accessToken'));
+
+    return await RequestService.sendSnapRequest(
+      `${apiUrl.SEND_SNAP}?Id=${id}`,
+      formdata,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
   }
 
   async getUser(payload) {

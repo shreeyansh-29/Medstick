@@ -27,7 +27,7 @@ class Notifications {
     });
   }
 
-  schduleNotification(date, check1, name, time, enddate) {
+  schduleNotification(date, check1, name, enddate) {
     let currentTime = new Date();
     let currentTime2 =
       currentTime.getFullYear() +
@@ -40,7 +40,7 @@ class Notifications {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take '+name,
+        message: 'Take ' + name,
         date: date,
         repeatType: 'day',
       });
@@ -54,13 +54,12 @@ class Notifications {
       });
     }
   }
-  schduleNotification2(date, Id, time) {
+  schduleNotification2(date, time) {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Appointment!',
       message: 'You have an appointment scheduled at' + ' ' + time,
       date: date,
-      id: Id,
     });
   }
 }

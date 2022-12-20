@@ -5,7 +5,7 @@ import {Divider} from 'react-native-elements/dist/divider/Divider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {day_data, months} from './pushNotification/timeData';
+import {day_data, months, todayDay} from './pushNotification/timeData';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 import {TextInput} from 'react-native-paper';
@@ -50,7 +50,13 @@ const Reminder = ({route, navigation}) => {
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
-  const [fDateSecondary, setfDate] = useState('');
+  const [fDateSecondary, setfDate] = useState(
+    startDate.getFullYear() +
+      '-' +
+      (startDate.getMonth() + 1) +
+      '-' +
+      startDate.getDate(),
+  );
 
   let fDatePrimary =
     startDate.getFullYear() +
@@ -81,7 +87,8 @@ const Reminder = ({route, navigation}) => {
     let reminderTime = obj.reminderTime.split(',');
 
     for (let i = 0; i < reminderTime.length; i++) {
-      if(reminderTime[i] !== "") number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
+      if (reminderTime[i] !== '')
+        number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
     }
 
     let endDate1 =
@@ -168,6 +175,7 @@ const Reminder = ({route, navigation}) => {
       frequency.push('Dinner');
     }
   }
+  console.log(timearray);
 
   const savereminder = (
     fDatePrimary,
@@ -181,7 +189,15 @@ const Reminder = ({route, navigation}) => {
     totalReminders,
     currentCount,
   ) => {
-    if (title.length === 0) {
+    if (fDatePrimary > fDateSecondary) {
+      Alert.alert('Start Date should be less than End Date', ' ', [
+        {
+          text: 'OK',
+          onPress: () => {},
+        },
+      ]);
+      return;
+    } else if (title.length === 0) {
       Alert.alert('Please enter a valid Title', ' ', [
         {
           text: 'OK',
@@ -206,7 +222,7 @@ const Reminder = ({route, navigation}) => {
       ]);
       return;
     } else if (!check1 && !check2) {
-      Alert.alert('Please select Days', ' ', [
+      Alert.alert('Please Select Days', ' ', [
         {
           text: 'OK',
           onPress: () => {},
@@ -259,6 +275,16 @@ const Reminder = ({route, navigation}) => {
     }
     setTime(time);
     if (check2) {
+      if (selecteddaysItems.length === 0) {
+        Alert.alert('Please select chosen days', ' ', [
+          {
+            text: 'OK',
+            onPress: () => {},
+          },
+        ]);
+        loadstate(false);
+        return;
+      }
       for (let i = 0; i < selecteddaysItems.length; i++) {
         if (i == selecteddaysItems.length - 1) {
           days += selecteddaysItems[i];
@@ -266,17 +292,12 @@ const Reminder = ({route, navigation}) => {
           days += selecteddaysItems[i] + ',';
         }
       }
-      console.log(days, ' final days ');
     } else if (check1) {
       days += 'Everyday';
-
       slecteddaysstate(['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']);
     }
 
-    // setReminderWithSelectedDate(title, fDatePrimary, fDateSecondary);
-
     frequencyHandler();
-    // console.log(frequency, 'freq  ');
     const frequencyTemp = frequency.toString();
 
     if (endDate === 'No End Date') {
@@ -333,7 +354,7 @@ const Reminder = ({route, navigation}) => {
 
     setTimeout(() => {
       navigation.pop();
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -354,7 +375,7 @@ const Reminder = ({route, navigation}) => {
               <View style={styles.mainView}>
                 <View style={styles.subView}>
                   <Text style={styles.dateText1}>
-                    {day_data[0].children[startDate.getDay()].id +
+                    {todayDay[startDate.getDay()] +
                       ' ' +
                       startDate.getDate() +
                       ' ' +
@@ -381,14 +402,14 @@ const Reminder = ({route, navigation}) => {
             style={styles.containerTouch}>
             <View style={styles.dateContainer}>
               <View style={styles.endDateContainer}>
-                <Text style={styles.dateText}>Select Duration</Text>
+                <Text style={styles.dateText}>End Date</Text>
               </View>
               <View style={styles.mainView}>
                 <View style={styles.subView}>
                   <Text style={styles.dateText1}>
-                    {fDateSecondary == 'No End Date'
+                    {fDateSecondary === 'No End Date'
                       ? 'No End Date'
-                      : day_data[0].children[endDate.getDay()].id +
+                      : todayDay[endDate.getDay()] +
                         ' ' +
                         endDate.getDate() +
                         ' ' +
@@ -473,19 +494,14 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(0);
                     }}>
-                    <Text style={{fontSize: 16, textAlign: 'center'}}>
-                      {timearray[0]}
+                    <Text style={{fontSize: 15}}>
+                      {timearray[0] ? timearray[0] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
-                      <FontAwesomeIcon
-                        icon={faCaretDown}
-                        style={styles.downIcon}
-                      />
+                      <FontAwesomeIcon icon={faCaretDown} />
                     </View>
                   </TouchableOpacity>
-                ) : (
-                  <></>
-                )}
+                ) : null}
               </View>
 
               <View style={{flexDirection: 'column', width: '30%'}}>
@@ -520,19 +536,14 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(1);
                     }}>
-                    <Text style={{fontSize: 16, textAlign: 'center'}}>
-                      {timearray[1]}
+                    <Text style={{fontSize: 15}}>
+                      {timearray[1] ? timearray[1] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
-                      <FontAwesomeIcon
-                        icon={faCaretDown}
-                        style={styles.downIcon}
-                        color=""></FontAwesomeIcon>
+                      <FontAwesomeIcon icon={faCaretDown} />
                     </View>
                   </TouchableOpacity>
-                ) : (
-                  <></>
-                )}
+                ) : null}
               </View>
               <View style={{flexDirection: 'column', width: '30%'}}>
                 <TouchableOpacity
@@ -566,17 +577,14 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(2);
                     }}>
-                    <Text style={styles.touchableText}>{timearray[2]}</Text>
+                    <Text style={{fontSize: 15}}>
+                      {timearray[2] ? timearray[2] : 'Select Time'}
+                    </Text>
                     <View style={styles.arrow}>
-                      <FontAwesomeIcon
-                        icon={faCaretDown}
-                        style={styles.downIcon}
-                        color=""></FontAwesomeIcon>
+                      <FontAwesomeIcon icon={faCaretDown} />
                     </View>
                   </TouchableOpacity>
-                ) : (
-                  <></>
-                )}
+                ) : null}
               </View>
             </View>
           </View>
@@ -738,7 +746,7 @@ const Reminder = ({route, navigation}) => {
           />
         </View>
       </ScrollView>
-      <Toast visibilityTime={800} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

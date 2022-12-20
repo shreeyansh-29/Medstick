@@ -3,7 +3,10 @@ import React, {useEffect} from 'react';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {styles} from '../../styles/authScreensStyles/loginScreenStyles';
 import {useDispatch, useSelector} from 'react-redux';
-import {signUpRequest} from '../../redux/action/signUpAction/signUpAction';
+import {
+  resetSignUp,
+  signUpRequest,
+} from '../../redux/action/signUpAction/signUpAction';
 import Toast from 'react-native-toast-message';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,14 +16,19 @@ import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn'
 const SignUp = ({navigation}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.signUp.data);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   const isFocused = useIsFocused();
 
   const getResponse = async () => {
     await AsyncStorage.setItem('user_id', res.userList[0].id);
     await AsyncStorage.setItem('user_name', res.userList[0].userName);
     await AsyncStorage.setItem('user_email', res.userList[0].email);
-    let token = encryptData(res?.accessToken);
-    await AsyncStorage.setItem('accessToken', token);
+    // let token = encryptData(res?.accessToken);
+    await AsyncStorage.setItem('accessToken', res?.accessToken);
+    await AsyncStorage.setItem(
+      'user_photo',
+      res?.userList[0].userDetails.picPath,
+    );
     dispatch(saveUserLoggedIn(true));
 
     Toast.show({
@@ -30,7 +38,7 @@ const SignUp = ({navigation}) => {
 
     setTimeout(() => {
       navigation.navigate('Home');
-    }, 500);
+    }, 2500);
   };
 
   useEffect(() => {
@@ -38,32 +46,41 @@ const SignUp = ({navigation}) => {
       if (res?.status === 'Success') {
         getResponse();
       } else if (res?.status === 'Failed') {
+        logout();
         Toast.show({
           type: 'error',
           text1: 'User already exists',
         });
+        dispatch(resetSignUp());
       }
     }
   }, [isFocused, res]);
 
+  const logout = async () => {
+    if (await GoogleSignin.isSignedIn()) {
+      await GoogleSignin.signOut();
+    }
+  };
+
   const signUp = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const token = await messaging().getToken();
+    if (connected) {
+      try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        const token = await messaging().getToken();
 
-      const {name, email, photo} = userInfo.user;
-      await AsyncStorage.setItem('user_photo', photo);
+        const {name, email, photo} = userInfo.user;
 
-      dispatch(signUpRequest({name, email, photo, token}));
-    } catch (err) {
-      if (await GoogleSignin.isSignedIn()) {
-        await GoogleSignin.signOut();
+        dispatch(signUpRequest({name, email, photo, token}));
+      } catch (err) {
+        if (await GoogleSignin.isSignedIn()) {
+          await GoogleSignin.signOut();
+        }
+        Toast.show({
+          type: 'info',
+          text1: 'Something Went Wrong',
+        });
       }
-      Toast.show({
-        type: 'info',
-        text1: 'Something Went Wrong',
-      });
     }
   };
 

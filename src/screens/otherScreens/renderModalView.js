@@ -41,39 +41,40 @@ const RenderModalView = ({item, setEdit, navigation}) => {
     let prescription_id = item.prescriptionId;
     let obj = {
       prescriptionId: prescription_id,
-      doctorName: values.doctorName,
-      specialization: values.specialization,
+      doctorName: values.doctorName.trim(),
+      specialization: values.specialization.trim(),
       contact: values.contact,
-      location: values.location,
+      location: values.location.trim(),
       prescriptionUrl: values.image,
-      appointmentList: item.appointmentList,
     };
 
     getMedicine().then(data => {
-      if (data !== null) {
-        let updateList = data;
-        let a = b => b.prescriptionId == prescription_id;
-        let index = updateList.findIndex(a);
-        updateList[index].prescriptionId = obj.prescriptionId;
-        updateList[index].doctorName = obj.doctorName;
-        updateList[index].specialization = obj.specialization;
-        updateList[index].contact = obj.contact;
-        updateList[index].location = obj.location;
-        updateList[index].prescriptionUrl = obj.prescriptionUrl;
-        updateList[index].appointmentList = obj.appointmentList;
-        updateList[index].modified = true;
-
-        AddMedicine(updateList);
+      if (data !== null && data.length !== 0) {
+        let updatedList = data;
+        updatedList.map((item, index) => {
+          if (item.prescriptionId === prescription_id) {
+            updatedList[index].prescriptionId = obj.prescriptionId;
+            updatedList[index].doctorName = obj.doctorName;
+            updatedList[index].specialization = obj.specialization;
+            updatedList[index].contact = obj.contact;
+            updatedList[index].location = obj.location;
+            updatedList[index].prescriptionUrl = obj.prescriptionUrl;
+            updatedList[index].modified = true;
+          }
+          AddMedicine(updatedList);
+        });
       }
     });
 
     getPrescription().then(data => {
       if (data !== null) {
-        let updateList = data;
-        let a = b => b.prescriptionId == prescription_id;
-        let index = updateList.findIndex(a);
-        updateList[index] = obj;
-        savePrescription(updateList);
+        let updatedList = data;
+        updatedList.map((item, index) => {
+          if (item.prescriptionId === prescription_id) {
+            updatedList[index] = obj;
+          }
+        });
+        savePrescription(updatedList);
         Toast.show({
           text1: 'Prescription Updated Successfully',
           type: 'success',
@@ -90,7 +91,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
     loadstate(false);
     setTimeout(() => {
       navigation.pop();
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -180,7 +181,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

@@ -1,75 +1,82 @@
-import {View, TouchableOpacity, FlatList, RefreshControl} from 'react-native';
+import {View, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import AddButton from '../../../components/atoms/addButton';
+import {styles} from '../../../styles/patientStyles/myPatientsStyles';
 import {ListItem} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
-import {styles} from '../../../styles/patientStyles/myPatientsStyles';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   myPatientsClear,
   myPatientsRequest,
 } from '../../../redux/action/patients/myPatientsAction';
-import CustomImage from '../../../components/atoms/customImage';
 import Loader from '../../../components/atoms/loader';
-import {colorPallete} from '../../../components/atoms/colorPallete';
+import CustomImage from '../../../components/atoms/customImage';
+import {colorPallete} from '../../../components/atoms/colorPalette';
+import NoInternet from '../../../components/atoms/noInternet';
 
-const MyPatients = ({
-  navigation,
-  myPatients,
-  setMyPatients,
-  pageNo,
-  setPageNo,
-}) => {
+const MyPatients = ({navigation}) => {
+  //React Redux Hooks
   const dispatch = useDispatch();
-  // const [pageNo, setPageNo] = useState(0);
-  // const [myPatients, setMyPatients] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const res = useSelector(state => state.myPatients);
-  // const [refresh, setRefresh] = useState(false);
+  const connected = useSelector(state => state.internetConnectivity?.data);
 
+  //React useState hook
+  const [pageNo, setPageNo] = useState(0);
+  const [myPatients, setMyPatients] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
+  const [
+    onEndReachedCalledDuringMomentum,
+    setOnEndReachedCalledDuringMomentum,
+  ] = useState(true);
+
+  //React useEffect hook
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     pageNo === 0 ? dispatch(myPatientsRequest(pageNo)) : null;
-  }, [pageNo]);
+  }, []);
 
   useEffect(() => {
-    if (res?.data !== null) {
+    if (res?.data !== null && res.data.length !== 0) {
+      setRefresh(false);
       setMyPatients([...myPatients, ...res.data]);
       dispatch(myPatientsClear());
     }
   }, [res]);
 
+  //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
     if (myPatients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
       dispatch(myPatientsRequest(a));
+      setPageNo(a);
     }
-    setPageNo(a);
   };
 
+  //FlatList RenderItem Function
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
-        key={item.contact}
         activeOpacity={1}
         style={styles.top}
         onPress={() => {
-          navigation.navigate('PatientProfile', {profile: item});
+          connected
+            ? navigation.navigate('PatientProfile', {profile: item})
+            : null;
         }}>
         <ListItem
-          key={item.contact + '1'}
           style={styles.list}
           hasTVPreferredFocus={undefined}
           tvParallaxProperties={undefined}>
-          <UserAvatar size={60} name={`${item.userName}`} />
+          <UserAvatar size={60} name={item.userName} />
           <ListItem.Content>
             <ListItem.Title style={styles.patientName}>
-              {`${item.userName}`}
+              {item.userName}
             </ListItem.Title>
             <ListItem.Subtitle style={styles.subtitle}>
               {item.contact}
@@ -79,51 +86,66 @@ const MyPatients = ({
       </TouchableOpacity>
     );
   };
+
   return (
-    <View style={styles.mainCont}>
+    <View style={styles.container}>
       {isLoading ? (
         <Loader />
       ) : (
         <>
-          {myPatients?.length === 0 ? (
-            <View style={styles.imgCont}>
+          {myPatients.length === 0 ? (
+            <View style={styles.imgView}>
               <CustomImage
                 resizeMode="contain"
-                styles={styles.img}
+                styles={{width: '70%'}}
                 source={require('../../../assets/images/nopatients.png')}
               />
             </View>
           ) : (
             <FlatList
-              showsVerticalScrollIndicator={false}
               data={myPatients}
               renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
-              onEndReached={onEnd}
-              onEndReachedThreshold={0.01}
-              // refreshControl={
-              //   <RefreshControl
-              //     colors={[colorPallete.mainColor]}
-              //     tintColor={[colorPallete.mainColor]}
-              //     refreshing={refresh}
-              //     onRefresh={() => {
-              //       dispatch(myPatientsClear());
-              //       setRefresh(false);
-              //       setPageNo(0);
-              //       setMyPatients([]);
-              //     }}
-              //   />
-              // }
+              onEndReachedThreshold={0.1}
+              onMomentumScrollBegin={() =>
+                setOnEndReachedCalledDuringMomentum(false)
+              }
+              onEndReached={({distanceFromEnd}) => {
+                if (!onEndReachedCalledDuringMomentum) {
+                  onEnd();
+                  setOnEndReachedCalledDuringMomentum(true);
+                }
+              }}
+              keyExtractor={item => item.userId}
+              showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  onRefresh={() => {
+                    setRefresh(true);
+                    let a = 0;
+                    dispatch(myPatientsRequest(a));
+                    setPageNo(a);
+                    setIsLoading(true);
+                    setMyPatients([]);
+                  }}
+                  refreshing={refresh}
+                  colors={[colorPallete.mainColor]}
+                />
+              }
             />
           )}
-          <View style={styles.bottomView}>
-            <AddButton
-              text="Caretaker"
-              routeName={'SearchScreen'}
-              navigation={navigation}
-              styles={styles.addBtn}
-            />
-          </View>
+
+          {connected ? (
+            <View style={styles.button}>
+              <AddButton
+                text="Caretaker"
+                routeName={'SearchScreen'}
+                navigation={navigation}
+                styles={styles.addBtn}
+              />
+            </View>
+          ) : (
+            <NoInternet />
+          )}
         </>
       )}
     </View>

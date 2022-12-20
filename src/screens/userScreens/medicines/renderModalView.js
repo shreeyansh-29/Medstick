@@ -48,12 +48,13 @@ const RenderModalView = ({setVisible, props}) => {
   useEffect(() => {
     if (res !== null) {
       setTempSearch([...tempSearch, ...res]);
+      dispatch(searchMedicineClear());
     }
   }, [res]);
 
-  const apiCall = () => {
-    if (med.length !== 0) {
-      let medicineName = med.trim();
+  const apiCall = (medicine, pageNo) => {
+    if (medicine.length !== 0) {
+      let medicineName = medicine.trim();
       dispatch(searchMedicineRequest({medicineName, pageNo}));
     }
   };
@@ -139,7 +140,14 @@ const RenderModalView = ({setVisible, props}) => {
           right={
             med.length !== 0 ? (
               <TextInput.Icon
-                onPress={() => apiCall()}
+                onPress={() => {
+                  setTempSearch([]);
+                  dispatch(searchMedicineClear());
+                  setPageNo(0);
+                  setTimeout(() => {
+                    apiCall(med, 0);
+                  }, 1000);
+                }}
                 name={() => (
                   <FontAwesomeIcon
                     size={20}

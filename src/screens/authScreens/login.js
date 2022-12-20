@@ -6,7 +6,10 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {styles} from '../../styles/authScreensStyles/loginScreenStyles';
 import {useDispatch, useSelector} from 'react-redux';
-import {loginRequest} from '../../redux/action/loginAction/loginAction';
+import {
+  loginRequest,
+  resetLogin,
+} from '../../redux/action/loginAction/loginAction';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
@@ -16,6 +19,7 @@ import {encryptData} from '../../components/atoms/crypto';
 
 const Login = ({navigation}) => {
   const res = useSelector(state => state.signIn.data);
+  const connected = useSelector(state => state.internetConnectivity?.data);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
@@ -24,8 +28,12 @@ const Login = ({navigation}) => {
       await AsyncStorage.setItem('user_id', res.userList[0].id);
       await AsyncStorage.setItem('user_name', res.userList[0].userName);
       await AsyncStorage.setItem('user_email', res.userList[0].email);
-      let token = encryptData(res?.accessToken);
-      await AsyncStorage.setItem('accessToken', token);
+      // let token = encryptData(res?.accessToken);
+      await AsyncStorage.setItem('accessToken', res?.accessToken);
+      await AsyncStorage.setItem(
+        'user_photo',
+        res?.userList[0].userDetails.picPath,
+      );
       dispatch(saveUserLoggedIn(true));
 
       Toast.show({
@@ -35,8 +43,9 @@ const Login = ({navigation}) => {
 
       setTimeout(() => {
         navigation.navigate('Home');
-      }, 800);
+      }, 2500);
     } else {
+      logout();
       Toast.show({
         type: 'error',
         text1: 'Error While Login',
@@ -49,31 +58,40 @@ const Login = ({navigation}) => {
       if (res?.status === 'Success') {
         getResponse();
       } else if (res?.status === 'Failed') {
+        logout();
         Toast.show({
           type: 'info',
           text1: 'User Not Found',
         });
+        dispatch(resetLogin());
       }
     }
   }, [isFocused, res]);
 
-  const login = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const token = await messaging().getToken();
-      const {email, photo} = userInfo.user;
-      await AsyncStorage.setItem('user_photo', photo);
+  const logout = async () => {
+    if (await GoogleSignin.isSignedIn()) {
+      await GoogleSignin.signOut();
+    }
+  };
 
-      dispatch(loginRequest({email, token}));
-    } catch (err) {
-      if (await GoogleSignin.isSignedIn()) {
-        await GoogleSignin.signOut();
+  const login = async () => {
+    if (connected) {
+      try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        const token = await messaging().getToken();
+        const {email} = userInfo.user;
+
+        dispatch(loginRequest({email, token}));
+      } catch (err) {
+        if (await GoogleSignin.isSignedIn()) {
+          await GoogleSignin.signOut();
+        }
+        Toast.show({
+          type: 'info',
+          text1: 'Something Went Wrong',
+        });
       }
-      Toast.show({
-        type: 'info',
-        text1: 'Something Went Wrong',
-      });
     }
   };
 

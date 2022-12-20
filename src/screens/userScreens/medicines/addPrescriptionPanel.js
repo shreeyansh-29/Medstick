@@ -28,7 +28,8 @@ import {useIsFocused} from '@react-navigation/native';
 import Loader from '../../../components/atoms/loader';
 
 const AddPrescriptionPanel = ({navigation, route}) => {
-  let {prescriptionObject} = route?.params;
+  let {prescriptionObject, key} = route?.params;
+  const key1 = key;
   const isFocused = useIsFocused();
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
@@ -136,6 +137,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
         setPrescriptionList={setPrescriptionList}
         setPrescriptionId={setPrescriptionId}
         setDeleteBtn={setDeleteBtn}
+        key1={key1}
       />
       <CustomModal
         modalVisible={visible}
@@ -194,7 +196,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   });
                   setTimeout(() => {
                     navigation.pop();
-                  }, 1000);
+                  }, 1500);
                 }
               }}
             />
@@ -213,7 +215,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
           </>
         )}
       </View>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

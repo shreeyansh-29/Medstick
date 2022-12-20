@@ -47,7 +47,7 @@ const UpdateAppointment = ({
 
   const handlePushNotification = (obj, reminderTime, time) => {
     let dateTime = moment(obj.date + ' ' + reminderTime);
-    Notifications.schduleNotification2(dateTime._d, obj.appointmentId, time);
+    Notifications.schduleNotification2(dateTime._d, time);
   };
 
   const updateAppointment = values => {
@@ -81,30 +81,12 @@ const UpdateAppointment = ({
                 item.appointmentList.map((ele, index) => {
                   if (ele.appointmentId === appointmentId) {
                     localTime = ele.time;
-                    PushNotification.getScheduledLocalNotifications(rn => {
-                      for (let i = 0; i < rn.length; i++) {
-                        if (
-                          'You have an appointment scheduled at' +
-                            ' ' +
-                            localTime ===
-                            rn[i].message &&
-                          rn[i].title === 'Appointment!'
-                        ) {
-                          PushNotification.cancelLocalNotification({
-                            id: rn[i].id,
-                          });
-                        }
-                      }
-                    });
-                    reminderTime > time2
-                      ? handlePushNotification(obj, reminderTime, obj.time)
-                      : null;
-                    handlePushNotification(obj, time1, obj.time);
                     item.appointmentList[index] = obj;
                     item.isModified = true;
                   }
                 });
               }
+
               AddMedicine(updatedList);
               Toast.show({
                 type: 'success',
@@ -121,10 +103,33 @@ const UpdateAppointment = ({
                       });
                     }
                   });
-                  setAppointments(reminderList);
+                  const key = 'appointmentId';
+                  const uniqueReminder = [
+                    ...new Map(
+                      reminderList.map(item => [item[key], item]),
+                    ).values(),
+                  ];
+                  setAppointments(uniqueReminder);
                 }
               });
             });
+            PushNotification.getScheduledLocalNotifications(rn => {
+              for (let i = 0; i < rn.length; i++) {
+                if (
+                  'You have an appointment scheduled at' + ' ' + localTime ===
+                    rn[i].message &&
+                  rn[i].title === 'Appointment!'
+                ) {
+                  PushNotification.cancelLocalNotification({
+                    id: rn[i].id,
+                  });
+                }
+              }
+            });
+            reminderTime > time2
+              ? handlePushNotification(obj, reminderTime, obj.time)
+              : null;
+            handlePushNotification(obj, time1, obj.time);
             setTimeout(() => {
               setModalVisible(false);
             }, 1000);
@@ -139,25 +144,6 @@ const UpdateAppointment = ({
             item.appointmentList.map((ele, index) => {
               if (ele.appointmentId === appointmentId) {
                 localTime = ele.time;
-                PushNotification.getScheduledLocalNotifications(rn => {
-                  for (let i = 0; i < rn.length; i++) {
-                    if (
-                      'You have an appointment scheduled at' +
-                        ' ' +
-                        localTime ===
-                        rn[i].message &&
-                      rn[i].title === 'Appointment!'
-                    ) {
-                      PushNotification.cancelLocalNotification({
-                        id: rn[i].id,
-                      });
-                    }
-                  }
-                });
-                reminderTime > time2
-                  ? handlePushNotification(obj, reminderTime, obj.time)
-                  : null;
-                handlePushNotification(obj, time1, obj.time);
                 item.appointmentList[index] = obj;
                 item.isModified = true;
               }
@@ -179,10 +165,33 @@ const UpdateAppointment = ({
                   });
                 }
               });
-              setAppointments(reminderList);
+              const key = 'appointmentId';
+              const uniqueReminder = [
+                ...new Map(
+                  reminderList.map(item => [item[key], item]),
+                ).values(),
+              ];
+              setAppointments(uniqueReminder);
             }
           });
         });
+        PushNotification.getScheduledLocalNotifications(rn => {
+          for (let i = 0; i < rn.length; i++) {
+            if (
+              'You have an appointment scheduled at' + ' ' + localTime ===
+                rn[i].message &&
+              rn[i].title === 'Appointment!'
+            ) {
+              PushNotification.cancelLocalNotification({
+                id: rn[i].id,
+              });
+            }
+          }
+        });
+        reminderTime > time2
+          ? handlePushNotification(obj, reminderTime, obj.time)
+          : null;
+        handlePushNotification(obj, time1, obj.time);
         setTimeout(() => {
           setModalVisible(false);
         }, 1000);

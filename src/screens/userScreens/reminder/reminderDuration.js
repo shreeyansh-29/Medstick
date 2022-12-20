@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import React from 'react';
 import {useState} from 'react';
 import {colorPallete} from '../../../components/atoms/colorPalette';
@@ -10,12 +10,14 @@ import CheckBox from 'react-native-check-box';
 import {deviceWidth} from '../../../components/atoms/constant';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
-import {day_data, months} from './pushNotification/timeData';
+import {months, todayDay} from './pushNotification/timeData';
 import CustomButton from '../../../components/atoms/customButton';
 import CircleCheckBox from 'react-native-circle-checkbox';
 
 const ReminderDuration = ({route, navigation}) => {
   const [endDate, endDateState] = useState(new Date());
+  let temporaryDate = new Date();
+  temporaryDate.setDate(temporaryDate.getDate() + 1);
   let startDate = route.params.date;
   const [multiSliderValue, setMultiSliderValue] = useState([0]);
   const [check1, setCheck1] = useState(false);
@@ -54,7 +56,7 @@ const ReminderDuration = ({route, navigation}) => {
               alignItems: 'flex-start',
             }}>
             <Text style={styles.dateText1}>
-              {day_data[0].children[startDate.getDay()].id +
+              {todayDay[startDate.getDay()] +
                 ' ' +
                 startDate.getDate() +
                 ' ' +
@@ -116,7 +118,7 @@ const ReminderDuration = ({route, navigation}) => {
               <DateTimePicker
                 isVisible={picker}
                 mode="date"
-                minimumDate={new Date()}
+                minimumDate={temporaryDate}
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
               />
@@ -168,7 +170,7 @@ const ReminderDuration = ({route, navigation}) => {
           <Text style={styles.dateText1}>
             {check1
               ? 'No End Date'
-              : day_data[0].children[endDate.getDay()].id +
+              : todayDay[endDate.getDay()] +
                 ' ' +
                 endDate.getDate() +
                 ' ' +
@@ -181,6 +183,15 @@ const ReminderDuration = ({route, navigation}) => {
         <CustomButton
           title={'Save'}
           handleSubmit={() => {
+            if (!check1 && !check2 && !check3) {
+              Alert.alert('Please set the end date', ' ', [
+                {
+                  text: 'OK',
+                  onPress: () => {},
+                },
+              ]);
+              return;
+            }
             route.params.endDate(endDate);
             navigation.pop();
           }}

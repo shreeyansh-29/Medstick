@@ -9,7 +9,7 @@ import networkService from '../../../network/networkService';
 export function* deleteCaretakerRequestSaga(data) {
   try {
     let response = yield call(networkService.putDeleteRequest, data);
-    yield put(deleteCaretakerReqSuccess(response));
+    yield put(deleteCaretakerReqSuccess(response?.data));
   } catch (error) {
     yield put(deleteCaretakerReqError(error));
   }

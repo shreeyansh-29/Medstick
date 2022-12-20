@@ -24,6 +24,7 @@ const InputField = props => {
       right={props.right}
       scrollEnabled={false}
       disabled={props.disabled}
+      clearTextOnFocus={props.clearTextOnFocus}
     />
   );
 };

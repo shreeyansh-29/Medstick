@@ -27,7 +27,6 @@ const AddMedicineLocal = ({navigation}) => {
     prescriptionUrl: null,
     location: null,
     specialization: null,
-    appointmentList: [],
   });
   const [add, setAdd] = useState(false);
 
@@ -88,10 +87,10 @@ const AddMedicineLocal = ({navigation}) => {
         contact: prescriptionObj.contact,
         present: 'true',
         dosageType: pill,
-        dosageQuantity: values.dosageQuantity.trim(),
-        dosagePower: values.dosagePower.trim() + ' ' + values.doseType,
-        leftStock: values.notify.trim(),
-        stock: values.stocks.trim(),
+        dosageQuantity: values.dosageQuantity,
+        dosagePower: values.dosagePower + ' ' + values.doseType,
+        leftStock: values.notify,
+        stock: values.stocks,
         reminderId: null,
         startDate: null,
         endDate: null,
@@ -106,7 +105,7 @@ const AddMedicineLocal = ({navigation}) => {
         totalReminders: null,
         currentCount: null,
         historyList: [],
-        appointmentList: prescriptionObj.appointmentList,
+        appointmentList: [],
         notes: '',
         isModified: false,
       };
@@ -139,7 +138,7 @@ const AddMedicineLocal = ({navigation}) => {
       });
       setTimeout(() => {
         navigation.navigate('Home');
-      }, 1000);
+      }, 1500);
     }
   };
 
@@ -203,7 +202,7 @@ const AddMedicineLocal = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

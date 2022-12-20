@@ -14,15 +14,14 @@ import {
   faCameraRetro,
 } from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../styles/otherScreensStyles/accountTabStyles';
-import {colorPallete} from '../../components/atoms/colorPallete';
 import {Divider} from 'react-native-paper';
 import CustomButton from '../../components/atoms/customButton';
-import {verticalScale} from '../../components/atoms/constant';
 
 const AccountTab = ({navigation}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name, setName] = useState('Please Login First');
-  const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
+
+  const [img, imgstate] = useState('');
 
   useFocusEffect(() => {
     async function checkforlog() {
@@ -34,6 +33,7 @@ const AccountTab = ({navigation}) => {
       }
     }
     checkforlog();
+    return () => {};
   });
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const AccountTab = ({navigation}) => {
           activeOpacity={0.8}
           onPress={() => {
             isLoggedIn
-              ? navigation.navigate('EditProfile')
+              ? navigation.navigate('AccountStack', {screen: 'EditProfile'})
               : navigation.navigate('AuthScreen');
           }}>
           {isLoggedIn ? (
@@ -64,7 +64,10 @@ const AccountTab = ({navigation}) => {
             </View>
           ) : (
             <View style={styles.profile}>
-              <Image source={{uri: img}} style={styles.img}></Image>
+              <Image
+                source={require('../../assets/images/nouser.png')}
+                style={styles.img}
+              />
               <View style={styles.heading}>
                 <Text style={styles.title}>{name}</Text>
                 <Text style={styles.subTitle}>See your profile</Text>
@@ -85,7 +88,7 @@ const AccountTab = ({navigation}) => {
             icon={faHospitalUser}
             title="My Patients"
             navigation={navigation}
-            navigationTitle="Patients"
+            navigationTitle="Patient"
           />
           <Divider style={styles.divider} />
           <TwoTouchable
@@ -119,7 +122,7 @@ const AccountTab = ({navigation}) => {
             btnStyles={styles.btnStyles}
             contStyles={styles.contStyles}
             handleSubmit={() => {
-              imgstate('https://i.stack.imgur.com/l60Hf.png');
+              imgstate(require('../../assets/images/nouser.png'));
               setName('Please Login First');
               setIsLoggedIn(false);
               navigation.navigate('Logout');

@@ -5,7 +5,7 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {Formik} from 'formik';
 import ProfileForm from './profileForm';
@@ -28,7 +28,6 @@ const RenderModalVisible = ({
   result,
 }) => {
   const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
-
   const dispatch = useDispatch();
   const res = useSelector(state => state.editProfile);
 
@@ -37,19 +36,20 @@ const RenderModalVisible = ({
       Toast.show({
         type: 'success',
         text1: 'Updated Successfully!!!',
-        position: 'top',
+        position: 'bottom',
       });
       setTimeout(() => {
         setModalVisible(false);
         setEdit(false);
         dispatch(resetProfile());
-      }, 1000);
+      }, 1500);
     } else if (res?.data?.status === 'Failed') {
       Toast.show({
         type: 'error',
         text1: 'Something Went Wrong!!!',
-        position: 'top',
+        position: 'bottom',
       });
+      dispatch(resetProfile());
     }
     return () => {};
   }, [res]);
@@ -101,10 +101,10 @@ const RenderModalVisible = ({
                 contact: result?.contact,
                 dateofBirth: result?.dateOfBirth,
                 gender:
-                  result?.gender === null ? gender[0].value : result?.gender,
+                  result?.gender === '' ? gender[0].value : result?.gender,
                 country: result?.country,
                 bloodGroup:
-                  result?.bloodGroup === null
+                  result?.bloodGroup === ''
                     ? bloodGroup[0].value
                     : result?.bloodGroup,
                 address: result?.address,
@@ -137,7 +137,7 @@ const RenderModalVisible = ({
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1000} />
     </View>
   );
 };

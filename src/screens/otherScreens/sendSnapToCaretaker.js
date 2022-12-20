@@ -26,6 +26,7 @@ const SendSnapToCaretaker = ({navigation}) => {
   const dispatch = useDispatch();
   let res = useSelector(state => state.myCaretaker);
   let res1 = useSelector(state => state.sendSnap?.data);
+  console.log(res1, 'res1');
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');
@@ -123,7 +124,7 @@ const SendSnapToCaretaker = ({navigation}) => {
       email: 'email@example.com',
       social: Share.Social.EMAIL,
       failOnCancel: false,
-      // urls: [image_uri],
+      urls: [image],
     };
     await Share.open(shareOptions);
   };
@@ -211,7 +212,7 @@ const SendSnapToCaretaker = ({navigation}) => {
               value={selectMedicine}
               onChange={item => {
                 setSelectMedicine(item.value);
-                setSelectedMedId(item.medId);
+                setSelectedMedId(item.id);
               }}
               itemTextStyle={{color: 'black'}}
             />
