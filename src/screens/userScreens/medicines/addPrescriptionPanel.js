@@ -26,6 +26,7 @@ import CustomModal from '../../../components/molecules/customModal';
 import {getPrescription} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
 import Loader from '../../../components/atoms/loader';
+import {SuccessToast} from '../../../components/atoms/customToast';
 
 const AddPrescriptionPanel = ({navigation, route}) => {
   //params
@@ -193,11 +194,11 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   let index = prescriptionList.findIndex(a);
                   let data = prescriptionList[index];
                   prescriptionObject(data);
-                  Toast.show({
+                  SuccessToast({
                     text1: 'Prescription Uploaded',
-                    type: 'success',
                     position: 'bottom',
                   });
+
                   setTimeout(() => {
                     navigation.pop();
                   }, 1500);

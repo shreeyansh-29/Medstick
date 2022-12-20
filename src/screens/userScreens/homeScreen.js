@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, Alert, BackHandler} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
@@ -12,13 +12,17 @@ import {useDispatch, useSelector} from 'react-redux';
 import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction';
 import {verticalScale} from '../../components/atoms/constant';
 import {
+  AddMedicine,
   getMedicine,
   getPercentageDetails,
   savePercentageDetails,
 } from '../../utils/storage';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import moment from 'moment';
 import {syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
+import Loader from '../../components/atoms/loader';
+import {week} from '../../constants/constants';
+import uuid from 'react-native-uuid';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -27,6 +31,7 @@ const HomeScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const load = useSelector(state => state.userInfo?.data);
+  const [isLoading, setIsLoading] = useState(true);
   let td_da = moment().format('YYYY-MM-DD');
 
   // useEffect(() => {
@@ -75,12 +80,13 @@ const HomeScreen = ({navigation}) => {
         savePercentageDetails(obj);
       } else if (data !== null && data.length !== 0) {
         obj = data;
+        console.log('percent data', data);
         obj.map((item, index) => {
           const a = b => b.date == td_da;
           if (item.date === td_da) {
             item.percentage = Math.floor((cc / tr) * 100);
             obj[index] = item;
-            // console.log('zzz', obj);
+            console.log('zzz', obj);
           } else if (!obj.some(a) && tr !== 0) {
             temp.date = td_da;
             temp.percentage = Math.floor((cc / tr) * 100);
@@ -100,11 +106,128 @@ const HomeScreen = ({navigation}) => {
         let p = getPercentage(data);
         setPercentage(p);
       } else {
+        console.log('123');
+        setMedData([]);
         setPercentage(0);
       }
     });
+    setIsLoading(false);
   }
 
+  const MedicineHistory = data => {
+    var updateArray = [];
+    let history = {
+      historyId: null,
+      date: null,
+      taken: '',
+      notTaken: '',
+      time: null,
+    };
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].everyday == true) {
+        data[i].days = [
+          'Sun',
+          'Mon',
+          'Tue',
+          'Wed',
+          'Thur',
+          'Fri',
+          'Sat',
+        ].toString();
+      }
+      let arr = data[i].days.split(',');
+      let set = new Set(arr);
+      var start_date = new Date(data[i].startDate);
+      var end_date = new Date(data[i].endDate);
+      var tody_date = new Date();
+      let td_da = moment().format('YYYY-MM-DD');
+      if (
+        data[i].endDate !== 'No End Date' &&
+        set.has(week[tody_date.getDay()]) &&
+        start_date <= tody_date &&
+        tody_date <= end_date
+      ) {
+        if (data[i].historyList.length === 0) {
+          history.historyId = uuid.v4();
+          history.date = td_da;
+          history.time = data[i].reminderTime.split(',');
+          history.notTaken = data[i].reminderTime;
+          history.taken = '';
+          data[i].historyList.push(history);
+        } else {
+          const a = b => b.date === td_da;
+          const index = data[i].historyList.findIndex(a);
+          history.time = data[i].reminderTime.split(',');
+          if (
+            index >= 0 &&
+            history.time.toString() !=
+              data[i].historyList[index].time.toString()
+          ) {
+            history.historyId = data[i].historyList[index].historyId;
+            history.date = data[i].historyList[index].date;
+            history.notTaken = data[i].reminderTime;
+            history.taken = '';
+            history.time = data[i].reminderTime.split(',');
+            data[i].historyList[index] = history;
+            data[i].totalReminders = 0;
+            data[i].currentCount = 0;
+          } else if (index < 0) {
+            history.historyId = uuid.v4();
+            history.date = td_da;
+            history.time = data[i].reminderTime.split(',');
+            history.notTaken = data[i].reminderTime;
+            history.taken = '';
+            data[i].historyList.push(history);
+          }
+        }
+      } else if (data[i].endDate === 'No End Date') {
+        const a = b => b.date == td_da;
+        const index = data[i].historyList.findIndex(a);
+        if (data[i].historyList.length === 0) {
+          history.historyId = uuid.v4();
+          history.date = td_da;
+          history.time = data[i].reminderTime.split(',');
+          history.notTaken = data[i].reminderTime;
+          data[i].historyList.push(history);
+        } else {
+          const a = b => b.date === td_da;
+          const index = data[i].historyList.findIndex(a);
+          history.time = data[i].reminderTime.split(',');
+          if (
+            index >= 0 &&
+            history.time.toString() !=
+              data[i].historyList[index].time.toString()
+          ) {
+            history.historyId = data[i].historyList[index].historyId;
+            history.date = data[i].historyList[index].date;
+            history.notTaken = data[i].reminderTime;
+            history.taken = '';
+            history.time = data[i].reminderTime.split(',');
+            data[i].historyList[index] = history;
+            data[i].totalReminders = 0;
+            data[i].currentCount = 0;
+          } else if (index < 0) {
+            history.historyId = uuid.v4();
+            history.date = td_da;
+            history.time = data[i].reminderTime.split(',');
+            history.notTaken = data[i].reminderTime;
+            history.taken = '';
+            data[i].historyList.push(history);
+          }
+        }
+      }
+
+      updateArray.push(data[i]);
+    }
+    console.log('Med Array', updateArray);
+    AddMedicine(updateArray);
+  };
+
+  useEffect(() => {
+    medData.map(item => {
+      item.reminderId !== null && MedicineHistory(medData);
+    });
+  }, [medData]);
   function getDate(data) {
     getPercentageDetails().then(item => {
       if (item !== null && item.length !== 0) {
@@ -227,11 +350,15 @@ const HomeScreen = ({navigation}) => {
           </View>
         </View>
         <View style={{width: '100%', height: '44%'}}>
-          <Reminders
-            showAlert={showAlert}
-            setPercentage={setPercentage}
-            data={medData}
-          />
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Reminders
+              showAlert={showAlert}
+              setPercentage={setPercentage}
+              data={medData}
+            />
+          )}
         </View>
       </View>
     </>

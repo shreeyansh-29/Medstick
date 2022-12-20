@@ -15,6 +15,7 @@ import EditMedicineForm from './editMedicineForm';
 import {addMedicineSchema} from '../../../constants/validations';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import Toast from 'react-native-toast-message';
+import {SuccessToast} from '../../../components/atoms/customToast';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -106,14 +107,14 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
         });
         AddMedicine(temp);
       });
-      Toast.show({
+      SuccessToast({
         text1: 'Medicine Updated Successfully',
-        type: 'success',
         position: 'bottom',
       });
+
       setTimeout(() => {
         setEdit(false);
-      }, 1000);
+      }, 2000);
     }
   };
 
@@ -188,7 +189,7 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

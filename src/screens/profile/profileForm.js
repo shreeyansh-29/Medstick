@@ -155,6 +155,7 @@ const ProfileForm = props => {
               selectedValue={props.values.bloodGroup}
               text="bloodGroup"
               {...props}
+              disabled={props.isSubmitted}
             />
           </View>
           {props.errors.bloodGroup && props.touched.bloodGroup && (
@@ -171,6 +172,7 @@ const ProfileForm = props => {
               selectedValue={props.values.gender}
               text="gender"
               {...props}
+              disabled={props.isSubmitted}
             />
           </View>
           {props.errors.gender && props.touched.gender && (

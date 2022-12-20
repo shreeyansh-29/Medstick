@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from '../../styles/homeScreenStyles/reminderStyles';
@@ -20,14 +21,12 @@ import moment from 'moment';
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
+  const [notTakenList, setNotTakenList] = useState([]);
   let td_da = moment().format('YYYY-MM-DD');
-
   let tempList = new Set();
 
   useEffect(() => {
-    if (medData !== null) {
-      display();
-    }
+    display();
     return () => {};
   }, [medData]);
 
@@ -40,9 +39,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         }
       })
       .then(() => {
-        if (medData.length !== 0) {
-          dailyReminders(medData);
-        }
+        dailyReminders(medData);
       })
       .catch(error => {
         console.log('error', error);
@@ -59,26 +56,63 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     return totalMedReminder;
   }
   function dailyReminders(medicine) {
-    medicine.map((item, index) => {
-      item.totalReminders = totalMedReminders(medicine, index);
-      item.historyList.map(r => {
-        if (r.date === td_da) {
-          r.notTaken.split(',').map(z => {
-            // const a = b => b.historyId == r.historyId;
-            // const index = reminderList.findIndex(a);
-            if (!r.taken.includes(z)) {
-              let temp = {};
-              temp.userMedicineId = item.userMedicineId;
-              temp.medName = item.medicineName;
-              temp.historyId = r.historyId;
-              temp.time = z;
-              tempList.add(temp);
-              setReminderList([...tempList]);
-            }
-          });
-        }
+    setReminderList([]);
+    if (medicine.length !== 0) {
+      medicine.map((item, index) => {
+        item.totalReminders = totalMedReminders(medicine, index);
+        item.historyList.map(r => {
+          if (r.date === td_da) {
+            r.notTaken.split(',').map(z => {
+              if (!r.taken.includes(z)) {
+                let temp = {};
+                temp.userMedicineId = item.userMedicineId;
+                temp.medName = item.medicineName;
+                temp.historyId = r.historyId;
+                temp.time = z;
+                temp.date = td_da;
+                // console.log('tem', notTakenList);
+                if (
+                  !notTakenList.some(function (p) {
+                    if (p !== undefined) {
+                      return (
+                        p.time === temp.time &&
+                        p.medName === temp.medName &&
+                        p.historyId === temp.historyId &&
+                        p.date === temp.date
+                      );
+                    }
+                  })
+                ) {
+                  tempList.add(temp);
+                }
+                setReminderList([...tempList]);
+              }
+            });
+          }
+        });
       });
-    });
+    } else {
+      setReminderList([]);
+    }
+  }
+
+  function notTakenCheck(temp, index) {
+    let random = notTakenList;
+    if (
+      !notTakenList.some(function (p) {
+        if (p !== undefined) {
+          return (
+            p.time === temp.time &&
+            p.medName === temp.medName &&
+            p.historyId === temp.historyId &&
+            p.date === temp.date
+          );
+        }
+      })
+    ) {
+      random.push(reminderList[index]);
+      setNotTakenList(random);
+    }
   }
 
   function getPercentage(data) {
@@ -100,8 +134,33 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     return Math.floor((cc / tr) * 100);
   }
 
+  function check(reminderTime) {
+    let time = new Date();
+    let currentTime = time.getHours() + ':' + time.getMinutes();
+    let bufferTime = moment(reminderTime, ['h:mm A']).format('HH:mm');
+    let bufferHour =
+      parseInt(bufferTime.split(':')[0]) === 0
+        ? 23
+        : parseInt(bufferTime.split(':')[0]) - 1;
+    let remTime =
+      bufferHour < 10
+        ? '0' + bufferHour + ':' + bufferTime.split(':')[1]
+        : bufferHour + ':' + bufferTime.split(':')[1];
+    if (currentTime < remTime) {
+      Alert.alert('Cannot mark at this moment!!', '', [
+        {
+          text: 'Ok',
+          onPress: () => {},
+        },
+      ]);
+    } else {
+      return true;
+    }
+    return false;
+  }
+
   function markingTaken(item) {
-    const {userMedicineId, historyId, time, medName} = item.item;
+    const {userMedicineId, historyId, time, medName} = item;
     medData.forEach(item => {
       if (
         item.userMedicineId == userMedicineId &&
@@ -125,10 +184,10 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   }
 
   const renderItem = (item, index) => {
-    const {medName, time} = item.item;
+    const {medName, time} = item;
     return (
-      <View key={item.item.medName + '1'} style={{width: '100%'}}>
-        <View style={styles.list} key={item.item.medName + '2'}>
+      <View key={item.medName + '1'} style={{width: '100%'}}>
+        <View style={styles.list} key={item.medName + '2'}>
           <View style={styles.avatarView}>
             <View style={styles.medNameView}>
               <ListItem.Title style={styles.medName}>{time}</ListItem.Title>
@@ -145,15 +204,16 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               alignItems: 'center',
               width: '28%',
             }}
-            key={item.item.medName + 6}>
+            key={item.medName + 6}>
             <TouchableOpacity
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
-                showAlert();
-                markingTaken(item);
-                reminderList.splice(index, 1);
-                setReminderList(reminderList);
+                check(time) &&
+                  (showAlert(),
+                  markingTaken(item),
+                  reminderList.splice(index, 1),
+                  setReminderList(reminderList));
               }}>
               <FontAwesomeIcon
                 icon={faCircleCheck}
@@ -163,11 +223,13 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{padding: 8}}
+              activeOpacity={1}
               onPress={() => {
+                notTakenCheck(item, index);
+                display();
                 reminderList.splice(index, 1);
                 setReminderList(reminderList);
-              }}
-              activeOpacity={1}>
+              }}>
               <FontAwesomeIcon
                 icon={faCircleXmark}
                 color={colorPallete.redPercentageColor}
@@ -206,7 +268,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             <FlatList
               showsVerticalScrollIndicator={false}
               data={reminderList}
-              renderItem={renderItem}
+              renderItem={({item, index}) => renderItem(item, index)}
               keyExtractor={(item, index) => index.toString()}
             />
           </View>

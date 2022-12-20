@@ -15,22 +15,31 @@ import styles from './reminderStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import moment from 'moment';
-import {AddMedicine, getMedicine} from '../../../utils/storage.js';
-import uuid from 'react-native-uuid';
 import {hour} from '../../../constants/constants';
 import PushNotification from 'react-native-push-notification';
 import Toast from 'react-native-toast-message';
 import Notifications from '../../../pushNotification/pushNotifications';
+import {AddMedicine, getMedicine} from '../../../utils/storage';
+import uuid from 'react-native-uuid';
+import {SuccessToast} from '../../../components/atoms/customToast';
 
 const Reminder = ({route, navigation}) => {
+  let item = route.params.data;
+  // console.log('data', item.endDate);
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(
+    item.startDate !== null ? new Date(item.startDate) : new Date(),
+  );
   const [endDate, endDateState] = useState(new Date());
-  const [check1, setCheck1] = useState(false);
+  const [check1, setCheck1] = useState(
+    item.everyday !== null ? item.everyday : false,
+  );
   const [check2, setCheck2] = useState(false);
-  const [title, titlestate] = useState('');
+  const [title, titlestate] = useState(
+    item.reminderTitle !== null ? item.reminderTitle : '',
+  );
   const [time_picker_mode, time_picker_mode_state] = useState(false);
   const [timeings, timestate] = useState([]);
   const [timearray, timearraystate] = useState([]);
@@ -44,8 +53,12 @@ const Reminder = ({route, navigation}) => {
   const totalReminders = 0;
   const currentCount = 0;
   const [time, setTime] = useState('');
-  const [foodBefore, setFoodBefore] = useState(false);
-  const [foodAfter, setFoodAfter] = useState(false);
+  const [foodBefore, setFoodBefore] = useState(
+    item.beforeAfter === 'Before' ? true : false,
+  );
+  const [foodAfter, setFoodAfter] = useState(
+    item.beforeAfter === 'After' ? true : false,
+  );
   const [breakfast, setBreakfast] = useState(false);
   const [lunch, setLunch] = useState(false);
   const [dinner, setDinner] = useState(false);
@@ -91,12 +104,17 @@ const Reminder = ({route, navigation}) => {
         number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
     }
 
+    console.log('endDate', endDate);
     let endDate1 =
-      endDate.getFullYear() +
-      '-' +
-      (endDate.getMonth() + 1) +
-      '-' +
-      endDate.getDate();
+      endDate !== 'No End Date'
+        ? endDate.getFullYear() +
+          '-' +
+          (endDate.getMonth() + 1) +
+          '-' +
+          endDate.getDate()
+        : endDate;
+
+    console.log('end date 1', endDate1);
 
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
@@ -229,6 +247,18 @@ const Reminder = ({route, navigation}) => {
         },
       ]);
       return;
+    } else if (
+      (breakfast === true && timearray[0] === undefined) ||
+      (lunch === true && timearray[1] === undefined) ||
+      (dinner === true && timearray[2] === undefined)
+    ) {
+      Alert.alert("Frequency can't be left as empty", ' ', [
+        {
+          text: 'OK',
+          onPress: () => {},
+        },
+      ]);
+      return;
     }
 
     loadstate(true);
@@ -331,14 +361,14 @@ const Reminder = ({route, navigation}) => {
         }
       });
     }
-
-    handlePushNotification(obj, check1, endDate);
+    handlePushNotification(obj, check1, fDateSecondary);
 
     getMedicine().then(data => {
       const temp = data;
       if (temp[route.params.index].reminderId !== null) {
         temp[route.params.index] = obj;
       } else {
+        console.log('zzzzzz', obj);
         obj.reminderId = uuid.v4();
         temp[route.params.index] = obj;
       }
@@ -346,9 +376,8 @@ const Reminder = ({route, navigation}) => {
     });
     loadstate(false);
 
-    Toast.show({
+    SuccessToast({
       text1: 'Reminder Saved',
-      type: 'success',
       position: 'bottom',
     });
 
