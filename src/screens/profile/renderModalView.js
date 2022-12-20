@@ -30,6 +30,7 @@ const RenderModalVisible = ({
   const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
   const dispatch = useDispatch();
   const res = useSelector(state => state.editProfile);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     if (res?.data?.status === 'Success') {
@@ -68,6 +69,7 @@ const RenderModalVisible = ({
         date: values?.date,
       }),
     );
+    setIsSubmitted(true);
   };
 
   return (
@@ -131,6 +133,7 @@ const RenderModalVisible = ({
                   setFieldValue={setFieldValue}
                   handleSubmit={handleSubmit}
                   values={values}
+                  isSubmitted={isSubmitted}
                 />
               )}
             </Formik>

@@ -236,6 +236,7 @@ const PatientRequest = () => {
               }
             />
           )}
+          {connected ? null : <NoInternet />}
         </>
       )}
       {connected ? null : <NoInternet />}

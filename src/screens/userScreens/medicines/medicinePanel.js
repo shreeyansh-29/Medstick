@@ -17,11 +17,8 @@ import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
 import CustomImage from '../../../components/atoms/customImage';
-import {week} from '../../../constants/constants';
-import uuid from 'react-native-uuid';
 import PushNotification from 'react-native-push-notification';
 import Loader from '../../../components/atoms/loader';
-import moment from 'moment';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const MedicinePanel = ({navigation}) => {
@@ -59,105 +56,6 @@ const MedicinePanel = ({navigation}) => {
     });
   };
 
-  const MedicineHistory = data => {
-    var updateArray = [];
-    let history = {
-      historyId: null,
-      date: null,
-      taken: '',
-      notTaken: '',
-      time: null,
-    };
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].everyday == true) {
-        data[i].days = [
-          'Sun',
-          'Mon',
-          'Tue',
-          'Wed',
-          'Thur',
-          'Fri',
-          'Sat',
-        ].toString();
-      }
-      let arr = data[i].days.split(',');
-      let set = new Set(arr);
-      var start_date = new Date(data[i].endDate);
-      var end_date = new Date(data[i].endDate);
-      var tody_date = new Date();
-      let td_da = moment().format('YYYY-MM-DD');
-
-      if (
-        data[i].endDate !== 'No End Date' &&
-        set.has(week[tody_date.getDay()]) &&
-        start_date <= tody_date <= end_date
-      ) {
-        if (data[i].historyList.length === 0) {
-          history.historyId = uuid.v4();
-          history.date = td_da;
-          history.time = data[i].reminderTime.split(',');
-          history.notTaken = data[i].reminderTime;
-          history.taken = '';
-          data[i].historyList.push(history);
-        } else {
-          const a = b => b.date === td_da;
-          const index = data[i].historyList.findIndex(a);
-          history.time = data[i].reminderTime.split(',');
-          if (
-            index >= 0 &&
-            history.time.toString() !=
-              data[i].historyList[index].time.toString()
-          ) {
-            history.historyId = data[i].historyList[index].historyId;
-            history.date = data[i].historyList[index].date;
-            history.notTaken = data[i].reminderTime;
-            history.taken = '';
-            history.time = data[i].reminderTime.split(',');
-            data[i].historyList[index] = history;
-            data[i].totalReminders = 0;
-            data[i].currentCount = 0;
-          } else if (index < 0) {
-            history.historyId = uuid.v4();
-            history.date = td_da;
-            history.time = data[i].reminderTime.split(',');
-            history.notTaken = data[i].reminderTime;
-            history.taken = '';
-            data[i].historyList.push(history);
-          }
-        }
-      } else if (data[i].endDate === 'No End Date') {
-        const a = b => b.date == td_da;
-        const index = data[i].historyList.findIndex(a);
-        if (data[i].historyList.length === 0) {
-          history.historyId = uuid.v4();
-          history.date = td_da;
-          history.time = data[i].reminderTime.split(',');
-          history.notTaken = data[i].reminderTime;
-          data[i].historyList.push(history);
-        } else {
-          const a = b => b.date === td_da;
-          const index = data[i].historyList.findIndex(a);
-          history.time = data[i].reminderTime.split(',');
-          if (
-            index >= 0 &&
-            history.time.toString() !=
-              data[i].historyList[index].time.toString()
-          ) {
-            history.historyId = data[i].historyList[index].historyId;
-            history.date = data[i].historyList[index].date;
-            history.notTaken = data[i].reminderTime;
-            history.taken = '';
-            history.time = data[i].reminderTime.split(',');
-            data[i].historyList[index] = history;
-          }
-        }
-      }
-
-      updateArray.push(data[i]);
-    }
-    AddMedicine(updateArray);
-  };
-
   useEffect(() => {
     if (isFocused) {
       getMedicine().then(data => {
@@ -178,12 +76,6 @@ const MedicinePanel = ({navigation}) => {
       }
     });
   };
-
-  useEffect(() => {
-    medicineResponse.map(item => {
-      item.reminderId !== null ? MedicineHistory(medicineResponse) : null;
-    });
-  }, [medicineResponse]);
 
   const renderItemLocal = ({item, index}) => {
     return (
