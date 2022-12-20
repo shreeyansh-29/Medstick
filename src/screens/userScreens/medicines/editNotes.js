@@ -106,7 +106,7 @@ const EditNotes = ({userMedicineId, setVisible}) => {
                       mode="outlined"
                       outlineColor="#02aba6"
                       activeOutlineColor="#02aba6"
-                      value={values.review.trim()}
+                      value={values.review?.trim()}
                       styles={styles.field}
                       selectTextOnFocus={true}
                       text="review"
