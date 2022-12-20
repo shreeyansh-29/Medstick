@@ -23,6 +23,7 @@ import {AddMedicine, getMedicine} from '../../utils/storage';
 import Notifications from '../../pushNotification/pushNotifications';
 import PushNotification from 'react-native-push-notification';
 import {colorPallete} from '../../components/atoms/colorPalette';
+import {SuccessToast} from '../../components/atoms/customToast';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -34,8 +35,10 @@ const UpdateAppointment = ({
   appointmentId,
   setAppointments,
 }) => {
+  //React useState hooks
   const [dateOpen, setDateOpen] = useState(false);
   const [timeOpen, setTimeOpen] = useState(false);
+
   const showAlert = () => {
     Alert.alert('Please add valid time', '', [
       {
@@ -45,11 +48,13 @@ const UpdateAppointment = ({
     ]);
   };
 
+  //Pushing scheduled notificatons
   const handlePushNotification = (obj, reminderTime, time) => {
     let dateTime = moment(obj.date + ' ' + reminderTime);
     Notifications.schduleNotification2(dateTime._d, time);
   };
 
+  //Function to update appointment
   const updateAppointment = values => {
     let obj = {
       notes: values.notes.trim(),
@@ -66,12 +71,20 @@ const UpdateAppointment = ({
       (d.getMonth() + 1) +
       '-' +
       (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
-    const time1 = moment(obj.time, ['h:mm A']).format('HH:mm');
-    const time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
-    let reminderTime =
-      parseInt(time1.split(':')[0] - 1) + ':' + parseInt(time1.split(':')[1]);
+    let time1 = moment(obj.time, ['h:mm A']).format('HH:mm');
+    let time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
 
+    let hour =
+      parseInt(time1.split(':')[0]) === 0
+        ? 23
+        : parseInt(time1.split(':')[0]) - 1;
+
+    let reminderTime = hour + ':' + time1.split(':')[1];
+
+    //comparing currentDate and scheduled date
     if (currentDate === obj.date) {
+      //if both the dates matched then checking timing and if new time
+      //is greater than previous time then update appointment
       time1 > time2
         ? getMedicine().then(data => {
             let localTime;
@@ -79,6 +92,7 @@ const UpdateAppointment = ({
             updatedList.map(item => {
               if (item.appointmentList.length !== 0) {
                 item.appointmentList.map((ele, index) => {
+                  //updating the previously stored data
                   if (ele.appointmentId === appointmentId) {
                     localTime = ele.time;
                     item.appointmentList[index] = obj;
@@ -87,12 +101,11 @@ const UpdateAppointment = ({
                 });
               }
 
+              //pushing the updated list
               AddMedicine(updatedList);
-              Toast.show({
-                type: 'success',
-                text1: 'Updated Successfully',
-              });
+              SuccessToast({text1: 'Updated Successfully', position: 'top'});
 
+              //pushing the updated appointment
               getMedicine().then(data => {
                 if (data !== null && data.length !== 0) {
                   let reminderList = [];
@@ -103,6 +116,8 @@ const UpdateAppointment = ({
                       });
                     }
                   });
+
+                  //fetching unique appointment wrt appointmentId
                   const key = 'appointmentId';
                   const uniqueReminder = [
                     ...new Map(
@@ -113,6 +128,8 @@ const UpdateAppointment = ({
                 }
               });
             });
+
+            //deleting the push notification
             PushNotification.getScheduledLocalNotifications(rn => {
               for (let i = 0; i < rn.length; i++) {
                 if (
@@ -126,6 +143,8 @@ const UpdateAppointment = ({
                 }
               }
             });
+
+            //pushing the updated notification
             reminderTime > time2
               ? handlePushNotification(obj, reminderTime, obj.time)
               : null;
@@ -134,14 +153,17 @@ const UpdateAppointment = ({
               setModalVisible(false);
             }, 1000);
           })
-        : showAlert();
+        : //scheduled time is less than currentTime
+          showAlert();
     } else {
+      //if scheduled date is greater than previously selected date then
       getMedicine().then(data => {
         let localTime;
         let updatedList = data;
         updatedList.map(item => {
           if (item.appointmentList.length !== 0) {
             item.appointmentList.map((ele, index) => {
+              //updating the previously stored data
               if (ele.appointmentId === appointmentId) {
                 localTime = ele.time;
                 item.appointmentList[index] = obj;
@@ -149,12 +171,11 @@ const UpdateAppointment = ({
               }
             });
           }
+          //pushing the updated list
           AddMedicine(updatedList);
-          Toast.show({
-            type: 'success',
-            text1: 'Updated Successfully',
-          });
+          SuccessToast({text1: 'Updated Successfully', position: 'top'});
 
+          //pushing the updated appointment
           getMedicine().then(data => {
             if (data !== null && data.length !== 0) {
               let reminderList = [];
@@ -165,6 +186,8 @@ const UpdateAppointment = ({
                   });
                 }
               });
+
+              //fetching unique appointment wrt appointmentId
               const key = 'appointmentId';
               const uniqueReminder = [
                 ...new Map(
@@ -175,6 +198,7 @@ const UpdateAppointment = ({
             }
           });
         });
+        //deleting the push notification
         PushNotification.getScheduledLocalNotifications(rn => {
           for (let i = 0; i < rn.length; i++) {
             if (
@@ -188,13 +212,15 @@ const UpdateAppointment = ({
             }
           }
         });
+
+        //pushing the updated notification
         reminderTime > time2
           ? handlePushNotification(obj, reminderTime, obj.time)
           : null;
         handlePushNotification(obj, time1, obj.time);
         setTimeout(() => {
           setModalVisible(false);
-        }, 1000);
+        }, 2000);
       });
     }
   };
@@ -352,7 +378,7 @@ const UpdateAppointment = ({
           </Formik>
         </KeyboardAvoidingView>
       </View>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

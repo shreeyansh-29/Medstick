@@ -28,8 +28,11 @@ import {useIsFocused} from '@react-navigation/native';
 import Loader from '../../../components/atoms/loader';
 
 const AddPrescriptionPanel = ({navigation, route}) => {
+  //params
   let {prescriptionObject, key} = route?.params;
   const key1 = key;
+
+  //React Hooks
   const isFocused = useIsFocused();
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
@@ -63,6 +66,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
     }
   }, [isFocused]);
 
+  //FlatList RenderItem
   const renderItem = ({item, index}) => {
     return (
       <Animatable.View animation="zoomIn" duration={400} delay={index * 200}>

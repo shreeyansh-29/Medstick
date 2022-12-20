@@ -25,12 +25,15 @@ import {AddMedicine, getMedicine} from '../../utils/storage';
 import uuid from 'react-native-uuid';
 import Notifications from '../../pushNotification/pushNotifications';
 import {colorPallete} from '../../components/atoms/colorPalette';
+import {SuccessToast} from '../../components/atoms/customToast';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
 const AppointmentReminders = ({navigation, route}) => {
+  //React useState hooks
   const [dateOpen, setDateOpen] = useState(false);
   const [saveTimeOpen, setSaveTimeOpen] = useState(false);
+
   let doctor = route.params.notes;
 
   const showAlert = () => {
@@ -42,11 +45,13 @@ const AppointmentReminders = ({navigation, route}) => {
     ]);
   };
 
+  //Pushing scheduled notificatons
   const handlePushNotification = (obj, reminderTime, time) => {
     let dateTime = moment(obj.date + ' ' + reminderTime);
     Notifications.schduleNotification2(dateTime._d, time);
   };
 
+  //Saving Appointment
   const saveAppointment = values => {
     let prescriptionId = values.doctorName;
     let appointmentId = uuid.v4();
@@ -76,24 +81,31 @@ const AppointmentReminders = ({navigation, route}) => {
 
     let reminderTime = hour + ':' + time1.split(':')[1];
 
+    //comparing currentDate and scheduled date
     if (currentDate === obj.date) {
+      //if both the dates matched then checking timing and if new time
+      //is greater than previous time then saving appointment
       time1 > time2
         ? getMedicine().then(data => {
             if (data !== null && data.length !== 0) {
               let updatedList = data;
               updatedList.map((item, index) => {
+                //storing the appointment
                 if (item.prescriptionId === prescriptionId) {
                   updatedList[index].appointmentList.push(obj);
                   updatedList[index].isModified = true;
                 }
               });
+
+              //pushing the updatedList
               AddMedicine(updatedList);
-              Toast.show({
-                type: 'success',
+              SuccessToast({
                 text1: 'Appointment Saved Successfully',
                 position: 'bottom',
               });
             }
+
+            //scheduling the push notification
             reminderTime > time2
               ? handlePushNotification(obj, reminderTime, obj.time)
               : null;
@@ -102,25 +114,30 @@ const AppointmentReminders = ({navigation, route}) => {
               navigation.pop();
             }, 1500);
           })
-        : showAlert();
+        : //scheduled time is less than currentTime
+          showAlert();
     } else {
+      //if scheduled date is greater than previously selected date then
       getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
           let updatedList = data;
           updatedList.map((item, index) => {
+            //storing the appointment
             if (item.prescriptionId === prescriptionId) {
               updatedList[index].appointmentList.push(obj);
               updatedList[index].isModified = true;
             }
           });
-          AddMedicine(updatedList);
 
-          Toast.show({
-            type: 'success',
+          //pushing the updated list
+          AddMedicine(updatedList);
+          SuccessToast({
             text1: 'Appointment Saved Successfully',
             position: 'bottom',
           });
         }
+
+        //scheduling the push notification
         reminderTime > time2
           ? handlePushNotification(obj, reminderTime, obj.time)
           : null;
