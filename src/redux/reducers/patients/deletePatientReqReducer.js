@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import {
+  CLEAR_REQUEST_STATUS,
   DELETE_PATIENT_REQ_ERROR,
   DELETE_PATIENT_REQ_REQUEST,
   DELETE_PATIENT_REQ_SUCCESS,
@@ -18,6 +19,8 @@ export const deletePatientReqReducer = (state = initialState, action) => {
       return {...state, data: action.payload, isLoading: false};
     case DELETE_PATIENT_REQ_ERROR:
       return {...state, error: action.payload, isLoading: false};
+    case CLEAR_REQUEST_STATUS:
+      return {data: null, isLoading: false, error: null};
     default:
       return state;
   }

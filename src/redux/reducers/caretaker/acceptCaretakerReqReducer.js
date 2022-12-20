@@ -3,12 +3,13 @@ import {
   ACCEPT_CARETAKER_REQ_ERROR,
   ACCEPT_CARETAKER_REQ_REQUEST,
   ACCEPT_CARETAKER_REQ_SUCCESS,
+  CLEAR_REQUEST_STATUS,
 } from '../../actionTypes';
 
 const initialState = {
   data: null,
   isLoading: false,
-  error: '',
+  error: null,
 };
 export const acceptCaretakerReqReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -18,6 +19,8 @@ export const acceptCaretakerReqReducer = (state = initialState, action) => {
       return {...state, data: action.payload, isLoading: false};
     case ACCEPT_CARETAKER_REQ_ERROR:
       return {...state, error: action.payload, isLoading: false};
+    case CLEAR_REQUEST_STATUS:
+      return {data: null, isLoading: false, error: null};
     default:
       return state;
   }

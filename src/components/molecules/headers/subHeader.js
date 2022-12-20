@@ -27,7 +27,6 @@ const SubHeader = ({
   key1,
 }) => {
   const name = key1;
-  console.log(name);
   return (
     <View style={styles.subHeader}>
       <TouchableOpacity

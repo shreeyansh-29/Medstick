@@ -9,7 +9,7 @@ import networkService from '../../../network/networkService';
 export function* acceptCaretakerRequestSaga(data) {
   try {
     let response = yield call(networkService.putAcceptRequest, data);
-    yield put(acceptCaretakerReqSuccess(response));
+    yield put(acceptCaretakerReqSuccess(response?.data));
   } catch (error) {
     yield put(acceptCaretakerReqError(error));
   }

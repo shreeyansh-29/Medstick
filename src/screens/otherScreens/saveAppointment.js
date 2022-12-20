@@ -72,7 +72,7 @@ const AppointmentReminders = ({navigation, route}) => {
     let hour =
       parseInt(time1.split(':')[0]) === 0
         ? 23
-        : parseInt(time1.split(':')[0] - 1);
+        : parseInt(time1.split(':')[0]) - 1;
 
     let reminderTime = hour + ':' + time1.split(':')[1];
 

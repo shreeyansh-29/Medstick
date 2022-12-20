@@ -11,43 +11,54 @@ import {
 } from '../../../redux/action/caretaker/myCaretakerAction';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
-import {colorPallete} from '../../../components/atoms/colorPallete';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import NoInternet from '../../../components/atoms/noInternet';
 
 const MyCareTaker = ({navigation}) => {
+  //React Redux Hooks
   const dispatch = useDispatch();
   const res = useSelector(state => state.myCaretaker);
   const connected = useSelector(state => state.internetConnectivity?.data);
+
+  //React useState hook
   const [pageNo, setPageNo] = useState(0);
   const [caretaker, setCaretaker] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
+  const [
+    onEndReachedCalledDuringMomentum,
+    setOnEndReachedCalledDuringMomentum,
+  ] = useState(true);
 
+  //React useEffect hook
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     pageNo === 0 ? dispatch(myCaretakerRequest(pageNo)) : null;
-  }, [pageNo]);
+  }, []);
 
   useEffect(() => {
     if (res?.data !== null && res.data.length !== 0) {
+      setRefresh(false);
       setCaretaker([...caretaker, ...res.data]);
       dispatch(myCaretakerClear());
     }
   }, [res]);
 
+  //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
     if (caretaker?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
-      dispatch(myPatientsRequest(a));
+      dispatch(myCaretakerRequest(a));
+      setPageNo(a);
     }
-    setPageNo(a);
   };
 
+  //FlatList RenderItem Function
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
@@ -92,10 +103,32 @@ const MyCareTaker = ({navigation}) => {
             <FlatList
               data={caretaker}
               renderItem={renderItem}
-              onEndReached={onEnd}
-              onEndReachedThreshold={0.01}
-              keyExtractor={(item, index) => index.toString()}
+              onEndReachedThreshold={0.1}
+              onMomentumScrollBegin={() =>
+                setOnEndReachedCalledDuringMomentum(false)
+              }
+              onEndReached={({distanceFromEnd}) => {
+                if (!onEndReachedCalledDuringMomentum) {
+                  onEnd();
+                  setOnEndReachedCalledDuringMomentum(true);
+                }
+              }}
+              keyExtractor={item => item.userId}
               showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  onRefresh={() => {
+                    setRefresh(true);
+                    let a = 0;
+                    dispatch(myCaretakerRequest(a));
+                    setPageNo(a);
+                    setIsLoading(true);
+                    setCaretaker([]);
+                  }}
+                  refreshing={refresh}
+                  colors={[colorPallete.mainColor]}
+                />
+              }
             />
           )}
 

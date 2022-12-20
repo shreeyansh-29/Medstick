@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {decryptData} from '../components/atoms/crypto';
+// import {decryptData} from '../components/atoms/crypto';
 
 const instance = axios.create({});
 
 const requestHandler = async request => {
-  let token = decryptData(await AsyncStorage.getItem('accessToken'));
+  let token = await AsyncStorage.getItem('accessToken');
   if (token) {
     request.headers.Authorization = 'Bearer ' + token;
   }
