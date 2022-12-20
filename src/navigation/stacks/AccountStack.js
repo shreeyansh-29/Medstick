@@ -10,8 +10,6 @@ import Settings from '../../screens/otherScreens/settings';
 import About from '../../screens/otherScreens/aboutApp';
 import SavedDetails from '../../screens/profile/savedDetails';
 import EditProfile from '../../screens/profile/editProfile';
-import Prescriptions from '../../screens/otherScreens/prescriptions';
-import Logout from '../../Logout';
 import DoctorPrescription from '../../screens/otherScreens/doctorPrescription';
 import ViewPrescriptions from '../../screens/userScreens/patients/viewPrescriptions';
 import ViewMedicines from '../../screens/userScreens/patients/viewMedicines';
@@ -19,10 +17,8 @@ import MedicineReport from '../../screens/userScreens/patients/medicineReport';
 import MedicineImages from '../../screens/userScreens/patients/medicineImages';
 import SaveAppointment from '../../screens/otherScreens/saveAppointment';
 import AppointmentReminderList from '../../screens/otherScreens/appointmentReminderList';
-import AuthScreen from '../../screens/authScreens/authScreen';
+import Prescriptions from '../../screens/otherScreens/prescriptions';
 import Feedback from '../../screens/otherScreens/feedback';
-import MyPatients from '../../screens/userScreens/patients/myPatients';
-import PatientRequest from '../../screens/userScreens/patients/patientRequest';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,8 +28,7 @@ const AccountStack = () => {
       screenOptions={{headerShown: false, orientation: 'portrait'}}>
       <Stack.Screen name="AccountScreen" component={AccountTab} />
       <Stack.Screen name="CareTaker" component={CareTaker} />
-      <Stack.Screen name="MyPatients" component={MyPatients} />
-      <Stack.Screen name="PatientRequest" component={PatientRequest} />
+      <Stack.Screen name="Patient" component={Patients} />
       <Stack.Screen name="PatientProfile" component={PatientProfile} />
       <Stack.Screen name="CareTakerProfile" component={CareTakerProfile} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />

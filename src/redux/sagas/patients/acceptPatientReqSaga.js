@@ -9,7 +9,7 @@ import networkService from '../../../network/networkService';
 export function* acceptPatientRequestSaga(data) {
   try {
     let response = yield call(networkService.putAcceptRequest, data);
-    yield put(acceptPatientReqSuccess(response));
+    yield put(acceptPatientReqSuccess(response?.data));
   } catch (error) {
     yield put(acceptPatientReqError(error));
   }

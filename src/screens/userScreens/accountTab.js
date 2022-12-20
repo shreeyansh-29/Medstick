@@ -88,7 +88,7 @@ const AccountTab = ({navigation}) => {
             icon={faHospitalUser}
             title="My Patients"
             navigation={navigation}
-            navigationTitle="MyPatients"
+            navigationTitle="Patient"
           />
           <Divider style={styles.divider} />
           <TwoTouchable

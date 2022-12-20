@@ -65,7 +65,9 @@ const MyCareTaker = ({navigation}) => {
         activeOpacity={1}
         style={styles.top}
         onPress={() => {
-          navigation.navigate('CareTakerProfile', {profile: item});
+          connected
+            ? navigation.navigate('CareTakerProfile', {profile: item})
+            : null;
         }}>
         <ListItem
           style={styles.list}

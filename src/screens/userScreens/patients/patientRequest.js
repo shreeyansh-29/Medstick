@@ -1,5 +1,5 @@
-import {View, FlatList, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {FlatList, RefreshControl, TouchableOpacity, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import {styles} from '../../../styles/careTakerStyles/careTakerRequestStyles';
 import {Card} from 'react-native-paper';
 import {Avatar, Button, ListItem} from 'react-native-elements';
@@ -8,27 +8,43 @@ import {
   patientsReqClear,
   patientsReqRequest,
 } from '../../../redux/action/patients/patientsRequestAction';
-import {acceptPatientReqRequest} from '../../../redux/action/patients/acceptPatientReqAction';
-import CustomImage from '../../../components/atoms/customImage';
+import {
+  acceptPatientReqRequest,
+  clearRequestStatus,
+} from '../../../redux/action/patients/acceptPatientReqAction';
+import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
 import Loader from '../../../components/atoms/loader';
+import CustomImage from '../../../components/atoms/customImage';
+import {colorPallete} from '../../../components/atoms/colorPalette';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import CustomModal from '../../../components/molecules/customModal';
-import {deletePatientReqRequest} from '../../../redux/action/patients/deletePatientReqAction';
-import {colorPallete} from '../../../components/atoms/colorPalette';
 import NoInternet from '../../../components/atoms/noInternet';
-import SubHeader from '../../../components/molecules/headers/subHeader';
+import {
+  ErrorToast,
+  InfoToast,
+  SuccessToast,
+} from '../../../components/atoms/customToast';
 import Toast from 'react-native-toast-message';
-import {SuccessToast} from '../../../components/atoms/customToast';
 
-const PatientRequest = ({navigation}) => {
+const PatientRequest = () => {
+  //React Redux Hooks
   const dispatch = useDispatch();
   const res = useSelector(state => state.patientsRequest);
-  const [patients, setPatients] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [uri, setUri] = useState('');
-  const [visible, setVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const acceptedStatus = useSelector(state => state.acceptPatientRequest?.data);
+  const deletedStatus = useSelector(state => state.deletePatientRequest?.data);
   const connected = useSelector(state => state.internetConnectivity?.data);
+
+  //React useState hook
+  const [pageNo, setPageNo] = useState(0);
+  const [patients, setPatients] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [uri, setUri] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
+  const [
+    onEndReachedCalledDuringMomentum,
+    setOnEndReachedCalledDuringMomentum,
+  ] = useState(true);
 
   const images = [
     {
@@ -36,6 +52,7 @@ const PatientRequest = ({navigation}) => {
     },
   ];
 
+  //React useEffect hook
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -43,53 +60,75 @@ const PatientRequest = ({navigation}) => {
   }, [isLoading]);
 
   useEffect(() => {
-    if (res?.data !== null) {
+    pageNo === 0 ? dispatch(patientsReqRequest(pageNo)) : null;
+  }, []);
+
+  useEffect(() => {
+    if (acceptedStatus?.status === 'Success') {
+      SuccessToast({text1: 'Request Accepted', position: 'bottom'});
+      dispatch(clearRequestStatus());
+    } else if (acceptedStatus?.status === 'Failed') {
+      InfoToast({text1: 'Something Went Wrong', position: 'bottom'});
+      dispatch(clearRequestStatus());
+    }
+    return () => {};
+  }, [acceptedStatus]);
+
+  useEffect(() => {
+    if (deletedStatus?.status === 'Success') {
+      ErrorToast({text1: 'Request Deleted', position: 'bottom'});
+      dispatch(clearRequestStatus());
+    } else if (deletedStatus?.status === 'Failed') {
+      InfoToast({text1: 'Something Went Wrong', position: 'bottom'});
+      dispatch(clearRequestStatus());
+    }
+    return () => {};
+  }, [deletedStatus]);
+
+  useEffect(() => {
+    if (res?.data !== null && res?.data?.length !== 0) {
+      setRefresh(false);
       setPatients([...patients, ...res.data]);
       dispatch(patientsReqClear());
     }
   }, [res]);
 
-  useEffect(() => {
-    currentPage === 0 ? dispatch(patientsReqRequest(currentPage)) : null;
-  }, [currentPage]);
-
+  //FlatList OnEnd Function
   const onEnd = () => {
-    let a = currentPage + 1;
+    let a = pageNo + 1;
     if (patients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
       dispatch(patientsReqRequest(a));
-      setCurrentPage(a);
+      setPageNo(a);
     }
   };
 
+  //Request Accepted Function
   const acceptRequest = requestId => {
-    let a = b => b.requestId == requestId;
-    let index = patients.findIndex(a);
     dispatch(acceptPatientReqRequest(requestId));
-    patients.splice(index, 1);
-    setCurrentPage(0);
-    SuccessToast({text1: 'Request Accepted', position: 'bottom'});
 
     setTimeout(() => {
       setIsLoading(true);
+      let a = 0;
+      dispatch(patientsReqRequest(a));
+      setPageNo(a);
       setPatients([]);
-      dispatch(patientsReqRequest(currentPage));
-    }, 500);
+    }, 2000);
   };
 
+  //Request Deleted Function
   const deleteRequest = requestId => {
-    let a = b => b.requestId == requestId;
-    let index = patients.findIndex(a);
-    patients.splice(index, 1);
     dispatch(deletePatientReqRequest(requestId));
-    dispatch(patientsReqClear());
-    setCurrentPage(0);
-    // setPatients([]);
 
     setTimeout(() => {
-      dispatch(patientsReqRequest(currentPage));
-    }, 1000);
+      setIsLoading(true);
+      let a = 0;
+      dispatch(patientsReqRequest(a));
+      setPageNo(a);
+      setPatients([]);
+    }, 2000);
   };
 
+  //FlatList RenderItem Function
   const renderItem = ({item}) => {
     return (
       <Card style={styles.card}>
@@ -99,7 +138,7 @@ const PatientRequest = ({navigation}) => {
               activeOpacity={1}
               onPress={() => {
                 setVisible(true);
-                setUri(item?.picPath);
+                setUri(item.picPath);
               }}>
               <Avatar size={80} rounded source={{uri: item.picPath}} />
             </TouchableOpacity>
@@ -114,7 +153,8 @@ const PatientRequest = ({navigation}) => {
                   {item.userName}
                 </ListItem.Title>
                 <ListItem.Subtitle style={styles.listSubTitle}>
-                  {item.contact}
+                  {item.contact !== null ? 'Phone No: ' : null}
+                  {item.contact !== null ? item.contact : null}
                 </ListItem.Subtitle>
               </ListItem.Content>
             </ListItem>
@@ -123,11 +163,12 @@ const PatientRequest = ({navigation}) => {
                 onPress={() => {
                   acceptRequest(item.requestId);
                 }}
-                title="Confirm"
+                title="Accept"
                 buttonStyle={styles.confirmButton}
                 color={colorPallete.green1}
               />
               <View style={styles.space} />
+
               <Button
                 onPress={() => {
                   deleteRequest(item.requestId);
@@ -142,9 +183,9 @@ const PatientRequest = ({navigation}) => {
       </Card>
     );
   };
+
   return (
     <View style={styles.container}>
-      <SubHeader navigation={navigation} title="Patient Requests" />
       <CustomModal
         text="imageViewer"
         modalVisible={visible}
@@ -164,20 +205,40 @@ const PatientRequest = ({navigation}) => {
               />
             </View>
           ) : (
-            <View style={{flex: 1}}>
-              <FlatList
-                data={patients}
-                renderItem={renderItem}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(index, item) => index.toString()}
-                onEndReached={onEnd}
-                onEndReachedThreshold={0.01}
-              />
-            </View>
+            <FlatList
+              data={patients}
+              renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
+              onMomentumScrollBegin={() =>
+                setOnEndReachedCalledDuringMomentum(false)
+              }
+              onEndReached={({distanceFromEnd}) => {
+                if (!onEndReachedCalledDuringMomentum) {
+                  onEnd();
+                  setOnEndReachedCalledDuringMomentum();
+                }
+              }}
+              onEndReachedThreshold={0.1}
+              keyExtractor={item => item.userId}
+              refreshControl={
+                <RefreshControl
+                  onRefresh={() => {
+                    setRefresh(true);
+                    let a = 0;
+                    dispatch(patientsReqRequest(a));
+                    setPageNo(a);
+                    setIsLoading(true);
+                    setPatients([]);
+                  }}
+                  refreshing={refresh}
+                  colors={[colorPallete.mainColor]}
+                />
+              }
+            />
           )}
-          {connected ? null : <NoInternet />}
         </>
       )}
+      {connected ? null : <NoInternet />}
       <Toast visibilityTime={1500} />
     </View>
   );
