@@ -23,6 +23,7 @@ import {syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
 import Loader from '../../components/atoms/loader';
 import {week} from '../../constants/constants';
 import uuid from 'react-native-uuid';
+import {CustomAlert} from '../../components/atoms/customAlert';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -249,19 +250,7 @@ const HomeScreen = ({navigation}) => {
   const showAlert = () => {
     if (connected && load) {
       if (res?.length === 0) {
-        Alert.alert('Need to add caretaker first', '', [
-          {
-            text: 'Ok',
-            onPress: () => {},
-          },
-          {
-            text: 'Cancel',
-            onPress: () => {
-              {
-              }
-            },
-          },
-        ]);
+        CustomAlert({text1: 'Need to add caretaker first'});
       } else {
         Alert.alert(
           'Would you like to send a snap to caretaker',

@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   KeyboardAvoidingView,
-  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import moment from 'moment';
@@ -26,6 +25,7 @@ import uuid from 'react-native-uuid';
 import Notifications from '../../pushNotification/pushNotifications';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import {SuccessToast} from '../../components/atoms/customToast';
+import {CustomAlert} from '../../components/atoms/customAlert';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -37,12 +37,7 @@ const AppointmentReminders = ({navigation, route}) => {
   let doctor = route.params.notes;
 
   const showAlert = () => {
-    Alert.alert('Please add valid time', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
+    CustomAlert({text1: 'Please add valid time'});
   };
 
   //Pushing scheduled notificatons

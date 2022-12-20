@@ -1,10 +1,4 @@
-import {
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  StyleSheet,
-} from 'react-native';
+import {View, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -16,6 +10,7 @@ import {addMedicineSchema} from '../../../constants/validations';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import Toast from 'react-native-toast-message';
 import {SuccessToast} from '../../../components/atoms/customToast';
+import {CustomAlert} from '../../../components/atoms/customAlert';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -71,12 +66,7 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
 
   const updateMedicineDetails = values => {
     if (Number(values.notify) > Number(values.stocks)) {
-      Alert.alert('Notify Me should be less than Stock Unit', '', [
-        {
-          text: 'Ok',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Notify Me should be less than Stock Unit'});
     } else {
       let obj = item;
 
@@ -88,6 +78,7 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
       obj.leftStock = values.notify;
       obj.stock = values.stocks;
       obj.isModified = true;
+      obj.appointmentList = [];
 
       if (prescriptionObj.doctorName !== doctorName) {
         obj.prescriptionId = prescriptionObj.prescriptionId;

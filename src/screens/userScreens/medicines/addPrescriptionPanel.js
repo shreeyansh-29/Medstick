@@ -243,10 +243,10 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height / 1.274,
   },
   img: {width: '70%'},
-  flatList: {marginBottom: 50},
+  flatList: {marginBottom: 70},
   button: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 10,
     alignSelf: 'center',
     width: '100%',
   },

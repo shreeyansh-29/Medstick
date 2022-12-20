@@ -5,7 +5,6 @@ import {
   KeyboardAvoidingView,
   Dimensions,
   StyleSheet,
-  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -24,6 +23,7 @@ import Notifications from '../../pushNotification/pushNotifications';
 import PushNotification from 'react-native-push-notification';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import {SuccessToast} from '../../components/atoms/customToast';
+import {CustomAlert} from '../../components/atoms/customAlert';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -40,12 +40,7 @@ const UpdateAppointment = ({
   const [timeOpen, setTimeOpen] = useState(false);
 
   const showAlert = () => {
-    Alert.alert('Please add valid time', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
+    CustomAlert({text1: 'Please add valid time'});
   };
 
   //Pushing scheduled notificatons

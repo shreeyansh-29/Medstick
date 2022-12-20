@@ -25,6 +25,7 @@ import {months} from '../../../constants/constants';
 import Downloadpdf from '../../../components/organisms/downloadPdf';
 import Loader from '../../../components/atoms/loader';
 import {RefreshControl} from 'react-native-gesture-handler';
+import {CustomAlert} from '../../../components/atoms/customAlert';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -246,12 +247,7 @@ const Report = ({navigation}) => {
   };
 
   const alertFunction = () => {
-    Alert.alert('You have no adhrence of this date', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
+    CustomAlert({text1: 'You have no adhrence of this date'});
   };
 
   const getHistorydata = date => {

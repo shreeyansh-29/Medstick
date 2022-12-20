@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Alert} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {useState} from 'react';
 import {colorPallete} from '../../../components/atoms/colorPalette';
@@ -13,6 +13,7 @@ import {Divider} from 'react-native-elements/dist/divider/Divider';
 import {months, todayDay} from './pushNotification/timeData';
 import CustomButton from '../../../components/atoms/customButton';
 import CircleCheckBox from 'react-native-circle-checkbox';
+import {CustomAlert} from '../../../components/atoms/customAlert';
 
 const ReminderDuration = ({route, navigation}) => {
   const [endDate, endDateState] = useState(new Date());
@@ -184,12 +185,7 @@ const ReminderDuration = ({route, navigation}) => {
           title={'Save'}
           handleSubmit={() => {
             if (!check1 && !check2 && !check3) {
-              Alert.alert('Please set the end date', ' ', [
-                {
-                  text: 'OK',
-                  onPress: () => {},
-                },
-              ]);
+              CustomAlert({text1: 'Please set the end date'});
               return;
             }
             route.params.endDate(endDate);

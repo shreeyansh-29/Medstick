@@ -176,6 +176,50 @@ const AppointmentReminderList = ({navigation}) => {
     });
   };
 
+  const helperFunction = item => {
+    return (
+      <>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            setModalVisible(true);
+            setTemp(item.date);
+            setTime1(item.time);
+            setNotes1(item.notes);
+            setAppointmentId(item?.appointmentId);
+          }}>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            size={19}
+            color={colorPallete.mainColor}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            Alert.alert('Are you sure!!!', 'Click ok to proceed', [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  onClickDeleteAppointment(item?.appointmentId);
+                },
+              },
+              {
+                text: 'Cancel',
+                onPress: () => {},
+              },
+            ]);
+          }}>
+          <FontAwesomeIcon
+            icon={faTrashAlt}
+            size={19}
+            color={colorPallete.mainColor}
+          />
+        </TouchableOpacity>
+      </>
+    );
+  };
+
   //FlatList RenderItem
   const renderItem = ({item}) => {
     const dateHandler = date => {
@@ -231,49 +275,7 @@ const AppointmentReminderList = ({navigation}) => {
               {item?.date === todayDate ? (
                 <>
                   {localTime >= currentTime ? (
-                    <>
-                      <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => {
-                          setModalVisible(true);
-                          setTemp(item.date);
-                          setTime1(item.time);
-                          setNotes1(item.notes);
-                          setAppointmentId(item?.appointmentId);
-                        }}>
-                        <FontAwesomeIcon
-                          icon={faPenToSquare}
-                          size={19}
-                          color={colorPallete.mainColor}
-                        />
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => {
-                          Alert.alert(
-                            'Are you sure!!!',
-                            'Click ok to proceed',
-                            [
-                              {
-                                text: 'Ok',
-                                onPress: () => {
-                                  onClickDeleteAppointment(item?.appointmentId);
-                                },
-                              },
-                              {
-                                text: 'Cancel',
-                                onPress: () => {},
-                              },
-                            ],
-                          );
-                        }}>
-                        <FontAwesomeIcon
-                          icon={faTrashAlt}
-                          size={19}
-                          color={colorPallete.mainColor}
-                        />
-                      </TouchableOpacity>
-                    </>
+                    helperFunction(item)
                   ) : (
                     <Text
                       style={{color: 'gray', fontSize: 16, fontWeight: '500'}}>
@@ -282,45 +284,7 @@ const AppointmentReminderList = ({navigation}) => {
                   )}
                 </>
               ) : (
-                <>
-                  <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {
-                      setModalVisible(true);
-                      setTemp(item.date);
-                      setTime1(item.time);
-                      setNotes1(item.notes);
-                      setAppointmentId(item?.appointmentId);
-                    }}>
-                    <FontAwesomeIcon
-                      icon={faPenToSquare}
-                      size={19}
-                      color={colorPallete.mainColor}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {
-                      Alert.alert('Are you sure!!!', 'Click ok to proceed', [
-                        {
-                          text: 'Ok',
-                          onPress: () => {
-                            onClickDeleteAppointment(item?.appointmentId);
-                          },
-                        },
-                        {
-                          text: 'Cancel',
-                          onPress: () => {},
-                        },
-                      ]);
-                    }}>
-                    <FontAwesomeIcon
-                      icon={faTrashAlt}
-                      size={19}
-                      color={colorPallete.mainColor}
-                    />
-                  </TouchableOpacity>
-                </>
+                helperFunction(item)
               )}
             </View>
           </ListItem.Content>
