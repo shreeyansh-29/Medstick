@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -21,8 +21,8 @@ import Toast from 'react-native-toast-message';
 import Notifications from '../../../pushNotification/pushNotifications';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
-import {SuccessToast} from '../../../components/atoms/customToast';
 import {CustomAlert} from '../../../components/atoms/customAlert';
+import {SuccessToast} from '../../../components/atoms/customToast';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
@@ -43,7 +43,7 @@ const Reminder = ({route, navigation}) => {
   const [time_picker_mode, time_picker_mode_state] = useState(false);
   const [timeings, timestate] = useState([]);
   const [timearray, timearraystate] = useState([]);
-  const [food, setFood] = useState();
+  const [food, setFood] = useState(item.beforeAfter);
   const [frequency, setFrequency] = useState([]);
   const [breakfastTouchable, setBreakfastTouchable] = useState(false);
   const [lunchTouchable, setLunchTouchable] = useState(false);
@@ -52,7 +52,6 @@ const Reminder = ({route, navigation}) => {
   const [reminderStatus, setReminderStatus] = useState(true);
   const totalReminders = 0;
   const currentCount = 0;
-  const [time, setTime] = useState('');
   const [foodBefore, setFoodBefore] = useState(
     item.beforeAfter === 'Before' ? true : false,
   );
@@ -233,7 +232,6 @@ const Reminder = ({route, navigation}) => {
       return;
     }
 
-    loadstate(true);
     let time = '';
     let days = '';
     for (let i = 0; i < timearray.length; i++) {
@@ -275,7 +273,14 @@ const Reminder = ({route, navigation}) => {
         }
       }
     }
-    setTime(time);
+    if (time === item.reminderTime) {
+      CustomAlert({
+        text1: 'Cannot update reminder with same timings',
+        text2: 'Kindly update the timings!!',
+      });
+      return;
+    }
+    loadstate(true);
     if (check2) {
       if (selecteddaysItems.length === 0) {
         CustomAlert({text1: 'Please select chosen days'});
@@ -315,7 +320,7 @@ const Reminder = ({route, navigation}) => {
 
     let name = route.params.data.medicineName;
 
-    if (reminderStatus === true) {
+    if (reminderStatus == true) {
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
           if ('Take ' + name === rn[i].message) {
@@ -324,7 +329,6 @@ const Reminder = ({route, navigation}) => {
         }
       });
     }
-
     let lengthSelectedDays = selecteddaysItems.length;
 
     handlePushNotification(obj, check1, fDateSecondary, lengthSelectedDays);
@@ -489,7 +493,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(0);
                     }}>
-                    <Text style={{fontSize: 15, color: 'black'}}>
+                    <Text style={{fontSize: 15}}>
                       {timearray[0] ? timearray[0] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
@@ -531,7 +535,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(1);
                     }}>
-                    <Text style={{fontSize: 15, color: 'black'}}>
+                    <Text style={{fontSize: 15}}>
                       {timearray[1] ? timearray[1] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
@@ -572,7 +576,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(2);
                     }}>
-                    <Text style={{fontSize: 15, color: 'black'}}>
+                    <Text style={{fontSize: 15}}>
                       {timearray[2] ? timearray[2] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>

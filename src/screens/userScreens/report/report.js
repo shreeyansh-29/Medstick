@@ -168,6 +168,7 @@ const Report = ({navigation}) => {
           his.taken = i.taken;
           his.notTaken = i.notTaken;
           his.date = i.date;
+          his.time=i.time;
           histories.push(his);
           console.log(histories, 'histories');
           dateSelector(histories);
@@ -185,12 +186,12 @@ const Report = ({navigation}) => {
     });
   }
 
-  const dayPercentageCalculator = (Taken, notTaken) => {
-    const nt = [];
+  const dayPercentageCalculator = (Taken, time) => {
+    const tt = [];
     const t = [];
-    if (notTaken !== '') {
-      notTaken.split(',').map(i => {
-        nt.push(i);
+    if (time !== '') {
+      time.split(',').map(i => {
+        tt.push(i);
       });
     }
     if (Taken !== '') {
@@ -199,10 +200,10 @@ const Report = ({navigation}) => {
       });
     }
     let takenLength = 0;
-    let notTakenLength = 0;
-    nt.map(i => {
+    let totalLength = 0;
+    tt.map(i => {
       if (i !== '') {
-        notTakenLength += 1;
+        totalLength += 1;
       }
     });
     t.map(i => {
@@ -210,8 +211,7 @@ const Report = ({navigation}) => {
         takenLength += 1;
       }
     });
-    let totalCount = notTakenLength + takenLength;
-    return Math.floor((takenLength / totalCount) * 100);
+    return Math.floor((takenLength / totalLength) * 100);
   };
 
   function overallPercentage(data) {
@@ -235,7 +235,7 @@ const Report = ({navigation}) => {
     var data = [];
     if (history.length !== 0) {
       history.forEach(item => {
-        let percentage = dayPercentageCalculator(item.taken, item.notTaken);
+        let percentage = dayPercentageCalculator(item.taken, item.time);
         data.push({date: item.date, percentage: percentage});
       });
     }
