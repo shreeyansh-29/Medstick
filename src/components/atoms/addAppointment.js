@@ -1,16 +1,12 @@
-import {View, TouchableOpacity, Alert} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {styles} from '../../styles/homeScreenStyles/subHeaderStyles';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import {CustomAlert} from '../atoms/customAlert';
 
 const AddAppointment = ({navigation, routeName, notes}) => {
   const showAlert = () => {
-    Alert.alert('Add Medicine and Precrisption Together', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
+    CustomAlert({text1: 'Add Medicine and Precrisption Together'});
   };
 
   return (

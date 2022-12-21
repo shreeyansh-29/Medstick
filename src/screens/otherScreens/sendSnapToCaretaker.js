@@ -18,31 +18,35 @@ import CustomButton from '../../components/atoms/customButton';
 import CustomModal from '../../components/molecules/customModal';
 import ImagePicker from 'react-native-image-crop-picker';
 import {getMedicine} from '../../utils/storage';
+import {ErrorToast, SuccessToast} from '../../components/atoms/customToast';
 
 const SendSnapToCaretaker = ({navigation}) => {
-  const progress = useRef(new Animated.Value(0)).current;
-  const [mycaretakers, mycaretakerstate] = useState([]);
-  const [medsArray, medsArrayState] = useState([]);
   const dispatch = useDispatch();
   let res = useSelector(state => state.myCaretaker);
   let res1 = useSelector(state => state.sendSnap?.data);
-  console.log(res1, 'res1');
+
+  const progress = useRef(new Animated.Value(0)).current;
+  const [mycaretakers, mycaretakerstate] = useState([]);
+  const [medsArray, medsArrayState] = useState([]);
   const [selectCaretaker, setSelectCaretaker] = useState('');
   const [selectMedicine, setSelectMedicine] = useState('');
   const [selectedMedId, setSelectedMedId] = useState('');
   const [selectedCaketakerId, setSelectedCaketakerId] = useState('');
-
   const [image, setImage] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const images = [
+    {
+      url: image,
+    },
+  ];
 
-  const openCamera = () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      setImage(image.path);
-    });
-  };
+  useEffect(() => {
+    Animated.timing(progress, {
+      toValue: 1,
+      duration: 3000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
 
   useEffect(() => {
     openCamera();
@@ -50,17 +54,12 @@ const SendSnapToCaretaker = ({navigation}) => {
 
   useEffect(() => {
     if (res1?.status === 'Success') {
-      Toast.show({
-        type: 'success',
-        text1: 'Image Sent Successfully',
-      });
+      SuccessToast({text1: 'Image Sent Successfully'});
       setTimeout(() => {
         navigation.pop();
-      }, 1000);
-    }
-    if (res1?.status === 'Failed') {
-      Toast.show({
-        type: 'error',
+      }, 2000);
+    } else if (res1?.status === 'Failed') {
+      ErrorToast({
         text1: 'Something Went Wrong',
         text2: 'Try Again',
       });
@@ -72,6 +71,20 @@ const SendSnapToCaretaker = ({navigation}) => {
     dispatch(myCaretakerRequest(0));
     userMeds();
   }, []);
+
+  useEffect(() => {
+    if (res?.data !== null) {
+      mycaretakerstate(
+        res?.data?.map(item => {
+          return {
+            label: item.userName,
+            value: item.userName,
+            id: item.userId,
+          };
+        }),
+      );
+    }
+  }, [res]);
 
   const userMeds = () => {
     getMedicine().then(data => {
@@ -89,34 +102,15 @@ const SendSnapToCaretaker = ({navigation}) => {
     });
   };
 
-  useEffect(() => {
-    if (res?.data !== null) {
-      mycaretakerstate(
-        res?.data?.map(item => {
-          return {
-            label: item.userName,
-            value: item.userName,
-            id: item.userId,
-          };
-        }),
-      );
-    }
-  }, [res]);
-
-  useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const images = [
-    {
-      url: image,
-    },
-  ];
+  const openCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      setImage(image.path);
+    });
+  };
 
   const options = async () => {
     const shareOptions = {
@@ -131,17 +125,11 @@ const SendSnapToCaretaker = ({navigation}) => {
 
   const SendImage = async () => {
     if (selectMedicine === '') {
-      Toast.show({
-        type: 'error',
-        text1: 'Select Medicine',
-      });
+      ErrorToast({text1: 'Select Medicine'});
       return;
     }
     if (selectCaretaker === '') {
-      Toast.show({
-        type: 'error',
-        text1: 'Select Caretaker',
-      });
+      ErrorToast({text1: 'Select Caretaker'});
       return;
     }
     const formdata = new FormData();
@@ -262,7 +250,7 @@ const SendSnapToCaretaker = ({navigation}) => {
           />
         </ScrollView>
       </View>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

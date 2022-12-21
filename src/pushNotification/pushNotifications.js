@@ -27,7 +27,7 @@ class Notifications {
     });
   }
 
-  schduleNotification(date, check1, name, enddate) {
+  schduleNotification(date, check1, name, enddate, check2, length) {
     let currentTime = new Date();
     let currentTime2 =
       currentTime.getFullYear() +
@@ -35,16 +35,28 @@ class Notifications {
       (currentTime.getMonth() + 1) +
       '-' +
       currentTime.getDate();
+      console.log(date, check1, name, enddate, check2, length, "local");
 
-    if (check1) {
+    if (check1 && enddate=="No End Date") {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name,
+        message: 'Take ' + name ,
         date: date,
         repeatType: 'day',
       });
-    } else {
+    }
+    else if(check2){
+      PushNotification.localNotificationSchedule({
+        channelId: 'reminders',
+        title: 'Reminder!',
+        message: 'Take ' + name ,
+        date: date,
+        repeatType: 'week',
+        repeatTime: length,
+      });
+    }
+    else {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',

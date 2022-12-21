@@ -17,6 +17,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import {AddMedicine, getPercentageDetails} from '../../utils/storage';
 import moment from 'moment';
+import {CustomAlert} from '../../components/atoms/customAlert';
 
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;

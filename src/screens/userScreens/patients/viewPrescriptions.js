@@ -4,7 +4,10 @@ import SubHeader from '../../../components/molecules/headers/subHeader';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../components/atoms/loader';
 import {colorPallete} from '../../../components/atoms/colorPalette';
-import {myPrescriptionsRequest} from '../../../redux/action/otherScreenAction/prescriptionsAction';
+import {
+  myPrescriptionsClear,
+  myPrescriptionsRequest,
+} from '../../../redux/action/otherScreenAction/prescriptionsAction';
 import CustomImage from '../../../components/atoms/customImage';
 import * as Animatable from 'react-native-animatable';
 import {ListItem} from 'react-native-elements';
@@ -17,22 +20,45 @@ import {style} from '../../../styles/patientStyles/viewPrescriptionStyles';
 const ViewPrescriptions = ({navigation, route}) => {
   const dispatch = useDispatch();
   let flag = false;
-  const [precriptions, setPrecriptions] = useState([]);
+  const [prescriptions, setPrescriptions] = useState([]);
   const res = useSelector(state => state.myPrescriptions);
-  const loading = useSelector(state => state.myPrescriptions?.isLoading);
   const Id = route?.params?.id;
   const [refresh, setRefresh] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [
+    onEndReachedCalledDuringMomentum,
+    setOnEndReachedCalledDuringMomentum,
+  ] = useState(true);
 
   useEffect(() => {
-    if (res?.data !== null) {
-      setPrecriptions(res?.data);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, [loading]);
+
+  useEffect(() => {
+    if (res?.data !== null && res?.data.length !== 0) {
+      setRefresh(false);
+      setPrescriptions([...prescriptions, ...res?.data]);
+      dispatch(myPrescriptionsClear());
     }
   }, [res]);
 
   useEffect(() => {
-    dispatch(myPrescriptionsRequest({currentPage, Id}));
+    currentPage === 0
+      ? dispatch(myPrescriptionsRequest({currentPage, Id}))
+      : null;
   }, []);
+
+  //FlatList OnEnd Function
+  const onEnd = () => {
+    let a = pageNo + 1;
+    if (prescriptions?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+      dispatch(myPrescriptionsRequest({a, Id}));
+      setPageNo(a);
+    }
+  };
 
   const renderItem = ({item, index}) => {
     return (
@@ -81,7 +107,7 @@ const ViewPrescriptions = ({navigation, route}) => {
         <Loader />
       ) : (
         <>
-          {precriptions?.length === 0 ? (
+          {prescriptions?.length === 0 ? (
             <View style={style.imgCont}>
               <CustomImage
                 resizeMode="contain"
@@ -91,18 +117,32 @@ const ViewPrescriptions = ({navigation, route}) => {
             </View>
           ) : (
             <FlatList
-              data={precriptions}
-              keyExtractor={(item, index) => index.toString()}
-              showsVerticalScrollIndicator={false}
+              data={prescriptions}
               renderItem={renderItem}
+              keyExtractor={item => item.prescriptionId}
+              showsVerticalScrollIndicator={false}
+              onEndReachedThreshold={0.01}
+              onMomentumScrollBegin={() =>
+                setOnEndReachedCalledDuringMomentum(false)
+              }
+              onEndReached={({distanceFromEnd}) => {
+                if (!onEndReachedCalledDuringMomentum) {
+                  onEnd();
+                  setOnEndReachedCalledDuringMomentum(true);
+                }
+              }}
               refreshControl={
                 <RefreshControl
                   colors={[colorPallete.mainColor]}
                   tintColor={[colorPallete.mainColor]}
                   refreshing={refresh}
                   onRefresh={() => {
-                    setRefresh(false);
+                    setRefresh(true);
+                    let currentPage = 0;
                     dispatch(myPrescriptionsRequest({currentPage, Id}));
+                    setCurrentPage(currentPage);
+                    setLoading(true);
+                    setPrescriptions([]);
                   }}
                 />
               }

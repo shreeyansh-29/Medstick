@@ -16,6 +16,11 @@ import messaging from '@react-native-firebase/messaging';
 import {useIsFocused} from '@react-navigation/native';
 import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn';
 import {encryptData} from '../../components/atoms/crypto';
+import {
+  SuccessToast,
+  ErrorToast,
+  InfoToast,
+} from '../../components/atoms/customToast';
 
 const Login = ({navigation}) => {
   const res = useSelector(state => state.signIn.data);
@@ -35,21 +40,13 @@ const Login = ({navigation}) => {
         res?.userList[0].userDetails.picPath,
       );
       dispatch(saveUserLoggedIn(true));
-
-      Toast.show({
-        type: 'success',
-        text1: 'Logged In Successfully',
-      });
-
+      SuccessToast({text1: 'Logged In Successfully'});
       setTimeout(() => {
         navigation.navigate('Home');
       }, 2500);
     } else {
       logout();
-      Toast.show({
-        type: 'error',
-        text1: 'Error While Login',
-      });
+      ErrorToast({text1: 'Error While Login'});
     }
   };
 
@@ -59,10 +56,7 @@ const Login = ({navigation}) => {
         getResponse();
       } else if (res?.status === 'Failed') {
         logout();
-        Toast.show({
-          type: 'info',
-          text1: 'User Not Found',
-        });
+        InfoToast({text1: 'User Not Found'});
         dispatch(resetLogin());
       }
     }
@@ -87,10 +81,7 @@ const Login = ({navigation}) => {
         if (await GoogleSignin.isSignedIn()) {
           await GoogleSignin.signOut();
         }
-        Toast.show({
-          type: 'info',
-          text1: 'Something Went Wrong',
-        });
+        InfoToast({text1: 'Something Went Wrong'});
       }
     }
   };

@@ -28,6 +28,11 @@ import {
 } from '../../redux/action/getUserAction/sendReqAction';
 import Toast from 'react-native-toast-message';
 import {useRoute} from '@react-navigation/native';
+import {
+  SuccessToast,
+  ErrorToast,
+  InfoToast,
+} from '../../components/atoms/customToast';
 
 const loginValidationSchema = yup.object().shape({
   email: yup
@@ -67,12 +72,12 @@ const SearchScreen = ({navigation}) => {
     if (res?.message === 'User fetched by email') {
       setData(res?.result);
     } else if (res?.message === 'Invitation sent to user with given email id') {
-      Toast.show({
-        type: 'info',
+      InfoToast({
         text1: 'User Not Found',
-        // text2: 'Invitation sent to user with given email id',
         position: 'bottom',
+        text2: 'Invitation mail sent',
       });
+
       setTimeout(() => {
         navigation.pop();
       }, 2000);
@@ -83,27 +88,18 @@ const SearchScreen = ({navigation}) => {
 
   useEffect(() => {
     if (res1?.status === 'Success') {
-      Toast.show({
-        type: 'success',
-        text1: 'Request Sent Successfully',
-        position: 'bottom',
-      });
+      SuccessToast({text1: 'Request Sent Successfully', position: 'bottom'});
       setTimeout(() => {
         navigation.pop();
       }, 2000);
     } else if (res1?.status === 'Failed') {
-      Toast.show({
-        type: 'error',
+      ErrorToast({
         text1: 'Already Present ',
         text2: 'In Your List',
         position: 'bottom',
       });
     } else if (res1?.status === 'Alert') {
-      Toast.show({
-        type: 'info',
-        text1: 'Request Already Sent',
-        position: 'bottom',
-      });
+      InfoToast({text1: 'Request Already Sent', position: 'bottom'});
     }
     dispatch(resetSend());
     dispatch(resetUser());
@@ -112,11 +108,7 @@ const SearchScreen = ({navigation}) => {
   const sendMailToUser = async email => {
     let currentUser = await GoogleSignin.getCurrentUser();
     if (currentUser.user.email === email) {
-      Toast.show({
-        type: 'error',
-        text1: 'Cannot Add Yourself',
-        position: 'bottom',
-      });
+      ErrorToast({text1: 'Cannot Add Yourself', position: 'bottom'});
       return;
     }
     dispatch(getUserRequest(email));
@@ -253,7 +245,7 @@ const SearchScreen = ({navigation}) => {
           )}
         </>
       )}
-      <Toast />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

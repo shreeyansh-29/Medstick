@@ -1,20 +1,16 @@
-import {View, Alert, TouchableOpacity} from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import {View, TouchableOpacity} from 'react-native';
+import React from 'react';
 import {styles} from '../../styles/homeScreenStyles/headerStyles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBell} from '@fortawesome/free-solid-svg-icons';
 import {useSelector} from 'react-redux';
+import {CustomAlert} from '../atoms/customAlert';
 
 const BellIcon = ({navigation}) => {
   const load = useSelector(state => state.userInfo?.data);
 
   const showAlert = () => {
-    Alert.alert('Need to login first', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
+    CustomAlert({text1: 'Need to login first'});
   };
   return (
     <View style={styles.bellIcon}>

@@ -21,6 +21,8 @@ import Toast from 'react-native-toast-message';
 import Notifications from '../../../pushNotification/pushNotifications';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
+import { CustomAlert } from '../../../components/atoms/customAlert';
+import { SuccessToast } from '../../../components/atoms/customToast';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
@@ -89,9 +91,19 @@ const Reminder = ({route, navigation}) => {
     time_picker_mode_state(false);
   };
 
-  const handlePushNotification = (obj, check1, endDate) => {
+  const handlePushNotification = (
+    obj,
+    check1,
+    endDate,
+    check2,
+    lengthSelectedDays,
+  ) => {
     let d = new Date(); // for now
-    let currentTime = d.getHours() + ':' + d.getMinutes();
+    let currentTime =
+      d.getHours() +
+      ':' +
+      (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes());
+
     let number = [];
 
     let reminderTime = obj.reminderTime.split(',');
@@ -109,14 +121,17 @@ const Reminder = ({route, navigation}) => {
       (chosenDate1.getMonth() + 1) +
       '-' +
       chosenDate1.getDate();
+
     for (let i = 0; i < number.length; i++) {
-      if (number[i] < currentTime || number[i] == 'Invalid date') {
+      if (number[i] < currentTime) {
         let dateTime = moment(chosenDate2 + ' ' + number[i]);
         Notifications.schduleNotification(
           dateTime._d,
           check1,
           obj.medicineName,
           endDate,
+          check2,
+          lengthSelectedDays,
         );
       } else {
         let dateTime = moment(obj.startDate + ' ' + number[i]);
@@ -125,6 +140,8 @@ const Reminder = ({route, navigation}) => {
           check1,
           obj.medicineName,
           endDate,
+          check2,
+          lengthSelectedDays,
         );
       }
     }
@@ -192,56 +209,26 @@ const Reminder = ({route, navigation}) => {
     currentCount,
   ) => {
     if (fDatePrimary > fDateSecondary) {
-      Alert.alert('Start Date should be less than End Date', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Start Date should be less than End Date'});
       return;
     } else if (title.length === 0) {
-      Alert.alert('Please enter a valid Title', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Please enter a valid Title'});
       return;
     } else if (timearray.length == 0) {
-      Alert.alert('Please enter atleat one Frequency', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Please enter atleat one Frequency'});
       return;
     } else if (food == null) {
-      Alert.alert('Please specify before or after food.', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Please specify before or after food'});
       return;
     } else if (!check1 && !check2) {
-      Alert.alert('Please Select Days', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Please Select Days'});
       return;
     } else if (
       (breakfast === true && timearray[0] === undefined) ||
       (lunch === true && timearray[1] === undefined) ||
       (dinner === true && timearray[2] === undefined)
     ) {
-      Alert.alert("Frequency can't be left as empty", ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: "Frequency can't be left as empty"});
       return;
     }
 
@@ -286,7 +273,9 @@ const Reminder = ({route, navigation}) => {
         }
       }
     }
-    if (time === item.reminderTime) {
+    if (time !== item.reminderTime) {
+      setReminderTime(time);
+    } else {
       Alert.alert(
         'Cannot update reminder with same timings',
         'Kindly update the timings!!',
@@ -302,12 +291,7 @@ const Reminder = ({route, navigation}) => {
     loadstate(true);
     if (check2) {
       if (selecteddaysItems.length === 0) {
-        Alert.alert('Please select chosen days', ' ', [
-          {
-            text: 'OK',
-            onPress: () => {},
-          },
-        ]);
+        CustomAlert({text1: 'Please select chosen days'});
         loadstate(false);
         return;
       }
@@ -353,7 +337,9 @@ const Reminder = ({route, navigation}) => {
         }
       });
     }
-    handlePushNotification(obj, check1, fDateSecondary);
+    let lengthSelectedDays = selecteddaysItems.length;
+
+    handlePushNotification(obj, check1, fDateSecondary, lengthSelectedDays);
 
     getMedicine().then(data => {
       const temp = data;
@@ -368,9 +354,8 @@ const Reminder = ({route, navigation}) => {
     });
     loadstate(false);
 
-    Toast.show({
+    SuccessToast({
       text1: 'Reminder Saved',
-      type: 'success',
       position: 'bottom',
     });
 

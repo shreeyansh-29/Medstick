@@ -24,6 +24,8 @@ import {useEffect} from 'react';
 import {months} from '../../../constants/constants';
 import Downloadpdf from '../../../components/organisms/downloadPdf';
 import Loader from '../../../components/atoms/loader';
+import {RefreshControl} from 'react-native-gesture-handler';
+import {CustomAlert} from '../../../components/atoms/customAlert';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -78,27 +80,33 @@ const Report = ({navigation}) => {
   const isFocused = useIsFocused();
   const [dataMap, setDataMap] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
+
+  const fetchData = () => {
+    getMedicine()
+      .then(data => {
+        if (data !== null && data.length !== 0) {
+          setGetUserMedicine(data);
+        } else {
+          setGetUserMedicine([]);
+          showAlert();
+        }
+      })
+      .then(() => {
+        if (getUserMedicine.length !== 0 && medicineId !== null) {
+          getHistory(medicineId);
+        }
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+    setIsLoading(false);
+    setRefresh(false);
+  };
 
   useEffect(() => {
     if (isFocused) {
-      getMedicine()
-        .then(data => {
-          if (data !== null && data.length !== 0) {
-            setGetUserMedicine(data);
-          } else {
-            setGetUserMedicine([]);
-            showAlert();
-          }
-        })
-        .then(() => {
-          if (getUserMedicine.length !== 0 && medicineId !== null) {
-            getHistory(medicineId);
-          }
-        })
-        .catch(error => {
-          console.log('error', error);
-        });
-      setIsLoading(false);
+      fetchData();
     }
   }, [isFocused, medicineId]);
 
@@ -161,6 +169,7 @@ const Report = ({navigation}) => {
           his.notTaken = i.notTaken;
           his.date = i.date;
           histories.push(his);
+          console.log(histories, 'histories');
           dateSelector(histories);
           setHistoryListData(histories);
           overallPercentage(data);
@@ -238,12 +247,7 @@ const Report = ({navigation}) => {
   };
 
   const alertFunction = () => {
-    Alert.alert('You have no adhrence of this date', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
+    CustomAlert({text1: 'You have no adhrence of this date'});
   };
 
   const getHistorydata = date => {
@@ -255,7 +259,6 @@ const Report = ({navigation}) => {
   const dayComponent = (date, state) => {
     const a = b => b.date == date.dateString;
     const index = dataMap.findIndex(a);
-
     return (
       <>
         {dataMap.some(a) ? (
@@ -340,7 +343,22 @@ const Report = ({navigation}) => {
           <Loader />
         ) : (
           <>
-            <ScrollView>
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    setRefresh(true);
+                    fetchData();
+                    setIsLoading(true);
+
+                    setTimeout(() => {
+                      setIsLoading(false);
+                    }, 1500);
+                  }}
+                  colors={[colorPallete.mainColor]}
+                />
+              }>
               <View style={styles.reportContainer}>
                 <View style={styles.analytics}>
                   <View style={styles.container1Text}>

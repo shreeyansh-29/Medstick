@@ -1,20 +1,19 @@
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {Styles} from '../../styles/twoTouchableStyles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useSelector} from 'react-redux';
 import {colorPallete} from '../atoms/colorPalette';
+import {CustomAlert} from '../atoms/customAlert';
 
 const TwoTouchable = ({icon, title, navigation, navigationTitle}) => {
   const load = useSelector(state => state.userInfo?.data);
 
   const showAlert = () => {
-    Alert.alert('Sign in first to use this feature', '', [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ]);
+    CustomAlert({
+      text1: 'Sign in first to use this feature',
+      onPress1: () => {},
+    });
   };
 
   return (

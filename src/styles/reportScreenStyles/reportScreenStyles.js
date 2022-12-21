@@ -49,6 +49,7 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   fontSmall: {
+    marginTop: 4,
     color: 'grey',
     fontSize: 16,
   },

@@ -9,6 +9,7 @@ import {
   getPrescription,
   savePrescription,
 } from '../../utils/storage';
+import {CustomAlert} from '../atoms/customAlert';
 
 const DeletePrescription = ({
   deleteBtn,
@@ -18,16 +19,10 @@ const DeletePrescription = ({
   setDeleteBtn,
 }) => {
   const showAlert = () => {
-    Alert.alert(
-      "Can't delete this precription",
-      'Added in some other medicine',
-      [
-        {
-          text: 'Ok',
-          onPress: () => {},
-        },
-      ],
-    );
+    CustomAlert({
+      text1: "Can't delete this precription",
+      text2: 'Added in some other medicine',
+    });
   };
   const deletePrescription = prescriptionId => {
     getMedicine().then(data => {

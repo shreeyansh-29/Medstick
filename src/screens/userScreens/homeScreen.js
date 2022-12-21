@@ -250,19 +250,7 @@ const HomeScreen = ({navigation}) => {
   const showAlert = () => {
     if (connected && load) {
       if (res?.length === 0) {
-        Alert.alert('Need to add caretaker first', '', [
-          {
-            text: 'Ok',
-            onPress: () => {},
-          },
-          {
-            text: 'Cancel',
-            onPress: () => {
-              {
-              }
-            },
-          },
-        ]);
+        CustomAlert({text1: 'Need to add caretaker first'});
       } else {
         Alert.alert(
           'Would you like to send a snap to caretaker',

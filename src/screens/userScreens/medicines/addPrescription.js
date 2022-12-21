@@ -20,6 +20,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import {getPrescription, savePrescription} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
 import Toast from 'react-native-toast-message';
+import {ErrorToast, SuccessToast} from '../../../components/atoms/customToast';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -57,24 +58,21 @@ const AddPrescription = ({navigation}) => {
       if (data !== null) {
         const temp = [...data, obj];
         savePrescription(temp);
-        Toast.show({
+        SuccessToast({
           text1: 'Prescription Added Successfully',
-          type: 'success',
           position: 'bottom',
         });
       } else if (data === null || data === undefined) {
         let temp = [];
         temp.push(obj);
         savePrescription(temp);
-        Toast.show({
+        SuccessToast({
           text1: 'Prescription Added Successfully',
-          type: 'success',
           position: 'bottom',
         });
       } else {
-        Toast.show({
+        ErrorToast({
           text1: 'Something Went Wrong',
-          type: 'error',
           position: 'bottom',
         });
       }
