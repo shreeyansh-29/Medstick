@@ -49,12 +49,14 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   function totalMedReminders(data, index) {
     let totalMedReminder = 0;
     data[index].historyList.map(h => {
-      h.time.map(t => {
+      h.time.split(',').map(t => {
         totalMedReminder += 1;
       });
     });
     return totalMedReminder;
   }
+
+  //This function is used to calculate daily reminders
   function dailyReminders(medicine) {
     setReminderList([]);
     if (medicine.length !== 0) {
@@ -62,29 +64,15 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         item.totalReminders = totalMedReminders(medicine, index);
         item.historyList.map(r => {
           if (r.date === td_da) {
-            r.notTaken.split(',').map(z => {
-              if (!r.taken.includes(z)) {
+            r.time.split(',').map(z => {
+              if (!(r.taken + r.notTaken).includes(z)) {
                 let temp = {};
                 temp.userMedicineId = item.userMedicineId;
                 temp.medName = item.medicineName;
                 temp.historyId = r.historyId;
                 temp.time = z;
                 temp.date = td_da;
-                // console.log('tem', notTakenList);
-                if (
-                  !notTakenList.some(function (p) {
-                    if (p !== undefined) {
-                      return (
-                        p.time === temp.time &&
-                        p.medName === temp.medName &&
-                        p.historyId === temp.historyId &&
-                        p.date === temp.date
-                      );
-                    }
-                  })
-                ) {
-                  tempList.add(temp);
-                }
+                tempList.add(temp);
                 setReminderList([...tempList]);
               }
             });
@@ -96,25 +84,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     }
   }
 
-  function notTakenCheck(temp, index) {
-    let random = notTakenList;
-    if (
-      !notTakenList.some(function (p) {
-        if (p !== undefined) {
-          return (
-            p.time === temp.time &&
-            p.medName === temp.medName &&
-            p.historyId === temp.historyId &&
-            p.date === temp.date
-          );
-        }
-      })
-    ) {
-      random.push(reminderList[index]);
-      setNotTakenList(random);
-    }
-  }
-
+  //Function to calculate percentage based on marking
   function getPercentage(data) {
     let tr = 0;
     let cc = 0;
@@ -134,6 +104,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     return Math.floor((cc / tr) * 100);
   }
 
+  //This function is used to check the buffer time before marking the medicine
   function check(reminderTime) {
     let time = new Date();
     let currentTime = time.getHours() + ':' + time.getMinutes();
@@ -159,6 +130,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     return false;
   }
 
+  //This function is used for marking the medicine as taken
   function markingTaken(item) {
     const {userMedicineId, historyId, time, medName} = item;
     medData.forEach(item => {
@@ -169,11 +141,28 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         item.historyList.map(r => {
           if (r.historyId === historyId && !r.taken.includes(time)) {
             r.taken = r.taken + time + ',';
-            let arr = r.notTaken.split(',');
-            arr.splice(arr.indexOf(time), 1);
-            r.notTaken = arr.toString();
             item.currentCount += 1;
             item.stock -= item.dosageQuantity;
+          }
+        });
+      }
+    });
+    let percent = getPercentage(medData);
+    setPercentage(percent);
+    AddMedicine(medData);
+  }
+
+  //This function is used for marking the medicine as not taken
+  function markingNotTaken(item) {
+    const {userMedicineId, historyId, time, medName} = item;
+    medData.forEach(item => {
+      if (
+        item.userMedicineId == userMedicineId &&
+        item.medicineName == medName
+      ) {
+        item.historyList.map(r => {
+          if (r.historyId === historyId && !r.notTaken.includes(time)) {
+            r.notTaken = r.notTaken + time + ',';
           }
         });
       }
@@ -225,10 +214,11 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
-                notTakenCheck(item, index);
-                display();
-                reminderList.splice(index, 1);
-                setReminderList(reminderList);
+                check(time) &&
+                  (markingNotTaken(item),
+                  display(),
+                  reminderList.splice(index, 1),
+                  setReminderList(reminderList));
               }}>
               <FontAwesomeIcon
                 icon={faCircleXmark}

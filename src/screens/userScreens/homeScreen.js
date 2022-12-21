@@ -54,6 +54,7 @@ const HomeScreen = ({navigation}) => {
     }, []),
   );
 
+  //for Calculating Overall Percentage
   function getPercentage(data) {
     let tr = 0;
     let cc = 0;
@@ -86,7 +87,6 @@ const HomeScreen = ({navigation}) => {
           if (item.date === td_da) {
             item.percentage = Math.floor((cc / tr) * 100);
             obj[index] = item;
-            console.log('zzz', obj);
           } else if (!obj.some(a) && tr !== 0) {
             temp.date = td_da;
             temp.percentage = Math.floor((cc / tr) * 100);
@@ -114,6 +114,7 @@ const HomeScreen = ({navigation}) => {
     setIsLoading(false);
   }
 
+  //for Calculating today's Reminder
   const MedicineHistory = data => {
     var updateArray = [];
     let history = {
@@ -121,7 +122,7 @@ const HomeScreen = ({navigation}) => {
       date: null,
       taken: '',
       notTaken: '',
-      time: null,
+      time: '',
     };
     for (let i = 0; i < data.length; i++) {
       if (data[i].everyday == true) {
@@ -150,32 +151,31 @@ const HomeScreen = ({navigation}) => {
         if (data[i].historyList.length === 0) {
           history.historyId = uuid.v4();
           history.date = td_da;
-          history.time = data[i].reminderTime.split(',');
-          history.notTaken = data[i].reminderTime;
+          history.time = data[i].reminderTime;
+          history.notTaken = '';
           history.taken = '';
           data[i].historyList.push(history);
         } else {
           const a = b => b.date === td_da;
           const index = data[i].historyList.findIndex(a);
-          history.time = data[i].reminderTime.split(',');
           if (
             index >= 0 &&
-            history.time.toString() !=
-              data[i].historyList[index].time.toString()
+            data[i].reminderTime !== data[i].historyList[index].time
           ) {
+            // console.log('Inside Reminder update')
             history.historyId = data[i].historyList[index].historyId;
             history.date = data[i].historyList[index].date;
-            history.notTaken = data[i].reminderTime;
+            history.notTaken = '';
             history.taken = '';
-            history.time = data[i].reminderTime.split(',');
+            history.time = data[i].reminderTime;
             data[i].historyList[index] = history;
             data[i].totalReminders = 0;
             data[i].currentCount = 0;
           } else if (index < 0) {
             history.historyId = uuid.v4();
             history.date = td_da;
-            history.time = data[i].reminderTime.split(',');
-            history.notTaken = data[i].reminderTime;
+            history.time = data[i].reminderTime;
+            history.notTaken = '';
             history.taken = '';
             data[i].historyList.push(history);
           }
@@ -186,31 +186,30 @@ const HomeScreen = ({navigation}) => {
         if (data[i].historyList.length === 0) {
           history.historyId = uuid.v4();
           history.date = td_da;
-          history.time = data[i].reminderTime.split(',');
-          history.notTaken = data[i].reminderTime;
+          history.time = data[i].reminderTime;
+          history.notTaken = '';
           data[i].historyList.push(history);
         } else {
           const a = b => b.date === td_da;
           const index = data[i].historyList.findIndex(a);
-          history.time = data[i].reminderTime.split(',');
+          // console.log('Indisde No End Date update Reminder')
           if (
             index >= 0 &&
-            history.time.toString() !=
-              data[i].historyList[index].time.toString()
+            data[i].reminderTime !== data[i].historyList[index].time
           ) {
             history.historyId = data[i].historyList[index].historyId;
             history.date = data[i].historyList[index].date;
-            history.notTaken = data[i].reminderTime;
+            history.notTaken = '';
             history.taken = '';
-            history.time = data[i].reminderTime.split(',');
+            history.time = data[i].reminderTime;
             data[i].historyList[index] = history;
             data[i].totalReminders = 0;
             data[i].currentCount = 0;
           } else if (index < 0) {
             history.historyId = uuid.v4();
             history.date = td_da;
-            history.time = data[i].reminderTime.split(',');
-            history.notTaken = data[i].reminderTime;
+            history.time = data[i].reminderTime;
+            history.notTaken = '';
             history.taken = '';
             data[i].historyList.push(history);
           }
@@ -228,6 +227,8 @@ const HomeScreen = ({navigation}) => {
       item.reminderId !== null && MedicineHistory(medData);
     });
   }, [medData]);
+
+  //for Calculating Overall Percentage on particular date
   function getDate(data) {
     getPercentageDetails().then(item => {
       if (item !== null && item.length !== 0) {

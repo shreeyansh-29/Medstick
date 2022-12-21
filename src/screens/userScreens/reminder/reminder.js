@@ -24,7 +24,6 @@ import uuid from 'react-native-uuid';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
-  // console.log('data', item.endDate);
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = useState(false);
@@ -42,7 +41,7 @@ const Reminder = ({route, navigation}) => {
   const [time_picker_mode, time_picker_mode_state] = useState(false);
   const [timeings, timestate] = useState([]);
   const [timearray, timearraystate] = useState([]);
-  const [food, setFood] = useState();
+  const [food, setFood] = useState(item.beforeAfter);
   const [frequency, setFrequency] = useState([]);
   const [breakfastTouchable, setBreakfastTouchable] = useState(false);
   const [lunchTouchable, setLunchTouchable] = useState(false);
@@ -51,7 +50,6 @@ const Reminder = ({route, navigation}) => {
   const [reminderStatus, setReminderStatus] = useState(true);
   const totalReminders = 0;
   const currentCount = 0;
-  const [time, setTime] = useState('');
   const [foodBefore, setFoodBefore] = useState(
     item.beforeAfter === 'Before' ? true : false,
   );
@@ -103,18 +101,6 @@ const Reminder = ({route, navigation}) => {
         number.push(moment(reminderTime[i], ['h:mm A']).format('HH:mm'));
     }
 
-    console.log('endDate', endDate);
-    let endDate1 =
-      endDate !== 'No End Date'
-        ? endDate.getFullYear() +
-          '-' +
-          (endDate.getMonth() + 1) +
-          '-' +
-          endDate.getDate()
-        : endDate;
-
-    console.log('end date 1', endDate1);
-
     let chosenDate = new Date(obj?.startDate).getTime() + 24 * 60 * 60 * 1000;
     let chosenDate1 = new Date(chosenDate);
     let chosenDate2 =
@@ -130,7 +116,7 @@ const Reminder = ({route, navigation}) => {
           dateTime._d,
           check1,
           obj.medicineName,
-          endDate1,
+          endDate,
         );
       } else {
         let dateTime = moment(obj.startDate + ' ' + number[i]);
@@ -138,7 +124,7 @@ const Reminder = ({route, navigation}) => {
           dateTime._d,
           check1,
           obj.medicineName,
-          endDate1,
+          endDate,
         );
       }
     }
@@ -192,7 +178,6 @@ const Reminder = ({route, navigation}) => {
       frequency.push('Dinner');
     }
   }
-  console.log(timearray);
 
   const savereminder = (
     fDatePrimary,
@@ -260,7 +245,6 @@ const Reminder = ({route, navigation}) => {
       return;
     }
 
-    loadstate(true);
     let time = '';
     let days = '';
     for (let i = 0; i < timearray.length; i++) {
@@ -302,7 +286,20 @@ const Reminder = ({route, navigation}) => {
         }
       }
     }
-    setTime(time);
+    if (time === item.reminderTime) {
+      Alert.alert(
+        'Cannot update reminder with same timings',
+        'Kindly update the timings!!',
+        [
+          {
+            text: 'OK',
+            onPress: () => {},
+          },
+        ],
+      );
+      return
+    }
+    loadstate(true);
     if (check2) {
       if (selecteddaysItems.length === 0) {
         Alert.alert('Please select chosen days', ' ', [
@@ -328,10 +325,6 @@ const Reminder = ({route, navigation}) => {
 
     frequencyHandler();
     const frequencyTemp = frequency.toString();
-
-    if (endDate === 'No End Date') {
-      setfDate('null');
-    }
 
     let obj = route?.params?.data;
 
@@ -361,7 +354,7 @@ const Reminder = ({route, navigation}) => {
       });
     }
     handlePushNotification(obj, check1, fDateSecondary);
-    
+
     getMedicine().then(data => {
       const temp = data;
       if (temp[route.params.index].reminderId !== null) {
