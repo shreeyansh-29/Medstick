@@ -23,6 +23,7 @@ import {
   getPrescription,
   savePrescription,
 } from '../../utils/storage';
+import {SuccessToast, ErrorToast} from '../../components/atoms/customToast';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -75,15 +76,14 @@ const RenderModalView = ({item, setEdit, navigation}) => {
           }
         });
         savePrescription(updatedList);
-        Toast.show({
+
+        SuccessToast({
           text1: 'Prescription Updated Successfully',
-          type: 'success',
           position: 'bottom',
         });
       } else {
-        Toast.show({
+        ErrorToast({
           text1: 'Something Went Wrong',
-          type: 'error',
           position: 'bottom',
         });
       }

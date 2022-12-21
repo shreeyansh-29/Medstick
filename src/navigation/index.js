@@ -8,7 +8,7 @@ import AccountStack from './stacks/AccountStack';
 import AddMedicineStack from './stacks/AddMedicineStack';
 import MedicinePanelStack from './stacks/MedicinePanelStack';
 import HomeStack from './stacks/HomeStack';
-import Logout from '../Logout';
+import Logout from '../screens/otherScreens/Logout';
 import NetInfo from '@react-native-community/netinfo';
 import {useDispatch} from 'react-redux';
 import {saveInternetConnectivityStatus} from '../redux/action/loginAction/saveInternetConnectivity';

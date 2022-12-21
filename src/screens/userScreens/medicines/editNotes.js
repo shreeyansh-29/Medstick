@@ -18,6 +18,7 @@ import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
 import {faCircleXmark} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {SuccessToast} from '../../../components/atoms/customToast';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -48,13 +49,11 @@ const EditNotes = ({userMedicineId, setVisible}) => {
         AddMedicine(updatedList);
       });
     });
-    Toast.show({
-      text1: 'Updated Successfully',
-      type: 'success',
-    });
+    SuccessToast({text1: 'Updated Successfully'});
+
     setTimeout(() => {
       setVisible(false);
-    }, 1000);
+    }, 2000);
   };
 
   return (
@@ -130,7 +129,7 @@ const EditNotes = ({userMedicineId, setVisible}) => {
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
-      <Toast visibilityTime={500} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

@@ -1,10 +1,4 @@
-import {
-  View,
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  Alert,
-} from 'react-native';
+import {View, KeyboardAvoidingView, ScrollView, StyleSheet} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Formik} from 'formik';
@@ -14,10 +8,13 @@ import {colorPallete} from '../../../components/atoms/colorPalette';
 import Toast from 'react-native-toast-message';
 import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
+import {ErrorToast, SuccessToast} from '../../../components/atoms/customToast';
+import {CustomAlert} from '../../../components/atoms/customAlert';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
 const AddMedicineLocal = ({navigation}) => {
+  //React useState hooks
   const [doseType, setDoseType] = useState('');
   const [pill, setPill] = useState('Tablet');
   const [prescriptionObj, setPrescriptionObj] = useState({
@@ -30,26 +27,25 @@ const AddMedicineLocal = ({navigation}) => {
   });
   const [add, setAdd] = useState(false);
 
+  //React useEffect Hooks
+  useEffect(() => {
+    setType();
+  }, [pill]);
+
+  //Function to set prescription details
   const getPrescriptionData = data => {
     setAdd(true);
     setPrescriptionObj(data);
   };
 
+  //Function to set doseType wrt dosageType
   const setType = () => {
     switch (pill) {
       case 'Tablet': {
         setDoseType('mg');
         break;
       }
-      case 'Inhaler': {
-        setDoseType('count');
-        break;
-      }
       case 'Injection': {
-        setDoseType('ml');
-        break;
-      }
-      case 'Syrup': {
         setDoseType('ml');
         break;
       }
@@ -58,18 +54,13 @@ const AddMedicineLocal = ({navigation}) => {
       }
     }
   };
-  useEffect(() => {
-    setType();
-  }, [pill]);
 
+  //Function to Save Medicine
   const saveMedicineLocal = values => {
+    //comparing if left stock is greater than total stock
+    //if true, showing alert
     if (Number(values.notify) > Number(values.stocks)) {
-      Alert.alert('Notify Me should be less than Stock Unit', '', [
-        {
-          text: 'Ok',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Notify Me should be less than Stock Unit'});
     } else {
       let userMedicineId = uuid.v4();
       let medicineId = uuid.v4();
@@ -111,27 +102,31 @@ const AddMedicineLocal = ({navigation}) => {
       };
 
       getMedicine().then(data => {
-        if (data !== null) {
+        //checking if their is previously data is stored
+        if (data !== null && data.length !== 0) {
+          //if yes, concatinating the new data
           const temp = [...data, obj];
+          //pushing updatedList
           AddMedicine(temp);
-          Toast.show({
+          SuccessToast({
             text1: 'Medicine Saved Successfully',
-            type: 'success',
             position: 'bottom',
           });
-        } else if (data === null || data === undefined) {
+        }
+        //if store is empty
+        else if (data === null || data === undefined) {
           let temp = [];
           temp.push(obj);
           AddMedicine(temp);
-          Toast.show({
+          SuccessToast({
             text1: 'Medicine Saved Successfully',
-            type: 'success',
             position: 'bottom',
           });
-        } else {
-          Toast.show({
+        }
+        //some error occured
+        else {
+          ErrorToast({
             text1: 'Something Went Wrong',
-            type: 'error',
             position: 'bottom',
           });
         }

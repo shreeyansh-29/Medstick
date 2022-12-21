@@ -26,10 +26,14 @@ import CustomModal from '../../../components/molecules/customModal';
 import {getPrescription} from '../../../utils/storage';
 import {useIsFocused} from '@react-navigation/native';
 import Loader from '../../../components/atoms/loader';
+import {SuccessToast} from '../../../components/atoms/customToast';
 
 const AddPrescriptionPanel = ({navigation, route}) => {
+  //params
   let {prescriptionObject, key} = route?.params;
   const key1 = key;
+
+  //React Hooks
   const isFocused = useIsFocused();
   const [uri, setUri] = useState('');
   const [visible, setVisible] = useState(false);
@@ -63,6 +67,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
     }
   }, [isFocused]);
 
+  //FlatList RenderItem
   const renderItem = ({item, index}) => {
     return (
       <Animatable.View animation="zoomIn" duration={400} delay={index * 200}>
@@ -189,11 +194,11 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   let index = prescriptionList.findIndex(a);
                   let data = prescriptionList[index];
                   prescriptionObject(data);
-                  Toast.show({
+                  SuccessToast({
                     text1: 'Prescription Uploaded',
-                    type: 'success',
                     position: 'bottom',
                   });
+
                   setTimeout(() => {
                     navigation.pop();
                   }, 1500);
@@ -238,10 +243,10 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height / 1.274,
   },
   img: {width: '70%'},
-  flatList: {marginBottom: 50},
+  flatList: {marginBottom: 70},
   button: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 10,
     alignSelf: 'center',
     width: '100%',
   },

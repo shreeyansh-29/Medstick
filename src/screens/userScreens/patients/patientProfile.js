@@ -10,7 +10,7 @@ import React from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {styles} from '../../../styles/patientStyles/patientProfileStyles';
 import {Card, Divider} from 'react-native-paper';
-import ErrorBoundary from '../../../errorBoundary';
+import ErrorBoundary from '../../../screens/otherScreens/errorBoundary';
 import {monthName} from '../../../constants/constants';
 
 const PatientProfile = ({navigation, route}) => {

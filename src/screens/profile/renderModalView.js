@@ -19,6 +19,7 @@ import Toast from 'react-native-toast-message';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import {bloodGroup, gender} from '../../constants/pickerItem';
+import {ErrorToast, SuccessToast} from '../../components/atoms/customToast';
 
 const RenderModalVisible = ({
   isCancel,
@@ -30,27 +31,19 @@ const RenderModalVisible = ({
   const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
   const dispatch = useDispatch();
   const res = useSelector(state => state.editProfile);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     if (res?.data?.status === 'Success') {
-      Toast.show({
-        type: 'success',
-        text1: 'Updated Successfully!!!',
-        position: 'bottom',
-      });
+      dispatch(resetProfile());
+      SuccessToast({text1: 'Updated Successfully', position: 'bottom'});
+
       setTimeout(() => {
         setModalVisible(false);
         setEdit(false);
-        dispatch(resetProfile());
       }, 1500);
     } else if (res?.data?.status === 'Failed') {
-      Toast.show({
-        type: 'error',
-        text1: 'Something Went Wrong!!!',
-        position: 'bottom',
-      });
       dispatch(resetProfile());
+      ErrorToast({text1: 'Something Went Wrong!!!', position: 'bottom'});
     }
     return () => {};
   }, [res]);
@@ -69,7 +62,6 @@ const RenderModalVisible = ({
         date: values?.date,
       }),
     );
-    setIsSubmitted(true);
   };
 
   return (
@@ -133,7 +125,6 @@ const RenderModalVisible = ({
                   setFieldValue={setFieldValue}
                   handleSubmit={handleSubmit}
                   values={values}
-                  isSubmitted={isSubmitted}
                 />
               )}
             </Formik>

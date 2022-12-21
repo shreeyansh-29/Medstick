@@ -202,19 +202,10 @@ const EditMedicineForm = props => {
             <CustomButton
               title={'Add'}
               handleSubmit={() => {
-                if (props.values.medicineName.length !== 0) {
-                  props.navigation.navigate('AddMedicineStack', {
-                    screen: 'AddPrescriptionPanel',
-                    params: {prescriptionObject: props.prescriptionObject},
-                  });
-                } else {
-                  Alert.alert('Fill rest details first', '', [
-                    {
-                      text: 'Ok',
-                      onPress: () => {},
-                    },
-                  ]);
-                }
+                props.navigation.navigate('AddMedicineStack', {
+                  screen: 'AddPrescriptionPanel',
+                  params: {prescriptionObject: props.prescriptionObject},
+                });
               }}
               btnStyles={styles.btnStyles}
             />

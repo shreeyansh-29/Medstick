@@ -6,7 +6,6 @@ const PickerField = props => {
   const text = props?.text;
   return (
     <Picker
-      enabled={props.disabled}
       dropdownIconColor={1}
       style={props.styles}
       mode={props.mode}

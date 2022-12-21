@@ -25,7 +25,10 @@ import {colorPallete} from '../../components/atoms/colorPalette';
 import moment from 'moment';
 
 const AppointmentReminderList = ({navigation}) => {
+  //React Navigation Hook
   const isFocused = useIsFocused();
+
+  //React useState Hook
   const [appointments, setAppointments] = useState([]);
   const [notes1, setNotes1] = useState('');
   const [appointmentId, setAppointmentId] = useState('');
@@ -53,29 +56,23 @@ const AppointmentReminderList = ({navigation}) => {
       ? '0' + todayDate.getDate()
       : todayDate.getDate());
 
+  //React useEffect Hook
+  useEffect(() => {
+    if (isFocused) {
+      fetchData();
+    }
+  }, [isFocused]);
+
   useEffect(() => {
     setTimeout(() => {
       setShowLoader(false);
-    }, 1000);
+    }, 1500);
 
-    return () => {
-      false;
-    };
-  }, []);
+    return () => {};
+  }, [showLoader]);
 
-  // const backAction = () => {
-  //   setDoctorName([]);
-  // };
-
-  // useEffect(() => {
-  //   BackHandler.addEventListener('hardwareBackPress', backAction);
-
-  //   return () =>
-  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
-  // }, []);
-
+  //Function to display data
   const fetchData = () => {
-    setRefresh(true);
     getMedicine().then(data => {
       if (data !== null && data.length !== 0) {
         let updatedList = data;
@@ -83,6 +80,7 @@ const AppointmentReminderList = ({navigation}) => {
         let reminderList = [];
 
         updatedList.map(item => {
+          //fetching doctors for saving appointment
           if (item.doctorName !== null && item.medicineName !== null) {
             doctorList.push({
               doctorName: item.doctorName,
@@ -92,15 +90,19 @@ const AppointmentReminderList = ({navigation}) => {
           if (item.appointmentList.length !== 0) {
             item.appointmentList.map(ele => {
               if (ele?.date >= todayDate) {
+                //pushing appointments to display
                 reminderList.push(ele);
-              } else {
-                item.appointmentList.pop(ele);
-                AddMedicine(updatedList);
               }
+              //  else {
+              //   //poping out reminder if it gets expired
+              //   item.appointmentList.pop(ele);
+              //   AddMedicine(updatedList);
+              // }
             });
           }
         });
 
+        //fetching unique doctors
         const key1 = 'prescriptionId';
         const uniqueDoctor = [
           ...new Map(doctorList.map(item => [item[key1], item])).values(),
@@ -108,6 +110,7 @@ const AppointmentReminderList = ({navigation}) => {
 
         setDoctorName(uniqueDoctor);
 
+        //fetching unique appointment reminders
         const key2 = 'appointmentId';
         const uniqueReminder = [
           ...new Map(reminderList.map(item => [item[key2], item])).values(),
@@ -118,12 +121,7 @@ const AppointmentReminderList = ({navigation}) => {
     setRefresh(false);
   };
 
-  useEffect(() => {
-    if (isFocused) {
-      fetchData();
-    }
-  }, [isFocused]);
-
+  //Delete Appointment Function
   const onClickDeleteAppointment = deleteId => {
     getMedicine().then(data => {
       let updatedList = data;
@@ -131,6 +129,7 @@ const AppointmentReminderList = ({navigation}) => {
       updatedList.map(a => {
         if (a.appointmentList.length !== 0) {
           a.appointmentList.map((r, index) => {
+            //splicing up the selected reminder
             if (r.appointmentId === deleteId) {
               time = r.time;
               a.appointmentList.splice(index, 1);
@@ -139,17 +138,21 @@ const AppointmentReminderList = ({navigation}) => {
           });
         }
       });
+      //pushing updated list
       AddMedicine(updatedList);
       getMedicine().then(data => {
         if (data !== null && data.length !== 0) {
           let reminderList = [];
           data.map(item => {
             if (item.appointmentList.length !== 0) {
+              //fetching unique reminders
               item.appointmentList.map(ele => {
                 reminderList.push(ele);
               });
             }
           });
+
+          //fetching unique appointment reminders
           const key2 = 'appointmentId';
           const uniqueReminder = [
             ...new Map(reminderList.map(item => [item[key2], item])).values(),
@@ -157,6 +160,8 @@ const AppointmentReminderList = ({navigation}) => {
           setAppointments(uniqueReminder);
         }
       });
+
+      //deleting push notification of selected reminder
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
           if (
@@ -171,6 +176,51 @@ const AppointmentReminderList = ({navigation}) => {
     });
   };
 
+  const helperFunction = item => {
+    return (
+      <>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            setModalVisible(true);
+            setTemp(item.date);
+            setTime1(item.time);
+            setNotes1(item.notes);
+            setAppointmentId(item?.appointmentId);
+          }}>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            size={19}
+            color={colorPallete.mainColor}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            Alert.alert('Are you sure!!!', 'Click ok to proceed', [
+              {
+                text: 'Ok',
+                onPress: () => {
+                  onClickDeleteAppointment(item?.appointmentId);
+                },
+              },
+              {
+                text: 'Cancel',
+                onPress: () => {},
+              },
+            ]);
+          }}>
+          <FontAwesomeIcon
+            icon={faTrashAlt}
+            size={19}
+            color={colorPallete.mainColor}
+          />
+        </TouchableOpacity>
+      </>
+    );
+  };
+
+  //FlatList RenderItem
   const renderItem = ({item}) => {
     const dateHandler = date => {
       let dob = date.split('-');
@@ -225,49 +275,7 @@ const AppointmentReminderList = ({navigation}) => {
               {item?.date === todayDate ? (
                 <>
                   {localTime >= currentTime ? (
-                    <>
-                      <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => {
-                          setModalVisible(true);
-                          setTemp(item.date);
-                          setTime1(item.time);
-                          setNotes1(item.notes);
-                          setAppointmentId(item?.appointmentId);
-                        }}>
-                        <FontAwesomeIcon
-                          icon={faPenToSquare}
-                          size={19}
-                          color={colorPallete.mainColor}
-                        />
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => {
-                          Alert.alert(
-                            'Are you sure!!!',
-                            'Click ok to proceed',
-                            [
-                              {
-                                text: 'Ok',
-                                onPress: () => {
-                                  onClickDeleteAppointment(item?.appointmentId);
-                                },
-                              },
-                              {
-                                text: 'Cancel',
-                                onPress: () => {},
-                              },
-                            ],
-                          );
-                        }}>
-                        <FontAwesomeIcon
-                          icon={faTrashAlt}
-                          size={19}
-                          color={colorPallete.mainColor}
-                        />
-                      </TouchableOpacity>
-                    </>
+                    helperFunction(item)
                   ) : (
                     <Text
                       style={{color: 'gray', fontSize: 16, fontWeight: '500'}}>
@@ -276,45 +284,7 @@ const AppointmentReminderList = ({navigation}) => {
                   )}
                 </>
               ) : (
-                <>
-                  <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {
-                      setModalVisible(true);
-                      setTemp(item.date);
-                      setTime1(item.time);
-                      setNotes1(item.notes);
-                      setAppointmentId(item?.appointmentId);
-                    }}>
-                    <FontAwesomeIcon
-                      icon={faPenToSquare}
-                      size={19}
-                      color={colorPallete.mainColor}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {
-                      Alert.alert('Are you sure!!!', 'Click ok to proceed', [
-                        {
-                          text: 'Ok',
-                          onPress: () => {
-                            onClickDeleteAppointment(item?.appointmentId);
-                          },
-                        },
-                        {
-                          text: 'Cancel',
-                          onPress: () => {},
-                        },
-                      ]);
-                    }}>
-                    <FontAwesomeIcon
-                      icon={faTrashAlt}
-                      size={19}
-                      color={colorPallete.mainColor}
-                    />
-                  </TouchableOpacity>
-                </>
+                helperFunction(item)
               )}
             </View>
           </ListItem.Content>
@@ -369,7 +339,11 @@ const AppointmentReminderList = ({navigation}) => {
               refreshControl={
                 <RefreshControl
                   refreshing={refresh}
-                  onRefresh={fetchData}
+                  onRefresh={() => {
+                    setRefresh(true);
+                    setShowLoader(true);
+                    fetchData();
+                  }}
                   colors={[colorPallete.mainColor]}
                   tintColor={colorPallete.mainColor}
                 />

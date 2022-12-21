@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import InputField from '../../../components/atoms/inputField';
 import {colorPallete} from '../../../components/atoms/colorPalette';
@@ -13,9 +13,13 @@ import {styles} from '../../../styles/medicinePanelStyles/medicineFormStyles';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import RenderModalView from './renderModalView';
 import {useSelector} from 'react-redux';
+import {CustomAlert} from '../../../components/atoms/customAlert';
 
 const AddMedicineForm = props => {
+  //React useState hooks
   const [visible, setVisible] = useState(false);
+
+  //React Redux hooks
   const load = useSelector(state => state.userInfo?.data);
   const connected = useSelector(state => state.internetConnectivity?.data);
 
@@ -94,9 +98,7 @@ const AddMedicineForm = props => {
               selectedValue={props.pill}
               onValueChange={val => props.setPill(val)}>
               <Picker.Item label="Tablet" value="Tablet" />
-              <Picker.Item label="Inhaler" value="Inhaler" />
               <Picker.Item label="Injection" value="Injection" />
-              <Picker.Item label="Syrup" value="Syrup" />
             </Picker>
           </View>
         </View>
@@ -238,12 +240,7 @@ const AddMedicineForm = props => {
                     key: 'Add',
                   });
                 } else {
-                  Alert.alert('Fill rest details first', '', [
-                    {
-                      text: 'Ok',
-                      onPress: () => {},
-                    },
-                  ]);
+                  CustomAlert({text1: 'Fill rest details first'});
                 }
               }}
               btnStyles={styles.btnStyles}

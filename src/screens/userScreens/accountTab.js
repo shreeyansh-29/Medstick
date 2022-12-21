@@ -11,7 +11,6 @@ import {
   faStopwatch,
   faGear,
   faHospitalUser,
-  faCameraRetro,
 } from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../styles/otherScreensStyles/accountTabStyles';
 import {Divider} from 'react-native-paper';

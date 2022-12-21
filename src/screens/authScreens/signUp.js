@@ -12,6 +12,11 @@ import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
 import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn';
+import {
+  ErrorToast,
+  InfoToast,
+  SuccessToast,
+} from '../../components/atoms/customToast';
 
 const SignUp = ({navigation}) => {
   const dispatch = useDispatch();
@@ -31,10 +36,7 @@ const SignUp = ({navigation}) => {
     );
     dispatch(saveUserLoggedIn(true));
 
-    Toast.show({
-      type: 'success',
-      text1: 'Account Created Successfully',
-    });
+    SuccessToast({text1: 'Account Created Successfully'});
 
     setTimeout(() => {
       navigation.navigate('Home');
@@ -47,10 +49,7 @@ const SignUp = ({navigation}) => {
         getResponse();
       } else if (res?.status === 'Failed') {
         logout();
-        Toast.show({
-          type: 'error',
-          text1: 'User already exists',
-        });
+        ErrorToast({text1: 'User already exists'});
         dispatch(resetSignUp());
       }
     }
@@ -76,10 +75,7 @@ const SignUp = ({navigation}) => {
         if (await GoogleSignin.isSignedIn()) {
           await GoogleSignin.signOut();
         }
-        Toast.show({
-          type: 'info',
-          text1: 'Something Went Wrong',
-        });
+        InfoToast({text1: 'Something Went Wrong'});
       }
     }
   };

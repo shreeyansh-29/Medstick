@@ -23,6 +23,7 @@ import {syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
 import Loader from '../../components/atoms/loader';
 import {week} from '../../constants/constants';
 import uuid from 'react-native-uuid';
+import {CustomAlert} from '../../components/atoms/customAlert';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -80,13 +81,13 @@ const HomeScreen = ({navigation}) => {
         savePercentageDetails(obj);
       } else if (data !== null && data.length !== 0) {
         obj = data;
-        console.log('percent data', data);
+        // console.log('percent data', data);
         obj.map((item, index) => {
           const a = b => b.date == td_da;
           if (item.date === td_da) {
             item.percentage = Math.floor((cc / tr) * 100);
             obj[index] = item;
-            console.log('zzz', obj);
+            // console.log('zzz', obj);
           } else if (!obj.some(a) && tr !== 0) {
             temp.date = td_da;
             temp.percentage = Math.floor((cc / tr) * 100);
@@ -249,19 +250,7 @@ const HomeScreen = ({navigation}) => {
   const showAlert = () => {
     if (connected && load) {
       if (res?.length === 0) {
-        Alert.alert('Need to add caretaker first', '', [
-          {
-            text: 'Ok',
-            onPress: () => {},
-          },
-          {
-            text: 'Cancel',
-            onPress: () => {
-              {
-              }
-            },
-          },
-        ]);
+        CustomAlert({text1: 'Need to add caretaker first'});
       } else {
         Alert.alert(
           'Would you like to send a snap to caretaker',

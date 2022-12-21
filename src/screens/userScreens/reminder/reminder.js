@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -21,6 +21,8 @@ import Toast from 'react-native-toast-message';
 import Notifications from '../../../pushNotification/pushNotifications';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
+import {SuccessToast} from '../../../components/atoms/customToast';
+import {CustomAlert} from '../../../components/atoms/customAlert';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
@@ -208,56 +210,26 @@ const Reminder = ({route, navigation}) => {
     currentCount,
   ) => {
     if (fDatePrimary > fDateSecondary) {
-      Alert.alert('Start Date should be less than End Date', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Start Date should be less than End Date'});
       return;
     } else if (title.length === 0) {
-      Alert.alert('Please enter a valid Title', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Please enter a valid Title'});
       return;
     } else if (timearray.length == 0) {
-      Alert.alert('Please enter atleat one Frequency', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Please enter atleat one Frequency'});
       return;
     } else if (food == null) {
-      Alert.alert('Please specify before or after food.', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Please specify before or after food'});
       return;
     } else if (!check1 && !check2) {
-      Alert.alert('Please Select Days', ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: 'Please Select Days'});
       return;
     } else if (
       (breakfast === true && timearray[0] === undefined) ||
       (lunch === true && timearray[1] === undefined) ||
       (dinner === true && timearray[2] === undefined)
     ) {
-      Alert.alert("Frequency can't be left as empty", ' ', [
-        {
-          text: 'OK',
-          onPress: () => {},
-        },
-      ]);
+      CustomAlert({text1: "Frequency can't be left as empty"});
       return;
     }
 
@@ -306,12 +278,7 @@ const Reminder = ({route, navigation}) => {
     setTime(time);
     if (check2) {
       if (selecteddaysItems.length === 0) {
-        Alert.alert('Please select chosen days', ' ', [
-          {
-            text: 'OK',
-            onPress: () => {},
-          },
-        ]);
+        CustomAlert({text1: 'Please select chosen days'});
         loadstate(false);
         return;
       }
@@ -375,9 +342,8 @@ const Reminder = ({route, navigation}) => {
     });
     loadstate(false);
 
-    Toast.show({
+    SuccessToast({
       text1: 'Reminder Saved',
-      type: 'success',
       position: 'bottom',
     });
 
@@ -523,7 +489,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(0);
                     }}>
-                    <Text style={{fontSize: 15}}>
+                    <Text style={{fontSize: 15, color: 'black'}}>
                       {timearray[0] ? timearray[0] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
@@ -565,7 +531,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(1);
                     }}>
-                    <Text style={{fontSize: 15}}>
+                    <Text style={{fontSize: 15, color: 'black'}}>
                       {timearray[1] ? timearray[1] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
@@ -606,7 +572,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(2);
                     }}>
-                    <Text style={{fontSize: 15}}>
+                    <Text style={{fontSize: 15, color: 'black'}}>
                       {timearray[2] ? timearray[2] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
