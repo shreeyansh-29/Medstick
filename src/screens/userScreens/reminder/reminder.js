@@ -21,8 +21,8 @@ import Toast from 'react-native-toast-message';
 import Notifications from '../../../pushNotification/pushNotifications';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
-import { CustomAlert } from '../../../components/atoms/customAlert';
-import { SuccessToast } from '../../../components/atoms/customToast';
+import {CustomAlert} from '../../../components/atoms/customAlert';
+import {SuccessToast} from '../../../components/atoms/customToast';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
@@ -273,20 +273,12 @@ const Reminder = ({route, navigation}) => {
         }
       }
     }
-    if (time !== item.reminderTime) {
-      setReminderTime(time);
-    } else {
-      Alert.alert(
-        'Cannot update reminder with same timings',
-        'Kindly update the timings!!',
-        [
-          {
-            text: 'OK',
-            onPress: () => {},
-          },
-        ],
-      );
-      return
+    if (time === item.reminderTime) {
+      CustomAlert({
+        text1: 'Cannot update reminder with same timings',
+        text2: 'Kindly update the timings!!',
+      });
+      return;
     }
     loadstate(true);
     if (check2) {
