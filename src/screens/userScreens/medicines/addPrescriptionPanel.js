@@ -114,7 +114,6 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   <FontAwesomeIcon
                     icon={faSquareCheck}
                     size={20}
-                    setSelected
                     color={colorPallete.mainColor}
                   />
                 ) : (

@@ -58,7 +58,7 @@ const SubHeader = ({
       {title !== 'Doctor Prescription' ? null : (
         <EditButton navigation={navigation} setEdit={setEdit} flag={flag} />
       )}
-      {title !== 'Prescription' ? null : (
+      {title !== 'Prescriptions' ? null : (
         <DeletePrescription
           deleteBtn={deleteBtn}
           prescriptionId={prescriptionId}

@@ -20,8 +20,12 @@ const DeletePrescription = ({
 }) => {
   const showAlert = () => {
     CustomAlert({
-      text1: "Can't delete this precription",
-      text2: 'Added in some other medicine',
+      text1: "Can't delete this prescription",
+      text2: 'Added in a medicine',
+      onPress: () => {
+        setPrescriptionId('');
+        setDeleteBtn(false);
+      },
     });
   };
   const deletePrescription = prescriptionId => {
@@ -35,47 +39,35 @@ const DeletePrescription = ({
         });
         if (flag) showAlert();
         else {
-          getPrescription().then(data => {
-            let list = data;
-            let a = b => b.prescriptionId == prescriptionId;
-            let index = list.findIndex(a);
-            list.splice(index, 1);
-            savePrescription(list);
-            getPrescription().then(data => {
-              if (data !== null) {
-                setPrescriptionList(data);
+          Alert.alert('Are you sure!!!', 'Click ok to proceed', [
+            {
+              text: 'Ok',
+              onPress: () => {
+                getPrescription().then(data => {
+                  let list = data;
+                  let a = b => b.prescriptionId == prescriptionId;
+                  let index = list.findIndex(a);
+                  list.splice(index, 1);
+                  savePrescription(list);
+                  getPrescription().then(data => {
+                    if (data !== null) {
+                      setPrescriptionList(data);
+                      setPrescriptionId('');
+                      setDeleteBtn(false);
+                    }
+                  });
+                });
+              },
+            },
+            {
+              text: 'Cancel',
+              onPress: () => {
                 setPrescriptionId('');
                 setDeleteBtn(false);
-              }
-            });
-          });
-        }
-      } else {
-        Alert.alert('Are you sure!!!', 'Click ok to proceed', [
-          {
-            text: 'Ok',
-            onPress: () => {
-              getPrescription().then(data => {
-                let list = data;
-                let a = b => b.prescriptionId == prescriptionId;
-                let index = list.findIndex(a);
-                list.splice(index, 1);
-                savePrescription(list);
-                getPrescription().then(data => {
-                  if (data !== null) {
-                    setPrescriptionList(data);
-                    setPrescriptionId('');
-                    setDeleteBtn(false);
-                  }
-                });
-              });
+              },
             },
-          },
-          {
-            text: 'Cancel',
-            onPress: () => {},
-          },
-        ]);
+          ]);
+        }
       }
     });
   };
