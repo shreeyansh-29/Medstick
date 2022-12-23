@@ -5,6 +5,7 @@ const InputField = props => {
   const text = props?.text;
   return (
     <TextInput
+      textContentType={props.type}
       label={props.label}
       dense={props.dense}
       placeholder={props.placeholder}

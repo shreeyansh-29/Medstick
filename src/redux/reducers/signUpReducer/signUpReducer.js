@@ -9,7 +9,7 @@ import {
 const initialState = {
   data: null,
   isLoading: false,
-  error: '',
+  error: null,
 };
 export const signUpReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -18,10 +18,11 @@ export const signUpReducer = (state = initialState, action) => {
     case SIGN_UP_SUCCESS:
       return {
         ...state,
-        data: action.payload.data,
+        data: action.payload,
+        isLoading: false,
       };
     case SIGN_UP_ERROR:
-      return {...state, error: action};
+      return {...state, error: action.payload, isLoading: false, data: null};
     case RESET_SIGNUP:
       return {data: null, isLoading: false, error: ''};
     default:

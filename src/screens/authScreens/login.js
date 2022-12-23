@@ -15,21 +15,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {useIsFocused} from '@react-navigation/native';
 import {saveUserLoggedIn} from '../../redux/action/loginAction/saveUserLoggedIn';
-import {encryptData} from '../../components/atoms/crypto';
 import {
   SuccessToast,
   ErrorToast,
   InfoToast,
 } from '../../components/atoms/customToast';
 
-const Login = ({navigation}) => {
-  const res = useSelector(state => state.signIn.data);
+const Login = ({navigation, logout}) => {
+  const result = useSelector(state => state.signIn?.data);
+  const error = useSelector(state => state.signIn?.error);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
   const getResponse = async () => {
-    if (res?.status === 'Success') {
+    if (result?.status === 200) {
+      let res = result?.data;
       await AsyncStorage.setItem('user_id', res.userList[0].id);
       await AsyncStorage.setItem('user_name', res.userList[0].userName);
       await AsyncStorage.setItem('user_email', res.userList[0].email);
@@ -46,27 +47,28 @@ const Login = ({navigation}) => {
       }, 2500);
     } else {
       logout();
-      ErrorToast({text1: 'Error While Login'});
+      InfoToast({text1: 'Error While Login'});
     }
   };
 
   useEffect(() => {
     if (isFocused) {
-      if (res?.status === 'Success') {
+      if (result?.status === 200) {
         getResponse();
-      } else if (res?.status === 'Failed') {
-        logout();
-        InfoToast({text1: 'User Not Found'});
-        dispatch(resetLogin());
       }
+      dispatch(resetLogin());
     }
-  }, [isFocused, res]);
+  }, [isFocused, result]);
 
-  const logout = async () => {
-    if (await GoogleSignin.isSignedIn()) {
-      await GoogleSignin.signOut();
+  useEffect(() => {
+    if (isFocused) {
+      if (error?.status === 404) {
+        logout();
+        ErrorToast({text1: 'User Not Found'});
+      }
+      dispatch(resetLogin());
     }
-  };
+  }, [isFocused, error]);
 
   const login = async () => {
     if (connected) {

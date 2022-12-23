@@ -25,6 +25,12 @@ const AuthScreen = ({navigation}) => {
     }
   }, [isFocused]);
 
+  const logout = async () => {
+    if (await GoogleSignin.isSignedIn()) {
+      await GoogleSignin.signOut();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <OfflineBar />
@@ -41,6 +47,7 @@ const AuthScreen = ({navigation}) => {
         activeOpacity={1}
         onPress={() => {
           navigation.pop();
+          logout();
         }}>
         <FontAwesomeIcon
           icon={faArrowLeft}
@@ -54,7 +61,7 @@ const AuthScreen = ({navigation}) => {
           <Text style={styles.content}>Sign up to access the app!</Text>
         </View>
 
-        <SignUp navigation={navigation} />
+        <SignUp navigation={navigation} logout={logout} />
 
         <View style={styles.dividerCont}>
           <Divider style={styles.divider} />
@@ -65,7 +72,7 @@ const AuthScreen = ({navigation}) => {
         <View style={styles.loginView}>
           <Text style={styles.loginText}>Already have an account!</Text>
         </View>
-        <Login navigation={navigation} />
+        <Login navigation={navigation} logout={logout} />
       </View>
       <Toast visibilityTime={2000} />
     </View>

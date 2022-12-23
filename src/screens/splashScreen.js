@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import CustomImage from '../components/atoms/customImage';
 import styles from '../styles/otherScreensStyles/onBoardingStyles';
 
-const OnboardingScreen = () => {
+const SplashScreen = () => {
   return (
     <View style={styles.container}>
       <CustomImage
@@ -15,4 +15,4 @@ const OnboardingScreen = () => {
   );
 };
 
-export default OnboardingScreen;
+export default SplashScreen;

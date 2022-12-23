@@ -20,7 +20,7 @@ export const myPatientsReducer = (state = initialState, action) => {
     case MY_PATIENTS_ERROR:
       return {
         ...state,
-        error: action.payload.status,
+        error: action.payload,
         isLoading: false,
         data: null,
       };

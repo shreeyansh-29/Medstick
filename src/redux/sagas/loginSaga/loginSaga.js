@@ -6,9 +6,9 @@ import networkService from '../../../network/networkService';
 export function* loginSaga(payload) {
   try {
     let response = yield call(networkService.login, payload);
-    yield put(loginSuccess(response?.data));
+    yield put(loginSuccess(response));
   } catch (error) {
-    yield put(loginError(error));
+    yield put(loginError(error.response));
   }
 }
 

@@ -12,12 +12,15 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
 import {getPrescription} from '../../utils/storage';
 import Loader from '../../components/atoms/loader';
+import {faSquareCheck} from '@fortawesome/free-regular-svg-icons';
 
 const Prescriptions = ({navigation}) => {
   const [myPrescriptions, setMyPrescriptions] = useState([]);
-  const isFocused = useIsFocused();
+  const [prescriptionId, setPrescriptionId] = useState('');
   const [showLoader, setShowLoader] = useState(true);
+  const [deleteBtn, setDeleteBtn] = useState(false);
   let flag = true;
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     setTimeout(() => {
@@ -38,7 +41,7 @@ const Prescriptions = ({navigation}) => {
         }
       });
     }
-    
+
     return () => {
       false;
     };
@@ -47,45 +50,79 @@ const Prescriptions = ({navigation}) => {
   const RenderItem = ({item, index}) => {
     return (
       <Animatable.View animation="zoomIn" duration={400} delay={index * 200}>
-        <View style={styles.top}>
-          <ListItem
-            style={styles.list}
-            hasTVPreferredFocus={undefined}
-            tvParallaxProperties={undefined}>
-            <UserAvatar size={60} name={`${item.doctorName}`} />
-            <ListItem.Content>
-              <ListItem.Title style={styles.patientName} numberOfLines={1}>
-                <Text style={styles.font}>Doctor Name: </Text>
-                {`${item.doctorName}`}
-              </ListItem.Title>
-              <ListItem.Subtitle style={styles.subtitle}>
-                <Text style={styles.font}>Contact No: </Text>
-                {item.contact}
-              </ListItem.Subtitle>
-            </ListItem.Content>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{marginRight: 12}}
-              onPress={() => {
-                navigation.navigate('ViewPrescription', {
-                  item: item,
-                  flag: flag,
-                });
-              }}>
-              <FontAwesomeIcon
-                icon={faChevronRight}
-                size={18}
-                color={colorPallete.mainColor}
-              />
-            </TouchableOpacity>
-          </ListItem>
-        </View>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onLongPress={() => {
+            if (prescriptionId !== item?.prescriptionId) {
+              //   setPrescriptionId('');
+              //   setDeleteBtn(false);
+              // } else {
+              setPrescriptionId(item?.prescriptionId);
+              setDeleteBtn(true);
+            }
+          }}
+          onPress={() => {
+            setPrescriptionId('');
+            setDeleteBtn(false);
+          }}>
+          <View style={styles.top}>
+            <ListItem
+              style={styles.list}
+              hasTVPreferredFocus={undefined}
+              tvParallaxProperties={undefined}>
+              {prescriptionId === item?.prescriptionId ? (
+                <FontAwesomeIcon
+                  icon={faSquareCheck}
+                  size={20}
+                  color={colorPallete.mainColor}
+                />
+              ) : null}
+              <UserAvatar size={60} name={`${item.doctorName}`} />
+              <ListItem.Content>
+                <ListItem.Title style={styles.patientName} numberOfLines={1}>
+                  <Text style={styles.font}>Doctor Name: </Text>
+                  {`${item.doctorName}`}
+                </ListItem.Title>
+                <ListItem.Subtitle style={styles.subtitle}>
+                  <Text style={styles.font}>Contact No: </Text>
+                  {item.contact}
+                </ListItem.Subtitle>
+              </ListItem.Content>
+
+              {prescriptionId === item.prescriptionId ? null : (
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{marginRight: 12}}
+                  onPress={() => {
+                    navigation.navigate('ViewPrescription', {
+                      item: item,
+                      flag: flag,
+                    });
+                  }}>
+                  <FontAwesomeIcon
+                    icon={faChevronRight}
+                    size={18}
+                    color={colorPallete.mainColor}
+                  />
+                </TouchableOpacity>
+              )}
+            </ListItem>
+          </View>
+        </TouchableOpacity>
       </Animatable.View>
     );
   };
   return (
     <View style={styles.container}>
-      <SubHeader title={'Prescriptions'} navigation={navigation} />
+      <SubHeader
+        title={'Prescriptions'}
+        navigation={navigation}
+        deleteBtn={deleteBtn}
+        prescriptionId={prescriptionId}
+        setPrescriptionList={setMyPrescriptions}
+        setPrescriptionId={setPrescriptionId}
+        setDeleteBtn={setDeleteBtn}
+      />
       {showLoader ? (
         <Loader />
       ) : (
