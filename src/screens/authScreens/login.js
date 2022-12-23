@@ -22,8 +22,8 @@ import {
 } from '../../components/atoms/customToast';
 
 const Login = ({navigation, logout}) => {
-  const result = useSelector(state => state.signIn.data);
-  console.log(result);
+  const result = useSelector(state => state.signIn?.data);
+  const error = useSelector(state => state.signIn?.error);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -47,7 +47,7 @@ const Login = ({navigation, logout}) => {
       }, 2500);
     } else {
       logout();
-      ErrorToast({text1: 'Error While Login'});
+      InfoToast({text1: 'Error While Login'});
     }
   };
 
@@ -55,13 +55,20 @@ const Login = ({navigation, logout}) => {
     if (isFocused) {
       if (result?.status === 200) {
         getResponse();
-      } else if (result?.status === 404) {
-        logout();
-        InfoToast({text1: 'User Not Found'});
-        dispatch(resetLogin());
       }
+      dispatch(resetLogin());
     }
   }, [isFocused, result]);
+
+  useEffect(() => {
+    if (isFocused) {
+      if (error?.status === 404) {
+        logout();
+        ErrorToast({text1: 'User Not Found'});
+      }
+      dispatch(resetLogin());
+    }
+  }, [isFocused, error]);
 
   const login = async () => {
     if (connected) {

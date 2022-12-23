@@ -1,4 +1,4 @@
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {colorPallete} from '../../components/atoms/colorPalette';
@@ -23,32 +23,33 @@ const Logout = ({navigation}) => {
     dispatch(saveUserLoggedIn(false));
     setTimeout(() => {
       navigation.navigate('Home');
-    }, 3500);
+    }, 2500);
   };
 
   useEffect(() => {
     logout();
   }, []);
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: colorPallete.mainColor,
-      }}>
-      <Text
-        style={{
-          fontWeight: '500',
-          color: colorPallete.basicColor,
-          fontSize: 20,
-          marginBottom: 10,
-        }}>
-        Logging Out
-      </Text>
+    <View style={styles.mainCont}>
+      <Text style={styles.text}>Logging Out</Text>
       <ActivityIndicator size={28} color={'white'} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  mainCont: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colorPallete.mainColor,
+  },
+  text: {
+    fontWeight: '500',
+    color: colorPallete.basicColor,
+    fontSize: 20,
+    marginBottom: 10,
+  },
+});
 
 export default Logout;
