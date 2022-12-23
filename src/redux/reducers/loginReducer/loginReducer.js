@@ -16,9 +16,9 @@ export const signInReducer = (state = initialState, action) => {
     case LOGIN_REQUEST:
       return {...state, isLoading: true};
     case LOGIN_SUCCESS:
-      return {...state, data: action.payload, isLoading: false};
+      return {...state, data: action.payload, isLoading: false, error: null};
     case LOGIN_ERROR:
-      return {...state, error: action.payload, isLoading: false};
+      return {...state, error: action.payload, isLoading: false, data: null};
     case RESET_LOGIN:
       return {data: null, isLoading: false, error: null};
     default:

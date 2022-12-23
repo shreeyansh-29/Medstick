@@ -9,7 +9,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faInfo} from '@fortawesome/free-solid-svg-icons';
 import CustomModal from '../../components/molecules/customModal';
 import {useDispatch, useSelector} from 'react-redux';
-import {myCaretakerRequest} from '../../redux/action/caretaker/myCaretakerAction';
+import {
+  myCaretakerClear,
+  myCaretakerRequest,
+} from '../../redux/action/caretaker/myCaretakerAction';
 import {verticalScale} from '../../components/atoms/constant';
 import {
   AddMedicine,
@@ -32,7 +35,9 @@ const HomeScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const load = useSelector(state => state.userInfo?.data);
+  let res = useSelector(state => state.myCaretaker?.data);
   const [isLoading, setIsLoading] = useState(true);
+  const [myCaretakers, setMyCaretakers] = useState([]);
   let td_da = moment().format('YYYY-MM-DD');
 
   // useEffect(() => {
@@ -47,6 +52,13 @@ const HomeScreen = ({navigation}) => {
   useEffect(() => {
     if (connected && load) dispatch(myCaretakerRequest(0));
   }, [connected, load]);
+
+  useEffect(() => {
+    if (res !== null && res.length !== 0) {
+      setMyCaretakers(res);
+      dispatch(myCaretakerClear());
+    }
+  }, [res]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -245,11 +257,9 @@ const HomeScreen = ({navigation}) => {
     });
   }
 
-  let res = useSelector(state => state.myCaretaker?.data);
-
   const showAlert = () => {
     if (connected && load) {
-      if (res?.length === 0) {
+      if (myCaretakers?.length === 0) {
         CustomAlert({text1: 'Need to add caretaker first'});
       } else {
         Alert.alert(

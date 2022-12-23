@@ -7,7 +7,6 @@ import {
   resetSignUp,
   signUpRequest,
 } from '../../redux/action/signUpAction/signUpAction';
-import Toast from 'react-native-toast-message';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
@@ -18,17 +17,17 @@ import {
   SuccessToast,
 } from '../../components/atoms/customToast';
 
-const SignUp = ({navigation}) => {
+const SignUp = ({navigation, logout}) => {
   const dispatch = useDispatch();
-  const res = useSelector(state => state.signUp.data);
+  const result = useSelector(state => state.signUp?.data);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const isFocused = useIsFocused();
 
   const getResponse = async () => {
+    let res = result?.data;
     await AsyncStorage.setItem('user_id', res.userList[0].id);
     await AsyncStorage.setItem('user_name', res.userList[0].userName);
     await AsyncStorage.setItem('user_email', res.userList[0].email);
-    // let token = encryptData(res?.accessToken);
     await AsyncStorage.setItem('accessToken', res?.accessToken);
     await AsyncStorage.setItem(
       'user_photo',
@@ -45,21 +44,15 @@ const SignUp = ({navigation}) => {
 
   useEffect(() => {
     if (isFocused) {
-      if (res?.status === 'Success') {
+      if (result?.status === 201) {
         getResponse();
-      } else if (res?.status === 'Failed') {
+      } else if (result?.status === 208) {
         logout();
         ErrorToast({text1: 'User already exists'});
         dispatch(resetSignUp());
       }
     }
-  }, [isFocused, res]);
-
-  const logout = async () => {
-    if (await GoogleSignin.isSignedIn()) {
-      await GoogleSignin.signOut();
-    }
-  };
+  }, [isFocused, result]);
 
   const signUp = async () => {
     if (connected) {

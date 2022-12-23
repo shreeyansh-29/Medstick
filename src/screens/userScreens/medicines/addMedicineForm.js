@@ -113,8 +113,8 @@ const AddMedicineForm = props => {
             {...props}
             value={props.values.dosageQuantity}
             keyboardType="numeric"
-            clearTextOnFocus={true}
-            selectTextOnFocus={true}
+            // clearTextOnFocus={true}
+            // selectTextOnFocus={true}
           />
           {props.errors.dosageQuantity && props.touched.dosageQuantity && (
             <Text style={styles.errorText}>{props.errors.dosageQuantity}</Text>
@@ -182,7 +182,7 @@ const AddMedicineForm = props => {
       <View style={Styles.textView1}>
         <View style={Styles.textbox}>
           <Text style={Styles.text}>Notify me when only </Text>
-          {/* <Text style={styles.subText}>(Optional)</Text> */}
+          <Text style={styles.subText}>(Optional)</Text>
         </View>
         <View style={styles.unitBox}>
           <InputField
