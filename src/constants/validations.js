@@ -62,30 +62,28 @@ export const addMedicineSchema = yup.object().shape({
     .max(120, ({max}) => `Description can be only of ${max} characters*`)
     .required('Description is Required*'),
   dosageQuantity: yup
-    .number()
-    .min(1, ({min}) => `Should be more than ${min}`)
-    // .max(5, ({max}) => `Should be less than ${max}`)
+    .string()
+    .matches(/^(?!0*(\.0+)?$)(\d+|\d*\.\d+)$/, 'Invalid Input')
     .required('Dosage Quantity is Required*'),
+
   dosagePower: yup
-    .number()
+    .string()
     .required('Dosage Power is Required*')
-    .min(1, ({min}) => `Should be more than ${min}`)
-    .integer('Must be only digits'),
+    .matches(/^[0-9]+$/, 'Invalid Input')
+    .test('no-leading-zero', 'Invalid Input', (value, context) => {
+      return context.originalValue && !context.originalValue.startsWith('0');
+    }),
   stocks: yup
-    .number()
+    .string()
     .required('Stocks are Required*')
-    .min(1, ({min}) => `Should be atleast ${min}`)
-    .integer('Must be only digits')
-    .test('no-leading-zero', 'Invalid Entry', (value, context) => {
+    .matches(/^[0-9]+$/, 'Invalid Input')
+    .test('no-leading-zero', 'Invalid Input', (value, context) => {
       return context.originalValue && !context.originalValue.startsWith('0');
     }),
   notify: yup
-    .number()
-    .min(1, ({min}) => `Should be atleast ${min}`)
-    .integer('Must be only digits')
-    .test('no-leading-zero', 'Invalid Entry', (value, context) => {
-      return context.originalValue && !context.originalValue.startsWith('0');
-    })
+    .string()
+    .matches(/^(?!\s)+([0-9])+$/, 'Invalid Input')
+    // .test('Is positive?', 'Invalid ENTRY', value => value > 0)
     .nullable(),
 });
 

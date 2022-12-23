@@ -9,7 +9,7 @@ import networkService from '../../../network/networkService.js';
 export function* signUpSaga(data) {
   try {
     let response = yield call(networkService.signUp, data);
-    yield put(signUpSuccess(response?.data));
+    yield put(signUpSuccess(response));
   } catch (error) {
     yield put(signUpError(error));
   }

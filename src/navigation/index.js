@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import OnboardingScreen from '../screens/onBoardingScreen';
+import SplashScreen from '../screens/splashScreen';
 import BottomNavigator from './bottomNavigator';
 import AuthScreen from '../screens/authScreens/authScreen';
 import AccountStack from './stacks/AccountStack';
@@ -54,7 +54,7 @@ const MainNavigation = () => {
 
   return (
     <>
-      {showSplashScreen ? <OnboardingScreen /> : null}
+      {showSplashScreen ? <SplashScreen /> : null}
 
       <NavigationContainer>
         <Stack.Navigator

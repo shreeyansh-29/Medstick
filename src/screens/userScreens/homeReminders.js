@@ -141,9 +141,17 @@ const Reminders = ({showAlert, setPercentage, data}) => {
       ) {
         item.historyList.map(r => {
           if (r.historyId === historyId && !r.taken.includes(time)) {
-            r.taken = r.taken + time + ',';
-            item.currentCount += 1;
-            item.stock -= item.dosageQuantity;
+            if (item.dosageQuantity > item.stock) {
+              CustomAlert({
+                text1: 'You are out of stock ',
+                text2: 'Please refill the stock ',
+              });
+              return;
+            } else {
+              r.taken = r.taken + time + ',';
+              item.currentCount += 1;
+              item.stock -= item.dosageQuantity;
+            }
           }
         });
       }

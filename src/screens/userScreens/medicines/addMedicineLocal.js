@@ -78,10 +78,10 @@ const AddMedicineLocal = ({navigation}) => {
         contact: prescriptionObj.contact,
         present: 'true',
         dosageType: pill,
-        dosageQuantity: values.dosageQuantity,
+        dosageQuantity: Number(values.dosageQuantity),
         dosagePower: values.dosagePower + ' ' + values.doseType,
-        leftStock: values.notify,
-        stock: values.stocks,
+        leftStock: Number(values.notify),
+        stock: Number(values.stocks),
         reminderId: null,
         startDate: null,
         endDate: null,
@@ -129,6 +129,7 @@ const AddMedicineLocal = ({navigation}) => {
             text1: 'Something Went Wrong',
             position: 'bottom',
           });
+          return;
         }
       });
       setTimeout(() => {

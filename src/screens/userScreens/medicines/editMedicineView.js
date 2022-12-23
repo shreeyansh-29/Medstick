@@ -9,7 +9,7 @@ import EditMedicineForm from './editMedicineForm';
 import {addMedicineSchema} from '../../../constants/validations';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import Toast from 'react-native-toast-message';
-import {SuccessToast} from '../../../components/atoms/customToast';
+import {ErrorToast, SuccessToast} from '../../../components/atoms/customToast';
 import {CustomAlert} from '../../../components/atoms/customAlert';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
@@ -78,7 +78,6 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
       obj.leftStock = values.notify;
       obj.stock = values.stocks;
       obj.isModified = true;
-      obj.appointmentList = [];
 
       if (prescriptionObj.doctorName !== doctorName) {
         obj.prescriptionId = prescriptionObj.prescriptionId;
@@ -87,25 +86,32 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
         obj.location = prescriptionObj.location;
         obj.specialization = prescriptionObj.specialization;
         obj.contact = prescriptionObj.contact;
+        obj.appointmentList = [];
       }
 
-      getMedicine().then(data => {
-        const temp = data;
-        temp.map((ele, index) => {
-          if (ele.userMedicineId === obj.userMedicineId) {
-            temp[index] = obj;
-          }
-        });
-        AddMedicine(temp);
-      });
-      SuccessToast({
-        text1: 'Medicine Updated Successfully',
-        position: 'bottom',
-      });
+      getMedicine()
+        .then(data => {
+          const temp = data;
+          temp.map((ele, index) => {
+            if (ele.userMedicineId === obj.userMedicineId) {
+              temp[index] = obj;
+            }
+          });
+          AddMedicine(temp);
+        })
+        .then(() => {
+          SuccessToast({
+            text1: 'Medicine Updated Successfully',
+            position: 'bottom',
+          });
 
-      setTimeout(() => {
-        setEdit(false);
-      }, 2000);
+          setTimeout(() => {
+            setEdit(false);
+          }, 2000);
+        })
+        .catch(() => {
+          ErrorToast({text1: 'Something Went Wrong', position: 'bottom'});
+        });
     }
   };
 
@@ -138,11 +144,11 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
               medicineName: item.medicineName,
               description: item.medicineDescription,
               pill: '',
-              dosageQuantity: item.dosageQuantity,
+              dosageQuantity: item.dosageQuantity.toString(),
               dosagePower: item.dosagePower.split(' ')[0],
               doseType: '',
-              stocks: item.stock,
-              notify: item.leftStock,
+              stocks: item.stock.toString(),
+              notify: item.leftStock.toString(),
             }}
             validationSchema={addMedicineSchema}
             onSubmit={values => {

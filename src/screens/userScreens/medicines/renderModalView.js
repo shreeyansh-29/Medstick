@@ -63,8 +63,8 @@ const RenderModalView = ({setVisible, props}) => {
     let a = pageNo + 1;
     if (tempSearch.length % 8 === 0 && a !== 0 && res?.length !== 0) {
       apiCall(med, a);
+      setPageNo(a);
     }
-    setPageNo(a);
   };
 
   const setData = item => {

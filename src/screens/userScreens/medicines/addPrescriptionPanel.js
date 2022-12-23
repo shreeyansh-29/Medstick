@@ -114,7 +114,6 @@ const AddPrescriptionPanel = ({navigation, route}) => {
                   <FontAwesomeIcon
                     icon={faSquareCheck}
                     size={20}
-                    setSelected
                     color={colorPallete.mainColor}
                   />
                 ) : (
@@ -154,7 +153,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
       <View style={styles.textContainer}>
         <Text style={styles.text}>Select Prescription</Text>
       </View>
-      <Divider style={styles.divider} />
+      {/* <Divider style={styles.divider} /> */}
 
       {showLoader ? (
         <Loader />
@@ -228,7 +227,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
 const styles = StyleSheet.create({
   mainView: {flex: 1, backgroundColor: colorPallete.basicColor},
   textContainer: {
-    marginTop: 10,
+    marginVertical: 10,
     alignItems: 'center',
   },
   text: {
@@ -243,7 +242,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height / 1.274,
   },
   img: {width: '70%'},
-  flatList: {marginBottom: 70},
+  flatList: {marginBottom: 70, backgroundColor: colorPallete.backgroundColor},
   button: {
     position: 'absolute',
     bottom: 10,
@@ -262,7 +261,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 3,
+    marginTop: 4,
   },
   title: {fontWeight: '500', fontSize: 18, marginBottom: 4},
   touchableView: {

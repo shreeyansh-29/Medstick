@@ -58,7 +58,7 @@ const SubHeader = ({
       {title !== 'Doctor Prescription' ? null : (
         <EditButton navigation={navigation} setEdit={setEdit} flag={flag} />
       )}
-      {title !== 'Add Prescription' ? null : name === 'Add' ? (
+      {title !== 'Prescriptions' ? null : (
         <DeletePrescription
           deleteBtn={deleteBtn}
           prescriptionId={prescriptionId}
@@ -67,7 +67,7 @@ const SubHeader = ({
           setDeleteBtn={setDeleteBtn}
           name={name}
         />
-      ) : null}
+      )}
     </View>
   );
 };

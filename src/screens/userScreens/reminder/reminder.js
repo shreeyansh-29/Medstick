@@ -320,7 +320,7 @@ const Reminder = ({route, navigation}) => {
 
     let name = route.params.data.medicineName;
 
-    if (reminderStatus == true) {
+    if (reminderStatus === true) {
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
           if ('Take ' + name === rn[i].message) {
