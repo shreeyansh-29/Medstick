@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Alert,
   Text,
+  RefreshControl,
 } from 'react-native';
 import React, {useRef, useEffect, useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
@@ -22,19 +23,20 @@ import Loader from '../../../components/atoms/loader';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const MedicinePanel = ({navigation}) => {
-  const [medicineResponse, setMedicineResponse] = useState([]);
   const isFocused = useIsFocused();
   const progress = useRef(new Animated.Value(0)).current;
+  const [medicineResponse, setMedicineResponse] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       setShowLoader(false);
-    }, 1000);
+    }, 1500);
     return () => {
       false;
     };
-  }, []);
+  }, [showLoader]);
 
   useEffect(() => {
     Animated.timing(progress, {
@@ -43,6 +45,21 @@ const MedicinePanel = ({navigation}) => {
       useNativeDriver: true,
     }).start();
   }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchData();
+    }
+  }, [isFocused]);
+
+  const fetchData = () => {
+    setRefresh(false);
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        setMedicineResponse(data);
+      }
+    });
+  };
 
   const deleteMedicineLocal = async index => {
     medicineResponse.splice(index, 1);
@@ -55,17 +72,6 @@ const MedicinePanel = ({navigation}) => {
       }
     });
   };
-
-  useEffect(() => {
-    if (isFocused) {
-      getMedicine().then(data => {
-        // console.log(data);
-        if (data !== null && data.length !== 0) {
-          setMedicineResponse(data);
-        }
-      });
-    }
-  }, [isFocused]);
 
   const deleteRem = name => {
     PushNotification.getScheduledLocalNotifications(rn => {
@@ -200,6 +206,19 @@ const MedicinePanel = ({navigation}) => {
                 data={medicineResponse}
                 renderItem={renderItemLocal}
                 showsVerticalScrollIndicator={false}
+                keyExtractor={item => item.userMedicineId}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refresh}
+                    colors={[colorPallete.mainColor]}
+                    onRefresh={() => {
+                      setRefresh(true);
+                      setShowLoader(true);
+                      setMedicineResponse([]);
+                      fetchData();
+                    }}
+                  />
+                }
               />
             </>
           )}

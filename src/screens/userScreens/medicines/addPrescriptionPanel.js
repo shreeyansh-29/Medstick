@@ -5,6 +5,7 @@ import {
   FlatList,
   Dimensions,
   StyleSheet,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {colorPallete} from '../../../components/atoms/colorPalette';
@@ -30,8 +31,7 @@ import {SuccessToast} from '../../../components/atoms/customToast';
 
 const AddPrescriptionPanel = ({navigation, route}) => {
   //params
-  let {prescriptionObject, key} = route?.params;
-  const key1 = key;
+  let {prescriptionObject} = route?.params;
 
   //React Hooks
   const isFocused = useIsFocused();
@@ -44,28 +44,33 @@ const AddPrescriptionPanel = ({navigation, route}) => {
   ];
   const [prescriptionId, setPrescriptionId] = useState('');
   const [prescriptionList, setPrescriptionList] = useState([]);
-  const [deleteBtn, setDeleteBtn] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       setShowLoader(false);
-    }, 1000);
+    }, 1500);
 
     return () => {
       false;
     };
-  }, []);
+  }, [showLoader]);
 
   useEffect(() => {
     if (isFocused) {
-      getPrescription().then(data => {
-        if (data !== null) {
-          setPrescriptionList(data);
-        }
-      });
+      fetchData();
     }
   }, [isFocused]);
+
+  const fetchData = () => {
+    setRefresh(false);
+    getPrescription().then(data => {
+      if (data !== null) {
+        setPrescriptionList(data);
+      }
+    });
+  };
 
   //FlatList RenderItem
   const renderItem = ({item, index}) => {
@@ -76,10 +81,8 @@ const AddPrescriptionPanel = ({navigation, route}) => {
           onPress={() => {
             if (prescriptionId === item?.prescriptionId) {
               setPrescriptionId('');
-              setDeleteBtn(false);
             } else {
               setPrescriptionId(item?.prescriptionId);
-              setDeleteBtn(true);
             }
           }}>
           <View style={styles.listView}>
@@ -133,16 +136,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
 
   return (
     <View style={styles.mainView}>
-      <SubHeader
-        navigation={navigation}
-        title={'Add Prescription'}
-        deleteBtn={deleteBtn}
-        prescriptionId={prescriptionId}
-        setPrescriptionList={setPrescriptionList}
-        setPrescriptionId={setPrescriptionId}
-        setDeleteBtn={setDeleteBtn}
-        key1={key1}
-      />
+      <SubHeader navigation={navigation} title={'Add Prescription'} />
       <CustomModal
         modalVisible={visible}
         text="imageViewer"
@@ -153,7 +147,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
       <View style={styles.textContainer}>
         <Text style={styles.text}>Select Prescription</Text>
       </View>
-      {/* <Divider style={styles.divider} /> */}
+      <Divider style={styles.divider} />
 
       {showLoader ? (
         <Loader />
@@ -171,9 +165,22 @@ const AddPrescriptionPanel = ({navigation, route}) => {
             <FlatList
               style={styles.flatList}
               data={prescriptionList}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={item => item.prescriptionId}
               showsVerticalScrollIndicator={false}
               renderItem={renderItem}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    setRefresh(true);
+                    setPrescriptionList([]);
+                    fetchData();
+                    setShowLoader(true);
+                    setPrescriptionId('');
+                  }}
+                  colors={[colorPallete.mainColor]}
+                />
+              }
             />
           )}
         </>
@@ -227,7 +234,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
 const styles = StyleSheet.create({
   mainView: {flex: 1, backgroundColor: colorPallete.basicColor},
   textContainer: {
-    marginVertical: 10,
+    marginTop: 10,
     alignItems: 'center',
   },
   text: {

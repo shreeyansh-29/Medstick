@@ -237,7 +237,6 @@ const AddMedicineForm = props => {
                 if (props.values.medicineName.length !== 0) {
                   props.navigation.navigate('AddPrescriptionPanel', {
                     prescriptionObject: props.prescriptionObject,
-                    key: 'Add',
                   });
                 } else {
                   CustomAlert({text1: 'Fill rest details first'});

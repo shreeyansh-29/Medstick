@@ -132,9 +132,7 @@ const AddMedicineLocal = ({navigation}) => {
           return;
         }
       });
-      setTimeout(() => {
-        navigation.navigate('Home');
-      }, 1500);
+      
     }
   };
 
@@ -198,7 +196,7 @@ const AddMedicineLocal = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={1000} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

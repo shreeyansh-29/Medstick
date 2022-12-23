@@ -112,7 +112,7 @@ const Report = ({navigation}) => {
 
   let td = new Date();
   let startDate = new Date(
-    td.getFullYear() + '-' + (td.getMonth() + 1) + '-' + (td.getDate() + 1),
+    td.getFullYear() + '-' + (td.getMonth() + 1) + '-' + td.getDate(),
   ).toISOString();
 
   let todayDate = new Date();
@@ -168,7 +168,7 @@ const Report = ({navigation}) => {
           his.taken = i.taken;
           his.notTaken = i.notTaken;
           his.date = i.date;
-          his.time=i.time;
+          his.time = i.time;
           histories.push(his);
           console.log(histories, 'histories');
           dateSelector(histories);

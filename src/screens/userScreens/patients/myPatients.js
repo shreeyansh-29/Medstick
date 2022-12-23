@@ -94,7 +94,7 @@ const MyPatients = ({navigation}) => {
       ) : (
         <>
           {myPatients.length === 0 ? (
-            <View style={styles.imgView}>
+            <View style={styles.imgCont}>
               <CustomImage
                 resizeMode="contain"
                 styles={{width: '70%'}}

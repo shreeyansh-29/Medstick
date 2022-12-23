@@ -151,6 +151,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               r.taken = r.taken + time + ',';
               item.currentCount += 1;
               item.stock -= item.dosageQuantity;
+              showAlert();
             }
           }
         });
@@ -208,8 +209,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               activeOpacity={1}
               onPress={() => {
                 check(time) &&
-                  (showAlert(),
-                  markingTaken(item),
+                  (markingTaken(item),
                   reminderList.splice(index, 1),
                   setReminderList(reminderList));
               }}>
