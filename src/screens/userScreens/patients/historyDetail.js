@@ -33,11 +33,11 @@ const HistoryDetail = ({data, onPress}) => {
   }
   useEffect(() => {
     const sArray = [];
-    let nottaken = data.notTaken.split(','),
+    let time = data.time.split(','),
       taken = data.taken.split(',');
-    nottaken[0] !== '' &&
-      nottaken.map(ele => {
-        if (ele !== '') {
+    time[0] !== '' &&
+      time.map(ele => {
+        if (ele !== '' && !data.taken.includes(ele)) {
           let mtitle = findTime(ele);
           let nottakenObj = {
             time: ele,
