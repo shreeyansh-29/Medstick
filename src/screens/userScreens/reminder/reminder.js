@@ -275,8 +275,8 @@ const Reminder = ({route, navigation}) => {
     }
     if (time === item.reminderTime) {
       CustomAlert({
-        text1: 'Cannot update reminder with same timings',
-        text2: 'Kindly update the timings!!',
+        text1: 'Cannot update reminder with previous timings',
+        text2: 'Kindly update atleast one time!!',
       });
       return;
     }

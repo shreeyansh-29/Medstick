@@ -101,39 +101,43 @@ const AddMedicineLocal = ({navigation}) => {
         isModified: false,
       };
 
-      getMedicine().then(data => {
-        //checking if their is previously data is stored
-        if (data !== null && data.length !== 0) {
-          //if yes, concatinating the new data
-          const temp = [...data, obj];
-          //pushing updatedList
-          AddMedicine(temp);
-          SuccessToast({
-            text1: 'Medicine Saved Successfully',
-            position: 'bottom',
-          });
-        }
-        //if store is empty
-        else if (data === null || data === undefined) {
-          let temp = [];
-          temp.push(obj);
-          AddMedicine(temp);
-          SuccessToast({
-            text1: 'Medicine Saved Successfully',
-            position: 'bottom',
-          });
-        }
-        //some error occured
-        else {
+      getMedicine()
+        .then(data => {
+          //checking if their is previously data is stored
+          if (data !== null && data.length !== 0) {
+            //if yes, concatinating the new data
+            const temp = [...data, obj];
+            //pushing updatedList
+            AddMedicine(temp);
+            SuccessToast({
+              text1: 'Medicine Saved Successfully',
+              position: 'bottom',
+            });
+          }
+          //if store is empty
+          else if (data === null || data.length === 0) {
+            let temp = [];
+            temp.push(obj);
+            AddMedicine(temp);
+            SuccessToast({
+              text1: 'Medicine Saved Successfully',
+              position: 'bottom',
+            });
+          }
+        })
+        .then(() => [
+          setTimeout(() => {
+            navigation.navigate('Home');
+          }, 2000),
+        ])
+        .catch(errors => {
+          //some error occured
+          console.log(errors);
           ErrorToast({
             text1: 'Something Went Wrong',
             position: 'bottom',
           });
-        }
-      });
-      setTimeout(() => {
-        navigation.navigate('Home');
-      }, 1500);
+        });
     }
   };
 
@@ -197,7 +201,7 @@ const AddMedicineLocal = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={1000} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };
