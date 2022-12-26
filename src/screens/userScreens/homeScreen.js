@@ -226,6 +226,8 @@ const HomeScreen = ({navigation}) => {
             data[i].historyList.push(history);
           }
         }
+      } else if (td_da > end_date) {
+        data[i].reminderStatus = false;
       }
 
       updateArray.push(data[i]);
