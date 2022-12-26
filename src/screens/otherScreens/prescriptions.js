@@ -104,7 +104,7 @@ const Prescriptions = ({navigation}) => {
               {prescriptionId === item.prescriptionId ? null : (
                 <TouchableOpacity
                   activeOpacity={1}
-                  style={{marginRight: 12}}
+                  style={{padding: 12}}
                   onPress={() => {
                     navigation.navigate('ViewPrescription', {
                       item: item,

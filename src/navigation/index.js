@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SplashScreen from '../screens/splashScreen';
+import SplashScreen from '../screens/otherScreens/splashScreen';
 import BottomNavigator from './bottomNavigator';
 import AuthScreen from '../screens/authScreens/authScreen';
 import AccountStack from './stacks/AccountStack';

@@ -119,7 +119,6 @@ const HomeScreen = ({navigation}) => {
         let p = getPercentage(data);
         setPercentage(p);
       } else {
-        console.log('123');
         setMedData([]);
         setPercentage(0);
       }

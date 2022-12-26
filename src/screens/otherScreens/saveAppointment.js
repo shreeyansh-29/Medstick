@@ -46,6 +46,37 @@ const AppointmentReminders = ({navigation, route}) => {
     Notifications.schduleNotification2(dateTime._d, time);
   };
 
+  const helperFunction = (time1, time2, reminderTime, obj, prescriptionId) => {
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        let updatedList = data;
+        updatedList.map((item, index) => {
+          //storing the appointment
+          if (item.prescriptionId === prescriptionId) {
+            updatedList[index].appointmentList.push(obj);
+            updatedList[index].isModified = true;
+          }
+        });
+
+        //pushing the updatedList
+        AddMedicine(updatedList);
+        SuccessToast({
+          text1: 'Appointment Saved Successfully',
+          position: 'bottom',
+        });
+      }
+
+      //scheduling the push notification
+      reminderTime > time2
+        ? handlePushNotification(obj, reminderTime, obj.time)
+        : null;
+      handlePushNotification(obj, time1, obj.time);
+      setTimeout(() => {
+        navigation.pop();
+      }, 1500);
+    });
+  };
+
   //Saving Appointment
   const saveAppointment = values => {
     let prescriptionId = values.doctorName;
@@ -81,66 +112,12 @@ const AppointmentReminders = ({navigation, route}) => {
       //if both the dates matched then checking timing and if new time
       //is greater than previous time then saving appointment
       time1 > time2
-        ? getMedicine().then(data => {
-            if (data !== null && data.length !== 0) {
-              let updatedList = data;
-              updatedList.map((item, index) => {
-                //storing the appointment
-                if (item.prescriptionId === prescriptionId) {
-                  updatedList[index].appointmentList.push(obj);
-                  updatedList[index].isModified = true;
-                }
-              });
-
-              //pushing the updatedList
-              AddMedicine(updatedList);
-              SuccessToast({
-                text1: 'Appointment Saved Successfully',
-                position: 'bottom',
-              });
-            }
-
-            //scheduling the push notification
-            reminderTime > time2
-              ? handlePushNotification(obj, reminderTime, obj.time)
-              : null;
-            handlePushNotification(obj, time1, obj.time);
-            setTimeout(() => {
-              navigation.pop();
-            }, 1500);
-          })
+        ? helperFunction(time1, time2, reminderTime, obj, prescriptionId)
         : //scheduled time is less than currentTime
           showAlert();
     } else {
       //if scheduled date is greater than previously selected date then
-      getMedicine().then(data => {
-        if (data !== null && data.length !== 0) {
-          let updatedList = data;
-          updatedList.map((item, index) => {
-            //storing the appointment
-            if (item.prescriptionId === prescriptionId) {
-              updatedList[index].appointmentList.push(obj);
-              updatedList[index].isModified = true;
-            }
-          });
-
-          //pushing the updated list
-          AddMedicine(updatedList);
-          SuccessToast({
-            text1: 'Appointment Saved Successfully',
-            position: 'bottom',
-          });
-        }
-
-        //scheduling the push notification
-        reminderTime > time2
-          ? handlePushNotification(obj, reminderTime, obj.time)
-          : null;
-        handlePushNotification(obj, time1, obj.time);
-        setTimeout(() => {
-          navigation.pop();
-        }, 1000);
-      });
+      helperFunction(time1, time2, reminderTime, obj, prescriptionId);
     }
   };
 

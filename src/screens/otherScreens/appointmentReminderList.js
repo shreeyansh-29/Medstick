@@ -277,10 +277,7 @@ const AppointmentReminderList = ({navigation}) => {
                   {localTime >= currentTime ? (
                     helperFunction(item)
                   ) : (
-                    <Text
-                      style={{color: 'gray', fontSize: 16, fontWeight: '500'}}>
-                      Expired
-                    </Text>
+                    <Text style={styles.expiryText}>Expired</Text>
                   )}
                 </>
               ) : (
@@ -386,6 +383,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   mainView: {flexDirection: 'row', alignItems: 'center'},
+  expiryText: {color: 'gray', fontSize: 16, fontWeight: '500'},
 });
 
 export default AppointmentReminderList;
