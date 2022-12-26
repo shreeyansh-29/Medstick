@@ -150,15 +150,15 @@ const HomeScreen = ({navigation}) => {
       }
       let arr = data[i].days.split(',');
       let set = new Set(arr);
-      var start_date = new Date(data[i].startDate);
-      var end_date = new Date(data[i].endDate);
+      var start_date = data[i].startDate;
+      var end_date = data[i].endDate;
       var tody_date = new Date();
       let td_da = moment().format('YYYY-MM-DD');
       if (
         data[i].endDate !== 'No End Date' &&
         set.has(week[tody_date.getDay()]) &&
-        start_date <= tody_date &&
-        tody_date <= end_date
+        start_date <= td_da &&
+        td_da <= end_date
       ) {
         if (data[i].historyList.length === 0) {
           history.historyId = uuid.v4();
@@ -226,6 +226,8 @@ const HomeScreen = ({navigation}) => {
             data[i].historyList.push(history);
           }
         }
+      } else if (td_da > end_date) {
+        data[i].reminderStatus = false;
       }
 
       updateArray.push(data[i]);

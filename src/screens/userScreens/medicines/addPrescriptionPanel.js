@@ -147,7 +147,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
       <View style={styles.textContainer}>
         <Text style={styles.text}>Select Prescription</Text>
       </View>
-      <Divider style={styles.divider} />
+      {/* <Divider style={styles.divider} /> */}
 
       {showLoader ? (
         <Loader />
@@ -234,7 +234,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
 const styles = StyleSheet.create({
   mainView: {flex: 1, backgroundColor: colorPallete.basicColor},
   textContainer: {
-    marginTop: 10,
+    marginVertical: 10,
     alignItems: 'center',
   },
   text: {

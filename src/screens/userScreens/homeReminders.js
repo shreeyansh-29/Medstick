@@ -22,7 +22,6 @@ import {CustomAlert} from '../../components/atoms/customAlert';
 const Reminders = ({showAlert, setPercentage, data}) => {
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
-  const [notTakenList, setNotTakenList] = useState([]);
   let td_da = moment().format('YYYY-MM-DD');
   let tempList = new Set();
 
