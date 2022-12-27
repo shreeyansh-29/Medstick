@@ -354,7 +354,7 @@ const HomeScreen = ({navigation}) => {
               />
             )}
 
-            <Text style={styles.progressText}>Today's Overall Performance</Text>
+            <Text style={styles.progressText}>Overall Performance</Text>
           </View>
         </View>
         <View>

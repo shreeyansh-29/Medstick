@@ -18,13 +18,12 @@ export const searchMedicineReducer = (state = initialState, action) => {
     case SEARCH_MEDICINE_SUCCESS: {
       return {
         ...state,
-        data: action.payload.result,
+        data: action.payload,
         isLoading: false,
-        error: null,
       };
     }
     case SEARCH_MEDICINE_ERROR: {
-      return {error: action.payload, isLoading: false, data: null};
+      return {...state, error: action.payload, isLoading: false, data: null};
     }
     case SEARCH_MEDICINE_CLEAR: {
       return {data: null, isLoading: false, error: null};

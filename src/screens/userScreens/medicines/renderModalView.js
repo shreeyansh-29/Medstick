@@ -30,6 +30,10 @@ const RenderModalView = ({setVisible, props}) => {
   const [tempSearch, setTempSearch] = useState([]);
   const [med, setMed] = useState('');
   const [loading, setLoading] = useState(true);
+  const [
+    onEndReachedCalledDuringMomentum,
+    setOnEndReachedCalledDuringMomentum,
+  ] = useState(true);
 
   const activityIndicator = () => {
     return (
@@ -42,12 +46,13 @@ const RenderModalView = ({setVisible, props}) => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
-  }, []);
+    }, 1500);
+  }, [loading]);
 
   useEffect(() => {
-    if (res !== null) {
-      setTempSearch([...tempSearch, ...res]);
+    if (res !== null && res?.result.length !== 0) {
+      setLoading(false);
+      setTempSearch([...tempSearch, ...res.result]);
       dispatch(searchMedicineClear());
     }
   }, [res]);
@@ -61,7 +66,7 @@ const RenderModalView = ({setVisible, props}) => {
 
   const onEnd = () => {
     let a = pageNo + 1;
-    if (tempSearch.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+    if (tempSearch.length % 8 === 0 && a !== 0 && res?.result?.length !== 0) {
       apiCall(med, a);
       setPageNo(a);
     }
@@ -146,6 +151,7 @@ const RenderModalView = ({setVisible, props}) => {
                   dispatch(searchMedicineClear());
                   setPageNo(0);
                   setTimeout(() => {
+                    setLoading(true);
                     apiCall(med, 0);
                   }, 1000);
                 }}
@@ -202,8 +208,17 @@ const RenderModalView = ({setVisible, props}) => {
                       backgroundColor: colorPallete.backgroundColor,
                     }}
                     style={{width: '100%'}}
-                    onEndReached={onEnd}
-                    onEndReachedThreshold={0.01}
+                    onEndReachedThreshold={0.1}
+                    onMomentumScrollBegin={() =>
+                      setOnEndReachedCalledDuringMomentum(false)
+                    }
+                    onEndReached={({distanceFromEnd}) => {
+                      if (!onEndReachedCalledDuringMomentum) {
+                        onEnd();
+                        setOnEndReachedCalledDuringMomentum(true);
+                      }
+                    }}
+                    keyExtractor={item => item.medicineId}
                   />
                 </>
               )}

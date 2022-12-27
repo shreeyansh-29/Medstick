@@ -28,8 +28,6 @@ const AuthScreen = ({navigation}) => {
   const logout = async () => {
     if (await GoogleSignin.isSignedIn()) {
       await GoogleSignin.signOut();
-    } else {
-      await GoogleSignin.signOut();
     }
   };
 

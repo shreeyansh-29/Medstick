@@ -68,7 +68,7 @@ const SignUp = ({navigation, logout}) => {
         if (await GoogleSignin.isSignedIn()) {
           await GoogleSignin.signOut();
         }
-        InfoToast({text1: 'Something Went Wrong'});
+        // InfoToast({text1: 'Something Went Wrong'});
       }
     }
   };

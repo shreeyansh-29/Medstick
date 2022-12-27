@@ -78,7 +78,6 @@ const AppointmentReminderList = ({navigation}) => {
         let updatedList = data;
         let doctorList = [];
         let reminderList = [];
-        console.log(updatedList);
         updatedList.map(item => {
           //fetching doctors for saving appointment
           if (item.doctorName !== null && item.medicineName !== null) {

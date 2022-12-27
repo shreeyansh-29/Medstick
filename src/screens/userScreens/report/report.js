@@ -219,7 +219,7 @@ const Report = ({navigation}) => {
     let tr = 0;
     if (data.historyList.length !== 0) {
       data.historyList.map(item => {
-        tr += data.reminderTime.split(',').length;
+        tr += item.time.split(',').length;
         let temp = item.taken.split(',');
         temp.map(i => {
           if (i !== '') {

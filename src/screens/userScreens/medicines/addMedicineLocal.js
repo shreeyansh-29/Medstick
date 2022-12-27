@@ -56,8 +56,6 @@ const AddMedicineLocal = ({navigation}) => {
     }
   };
 
-  console.log(key);
-
   //Function to Save Medicine
   const saveMedicineLocal = values => {
     //comparing if left stock is greater than total stock

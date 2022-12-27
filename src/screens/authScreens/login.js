@@ -57,7 +57,6 @@ const Login = ({navigation, logout}) => {
         getResponse();
       }
       dispatch(resetLogin());
-      logout();
     }
   }, [isFocused, result]);
 
@@ -84,7 +83,7 @@ const Login = ({navigation, logout}) => {
         if (await GoogleSignin.isSignedIn()) {
           await GoogleSignin.signOut();
         }
-        InfoToast({text1: 'Something Went Wrong'});
+        // InfoToast({text1: 'Something Went Wrong'});
       }
     }
   };
