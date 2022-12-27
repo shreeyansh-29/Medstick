@@ -3,8 +3,13 @@ import React from 'react';
 import SettingsList from 'react-native-settings-list';
 import styles from '../../styles/otherScreensStyles/settingsStyles';
 import SubHeader from '../../components/molecules/headers/subHeader';
+import {useSelector} from 'react-redux';
+import {ErrorToast} from '../../components/atoms/customToast';
+import Toast from 'react-native-toast-message';
 
 const Settings = ({navigation}) => {
+  const connected = useSelector(state => state.internetConnectivity?.data);
+
   return (
     <View style={styles.container}>
       <SubHeader title={'Settings'} navigation={navigation} />
@@ -35,7 +40,11 @@ const Settings = ({navigation}) => {
           hasNavArrow={false}
           title="Feedback"
           titleStyle={styles.settingItems}
-          onPress={() => navigation.navigate('Feedback')}
+          onPress={() => {
+            connected
+              ? navigation.navigate('Feedback')
+              : ErrorToast({text1: 'NO INTERNET', position: 'bottom'});
+          }}
         />
 
         <SettingsList.Item
@@ -52,6 +61,7 @@ const Settings = ({navigation}) => {
           }}
         />
       </SettingsList>
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

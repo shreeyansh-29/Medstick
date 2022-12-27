@@ -78,7 +78,6 @@ const AppointmentReminderList = ({navigation}) => {
         let updatedList = data;
         let doctorList = [];
         let reminderList = [];
-
         updatedList.map(item => {
           //fetching doctors for saving appointment
           if (item.doctorName !== null && item.medicineName !== null) {
@@ -89,7 +88,7 @@ const AppointmentReminderList = ({navigation}) => {
           }
           if (item.appointmentList.length !== 0) {
             item.appointmentList.map(ele => {
-              if (ele?.date >= todayDate) {
+              if (ele?.localDate >= todayDate) {
                 //pushing appointments to display
                 reminderList.push(ele);
               }
@@ -131,9 +130,9 @@ const AppointmentReminderList = ({navigation}) => {
           a.appointmentList.map((r, index) => {
             //splicing up the selected reminder
             if (r.appointmentId === deleteId) {
-              time = r.time;
+              time = r.localTime;
               a.appointmentList.splice(index, 1);
-              a.isModified = true;
+              a.isSynced = false;
             }
           });
         }
@@ -147,7 +146,10 @@ const AppointmentReminderList = ({navigation}) => {
             if (item.appointmentList.length !== 0) {
               //fetching unique reminders
               item.appointmentList.map(ele => {
-                reminderList.push(ele);
+                if (ele?.localDate >= todayDate) {
+                  //pushing appointments to display
+                  reminderList.push(ele);
+                }
               });
             }
           });
@@ -183,8 +185,8 @@ const AppointmentReminderList = ({navigation}) => {
           activeOpacity={1}
           onPress={() => {
             setModalVisible(true);
-            setTemp(item.date);
-            setTime1(item.time);
+            setTemp(item.localDate);
+            setTime1(item.localTime);
             setNotes1(item.notes);
             setAppointmentId(item?.appointmentId);
           }}>
@@ -227,7 +229,7 @@ const AppointmentReminderList = ({navigation}) => {
       return dob[2] + '-' + monthName[dob[1]] + '-' + dob[0];
     };
 
-    let localTime = moment(item.time, ['h:mm A']).format('HH:mm');
+    let localTime = moment(item.localTime, ['h:mm A']).format('HH:mm');
 
     return (
       <View style={styles.top}>
@@ -243,7 +245,7 @@ const AppointmentReminderList = ({navigation}) => {
                   Date
                 </ListItem.Subtitle>
                 <ListItem.Subtitle style={styles.listSubtitle}>
-                  {dateHandler(item?.date)}
+                  {dateHandler(item?.localDate)}
                 </ListItem.Subtitle>
               </View>
               <View
@@ -255,7 +257,7 @@ const AppointmentReminderList = ({navigation}) => {
                   Time
                 </ListItem.Subtitle>
                 <ListItem.Subtitle style={styles.listSubtitle}>
-                  {item.time}
+                  {item.localTime}
                 </ListItem.Subtitle>
               </View>
 
@@ -272,15 +274,12 @@ const AppointmentReminderList = ({navigation}) => {
               </View>
             </View>
             <View style={styles.subView}>
-              {item?.date === todayDate ? (
+              {item?.localDate === todayDate ? (
                 <>
                   {localTime >= currentTime ? (
                     helperFunction(item)
                   ) : (
-                    <Text
-                      style={{color: 'gray', fontSize: 16, fontWeight: '500'}}>
-                      Expired
-                    </Text>
+                    <Text style={styles.expiryText}>Expired</Text>
                   )}
                 </>
               ) : (
@@ -314,6 +313,7 @@ const AppointmentReminderList = ({navigation}) => {
             temp={temp}
             appointmentId={appointmentId}
             setAppointments={setAppointments}
+            todayDate={todayDate}
           />
         }
       />
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   img: {width: '70%'},
-  top: {marginVertical: 2},
+  top: {marginTop: 4},
 
   reminderKey: {
     fontSize: 16,
@@ -386,6 +386,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   mainView: {flexDirection: 'row', alignItems: 'center'},
+  expiryText: {color: 'gray', fontSize: 16, fontWeight: '500'},
 });
 
 export default AppointmentReminderList;

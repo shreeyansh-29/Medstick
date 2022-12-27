@@ -26,7 +26,7 @@ const MedicineList = ({route, navigation}) => {
   const [edit, setEdit] = useState(false);
   const [medData, setMedData] = useState('');
 
-  const MedicineDetailCard = ({item, index}) => {
+  const MedicineDetailCard = ({item}) => {
     return (
       <TouchableOpacity activeOpacity={1}>
         <View style={styles.container} key={index}>
@@ -72,7 +72,7 @@ const MedicineList = ({route, navigation}) => {
                   </View>
                   <View style={styles.itemWidth}>
                     <Text style={styles.itemData}>
-                      {item.medicineDescription}
+                      {item.description}
                     </Text>
                   </View>
                 </View>
@@ -173,6 +173,7 @@ const MedicineList = ({route, navigation}) => {
           data={data}
           centerContent={true}
           renderItem={MedicineDetailCard}
+          firstItem={index}
           sliderWidth={deviceWidth}
           horizontal={true}
           itemWidth={deviceWidth / 1.1}

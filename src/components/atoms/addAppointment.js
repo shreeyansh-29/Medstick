@@ -6,7 +6,7 @@ import {CustomAlert} from '../atoms/customAlert';
 
 const AddAppointment = ({navigation, routeName, notes}) => {
   const showAlert = () => {
-    CustomAlert({text1: 'Add Medicine and Precrisption Together'});
+    CustomAlert({text1: 'Add Medicine and Prescription Together'});
   };
 
   return (

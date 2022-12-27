@@ -34,6 +34,7 @@ const UpdateAppointment = ({
   temp,
   appointmentId,
   setAppointments,
+  todayDate,
 }) => {
   //React useState hooks
   const [dateOpen, setDateOpen] = useState(false);
@@ -45,16 +46,88 @@ const UpdateAppointment = ({
 
   //Pushing scheduled notificatons
   const handlePushNotification = (obj, reminderTime, time) => {
-    let dateTime = moment(obj.date + ' ' + reminderTime);
+    let dateTime = moment(obj.localDate + ' ' + reminderTime);
     Notifications.schduleNotification2(dateTime._d, time);
+  };
+
+  const helperFunction = (time1, time2, reminderTime, obj, appointmentId) => {
+    getMedicine().then(data => {
+      let localTime;
+      let updatedList = data;
+      updatedList.map(item => {
+        if (item.appointmentList.length !== 0) {
+          item.appointmentList.map((ele, index) => {
+            //updating the previously stored data
+            if (ele.appointmentId === appointmentId) {
+              localTime = ele.localTime;
+              item.appointmentList[index] = obj;
+              item.isSynced = false;
+            }
+          });
+        }
+
+        //pushing the updated list      let time;
+
+        AddMedicine(updatedList);
+        SuccessToast({text1: 'Updated Successfully', position: 'top'});
+
+        //pushing the updated appointment
+        getMedicine().then(data => {
+          if (data !== null && data.length !== 0) {
+            let reminderList = [];
+            data.map(item => {
+              if (item.appointmentList.length !== 0) {
+                item.appointmentList.map(ele => {
+                  if (ele?.localDate >= todayDate) {
+                    //pushing appointments to display
+                    reminderList.push(ele);
+                  }
+                });
+              }
+            });
+
+            //fetching unique appointment wrt appointmentId
+            const key = 'appointmentId';
+            const uniqueReminder = [
+              ...new Map(reminderList.map(item => [item[key], item])).values(),
+            ];
+            setAppointments(uniqueReminder);
+          }
+        });
+      });
+
+      //deleting the push notification
+      PushNotification.getScheduledLocalNotifications(rn => {
+        for (let i = 0; i < rn.length; i++) {
+          if (
+            'You have an appointment scheduled at' + ' ' + localTime ===
+              rn[i].message &&
+            rn[i].title === 'Appointment!'
+          ) {
+            PushNotification.cancelLocalNotification({
+              id: rn[i].id,
+            });
+          }
+        }
+      });
+
+      //pushing the updated notification
+      reminderTime > time2
+        ? handlePushNotification(obj, reminderTime, obj.time)
+        : null;
+      handlePushNotification(obj, time1, obj.time);
+      setTimeout(() => {
+        setModalVisible(false);
+      }, 1000);
+    });
   };
 
   //Function to update appointment
   const updateAppointment = values => {
     let obj = {
       notes: values.notes.trim(),
-      date: values.date1,
-      time: values.time,
+      localDate: values.date1,
+      localTime: values.time,
       appointmentId: appointmentId,
     };
 
@@ -66,7 +139,7 @@ const UpdateAppointment = ({
       (d.getMonth() + 1) +
       '-' +
       (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
-    let time1 = moment(obj.time, ['h:mm A']).format('HH:mm');
+    let time1 = moment(obj.localTime, ['h:mm A']).format('HH:mm');
     let time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
 
     let hour =
@@ -77,146 +150,16 @@ const UpdateAppointment = ({
     let reminderTime = hour + ':' + time1.split(':')[1];
 
     //comparing currentDate and scheduled date
-    if (currentDate === obj.date) {
+    if (currentDate === obj.localDate) {
       //if both the dates matched then checking timing and if new time
       //is greater than previous time then update appointment
       time1 > time2
-        ? getMedicine().then(data => {
-            let localTime;
-            let updatedList = data;
-            updatedList.map(item => {
-              if (item.appointmentList.length !== 0) {
-                item.appointmentList.map((ele, index) => {
-                  //updating the previously stored data
-                  if (ele.appointmentId === appointmentId) {
-                    localTime = ele.time;
-                    item.appointmentList[index] = obj;
-                    item.isModified = true;
-                  }
-                });
-              }
-
-              //pushing the updated list
-              AddMedicine(updatedList);
-              SuccessToast({text1: 'Updated Successfully', position: 'top'});
-
-              //pushing the updated appointment
-              getMedicine().then(data => {
-                if (data !== null && data.length !== 0) {
-                  let reminderList = [];
-                  data.map(item => {
-                    if (item.appointmentList.length !== 0) {
-                      item.appointmentList.map(ele => {
-                        reminderList.push(ele);
-                      });
-                    }
-                  });
-
-                  //fetching unique appointment wrt appointmentId
-                  const key = 'appointmentId';
-                  const uniqueReminder = [
-                    ...new Map(
-                      reminderList.map(item => [item[key], item]),
-                    ).values(),
-                  ];
-                  setAppointments(uniqueReminder);
-                }
-              });
-            });
-
-            //deleting the push notification
-            PushNotification.getScheduledLocalNotifications(rn => {
-              for (let i = 0; i < rn.length; i++) {
-                if (
-                  'You have an appointment scheduled at' + ' ' + localTime ===
-                    rn[i].message &&
-                  rn[i].title === 'Appointment!'
-                ) {
-                  PushNotification.cancelLocalNotification({
-                    id: rn[i].id,
-                  });
-                }
-              }
-            });
-
-            //pushing the updated notification
-            reminderTime > time2
-              ? handlePushNotification(obj, reminderTime, obj.time)
-              : null;
-            handlePushNotification(obj, time1, obj.time);
-            setTimeout(() => {
-              setModalVisible(false);
-            }, 1000);
-          })
+        ? helperFunction(time1, time2, reminderTime, obj, appointmentId)
         : //scheduled time is less than currentTime
           showAlert();
     } else {
       //if scheduled date is greater than previously selected date then
-      getMedicine().then(data => {
-        let localTime;
-        let updatedList = data;
-        updatedList.map(item => {
-          if (item.appointmentList.length !== 0) {
-            item.appointmentList.map((ele, index) => {
-              //updating the previously stored data
-              if (ele.appointmentId === appointmentId) {
-                localTime = ele.time;
-                item.appointmentList[index] = obj;
-                item.isModified = true;
-              }
-            });
-          }
-          //pushing the updated list
-          AddMedicine(updatedList);
-          SuccessToast({text1: 'Updated Successfully', position: 'top'});
-
-          //pushing the updated appointment
-          getMedicine().then(data => {
-            if (data !== null && data.length !== 0) {
-              let reminderList = [];
-              data.map(item => {
-                if (item.appointmentList.length !== 0) {
-                  item.appointmentList.map(ele => {
-                    reminderList.push(ele);
-                  });
-                }
-              });
-
-              //fetching unique appointment wrt appointmentId
-              const key = 'appointmentId';
-              const uniqueReminder = [
-                ...new Map(
-                  reminderList.map(item => [item[key], item]),
-                ).values(),
-              ];
-              setAppointments(uniqueReminder);
-            }
-          });
-        });
-        //deleting the push notification
-        PushNotification.getScheduledLocalNotifications(rn => {
-          for (let i = 0; i < rn.length; i++) {
-            if (
-              'You have an appointment scheduled at' + ' ' + localTime ===
-                rn[i].message &&
-              rn[i].title === 'Appointment!'
-            ) {
-              PushNotification.cancelLocalNotification({
-                id: rn[i].id,
-              });
-            }
-          }
-        });
-
-        //pushing the updated notification
-        reminderTime > time2
-          ? handlePushNotification(obj, reminderTime, obj.time)
-          : null;
-        handlePushNotification(obj, time1, obj.time);
-        setTimeout(() => {
-          setModalVisible(false);
-        }, 2000);
-      });
+      helperFunction(time1, time2, reminderTime, obj, appointmentId);
     }
   };
 

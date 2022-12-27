@@ -2,7 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 // import {decryptData} from '../components/atoms/crypto';
 
-const instance = axios.create({});
+const instance = axios.create({
+  timeout: 10000,
+});
 
 const requestHandler = async request => {
   let token = await AsyncStorage.getItem('accessToken');

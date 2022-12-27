@@ -30,41 +30,46 @@ const DeletePrescription = ({
   };
   const deletePrescription = prescriptionId => {
     getMedicine().then(data => {
+      let counter = 0;
       if (data !== null && data.length !== 0) {
         data.map(item => {
           if (item.prescriptionId === prescriptionId) {
-            showAlert();
-          } else {
-            Alert.alert('Are you sure', 'Click ok to proceed', [
-              {
-                text: 'Ok',
-                onPress: () => {
-                  getPrescription().then(data => {
-                    let list = data;
-                    let a = b => b.prescriptionId == prescriptionId;
-                    let index = list.findIndex(a);
-                    list.splice(index, 1);
-                    savePrescription(list);
-                    getPrescription().then(data => {
-                      if (data !== null) {
-                        setPrescriptionList(data);
-                        setPrescriptionId('');
-                        setDeleteBtn(false);
-                      }
-                    });
-                  });
-                },
-              },
-              {
-                text: 'Cancel',
-                onPress: () => {
-                  setPrescriptionId('');
-                  setDeleteBtn(false);
-                },
-              },
-            ]);
+            counter += 1;
           }
         });
+        if (counter > 0) {
+          showAlert();
+          return;
+        } else {
+          Alert.alert('Are you sure', 'Click ok to proceed', [
+            {
+              text: 'Ok',
+              onPress: () => {
+                getPrescription().then(data => {
+                  let list = data;
+                  let a = b => b.prescriptionId == prescriptionId;
+                  let index = list.findIndex(a);
+                  list.splice(index, 1);
+                  savePrescription(list);
+                  getPrescription().then(data => {
+                    if (data !== null) {
+                      setPrescriptionList(data);
+                      setPrescriptionId('');
+                      setDeleteBtn(false);
+                    }
+                  });
+                });
+              },
+            },
+            {
+              text: 'Cancel',
+              onPress: () => {
+                setPrescriptionId('');
+                setDeleteBtn(false);
+              },
+            },
+          ]);
+        }
       }
     });
   };

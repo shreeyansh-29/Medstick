@@ -8,10 +8,7 @@ import * as types from '../../actionTypes';
 
 export function* searchMedicineWorkerSaga(data) {
   try {
-    const response = yield call(
-      networkService.searchMedicineRequest,
-      data,
-    );
+    const response = yield call(networkService.searchMedicineRequest, data);
     yield put(searchMedicineSuccess(response?.data));
   } catch (err) {
     yield put(searchMedicineError(err.response));

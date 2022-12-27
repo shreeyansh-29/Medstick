@@ -1,4 +1,10 @@
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import {colorPallete} from '../../components/atoms/colorPalette';
@@ -19,33 +25,39 @@ const Prescriptions = ({navigation}) => {
   const [prescriptionId, setPrescriptionId] = useState('');
   const [showLoader, setShowLoader] = useState(true);
   const [deleteBtn, setDeleteBtn] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   let flag = true;
   const isFocused = useIsFocused();
 
   useEffect(() => {
     setTimeout(() => {
       setShowLoader(false);
-    }, 1000);
+    }, 1500);
     return () => {
       false;
     };
-  }, []);
+  }, [showLoader]);
 
   useEffect(() => {
     if (isFocused) {
-      getPrescription().then(data => {
-        if (data !== null && data.length !== 0) {
-          setMyPrescriptions(data);
-        } else {
-          setMyPrescriptions([]);
-        }
-      });
+      fetchData();
     }
 
     return () => {
       false;
     };
   }, [isFocused]);
+
+  const fetchData = () => {
+    setRefresh(false);
+    getPrescription().then(data => {
+      if (data !== null && data.length !== 0) {
+        setMyPrescriptions(data);
+      } else {
+        setMyPrescriptions([]);
+      }
+    });
+  };
 
   const RenderItem = ({item, index}) => {
     return (
@@ -92,7 +104,7 @@ const Prescriptions = ({navigation}) => {
               {prescriptionId === item.prescriptionId ? null : (
                 <TouchableOpacity
                   activeOpacity={1}
-                  style={{marginRight: 12}}
+                  style={{padding: 12}}
                   onPress={() => {
                     navigation.navigate('ViewPrescription', {
                       item: item,
@@ -141,7 +153,20 @@ const Prescriptions = ({navigation}) => {
               data={myPrescriptions}
               renderItem={RenderItem}
               showsVerticalScrollIndicator={false}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={item => item.prescriptionId}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  colors={[colorPallete.mainColor]}
+                  onRefresh={() => {
+                    setRefresh(true);
+                    setMyPrescriptions([]);
+                    fetchData();
+                    setShowLoader(true);
+                    setPrescriptionId('');
+                  }}
+                />
+              }
             />
           )}
         </>
