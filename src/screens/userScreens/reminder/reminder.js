@@ -316,7 +316,7 @@ const Reminder = ({route, navigation}) => {
     obj.startDate = fDatePrimary;
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;
-    obj.isModified = true;
+    obj.isSynced = false;
 
     let name = route.params.data.medicineName;
 

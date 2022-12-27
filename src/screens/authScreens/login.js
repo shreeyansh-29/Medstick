@@ -57,6 +57,7 @@ const Login = ({navigation, logout}) => {
         getResponse();
       }
       dispatch(resetLogin());
+      logout();
     }
   }, [isFocused, result]);
 

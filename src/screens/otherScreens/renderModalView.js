@@ -60,7 +60,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
             updatedList[index].contact = obj.contact;
             updatedList[index].location = obj.location;
             updatedList[index].prescriptionUrl = obj.prescriptionUrl;
-            updatedList[index].modified = true;
+            updatedList[index].isSynced = false;
           }
           AddMedicine(updatedList);
         });

@@ -34,6 +34,7 @@ const UpdateAppointment = ({
   temp,
   appointmentId,
   setAppointments,
+  todayDate,
 }) => {
   //React useState hooks
   const [dateOpen, setDateOpen] = useState(false);
@@ -45,7 +46,7 @@ const UpdateAppointment = ({
 
   //Pushing scheduled notificatons
   const handlePushNotification = (obj, reminderTime, time) => {
-    let dateTime = moment(obj.date + ' ' + reminderTime);
+    let dateTime = moment(obj.localDate + ' ' + reminderTime);
     Notifications.schduleNotification2(dateTime._d, time);
   };
 
@@ -58,14 +59,15 @@ const UpdateAppointment = ({
           item.appointmentList.map((ele, index) => {
             //updating the previously stored data
             if (ele.appointmentId === appointmentId) {
-              localTime = ele.time;
+              localTime = ele.localTime;
               item.appointmentList[index] = obj;
-              item.isModified = true;
+              item.isSynced = false;
             }
           });
         }
 
-        //pushing the updated list
+        //pushing the updated list      let time;
+
         AddMedicine(updatedList);
         SuccessToast({text1: 'Updated Successfully', position: 'top'});
 
@@ -76,7 +78,10 @@ const UpdateAppointment = ({
             data.map(item => {
               if (item.appointmentList.length !== 0) {
                 item.appointmentList.map(ele => {
-                  reminderList.push(ele);
+                  if (ele?.localDate >= todayDate) {
+                    //pushing appointments to display
+                    reminderList.push(ele);
+                  }
                 });
               }
             });
@@ -121,8 +126,8 @@ const UpdateAppointment = ({
   const updateAppointment = values => {
     let obj = {
       notes: values.notes.trim(),
-      date: values.date1,
-      time: values.time,
+      localDate: values.date1,
+      localTime: values.time,
       appointmentId: appointmentId,
     };
 
@@ -134,7 +139,7 @@ const UpdateAppointment = ({
       (d.getMonth() + 1) +
       '-' +
       (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
-    let time1 = moment(obj.time, ['h:mm A']).format('HH:mm');
+    let time1 = moment(obj.localTime, ['h:mm A']).format('HH:mm');
     let time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
 
     let hour =
@@ -145,7 +150,7 @@ const UpdateAppointment = ({
     let reminderTime = hour + ':' + time1.split(':')[1];
 
     //comparing currentDate and scheduled date
-    if (currentDate === obj.date) {
+    if (currentDate === obj.localDate) {
       //if both the dates matched then checking timing and if new time
       //is greater than previous time then update appointment
       time1 > time2

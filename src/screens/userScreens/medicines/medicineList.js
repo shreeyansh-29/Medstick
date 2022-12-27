@@ -72,7 +72,7 @@ const MedicineList = ({route, navigation}) => {
                   </View>
                   <View style={styles.itemWidth}>
                     <Text style={styles.itemData}>
-                      {item.medicineDescription}
+                      {item.description}
                     </Text>
                   </View>
                 </View>

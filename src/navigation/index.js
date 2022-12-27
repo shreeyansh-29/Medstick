@@ -14,6 +14,7 @@ import {useDispatch} from 'react-redux';
 import {saveInternetConnectivityStatus} from '../redux/action/loginAction/saveInternetConnectivity';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {saveUserLoggedIn} from '../redux/action/loginAction/saveUserLoggedIn';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,10 +29,6 @@ const MainNavigation = () => {
   }, []);
 
   useEffect(() => {
-    checkNetworkHandler();
-  }, []);
-
-  const checkNetworkHandler = () => {
     let intenetInfo;
     if (!intenetInfo) {
       intenetInfo = NetInfo.addEventListener(state => {
@@ -41,15 +38,13 @@ const MainNavigation = () => {
     return () => {
       intenetInfo && intenetInfo();
     };
-  };
-
-  const getUserLoggedIn = async () => {
-    const user = await GoogleSignin.getCurrentUser();
-    if (user !== null) dispatch(saveUserLoggedIn(true));
-  };
+  }, []);
 
   useEffect(() => {
-    getUserLoggedIn();
+    (async () => {
+      const user = await AsyncStorage.getItem('user_id');
+      if (user !== null) dispatch(saveUserLoggedIn(true));
+    })();
   }, []);
 
   return (

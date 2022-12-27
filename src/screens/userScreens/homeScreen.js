@@ -40,17 +40,59 @@ const HomeScreen = ({navigation}) => {
   const [myCaretakers, setMyCaretakers] = useState([]);
   let td_da = moment().format('YYYY-MM-DD');
 
-  // useEffect(() => {
-  //   getMedicine().then(data => {
-  //     if (data !== null && data.length !== 0) {
-  //       let updatedList = data;
-  //       dispatch(syncDataRequest(updatedList));
-  //     }
-  //   });
-  // }, [connected, load]);
+  const syncMedicine = () => {
+    getMedicine().then(data => {
+      if (data !== null && data.length !== 0) {
+        let updatedList = data;
+        let syncArray = [];
+        updatedList.map(item => {
+          if (item.isSynced === false) {
+            let obj = {
+              userMedicineId: item.userMedicineId,
+              medicineId: item.medicineId,
+              medicineName: item.medicineName,
+              description: item.description,
+              present: item.present,
+              dosageType: item.dosageType,
+              dosageQuantity: item.dosageQuantity,
+              dosagePower: item.dosagePower,
+              stock: item.stock,
+              leftStock: item.leftStock,
+              reminderId: item.reminderId,
+              startDate: item.startDate,
+              endDate: item.endDate,
+              days: item.days,
+              reminderTitle: item.reminderTitle,
+              reminderTime: item.reminderTime,
+              everyday: item.everyday,
+              noEndDate: item.noEndDate,
+              reminderStatus: item.reminderStatus,
+              frequency: item.frequency,
+              beforeAfter: item.beforeAfter,
+              totalReminders: item.totalReminders,
+              currentCount: item.currentCount,
+              prescriptionId: item.prescriptionId,
+              doctorName: item.doctorName,
+              specialization: item.specialization,
+              contact: item.contact,
+              location: item.location,
+              prescriptionUrl: item.prescriptionUrl,
+              doctorAppointmentList: item.appointmentList,
+              flag: true,
+            };
+            syncArray.push(obj);
+          }
+        });
+        dispatch(syncDataRequest(syncArray));
+      }
+    });
+  };
 
   useEffect(() => {
-    if (connected && load) dispatch(myCaretakerRequest(0));
+    if (connected && load) {
+      dispatch(myCaretakerRequest(0));
+      // syncMedicine();
+    }
   }, [connected, load]);
 
   useEffect(() => {
@@ -135,6 +177,7 @@ const HomeScreen = ({navigation}) => {
       taken: '',
       notTaken: '',
       time: '',
+      isSynced: false,
     };
     for (let i = 0; i < data.length; i++) {
       if (data[i].everyday == true) {

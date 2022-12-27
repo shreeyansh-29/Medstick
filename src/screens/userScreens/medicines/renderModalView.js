@@ -72,6 +72,7 @@ const RenderModalView = ({setVisible, props}) => {
     dispatch(searchMedicineClear());
     props.setFieldValue('medicineName', item.medicineName);
     props.setFieldValue('description', item.description);
+    props.setKey(false);
   };
 
   const renderItem = ({item, index}) => {

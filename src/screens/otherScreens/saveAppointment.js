@@ -42,7 +42,7 @@ const AppointmentReminders = ({navigation, route}) => {
 
   //Pushing scheduled notificatons
   const handlePushNotification = (obj, reminderTime, time) => {
-    let dateTime = moment(obj.date + ' ' + reminderTime);
+    let dateTime = moment(obj.localDate + ' ' + reminderTime);
     Notifications.schduleNotification2(dateTime._d, time);
   };
 
@@ -54,7 +54,7 @@ const AppointmentReminders = ({navigation, route}) => {
           //storing the appointment
           if (item.prescriptionId === prescriptionId) {
             updatedList[index].appointmentList.push(obj);
-            updatedList[index].isModified = true;
+            updatedList[index].isSynced = false;
           }
         });
 
@@ -68,9 +68,9 @@ const AppointmentReminders = ({navigation, route}) => {
 
       //scheduling the push notification
       reminderTime > time2
-        ? handlePushNotification(obj, reminderTime, obj.time)
+        ? handlePushNotification(obj, reminderTime, obj.localTime)
         : null;
-      handlePushNotification(obj, time1, obj.time);
+      handlePushNotification(obj, time1, obj.localTime);
       setTimeout(() => {
         navigation.pop();
       }, 1500);
@@ -83,8 +83,8 @@ const AppointmentReminders = ({navigation, route}) => {
     let appointmentId = uuid.v4();
     let obj = {
       notes: values.notes.trim(),
-      date: values.date,
-      time: values.time,
+      localDate: values.date,
+      localTime: values.time,
       appointmentId: appointmentId,
     };
 
@@ -97,7 +97,7 @@ const AppointmentReminders = ({navigation, route}) => {
       '-' +
       (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
 
-    let time1 = moment(obj.time, ['h:mm A']).format('HH:mm');
+    let time1 = moment(obj.localTime, ['h:mm A']).format('HH:mm');
     let time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
 
     let hour =
@@ -108,7 +108,7 @@ const AppointmentReminders = ({navigation, route}) => {
     let reminderTime = hour + ':' + time1.split(':')[1];
 
     //comparing currentDate and scheduled date
-    if (currentDate === obj.date) {
+    if (currentDate === obj.localDate) {
       //if both the dates matched then checking timing and if new time
       //is greater than previous time then saving appointment
       time1 > time2

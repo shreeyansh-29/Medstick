@@ -16,6 +16,7 @@ const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 const AddMedicineLocal = ({navigation}) => {
   //React useState hooks
   const [doseType, setDoseType] = useState('');
+  const [key, setKey] = useState(true);
   const [pill, setPill] = useState('Tablet');
   const [prescriptionObj, setPrescriptionObj] = useState({
     doctorName: null,
@@ -55,6 +56,8 @@ const AddMedicineLocal = ({navigation}) => {
     }
   };
 
+  console.log(key);
+
   //Function to Save Medicine
   const saveMedicineLocal = values => {
     //comparing if left stock is greater than total stock
@@ -69,14 +72,14 @@ const AddMedicineLocal = ({navigation}) => {
         userMedicineId: userMedicineId,
         medicineId: medicineId,
         medicineName: values.medicineName.trim(),
-        medicineDescription: values.description.trim(),
+        description: values.description.trim(),
         prescriptionId: prescriptionObj.prescriptionId,
         doctorName: prescriptionObj.doctorName,
         prescriptionUrl: prescriptionObj.prescriptionUrl,
         location: prescriptionObj.location,
         specialization: prescriptionObj.specialization,
         contact: prescriptionObj.contact,
-        present: 'true',
+        present: key ? true : false,
         dosageType: pill,
         dosageQuantity: Number(values.dosageQuantity),
         dosagePower: values.dosagePower + ' ' + values.doseType,
@@ -98,7 +101,7 @@ const AddMedicineLocal = ({navigation}) => {
         historyList: [],
         appointmentList: [],
         notes: '',
-        isModified: false,
+        isSynced: false,
       };
 
       getMedicine()
@@ -197,6 +200,7 @@ const AddMedicineLocal = ({navigation}) => {
                 prescriptionObject={getPrescriptionData}
                 add={add}
                 setAdd={setAdd}
+                setKey={setKey}
               />
             )}
           </Formik>

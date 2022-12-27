@@ -122,7 +122,11 @@ const MedicinePanel = ({navigation}) => {
                           <Text style={{color: 'black'}}>Dosage Power: </Text>
                           {item.dosagePower}
                         </ListItem.Subtitle>
-                        <ListItem.Subtitle>
+                        <ListItem.Subtitle
+                          style={{
+                            color:
+                              item.stock <= item.leftStock ? 'red' : 'grey',
+                          }}>
                           <Text style={{color: 'black'}}>Stock: </Text>
                           {item.stock}
                         </ListItem.Subtitle>

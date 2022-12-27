@@ -35,28 +35,26 @@ class Notifications {
       (currentTime.getMonth() + 1) +
       '-' +
       currentTime.getDate();
-      console.log(date, check1, name, enddate, check2, length, "local");
+    console.log(date, check1, name, enddate, check2, length, 'local');
 
-    if (check1 && enddate=="No End Date") {
+    if (check1 && enddate == 'No End Date') {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name ,
+        message: 'Take ' + name,
         date: date,
         repeatType: 'day',
       });
-    }
-    else if(check2){
+    } else if (check2) {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name ,
+        message: 'Take ' + name,
         date: date,
         repeatType: 'week',
         repeatTime: length,
       });
-    }
-    else {
+    } else {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',

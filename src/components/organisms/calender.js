@@ -12,7 +12,9 @@ const Calender = props => {
     '-' +
     (upcomingDate.getMonth() + 1) +
     '-' +
-    (upcomingDate.getDate() + 7);
+    (upcomingDate.getDate() + 7 > 31
+      ? upcomingDate.getDate() + 31 - upcomingDate.getDate()
+      : upcomingDate.getDate() + 7);
 
   const dateBlackList = i => {
     let temp = i.format('YYYY-MM-DD');

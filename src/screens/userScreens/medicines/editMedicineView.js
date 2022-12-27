@@ -71,13 +71,13 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
       let obj = item;
 
       obj.medicineName = values.medicineName.trim();
-      obj.medicineDescription = values.description.trim();
+      obj.description = values.description.trim();
       obj.dosageType = values.pill;
       obj.dosageQuantity = values.dosageQuantity;
       obj.dosagePower = values.dosagePower + ' ' + values.doseType;
       obj.leftStock = values.notify;
       obj.stock = values.stocks;
-      obj.isModified = true;
+      obj.isSynced = false;
 
       if (prescriptionObj.doctorName !== doctorName) {
         obj.prescriptionId = prescriptionObj.prescriptionId;
@@ -142,7 +142,7 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
             enableReinitialize
             initialValues={{
               medicineName: item.medicineName,
-              description: item.medicineDescription,
+              description: item.description,
               pill: '',
               dosageQuantity: item.dosageQuantity.toString(),
               dosagePower: item.dosagePower.split(' ')[0],
