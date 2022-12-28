@@ -26,7 +26,9 @@ import {syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
 import Loader from '../../components/atoms/loader';
 import {week} from '../../constants/constants';
 import uuid from 'react-native-uuid';
+import Notifications from '../../pushNotification/pushNotifications';
 import {CustomAlert} from '../../components/atoms/customAlert';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -136,7 +138,6 @@ const HomeScreen = ({navigation}) => {
         savePercentageDetails(obj);
       } else if (data !== null && data.length !== 0) {
         obj = data;
-        console.log('percent data', data);
         obj.map((item, index) => {
           const a = b => b.date == td_da;
           if (item.date === td_da) {
@@ -275,7 +276,6 @@ const HomeScreen = ({navigation}) => {
 
       updateArray.push(data[i]);
     }
-    console.log('Med Array', updateArray);
     AddMedicine(updateArray);
   };
 
@@ -284,6 +284,22 @@ const HomeScreen = ({navigation}) => {
       item.reminderId !== null && MedicineHistory(medData);
     });
   }, [medData]);
+
+  useEffect(() => {
+    notifyNotification(medData);
+  }, []);
+
+  const notifyNotification = medData => {
+    let date = new Date();
+    let dateNew = moment(date).add(1, 'm').toDate();
+    // console.log(medData, 'date');
+    let i;
+    for (i = 0; i < medData.length; i++) {
+      if (parseInt(medData[i].leftStock) >= parseInt(medData[i].stock)) {
+        Notifications.notifyMedicineNotification(dateNew, medData[i]?.stock);
+      }
+    }
+  };
 
   //for Calculating Overall Percentage on particular date
   function getDate(data) {

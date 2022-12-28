@@ -43,3 +43,5 @@ export const SAVE_REMINDER = `${apiUrl}/medicine-reminder`;
 export const MEDICINE_NOTES = `${apiUrl}/medicine/update`;
 export const FEEDBACK = `${apiUrl}/feedback`;
 export const SYNC_DATA = `${apiUrl}/medicines/sync`;
+export const REFRESH_TOKEN = `${apiUrl}/refreshToken`;
+export const EXPIRY = `${apiUrl}/expiry`;

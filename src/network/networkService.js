@@ -11,6 +11,30 @@ class NetworkService {
       email: email,
     });
   }
+
+  async expiry() {
+    const id = await AsyncStorage.getItem('user_id');
+    const token = await AsyncStorage.getItem('accessToken');
+    return await RequestService.getRequest(`${apiUrl.EXPIRY}?Id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  async refreshToken() {
+    const id = await AsyncStorage.getItem('user_id');
+    const token = await AsyncStorage.getItem('refreshToken');
+    return await RequestService.refreshToken(
+      `${apiUrl.REFRESH_TOKEN}?userId=${id}`,
+      {},
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+  }
   async signUp(payload) {
     const {name, email, photo, token} = payload.payload;
     return RequestService.postRequest(apiUrl.SIGN_UP, {
