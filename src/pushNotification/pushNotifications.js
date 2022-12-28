@@ -37,7 +37,7 @@ class Notifications {
       currentTime.getDate();
     console.log(date, check1, name, enddate, check2, length, 'local');
 
-    if (check1 && enddate == 'No End Date') {
+    if (check1 || enddate == 'No End Date') {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
@@ -69,6 +69,14 @@ class Notifications {
       channelId: 'reminders',
       title: 'Appointment!',
       message: 'You have an appointment scheduled at' + ' ' + time,
+      date: date,
+    });
+  }
+  notifyMedicineNotification(date, stock) {
+    PushNotification.localNotificationSchedule({
+      channelId: 'reminders',
+      title: 'Stocks! ',
+      message: 'you have only this much medicine left ' + stock,
       date: date,
     });
   }

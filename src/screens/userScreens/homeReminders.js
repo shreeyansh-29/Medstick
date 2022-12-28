@@ -49,6 +49,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   function totalMedReminders(data, index) {
     let totalMedReminder = 0;
     data[index].historyList.map(h => {
+      console.log(h);
       h.time.split(',').map(t => {
         totalMedReminder += 1;
       });

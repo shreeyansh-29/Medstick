@@ -16,5 +16,8 @@ class RequestService {
   sendSnapRequest(url, object, header) {
     return axios.post(url, object, header);
   }
+  refreshToken(url, object, header) {
+    return axios.post(url, object, header);
+  }
 }
 export default new RequestService();

@@ -23,6 +23,7 @@ import {faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {monthName} from '../../constants/constants';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppointmentReminderList = ({navigation}) => {
   //React Navigation Hook

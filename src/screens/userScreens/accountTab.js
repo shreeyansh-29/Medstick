@@ -5,6 +5,7 @@ import TwoTouchable from '../../components/molecules/twoTouchable';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 import {
   faUserNurse,
   faUserDoctor,
@@ -19,12 +20,11 @@ import CustomButton from '../../components/atoms/customButton';
 const AccountTab = ({navigation}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name, setName] = useState('Please Login First');
-
   const [img, imgstate] = useState('');
 
   useFocusEffect(() => {
     async function checkforlog() {
-      const checkforlogin = await AsyncStorage.getItem('user_id');
+      const checkforlogin = await AsyncStorage.getItem('user_id');   
       if (checkforlogin !== null) {
         setName(await AsyncStorage.getItem('user_name'));
         imgstate(await AsyncStorage.getItem('user_photo'));

@@ -34,12 +34,15 @@ const Login = ({navigation, logout}) => {
       await AsyncStorage.setItem('user_id', res.userList[0].id);
       await AsyncStorage.setItem('user_name', res.userList[0].userName);
       await AsyncStorage.setItem('user_email', res.userList[0].email);
+      await AsyncStorage.setItem('refreshToken', res?.refreshToken);
       // let token = encryptData(res?.accessToken);
       await AsyncStorage.setItem('accessToken', res?.accessToken);
+      
       await AsyncStorage.setItem(
         'user_photo',
         res?.userList[0].userDetails.picPath,
       );
+      await AsyncStorage.setItem('loginDate', res.userList[0].lastLogin);
       dispatch(saveUserLoggedIn(true));
       SuccessToast({text1: 'Logged In Successfully'});
       setTimeout(() => {
