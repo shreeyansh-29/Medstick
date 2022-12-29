@@ -22,7 +22,7 @@ import {
 } from '../../utils/storage';
 import {useFocusEffect} from '@react-navigation/native';
 import moment from 'moment';
-import {syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
+import {syncDataClear, syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
 import Loader from '../../components/atoms/loader';
 import {week} from '../../constants/constants';
 import uuid from 'react-native-uuid';
@@ -37,63 +37,15 @@ const HomeScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const load = useSelector(state => state.userInfo?.data);
-  let res = useSelector(state => state.myCaretaker?.data);
+  const res = useSelector(state => state.myCaretaker?.data)
   const [isLoading, setIsLoading] = useState(true);
   const [myCaretakers, setMyCaretakers] = useState([]);
   let td_da = moment().format('YYYY-MM-DD');
 
-  const syncMedicine = () => {
-    getMedicine().then(data => {
-      if (data !== null && data.length !== 0) {
-        let updatedList = data;
-        let syncArray = [];
-        updatedList.map(item => {
-          if (item.isSynced === false) {
-            let obj = {
-              userMedicineId: item.userMedicineId,
-              medicineId: item.medicineId,
-              medicineName: item.medicineName,
-              description: item.description,
-              present: item.present,
-              dosageType: item.dosageType,
-              dosageQuantity: item.dosageQuantity,
-              dosagePower: item.dosagePower,
-              stock: item.stock,
-              leftStock: item.leftStock,
-              reminderId: item.reminderId,
-              startDate: item.startDate,
-              endDate: item.endDate,
-              days: item.days,
-              reminderTitle: item.reminderTitle,
-              reminderTime: item.reminderTime,
-              everyday: item.everyday,
-              noEndDate: item.noEndDate,
-              reminderStatus: item.reminderStatus,
-              frequency: item.frequency,
-              beforeAfter: item.beforeAfter,
-              totalReminders: item.totalReminders,
-              currentCount: item.currentCount,
-              prescriptionId: item.prescriptionId,
-              doctorName: item.doctorName,
-              specialization: item.specialization,
-              contact: item.contact,
-              location: item.location,
-              prescriptionUrl: item.prescriptionUrl,
-              doctorAppointmentList: item.appointmentList,
-              flag: true,
-            };
-            syncArray.push(obj);
-          }
-        });
-        dispatch(syncDataRequest(syncArray));
-      }
-    });
-  };
-
   useEffect(() => {
     if (connected && load) {
       dispatch(myCaretakerRequest(0));
-      // syncMedicine();
+      dispatch(syncDataClear())
     }
   }, [connected, load]);
 
@@ -102,6 +54,7 @@ const HomeScreen = ({navigation}) => {
       setMyCaretakers(res);
       dispatch(myCaretakerClear());
     }
+    return () => {};
   }, [res]);
 
   useFocusEffect(
@@ -320,9 +273,9 @@ const HomeScreen = ({navigation}) => {
 
   const showAlert = () => {
     if (connected && load) {
-      if (myCaretakers?.length === 0) {
-        CustomAlert({text1: 'Need to add caretaker first'});
-      } else {
+      if (myCaretakers?.length !== 0) {
+        //   CustomAlert({text1: 'Need to add caretaker first'});
+        // } else {
         Alert.alert(
           'Would you like to send a snap to caretaker',
           'Click Ok to send',

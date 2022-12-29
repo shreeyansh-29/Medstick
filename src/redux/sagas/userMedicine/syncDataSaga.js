@@ -9,7 +9,6 @@ import * as types from '../../actionTypes';
 export function* syncDataSaga(data) {
   try {
     const response = yield call(networkService.syncData, data);
-    console.log(response);
     yield put(syncDataSuccess(response?.data));
   } catch (error) {
     yield put(syncDataError(error));

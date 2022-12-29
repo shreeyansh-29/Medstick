@@ -78,6 +78,7 @@ const RenderModalView = ({setVisible, props}) => {
     props.setFieldValue('medicineName', item.medicineName);
     props.setFieldValue('description', item.description);
     props.setKey(false);
+    props.setMedId(item.medicineId);
   };
 
   const renderItem = ({item, index}) => {
@@ -189,39 +190,33 @@ const RenderModalView = ({setVisible, props}) => {
         activityIndicator()
       ) : (
         <>
-          {error?.status === 'Failed' ? (
+          {error?.status === 'Failed' && tempSearch.length === 0 ? (
             <View style={styles.errorCont}>
               <Text style={styles.text1}>Medicine Not Found</Text>
               <Text style={styles.text2}>(Please Enter Manually)</Text>
             </View>
           ) : (
             <>
-              {tempSearch.length === 0 ? (
-                <></>
-              ) : (
-                <>
-                  <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={tempSearch}
-                    renderItem={renderItem}
-                    contentContainerStyle={{
-                      backgroundColor: colorPallete.backgroundColor,
-                    }}
-                    style={{width: '100%'}}
-                    onEndReachedThreshold={0.1}
-                    onMomentumScrollBegin={() =>
-                      setOnEndReachedCalledDuringMomentum(false)
-                    }
-                    onEndReached={({distanceFromEnd}) => {
-                      if (!onEndReachedCalledDuringMomentum) {
-                        onEnd();
-                        setOnEndReachedCalledDuringMomentum(true);
-                      }
-                    }}
-                    keyExtractor={item => item.medicineId}
-                  />
-                </>
-              )}
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={tempSearch}
+                renderItem={renderItem}
+                contentContainerStyle={{
+                  backgroundColor: colorPallete.backgroundColor,
+                }}
+                style={{width: '100%'}}
+                onEndReachedThreshold={0.1}
+                onMomentumScrollBegin={() =>
+                  setOnEndReachedCalledDuringMomentum(false)
+                }
+                onEndReached={({distanceFromEnd}) => {
+                  if (!onEndReachedCalledDuringMomentum) {
+                    onEnd();
+                    setOnEndReachedCalledDuringMomentum(true);
+                  }
+                }}
+                keyExtractor={item => item.medicineId}
+              />
             </>
           )}
         </>

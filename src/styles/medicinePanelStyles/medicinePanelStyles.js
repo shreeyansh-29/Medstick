@@ -37,7 +37,7 @@ const Styles = StyleSheet.create({
     elevation: 3,
     shadowColor: 'black',
     marginVertical: verticalScale(5),
-    marginHorizontal: horizontalScale(10),
+    marginHorizontal: horizontalScale(6),
   },
   camera: {height: '100%'},
   listView: {margin: moderateScale(4)},

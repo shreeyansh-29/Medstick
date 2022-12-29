@@ -26,8 +26,9 @@ import {downloadPdfReducer} from './otherScreenReducer/downloadPdfReducer';
 import {saveInternetConnectivityReducer} from './loginReducer/saveInternetConnectivityReducer';
 import {saveUserLoggedInReducer} from './loginReducer/saveUserLoggedInReducer';
 import {syncDataReducer} from './userMedicine/syncDataReducer';
-import { refreshReducer } from './signUpReducer/refreshReducer';
-import { expiryReducer } from './signUpReducer/expiryReducer';
+import {refreshReducer} from './signUpReducer/refreshReducer';
+import {expiryReducer} from './signUpReducer/expiryReducer';
+import {syncHistoryDetailsReducer} from './userMedicine/syncHistoryDetailsReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -59,6 +60,7 @@ const rootReducer = combineReducers({
   syncData: syncDataReducer,
   refresh: refreshReducer,
   expiry: expiryReducer,
+  syncHistory: syncHistoryDetailsReducer,
 });
 
 export default rootReducer;

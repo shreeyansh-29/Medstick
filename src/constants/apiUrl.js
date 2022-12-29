@@ -1,4 +1,4 @@
-let apiUrl = 'http://57ldoolunj.loclx.io/api/v1/user';
+let apiUrl = 'https://1884-106-51-81-179.in.ngrok.io/api/v1/user';
 
 export const LOGIN = `${apiUrl}/login`;
 export const SIGN_UP = `${apiUrl}/sign-up`;
@@ -45,3 +45,4 @@ export const FEEDBACK = `${apiUrl}/feedback`;
 export const SYNC_DATA = `${apiUrl}/medicines/sync`;
 export const REFRESH_TOKEN = `${apiUrl}/refreshToken`;
 export const EXPIRY = `${apiUrl}/expiry`;
+export const SYNC_HISTORY_DETAILS = `${apiUrl}/medicine-history/sync`;

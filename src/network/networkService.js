@@ -2,7 +2,8 @@ import RequestService from './requestService';
 import * as apiUrl from '../constants/apiUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {decryptData} from '../components/atoms/crypto';
-
+import {HTTP_STATUS_CODES} from '../constants/statusCodes';
+import {HelperPromise} from '../constants/promise';
 class NetworkService {
   async login(payload) {
     const {email, token} = payload.payload;
@@ -11,17 +12,10 @@ class NetworkService {
       email: email,
     });
   }
-
   async expiry() {
     const id = await AsyncStorage.getItem('user_id');
-    const token = await AsyncStorage.getItem('accessToken');
-    return await RequestService.getRequest(`${apiUrl.EXPIRY}?Id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    return await RequestService.getRequest(`${apiUrl.EXPIRY}?Id=${id}`);
   }
-
   async refreshToken() {
     const id = await AsyncStorage.getItem('user_id');
     const token = await AsyncStorage.getItem('refreshToken');
@@ -76,7 +70,6 @@ class NetworkService {
   async searchMedicineRequest(payload) {
     const Id = await AsyncStorage.getItem('user_id');
     const {medicineName, pageNo} = payload.payload;
-
     return RequestService.getRequest(
       `${apiUrl.SEARCH_MEDICINE}?medicineName=${medicineName}&pageNo=${pageNo}&pageSize=8&Id=${Id}`,
     );
@@ -84,7 +77,6 @@ class NetworkService {
   async putAcceptRequest(payload) {
     const requestId = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
-
     return await RequestService.putRequest(
       `${apiUrl.ACCEPT_REQUEST}?requestId=${requestId}&Id=${id}`,
       {},
@@ -133,7 +125,6 @@ class NetworkService {
   async getUserMedicine(payload) {
     const Id = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
-    const token = await AsyncStorage.getItem('accessToken');
     return RequestService.getRequest(
       `${apiUrl.USER_MEDICINE}?userId=${Id}&Id=${id}`,
     );
@@ -149,7 +140,6 @@ class NetworkService {
     const {medName, fcmToken, patientId} = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
     const name = await AsyncStorage.getItem('user_name');
-
     return await RequestService.postRequest(
       `${apiUrl.NOTIFY_USER}?medName=${medName}&Id=${id}&fcmToken=${fcmToken}&patientId=${patientId}`,
       {
@@ -191,17 +181,14 @@ class NetworkService {
   async downloadPdf(payload) {
     const medicineId = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
-
     return await RequestService.getRequest(
       `${apiUrl.DOWNLOAD_PDF}?userMedicineId=${medicineId}&Id=${id}`,
     );
   }
-
   async sendSnap(payload) {
     const formdata = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
     let token = decryptData(await AsyncStorage.getItem('accessToken'));
-
     return await RequestService.sendSnapRequest(
       `${apiUrl.SEND_SNAP}?Id=${id}`,
       formdata,
@@ -213,17 +200,14 @@ class NetworkService {
       },
     );
   }
-
   async getUser(payload) {
     const email = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
-
     const userName = await AsyncStorage.getItem('user_name');
     return await RequestService.getRequest(
       `${apiUrl.GET_USER_EMAIL}?email=${email}&sender=${userName}&Id=${id}`,
     );
   }
-
   async sendReq(payload) {
     const {patient_id, sentby, fcmToken} = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
@@ -248,7 +232,6 @@ class NetworkService {
       body,
     );
   }
-
   async getAllNotification(payload) {
     const id = await AsyncStorage.getItem('user_id');
     const {pageNo} = payload;
@@ -256,7 +239,6 @@ class NetworkService {
       `${apiUrl.GET_ALL_NOTIFICATION}?Id=${id}&userId=${id}&pageNo=${pageNo}&pageSize=8`,
     );
   }
-
   async deleteNotification(payload) {
     const id = await AsyncStorage.getItem('user_id');
     const {notificationId} = payload;
@@ -268,11 +250,14 @@ class NetworkService {
   async syncData(payload) {
     const id = await AsyncStorage.getItem('user_id');
     let data = payload.payload;
-    console.log(data);
-    return await RequestService.postRequest(
-      `${apiUrl.SYNC_DATA}?userId=${id}&Id=${id}`,
-      data,
-    );
+
+    return HelperPromise.addAdditionUrl(data, id);
+  }
+  async syncHistoryDetails(payload) {
+    const id = await AsyncStorage.getItem('user_id');
+    let data = payload.payload;
+
+    // return HelperPromise.addAdditionUrl(data, id);
   }
 }
 export default new NetworkService();

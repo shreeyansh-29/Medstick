@@ -9,13 +9,13 @@ export const expiryRequest = () => {
 export const expirySuccess = payload => {
   return {
     type: types.EXPIRY_SUCCESS,
-    payload
+    payload,
   };
 };
 
 export const expiryError = payload => {
   return {
     type: types.EXPIRY_ERROR,
-    payload
+    payload,
   };
 };

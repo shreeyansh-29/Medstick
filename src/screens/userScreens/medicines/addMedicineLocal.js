@@ -27,6 +27,7 @@ const AddMedicineLocal = ({navigation}) => {
     specialization: null,
   });
   const [add, setAdd] = useState(false);
+  const [medId, setMedId] = useState('');
 
   //React useEffect Hooks
   useEffect(() => {
@@ -68,7 +69,7 @@ const AddMedicineLocal = ({navigation}) => {
 
       let obj = {
         userMedicineId: userMedicineId,
-        medicineId: medicineId,
+        medicineId: medId.length !== 0 ? medId : medicineId,
         medicineName: values.medicineName.trim(),
         description: values.description.trim(),
         prescriptionId: prescriptionObj.prescriptionId,
@@ -100,6 +101,7 @@ const AddMedicineLocal = ({navigation}) => {
         appointmentList: [],
         notes: '',
         isSynced: false,
+        flag: false,
       };
 
       getMedicine()
@@ -199,6 +201,7 @@ const AddMedicineLocal = ({navigation}) => {
                 add={add}
                 setAdd={setAdd}
                 setKey={setKey}
+                setMedId={setMedId}
               />
             )}
           </Formik>

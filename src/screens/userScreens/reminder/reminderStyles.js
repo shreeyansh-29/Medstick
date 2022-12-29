@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const styles = StyleSheet.create({
-  scrollView: {flex: 1, backgroundColor: 'white'},
+  scrollView: {flex: 1, backgroundColor: colorPallete.basicColor},
   container1: {padding: 7, marginBottom: 15},
   containerTouch: {flexDirection: 'row', paddingVertical: 5, marginTop: 5},
   dateContainer: {flexDirection: 'row', width: '100%', paddingVertical: 6},
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: 'center',
     width: '100%',
-    marginTop: 35,
+    marginVertical: 35,
   },
   frequencyTouchable: {
     borderRadius: 3,

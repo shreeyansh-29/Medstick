@@ -645,7 +645,9 @@ const Reminder = ({route, navigation}) => {
               </TouchableOpacity>
             </View>
           </View>
-          <Divider></Divider>
+
+          <Divider />
+
           <View style={{marginBottom: 10}}>
             <Text style={styles.title}>Select Days</Text>
 
@@ -722,7 +724,7 @@ const Reminder = ({route, navigation}) => {
                 selectedItems={selecteddaysItems}></SectionedMultiSelect>
             )}
           </View>
-          <Divider></Divider>
+          <Divider/>
           <Button
             loading={load}
             title="Save reminder"

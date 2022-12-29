@@ -1,9 +1,20 @@
-import instance from '../network/instance';
-
-function Promises() {
-  addAdditionUrl = async () => {
-    let response = await instance.postRequest();
+import * as apiUrl from '../constants/apiUrl';
+import requestService from '../network/requestService';
+class HelperPromise {
+  syncMedicine = async (data, id) => {
+    let response = await requestService.postRequest(
+      `${apiUrl.SYNC_DATA}?userId=${id}&Id=${id}`,
+      data,
+    );
+    return response;
+  };
+  syncHistoryDetails = async (userMedicineId, id) => {
+    let response = await requestService.postRequest(
+      `${apiUrl.SYNC_HISTORY_DETAILS}?Id=${id}&userMedicineId=${userMedicineId}`,
+    );
     return response;
   };
 }
-export default Promises();
+
+const helperPromise = new HelperPromise();
+export {helperPromise as HelperPromise};

@@ -19,4 +19,16 @@ const errorMedicineList = payload => {
   };
 };
 
-export {loadMedicineList, successMedicineList, errorMedicineList};
+const clearMedicineList = payload => {
+  return {
+    type: types.MEDICINE_LIST_ERROR,
+    payload,
+  };
+};
+
+export {
+  loadMedicineList,
+  successMedicineList,
+  errorMedicineList,
+  clearMedicineList,
+};
