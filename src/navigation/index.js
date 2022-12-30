@@ -45,6 +45,7 @@ const MainNavigation = () => {
 
   useEffect(() => {
     (async () => {
+      const [visible, setVisible] = useState(false);
       const user = await AsyncStorage.getItem('user_id');
       if (user !== null) dispatch(saveUserLoggedIn(true));
     })();

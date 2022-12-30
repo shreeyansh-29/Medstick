@@ -10,7 +10,6 @@ import {
 import React, {useRef, useEffect, useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import * as Animatable from 'react-native-animatable';
-import {Card} from 'react-native-paper';
 import {ListItem} from 'react-native-elements';
 import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -21,13 +20,20 @@ import CustomImage from '../../../components/atoms/customImage';
 import PushNotification from 'react-native-push-notification';
 import Loader from '../../../components/atoms/loader';
 import {colorPallete} from '../../../components/atoms/colorPalette';
+import syncMedicine from '../../../sync/syncMedicine';
+import {useDispatch, useSelector} from 'react-redux';
+import {syncDataClear} from '../../../redux/action/userMedicine/syncDataAction';
 
 const MedicinePanel = ({navigation}) => {
   const isFocused = useIsFocused();
+  const dispatch = useDispatch();
   const progress = useRef(new Animated.Value(0)).current;
   const [medicineResponse, setMedicineResponse] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
   const [refresh, setRefresh] = useState(false);
+
+  const connected = useSelector(state => state.internetConnectivity?.data);
+  const load = useSelector(state => state.userInfo?.data);
 
   useEffect(() => {
     setTimeout(() => {
@@ -48,29 +54,37 @@ const MedicinePanel = ({navigation}) => {
 
   useEffect(() => {
     if (isFocused) {
+      if (connected && load) syncMedicine(dispatch);
       fetchData();
     }
-  }, [isFocused]);
+    return () => dispatch(syncDataClear());
+  }, [isFocused, connected]);
 
   const fetchData = () => {
+    let arr = [];
     setRefresh(false);
     getMedicine().then(data => {
       if (data !== null && data.length !== 0) {
-        setMedicineResponse(data);
-      }
-    });
-  };
-
-  const deleteMedicineLocal = async index => {
-    medicineResponse.splice(index, 1);
-    AddMedicine(medicineResponse);
-    getMedicine().then(data => {
-      if (data !== null && data.length !== 0) {
-        setMedicineResponse(data);
+        data.map(ele => {
+          if (ele.flag === false) arr.push(ele);
+        });
+        setMedicineResponse(arr);
+        if (connected && load) AddMedicine(arr);
       } else {
         setMedicineResponse([]);
       }
-    });
+    });n
+  };
+
+  const deleteMedicineLocal = async index => {
+    medicineResponse[index].flag = true;
+    medicineResponse[index].isSynced = false;
+    if (connected && load) syncMedicine(dispatch);
+
+    AddMedicine(medicineResponse);
+    setShowLoader(true);
+    setMedicineResponse([]);
+    fetchData();
   };
 
   const deleteRem = name => {
@@ -98,91 +112,89 @@ const MedicinePanel = ({navigation}) => {
                 },
               });
             }}>
-            <Card style={Styles.card}>
-              <View style={Styles.listView}>
-                <ListItem style={Styles.list}>
-                  <ListItem.Content>
-                    <View style={Styles.avatarView}>
-                      <FontAwesomeIcon
-                        icon={faPills}
-                        size={36}
-                        color={colorPallete.mainColor}
-                      />
-                      <View style={Styles.medNameView}>
-                        <ListItem.Title
-                          style={Styles.medName}
-                          numberOfLines={1}>
-                          {item.medicineName}
-                        </ListItem.Title>
-                        <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Type: </Text>
-                          {item.dosageType}
-                        </ListItem.Subtitle>
-                        <ListItem.Subtitle>
-                          <Text style={{color: 'black'}}>Dosage Power: </Text>
-                          {item.dosagePower}
-                        </ListItem.Subtitle>
-                        <ListItem.Subtitle
-                          style={{
-                            color:
-                              item.stock <= item.leftStock ? 'red' : 'grey',
-                          }}>
-                          <Text style={{color: 'black'}}>Stock: </Text>
-                          {item.stock}
-                        </ListItem.Subtitle>
-                      </View>
-                    </View>
-                  </ListItem.Content>
-                  <View style={Styles.icon}>
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={Styles.rem}
-                      onPress={() => {
-                        navigation.navigate('MedicinePanelStack', {
-                          screen: 'Reminder',
-                          params: {
-                            data: item,
-                            index: index,
-                          },
-                        });
+            <View style={Styles.card}>
+              <View style={Styles.list}>
+                <View style={Styles.avatarView}>
+                  <FontAwesomeIcon
+                    icon={faPills}
+                    size={36}
+                    color={colorPallete.mainColor}
+                  />
+                </View>
+                <View style={Styles.medNameView}>
+                  <View style={{flexDirection: 'column', width: '100%'}}>
+                    <ListItem.Title style={Styles.medName} numberOfLines={1}>
+                      {item.medicineName}
+                    </ListItem.Title>
+                    <ListItem.Subtitle>
+                      <Text style={{color: 'black'}}>Type: </Text>
+                      {item.dosageType}
+                    </ListItem.Subtitle>
+                    <ListItem.Subtitle>
+                      <Text style={{color: 'black'}}>Dosage Power: </Text>
+                      {item.dosagePower}
+                    </ListItem.Subtitle>
+                    <ListItem.Subtitle
+                      style={{
+                        color:
+                          Number(item.stock) <= Number(item.leftStock)
+                            ? 'red'
+                            : 'grey',
                       }}>
-                      <FontAwesomeIcon
-                        icon={faClock}
-                        color={
-                          item.reminderStatus
-                            ? colorPallete.mainColor
-                            : 'lightgrey'
-                        }
-                        size={21}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={Styles.rem}
-                      activeOpacity={1}
-                      onPress={() => {
-                        Alert.alert('Delete it!', 'Sure you want delete it', [
-                          {
-                            text: 'Delete',
-                            onPress: () => {
-                              deleteMedicineLocal(index);
-                              deleteRem(item.medicineName);
-                            },
-                          },
-                          {
-                            text: 'Cancel',
-                          },
-                        ]);
-                      }}>
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        color={colorPallete.mainColor}
-                        size={21}
-                      />
-                    </TouchableOpacity>
+                      <Text style={{color: 'black'}}>Stock: </Text>
+                      {item.stock}
+                    </ListItem.Subtitle>
                   </View>
-                </ListItem>
+                </View>
+                <View style={Styles.icon}>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    style={Styles.rem}
+                    onPress={() => {
+                      navigation.navigate('MedicinePanelStack', {
+                        screen: 'Reminder',
+                        params: {
+                          data: item,
+                          index: index,
+                        },
+                      });
+                    }}>
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      color={
+                        item.reminderStatus
+                          ? colorPallete.mainColor
+                          : 'lightgrey'
+                      }
+                      size={21}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={Styles.rem}
+                    activeOpacity={1}
+                    onPress={() => {
+                      Alert.alert('Delete it!', 'Sure you want delete it', [
+                        {
+                          text: 'Delete',
+                          onPress: () => {
+                            deleteMedicineLocal(index);
+                            deleteRem(item.medicineName);
+                          },
+                        },
+                        {
+                          text: 'Cancel',
+                        },
+                      ]);
+                    }}>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      color={colorPallete.mainColor}
+                      size={21}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </Card>
+            </View>
           </TouchableOpacity>
         </Animatable.View>
       </>
@@ -197,11 +209,11 @@ const MedicinePanel = ({navigation}) => {
       ) : (
         <>
           {medicineResponse.length === 0 ? (
-            <View style={Styles.lottie}>
+            <View style={Styles.imageCont}>
               <CustomImage
                 resizeMode="contain"
                 source={require('../../../assets/images/nomeds.png')}
-                styles={{width: '66%'}}
+                styles={Styles.img}
               />
             </View>
           ) : (

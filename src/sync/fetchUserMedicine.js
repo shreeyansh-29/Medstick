@@ -5,7 +5,7 @@ const fetchUserMedicine = (userMedicine, dispatch) => {
   let updatedList = [];
   let prescriptionList = [];
   getMedicine().then(data => {
-    if (data === null) {
+    if (data === null || data.length === 0) {
       userMedicine.map(item => {
         if (item.prescriptionId !== null) {
           let obj = {
@@ -24,7 +24,7 @@ const fetchUserMedicine = (userMedicine, dispatch) => {
         }
         item.historyList = [];
         item.doctorAppointmentList = [];
-        isSynced = true;
+        item.isSynced = true;
         updatedList.push(item);
       });
       AddMedicine(updatedList);

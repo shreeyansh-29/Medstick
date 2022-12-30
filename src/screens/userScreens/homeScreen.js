@@ -58,6 +58,7 @@ const HomeScreen = ({navigation}) => {
       if (medData.length !== 0) dispatch(myCaretakerRequest(0));
       (async () => {
         dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
+        // dispatch()
       })();
     }
   }, [connected, load]);
@@ -73,11 +74,11 @@ const HomeScreen = ({navigation}) => {
   useFocusEffect(
     React.useCallback(() => {
       getData();
-      syncMedicine(dispatch);
+      if (connected && load) syncMedicine(dispatch);
       return () => {
         dispatch(syncDataClear());
       };
-    }, []),
+    }, [connected, load]),
   );
 
   //for Calculating Overall Percentage
@@ -171,7 +172,8 @@ const HomeScreen = ({navigation}) => {
         data[i].endDate !== 'No End Date' &&
         set.has(week[tody_date.getDay()]) &&
         start_date <= td_da &&
-        td_da <= end_date
+        td_da <= end_date &&
+        !data[i].flag
       ) {
         if (data[i].historyList.length === 0) {
           history.historyId = uuid.v4();

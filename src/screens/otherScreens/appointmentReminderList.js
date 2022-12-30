@@ -24,6 +24,8 @@ import {monthName} from '../../constants/constants';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch, useSelector} from 'react-redux';
+import {syncDataClear} from '../../redux/action/userMedicine/syncDataAction';
 
 const AppointmentReminderList = ({navigation}) => {
   //React Navigation Hook
@@ -39,6 +41,10 @@ const AppointmentReminderList = ({navigation}) => {
   const [doctorName, setDoctorName] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
   const [refresh, setRefresh] = useState(false);
+
+  const dispatch = useDispatch();
+  const connected = useSelector(state => state.internetConnectivity?.data);
+  const load = useSelector(state => state.userInfo?.data);
 
   let todayDate = new Date();
   let currentTime =
@@ -60,9 +66,11 @@ const AppointmentReminderList = ({navigation}) => {
   //React useEffect Hook
   useEffect(() => {
     if (isFocused) {
+      if (connected && load) syncMedicine(dispatch);
       fetchData();
     }
-  }, [isFocused]);
+    return () => dispatch(syncDataClear());
+  }, [isFocused, connected, load]);
 
   useEffect(() => {
     setTimeout(() => {

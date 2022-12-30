@@ -52,7 +52,7 @@ const DeletePrescription = ({
                   list.splice(index, 1);
                   savePrescription(list);
                   getPrescription().then(data => {
-                    if (data !== null) {
+                    if (data !== null && data.length !== 0) {
                       setPrescriptionList(data);
                       setPrescriptionId('');
                       setDeleteBtn(false);
@@ -82,7 +82,7 @@ const DeletePrescription = ({
                 list.splice(index, 1);
                 savePrescription(list);
                 getPrescription().then(data => {
-                  if (data !== null) {
+                  if (data !== null && data.length !== 0) {
                     setPrescriptionList(data);
                     setPrescriptionId('');
                     setDeleteBtn(false);

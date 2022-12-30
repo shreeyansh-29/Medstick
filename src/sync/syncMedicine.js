@@ -1,7 +1,7 @@
 import {syncDataRequest} from '../redux/action/userMedicine/syncDataAction';
 import {getMedicine} from '../utils/storage';
 
-const syncMedicine = (dispatch) => {
+const syncMedicine = dispatch => {
   getMedicine().then(data => {
     if (data !== null && data.length !== 0) {
       let updatedList = data;

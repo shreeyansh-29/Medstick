@@ -45,6 +45,7 @@ const EditNotes = ({userMedicineId, setVisible}) => {
       updatedList.map((item, index) => {
         if (item.userMedicineId === userMedicineId) {
           updatedList[index].notes = notes;
+          updatedList[index].isSynced = false;
         }
         AddMedicine(updatedList);
       });
@@ -105,7 +106,7 @@ const EditNotes = ({userMedicineId, setVisible}) => {
                       mode="outlined"
                       outlineColor="#02aba6"
                       activeOutlineColor="#02aba6"
-                      value={values.review?.trim()}
+                      value={values.review}
                       styles={styles.field}
                       selectTextOnFocus={true}
                       text="review"

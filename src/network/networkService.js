@@ -259,5 +259,12 @@ class NetworkService {
 
     // return HelperPromise.addAdditionUrl(data, id);
   }
+  async getDoctorAppointment() {
+    const id = await AsyncStorage.getItem('user_id');
+    
+    return await RequestService.getRequest(
+      `${apiUrl.GET_DOCTOR_APPOINTMENT}?Id=${id}&userId=${id}`,
+    );
+  }
 }
 export default new NetworkService();

@@ -68,7 +68,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
     });
 
     getPrescription().then(data => {
-      if (data !== null) {
+      if (data !== null && data.length !== 0) {
         let updatedList = data;
         updatedList.map((item, index) => {
           if (item.prescriptionId === prescription_id) {
