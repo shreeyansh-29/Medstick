@@ -22,12 +22,15 @@ import {
 } from '../../utils/storage';
 import {useFocusEffect} from '@react-navigation/native';
 import moment from 'moment';
-import {syncDataClear, syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
 import Loader from '../../components/atoms/loader';
 import {week} from '../../constants/constants';
 import uuid from 'react-native-uuid';
 import Notifications from '../../pushNotification/pushNotifications';
 import {CustomAlert} from '../../components/atoms/customAlert';
+import syncMedicine from '../../sync/syncMedicine';
+import fetchUserMedicine from '../../sync/fetchUserMedicine';
+import {syncDataClear} from '../../redux/action/userMedicine/syncDataAction';
+import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = ({navigation}) => {
@@ -35,17 +38,27 @@ const HomeScreen = ({navigation}) => {
   const [percentage, setPercentage] = useState(0);
   const [medData, setMedData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const connected = useSelector(state => state.internetConnectivity?.data);
-  const load = useSelector(state => state.userInfo?.data);
-  const res = useSelector(state => state.myCaretaker?.data)
   const [isLoading, setIsLoading] = useState(true);
   const [myCaretakers, setMyCaretakers] = useState([]);
   let td_da = moment().format('YYYY-MM-DD');
 
+  const connected = useSelector(state => state.internetConnectivity?.data);
+  const load = useSelector(state => state.userInfo?.data);
+  const res = useSelector(state => state.myCaretaker?.data);
+  const userMedicine = useSelector(state => state.medicineList?.data);
+
+  useEffect(() => {
+    if (userMedicine !== null && userMedicine.length !== 0) {
+      fetchUserMedicine(userMedicine, dispatch);
+    }
+  }, [userMedicine]);
+
   useEffect(() => {
     if (connected && load) {
-      dispatch(myCaretakerRequest(0));
-      dispatch(syncDataClear())
+      if (medData.length !== 0) dispatch(myCaretakerRequest(0));
+      (async () => {
+        dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
+      })();
     }
   }, [connected, load]);
 
@@ -60,7 +73,10 @@ const HomeScreen = ({navigation}) => {
   useFocusEffect(
     React.useCallback(() => {
       getData();
-      return () => {};
+      syncMedicine(dispatch);
+      return () => {
+        dispatch(syncDataClear());
+      };
     }, []),
   );
 
@@ -273,31 +289,31 @@ const HomeScreen = ({navigation}) => {
 
   const showAlert = () => {
     if (connected && load) {
-      if (myCaretakers?.length !== 0) {
-        //   CustomAlert({text1: 'Need to add caretaker first'});
-        // } else {
-        Alert.alert(
-          'Would you like to send a snap to caretaker',
-          'Click Ok to send',
-          [
-            {
-              text: 'Ok',
-              onPress: () => {
+      Alert.alert(
+        'Would you like to send a snap to caretaker',
+        'Click Ok to send',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {
+              if (myCaretakers.length === 0) {
+                CustomAlert({text1: 'Need to add caretaker first'});
+              } else {
                 navigation.navigate('HomeStack', {
                   screen: 'SendSnapToCaretaker',
                 });
-              },
+              }
             },
-            {
-              text: 'Cancel',
-              onPress: () => {
-                {
-                }
-              },
+          },
+          {
+            text: 'Cancel',
+            onPress: () => {
+              {
+              }
             },
-          ],
-        );
-      }
+          },
+        ],
+      );
     }
   };
 

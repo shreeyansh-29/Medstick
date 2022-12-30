@@ -251,7 +251,7 @@ class NetworkService {
     const id = await AsyncStorage.getItem('user_id');
     let data = payload.payload;
 
-    return HelperPromise.addAdditionUrl(data, id);
+    return HelperPromise.syncMedicine(data, id);
   }
   async syncHistoryDetails(payload) {
     const id = await AsyncStorage.getItem('user_id');

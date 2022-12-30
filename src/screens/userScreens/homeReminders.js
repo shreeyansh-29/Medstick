@@ -18,8 +18,11 @@ import {
 import {AddMedicine, getPercentageDetails} from '../../utils/storage';
 import moment from 'moment';
 import {CustomAlert} from '../../components/atoms/customAlert';
+import {useDispatch} from 'react-redux';
+import {syncHistoryDetailsRequest} from '../../redux/action/userMedicine/syncHistoryDetailsAction';
 
 const Reminders = ({showAlert, setPercentage, data}) => {
+  const dispatch = useDispatch();
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
   let td_da = moment().format('YYYY-MM-DD');
@@ -149,6 +152,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               return;
             } else {
               r.taken = r.taken + time + ',';
+              r.isSynced = false;
               item.currentCount += 1;
               item.stock -= item.dosageQuantity;
               showAlert();
@@ -157,6 +161,12 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         });
       }
     });
+    dispatch(
+      syncHistoryDetailsRequest({
+        historyList: item.historyList,
+        userMedicineId: userMedicineId,
+      }),
+    );
     let percent = getPercentage(medData);
     setPercentage(percent);
     AddMedicine(medData);

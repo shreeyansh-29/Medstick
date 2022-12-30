@@ -1,5 +1,7 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
+import {HTTP_STATUS_CODES} from '../../../constants/statusCodes';
 import networkService from '../../../network/networkService';
+import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {
   syncDataError,
   syncDataSuccess,
@@ -9,6 +11,17 @@ import * as types from '../../actionTypes';
 export function* syncDataSaga(data) {
   try {
     const response = yield call(networkService.syncData, data);
+    if (response.status === HTTP_STATUS_CODES.ok) {
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          let updatedList = data;
+          updatedList.map((item, index) => {
+            item.isSynced = true;
+          });
+          AddMedicine(updatedList);
+        }
+      });
+    }
     yield put(syncDataSuccess(response?.data));
   } catch (error) {
     yield put(syncDataError(error));
