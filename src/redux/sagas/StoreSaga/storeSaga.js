@@ -1,0 +1,17 @@
+import {call, put, takeLatest} from 'redux-saga/effects';
+import * as types from '../../actionTypes';
+import { storeError, storeSuccess } from '../../action/StoreAction/storeAction';
+
+export function* storeSaga(data) {
+  try {
+    let response = yield put(data);
+    console.log(response,"response");
+    yield put(storeSuccess(response?.data));
+  } catch (error) {
+    yield put(storeError(error.response));
+  }
+}
+
+export function* watchStoreSaga() {
+  yield takeLatest(types.STORE_REQUEST, storeSaga);
+}
