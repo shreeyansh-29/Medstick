@@ -26,6 +26,8 @@ import {watchDeletePatientReqSaga} from './patients/deletePatientReqSaga';
 import {watchSyncDataSaga} from './userMedicine/syncDataSaga';
 import {watchRefreshSaga} from './signUpSaga/refreshSaga';
 import {expirySaga} from './signUpSaga/expirySaga';
+import {watchGetAppointmentListSaga} from './userMedicine/getAppointmentListSaga';
+import {watchGetAllMedicineHistorySaga} from './userMedicine/getAllMedicineHistorySaga';
 
 export default function* RootSaga() {
   yield all([
@@ -56,5 +58,7 @@ export default function* RootSaga() {
     watchSyncDataSaga(),
     watchRefreshSaga(),
     expirySaga(),
+    watchGetAppointmentListSaga(),
+    watchGetAllMedicineHistorySaga(),
   ]);
 }

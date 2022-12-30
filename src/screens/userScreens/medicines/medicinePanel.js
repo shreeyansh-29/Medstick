@@ -73,7 +73,7 @@ const MedicinePanel = ({navigation}) => {
       } else {
         setMedicineResponse([]);
       }
-    });n
+    });
   };
 
   const deleteMedicineLocal = async index => {

@@ -261,9 +261,17 @@ class NetworkService {
   }
   async getDoctorAppointment() {
     const id = await AsyncStorage.getItem('user_id');
-    
+
     return await RequestService.getRequest(
       `${apiUrl.GET_DOCTOR_APPOINTMENT}?Id=${id}&userId=${id}`,
+    );
+  }
+
+  async getAllMedicineHistory() {
+    const id = await AsyncStorage.getItem('user_id');
+
+    return await RequestService.getRequest(
+      `${apiUrl.GET_ALL_MEDICINE_HISTORY}?Id=${id}&userId=${id}`,
     );
   }
 }

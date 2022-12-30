@@ -32,6 +32,7 @@ import fetchUserMedicine from '../../sync/fetchUserMedicine';
 import {syncDataClear} from '../../redux/action/userMedicine/syncDataAction';
 import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getAppointmentListRequest} from '../../redux/action/userMedicine/getAppointmentListAction';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -46,6 +47,8 @@ const HomeScreen = ({navigation}) => {
   const load = useSelector(state => state.userInfo?.data);
   const res = useSelector(state => state.myCaretaker?.data);
   const userMedicine = useSelector(state => state.medicineList?.data);
+  // const appointmentList = useSelector(state => state.appointmentList);
+  // console.log(appointmentList);
 
   useEffect(() => {
     if (userMedicine !== null && userMedicine.length !== 0) {
@@ -55,10 +58,13 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     if (connected && load) {
-      if (medData.length !== 0) dispatch(myCaretakerRequest(0));
+      console.log(medData);
+      if (medData.length !== 0) {
+        dispatch(myCaretakerRequest(0));
+      }
       (async () => {
         dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
-        // dispatch()
+        // dispatch(getAppointmentListRequest());
       })();
     }
   }, [connected, load]);

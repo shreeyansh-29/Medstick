@@ -29,6 +29,8 @@ import {syncDataReducer} from './userMedicine/syncDataReducer';
 import {refreshReducer} from './signUpReducer/refreshReducer';
 import {expiryReducer} from './signUpReducer/expiryReducer';
 import {syncHistoryDetailsReducer} from './userMedicine/syncHistoryDetailsReducer';
+import {getAppointmentListReducer} from './userMedicine/getAppointmentListReducer';
+import {getAllMedicineHistoryReducer} from './userMedicine/getAllMedicineHistoryReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -61,6 +63,8 @@ const rootReducer = combineReducers({
   refresh: refreshReducer,
   expiry: expiryReducer,
   syncHistory: syncHistoryDetailsReducer,
+  appointmentList: getAppointmentListReducer,
+  allMedicineHistory: getAllMedicineHistoryReducer,
 });
 
 export default rootReducer;
