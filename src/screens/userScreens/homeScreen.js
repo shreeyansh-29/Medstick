@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
 import Reminders from './homeReminders';
@@ -56,6 +56,7 @@ const HomeScreen = ({navigation}) => {
     }
   }, [userMedicine]);
 
+ 
   useEffect(() => {
     if (connected && load) {
       console.log(medData);
@@ -131,9 +132,10 @@ const HomeScreen = ({navigation}) => {
     return Math.floor((cc / tr) * 100);
   }
 
-  function getData() {
+  const getData = async () => {
     getMedicine().then(data => {
       if (data.length !== 0 && data !== null) {
+        // dispatch(storeRequest(data));
         setMedData(data);
         let p = getPercentage(data);
         setPercentage(p);
@@ -143,7 +145,7 @@ const HomeScreen = ({navigation}) => {
       }
     });
     setIsLoading(false);
-  }
+  };
 
   //for Calculating today's Reminder
   const MedicineHistory = data => {
@@ -156,7 +158,7 @@ const HomeScreen = ({navigation}) => {
       time: '',
       isSynced: false,
     };
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data?.length; i++) {
       if (data[i].everyday == true) {
         data[i].days = [
           'Sun',

@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   ToastAndroid,
+  Alert
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
@@ -15,12 +16,10 @@ import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
 import {useIsFocused} from '@react-navigation/native';
-import {Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
 import {getMedicine} from '../../../utils/storage';
-import {useEffect} from 'react';
 import {months} from '../../../constants/constants';
 import Downloadpdf from '../../../components/organisms/downloadPdf';
 import Loader from '../../../components/atoms/loader';

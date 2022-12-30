@@ -1,5 +1,4 @@
 import PushNotification from 'react-native-push-notification';
-
 class Notifications {
   constructor() {
     PushNotification.configure({
@@ -68,15 +67,17 @@ class Notifications {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Appointment!',
-      message: 'You have an appointment scheduled at' + ' ' + time,
+      message: `You have an appointment scheduled at ${time}`,
       date: date,
     });
   }
-  notifyMedicineNotification(date, stock) {
+  notifyMedicineNotification(date, stock, name){
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Stocks! ',
-      message: 'you have only this much medicine left ' + stock,
+      playSound:true,
+      soundName:'android.resource://com.project/raw/notification.mp3',
+      message: `You have left with only ${stock} ${name}`,
       date: date,
     });
   }
