@@ -1,12 +1,11 @@
 import {Store} from 'redux';
-let store;
 
 class StoreProviderService {
   init(configureStore) {
     store = configureStore();
   }
   getStore() {
-    return store;
+    return Store;
   }
   get state() {
     return this.getStore().getState();

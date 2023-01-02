@@ -1,13 +1,12 @@
 import {
   View,
   FlatList,
-  Animated,
   TouchableOpacity,
   Alert,
   Text,
   RefreshControl,
 } from 'react-native';
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import * as Animatable from 'react-native-animatable';
 import {ListItem} from 'react-native-elements';
@@ -27,7 +26,6 @@ import {syncDataClear} from '../../../redux/action/userMedicine/syncDataAction';
 const MedicinePanel = ({navigation}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const progress = useRef(new Animated.Value(0)).current;
   const [medicineResponse, setMedicineResponse] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
   const [refresh, setRefresh] = useState(false);
@@ -45,16 +43,10 @@ const MedicinePanel = ({navigation}) => {
   }, [showLoader]);
 
   useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
-  useEffect(() => {
     if (isFocused) {
-      if (connected && load) syncMedicine(dispatch);
+      if (connected && load) {
+        syncMedicine(dispatch);
+      }
       fetchData();
     }
     return () => dispatch(syncDataClear());

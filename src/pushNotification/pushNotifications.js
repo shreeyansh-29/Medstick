@@ -71,12 +71,12 @@ class Notifications {
       date: date,
     });
   }
-  notifyMedicineNotification(date, stock, name){
+  notifyMedicineNotification(date, stock, name) {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: 'Stocks! ',
-      playSound:true,
-      soundName:'android.resource://com.project/raw/notification.mp3',
+      playSound: true,
+      soundName: 'android.resource://com.project/raw/notification.mp3',
       message: `You have left with only ${stock} ${name}`,
       date: date,
     });

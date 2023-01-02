@@ -30,9 +30,13 @@ import {CustomAlert} from '../../components/atoms/customAlert';
 import syncMedicine from '../../sync/syncMedicine';
 import fetchUserMedicine from '../../sync/fetchUserMedicine';
 import {syncDataClear} from '../../redux/action/userMedicine/syncDataAction';
-import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
+import {
+  clearMedicineList,
+  loadMedicineList,
+} from '../../redux/action/userMedicine/medicineListAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getAppointmentListRequest} from '../../redux/action/userMedicine/getAppointmentListAction';
+import syncHistory from '../../sync/syncHistory';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -54,12 +58,11 @@ const HomeScreen = ({navigation}) => {
     if (userMedicine !== null && userMedicine.length !== 0) {
       fetchUserMedicine(userMedicine, dispatch);
     }
+    return () => dispatch(clearMedicineList());
   }, [userMedicine]);
 
- 
   useEffect(() => {
     if (connected && load) {
-      console.log(medData);
       if (medData.length !== 0) {
         dispatch(myCaretakerRequest(0));
       }
@@ -81,7 +84,11 @@ const HomeScreen = ({navigation}) => {
   useFocusEffect(
     React.useCallback(() => {
       getData();
-      if (connected && load) syncMedicine(dispatch);
+
+      if (connected && load) {
+        syncMedicine(dispatch);
+        syncHistory(dispatch);
+      }
       return () => {
         dispatch(syncDataClear());
       };
@@ -156,7 +163,7 @@ const HomeScreen = ({navigation}) => {
       taken: '',
       notTaken: '',
       time: '',
-      isSynced: false,
+      synced: false,
     };
     for (let i = 0; i < data?.length; i++) {
       if (data[i].everyday == true) {

@@ -208,7 +208,10 @@ const Reminder = ({route, navigation}) => {
     totalReminders,
     currentCount,
   ) => {
-    if (fDatePrimary > fDateSecondary) {
+    if (
+      moment(fDatePrimary).format('YYYY-MM-DD') >
+      moment(fDateSecondary).format('YYYY-MM-DD')
+    ) {
       CustomAlert({text1: 'Start Date should be less than End Date'});
       return;
     } else if (title.length === 0) {
@@ -306,14 +309,17 @@ const Reminder = ({route, navigation}) => {
 
     obj.days = days;
     obj.frequency = frequencyTemp;
-    obj.endDate = fDateSecondary;
+    obj.endDate =
+      fDateSecondary !== 'No End Date'
+        ? moment(fDateSecondary).format('YYYY-MM-DD')
+        : fDateSecondary;
     obj.noEndDate = noEndDate;
     obj.reminderStatus = true;
     obj.reminderTime = time;
     obj.beforeAfter = food;
     obj.everyday = check1;
     obj.reminderTitle = title.trim();
-    obj.startDate = fDatePrimary;
+    obj.startDate = moment(fDatePrimary).format('YYYY-MM-DD');
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;
     obj.isSynced = false;
@@ -338,7 +344,6 @@ const Reminder = ({route, navigation}) => {
       if (temp[route.params.index].reminderId !== null) {
         temp[route.params.index] = obj;
       } else {
-        console.log('zzzzzz', obj);
         obj.reminderId = uuid.v4();
         temp[route.params.index] = obj;
       }
@@ -724,7 +729,7 @@ const Reminder = ({route, navigation}) => {
                 selectedItems={selecteddaysItems}></SectionedMultiSelect>
             )}
           </View>
-          <Divider/>
+          <Divider />
           <Button
             loading={load}
             title="Save reminder"

@@ -26,6 +26,7 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {syncDataClear} from '../../redux/action/userMedicine/syncDataAction';
+import syncMedicine from '../../sync/syncMedicine';
 
 const AppointmentReminderList = ({navigation}) => {
   //React Navigation Hook
@@ -54,19 +55,11 @@ const AppointmentReminderList = ({navigation}) => {
       ? '0' + todayDate.getMinutes()
       : todayDate.getMinutes());
 
-  todayDate =
-    todayDate.getFullYear() +
-    '-' +
-    (todayDate.getMonth() + 1) +
-    '-' +
-    (todayDate.getDate() < 10
-      ? '0' + todayDate.getDate()
-      : todayDate.getDate());
-
+  todayDate = moment(todayDate).format('YYYY-MM-DD');
   //React useEffect Hook
   useEffect(() => {
     if (isFocused) {
-      if (connected && load) syncMedicine(dispatch);
+      // if (connected && load) syncMedicine(dispatch);
       fetchData();
     }
     return () => dispatch(syncDataClear());

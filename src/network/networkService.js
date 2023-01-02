@@ -255,9 +255,9 @@ class NetworkService {
   }
   async syncHistoryDetails(payload) {
     const id = await AsyncStorage.getItem('user_id');
-    let data = payload.payload;
+    let {historyList, userMedicineId} = payload.payload;
 
-    // return HelperPromise.addAdditionUrl(data, id);
+    return HelperPromise.syncHistoryDetails(historyList, userMedicineId, id);
   }
   async getDoctorAppointment() {
     const id = await AsyncStorage.getItem('user_id');

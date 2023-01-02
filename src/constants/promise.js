@@ -8,9 +8,10 @@ class HelperPromise {
     );
     return response;
   };
-  syncHistoryDetails = async (userMedicineId, id) => {
+  syncHistoryDetails = async (historyList, userMedicineId, id) => {
     let response = await requestService.postRequest(
       `${apiUrl.SYNC_HISTORY_DETAILS}?Id=${id}&userMedicineId=${userMedicineId}`,
+      historyList,
     );
     return response;
   };

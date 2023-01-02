@@ -1,4 +1,3 @@
-import {clearMedicineList} from '../redux/action/userMedicine/medicineListAction';
 import {AddMedicine, getMedicine, savePrescription} from '../utils/storage';
 
 const fetchUserMedicine = (userMedicine, dispatch) => {
@@ -8,7 +7,7 @@ const fetchUserMedicine = (userMedicine, dispatch) => {
     if (data === null || data.length === 0) {
       userMedicine.map(item => {
         if (item.prescriptionId !== null) {
-          let obj = {
+          let obj = { 
             doctorName: item.doctorName,
             prescriptionId: item.prescriptionId,
             contact: item.contact,
@@ -31,7 +30,5 @@ const fetchUserMedicine = (userMedicine, dispatch) => {
       savePrescription(prescriptionList);
     }
   });
-
-  dispatch(clearMedicineList());
 };
 export default fetchUserMedicine;

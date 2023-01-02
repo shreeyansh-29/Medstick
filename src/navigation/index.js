@@ -10,10 +10,10 @@ import MedicinePanelStack from './stacks/MedicinePanelStack';
 import HomeStack from './stacks/HomeStack';
 import Logout from '../screens/otherScreens/Logout';
 import NetInfo from '@react-native-community/netinfo';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {saveInternetConnectivityStatus} from '../redux/action/loginAction/saveInternetConnectivity';
 import {saveUserLoggedIn} from '../redux/action/loginAction/saveUserLoggedIn';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,8 +45,7 @@ const MainNavigation = () => {
 
   useEffect(() => {
     (async () => {
-      const [visible, setVisible] = useState(false);
-      const user = await AsyncStorage.getItem('user_id');
+      const user = await GoogleSignin.getCurrentUser();
       if (user !== null) dispatch(saveUserLoggedIn(true));
     })();
   }, []);
