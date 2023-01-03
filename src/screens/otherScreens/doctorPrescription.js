@@ -8,8 +8,6 @@ import {Card, Divider} from 'react-native-paper';
 import {styles} from '../../styles/otherScreensStyles/prescriptionsStyles';
 import CustomModal from '../../components/molecules/customModal';
 import RenderModalView from './renderModalView';
-import {useDispatch, useSelector} from 'react-redux';
-import syncMedicine from '../../sync/syncMedicine';
 
 const DoctorPrescription = ({navigation, route}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -30,14 +28,6 @@ const DoctorPrescription = ({navigation, route}) => {
       url: item?.prescriptionUrl,
     },
   ];
-
-  const dispatch = useDispatch();
-  const connected = useSelector(state => state.internetConnectivity?.data);
-  const load = useSelector(state => state.userInfo?.data);
-
-  useEffect(() => {
-    if (connected && load) syncMedicine(dispatch);
-  }, [connected, load]);
 
   return edit ? (
     <RenderModalView item={item} setEdit={setEdit} navigation={navigation} />
@@ -62,7 +52,11 @@ const DoctorPrescription = ({navigation, route}) => {
           modalVisible={visible}
           text="imageViewer"
           onRequestClose={() => setVisible(!visible)}
-          modalView={<ImageViewer backgroundColor="white" imageUrls={images} />}
+          modalView={
+            <View style={{flex: 1}}>
+              <ImageViewer backgroundColor="white" imageUrls={images} />
+            </View>
+          }
         />
         <Card style={styles.card1}>
           <View style={styles.mainView}>

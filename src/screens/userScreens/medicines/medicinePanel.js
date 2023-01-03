@@ -44,11 +44,7 @@ const MedicinePanel = ({navigation}) => {
 
   useEffect(() => {
     if (isFocused) {
-      if (connected && load) {
-        // console.log('Net ON');
-        syncMedicine(dispatch).then(() => fetchData());
-        // fetchData();
-      } else fetchData();
+      syncMedicine(dispatch).then(() => fetchData());
     }
   }, [connected, load]);
 
@@ -64,7 +60,7 @@ const MedicinePanel = ({navigation}) => {
           });
           // console.log('new Arr', arr);
           setMedicineResponse(arr);
-        }
+        } else setMedicineResponse([]);
       })
       .then(() => {
         if (connected && load) {

@@ -15,7 +15,7 @@ import CustomImage from '../../components/atoms/customImage';
 import {faPenToSquare} from '@fortawesome/free-solid-svg-icons';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {AddMedicine, getMedicine} from '../../utils/storage';
 import Loader from '../../components/atoms/loader';
 import PushNotification from 'react-native-push-notification';
@@ -23,14 +23,11 @@ import {faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {monthName} from '../../constants/constants';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
-import {syncDataClear} from '../../redux/action/userMedicine/syncDataAction';
+import {useDispatch} from 'react-redux';
 import syncMedicine from '../../sync/syncMedicine';
 
 const AppointmentReminderList = ({navigation}) => {
   //React Navigation Hook
-  const isFocused = useIsFocused();
 
   //React useState Hook
   const [appointments, setAppointments] = useState([]);
@@ -45,8 +42,6 @@ const AppointmentReminderList = ({navigation}) => {
 
   //React redux hooks
   const dispatch = useDispatch();
-  const connected = useSelector(state => state.internetConnectivity?.data);
-  const load = useSelector(state => state.userInfo?.data);
 
   //date formatter
   let todayDate = new Date();
@@ -60,13 +55,11 @@ const AppointmentReminderList = ({navigation}) => {
   todayDate = moment(todayDate).format('YYYY-MM-DD');
 
   //React useEffect Hook
-  useEffect(() => {
-    if (isFocused) {
-      if (connected && load) syncMedicine(dispatch);
-      fetchData();
-    }
-    return () => dispatch(syncDataClear());
-  }, [isFocused, connected, load]);
+  useFocusEffect(
+    React.useCallback(() => {
+      syncMedicine(dispatch).then(() => fetchData());
+    }, []),
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -308,6 +301,7 @@ const AppointmentReminderList = ({navigation}) => {
             appointmentId={appointmentId}
             setAppointments={setAppointments}
             todayDate={todayDate}
+            dispatch={dispatch}
           />
         }
       />

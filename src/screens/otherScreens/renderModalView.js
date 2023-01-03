@@ -60,8 +60,8 @@ const RenderModalView = ({item, setEdit, navigation}) => {
             updatedList[index].prescriptionUrl = obj.prescriptionUrl;
             updatedList[index].isSynced = false;
           }
-          AddMedicine(updatedList);
         });
+        AddMedicine(updatedList);
       }
     });
 

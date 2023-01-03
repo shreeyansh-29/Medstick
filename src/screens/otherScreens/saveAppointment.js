@@ -57,7 +57,7 @@ const AppointmentReminders = ({navigation, route}) => {
             updatedList[index].isSynced = false;
           }
         });
-        updatedList;
+       
         //pushing the updatedList
         AddMedicine(updatedList);
         SuccessToast({

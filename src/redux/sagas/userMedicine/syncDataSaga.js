@@ -11,17 +11,17 @@ import * as types from '../../actionTypes';
 export function* syncDataSaga(data) {
   try {
     const response = yield call(networkService.syncData, data);
-    // if (response.status === HTTP_STATUS_CODES.ok) {
-    //   getMedicine().then(data => {
-    //     if (data !== null && data.length !== 0) {
-    //       let updatedList = data;
-    //       updatedList.map((item, index) => {
-    //         item.isSynced = true;
-    //       });
-    //       AddMedicine(updatedList);
-    //     }
-    //   });
-    // }
+    if (response.status === HTTP_STATUS_CODES.ok) {
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          let updatedList = data;
+          updatedList.map(item => {
+            item.isSynced = true;
+          });
+          AddMedicine(updatedList);
+        }
+      });
+    }
     yield put(syncDataSuccess(response?.data));
   } catch (error) {
     yield put(syncDataError(error));

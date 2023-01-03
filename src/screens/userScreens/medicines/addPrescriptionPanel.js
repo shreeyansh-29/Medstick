@@ -141,7 +141,11 @@ const AddPrescriptionPanel = ({navigation, route}) => {
         modalVisible={visible}
         text="imageViewer"
         onRequestClose={() => setVisible(!visible)}
-        modalView={<ImageViewer imageUrls={images} backgroundColor="white" />}
+        modalView={
+          <View style={{flex: 1}}>
+            <ImageViewer imageUrls={images} backgroundColor="white" />
+          </View>
+        }
       />
 
       <View style={styles.textContainer}>
