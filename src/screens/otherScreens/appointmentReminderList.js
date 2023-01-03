@@ -39,14 +39,16 @@ const AppointmentReminderList = ({navigation}) => {
   const [temp, setTemp] = useState('');
   const [time1, setTime1] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [doctorName, setDoctorName] = useState([]);
+  const [doctorNameList, setDoctorNameList] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
+  //React redux hooks
   const dispatch = useDispatch();
   const connected = useSelector(state => state.internetConnectivity?.data);
   const load = useSelector(state => state.userInfo?.data);
 
+  //date formatter
   let todayDate = new Date();
   let currentTime =
     todayDate?.getHours() +
@@ -56,10 +58,11 @@ const AppointmentReminderList = ({navigation}) => {
       : todayDate.getMinutes());
 
   todayDate = moment(todayDate).format('YYYY-MM-DD');
+
   //React useEffect Hook
   useEffect(() => {
     if (isFocused) {
-      // if (connected && load) syncMedicine(dispatch);
+      if (connected && load) syncMedicine(dispatch);
       fetchData();
     }
     return () => dispatch(syncDataClear());
@@ -75,50 +78,43 @@ const AppointmentReminderList = ({navigation}) => {
 
   //Function to display data
   const fetchData = () => {
-    getMedicine().then(data => {
-      if (data !== null && data.length !== 0) {
-        let updatedList = data;
-        let doctorList = [];
-        let reminderList = [];
-        updatedList.map(item => {
-          //fetching doctors for saving appointment
-          if (item.doctorName !== null && item.medicineName !== null) {
-            doctorList.push({
-              doctorName: item.doctorName,
-              prescriptionId: item.prescriptionId,
-            });
-          }
-          if (item.appointmentList.length !== 0) {
-            item.appointmentList.map(ele => {
-              if (ele?.localDate >= todayDate) {
-                //pushing appointments to display
-                reminderList.push(ele);
-              }
-              //  else {
-              //   //poping out reminder if it gets expired
-              //   item.appointmentList.pop(ele);
-              //   AddMedicine(updatedList);
-              // }
-            });
-          }
-        });
-
-        //fetching unique doctors
-        const key1 = 'prescriptionId';
-        const uniqueDoctor = [
-          ...new Map(doctorList.map(item => [item[key1], item])).values(),
-        ];
-
-        setDoctorName(uniqueDoctor);
-
-        //fetching unique appointment reminders
-        const key2 = 'appointmentId';
-        const uniqueReminder = [
-          ...new Map(reminderList.map(item => [item[key2], item])).values(),
-        ];
-        setAppointments(uniqueReminder);
-      }
-    });
+    getMedicine()
+      .then(data => {
+        if (data !== null && data?.length !== 0) {
+          let updatedList = data;
+          let doctorList = [];
+          let reminderList = [];
+          updatedList.map(item => {
+            //fetching doctors for saving appointment
+            if (
+              item.doctorName !== null &&
+              item.medicineName !== null &&
+              !doctorList.some(
+                ele => ele.prescriptionId === item.prescriptionId,
+              )
+            ) {
+              doctorList.push({
+                doctorName: item.doctorName,
+                prescriptionId: item.prescriptionId,
+              });
+            }
+            if (item.doctorAppointmentList.length !== 0) {
+              item.doctorAppointmentList.map(ele => {
+                if (
+                  ele?.localDate >= todayDate &&
+                  !reminderList.some(a => a.appointmentId === ele.appointmentId)
+                ) {
+                  //pushing appointments to display
+                  reminderList.push(ele);
+                }
+              });
+            }
+          });
+          setDoctorNameList(doctorList);
+          setAppointments(reminderList);
+        }
+      })
+      .catch(err => console.log(err));
     setRefresh(false);
   };
 
@@ -145,23 +141,19 @@ const AppointmentReminderList = ({navigation}) => {
         if (data !== null && data.length !== 0) {
           let reminderList = [];
           data.map(item => {
-            if (item.appointmentList.length !== 0) {
-              //fetching unique reminders
-              item.appointmentList.map(ele => {
-                if (ele?.localDate >= todayDate) {
+            if (item.doctorAppointmentList.length !== 0) {
+              item.doctorAppointmentList.map(ele => {
+                if (
+                  ele?.localDate >= todayDate &&
+                  !reminderList.some(a => a.appointmentId === ele.appointmentId)
+                ) {
                   //pushing appointments to display
                   reminderList.push(ele);
                 }
               });
             }
           });
-
-          //fetching unique appointment reminders
-          const key2 = 'appointmentId';
-          const uniqueReminder = [
-            ...new Map(reminderList.map(item => [item[key2], item])).values(),
-          ];
-          setAppointments(uniqueReminder);
+          setAppointments(reminderList);
         }
       });
 
@@ -300,7 +292,7 @@ const AppointmentReminderList = ({navigation}) => {
         title={'Appointment Reminders'}
         navigation={navigation}
         routeName={'SaveAppointment'}
-        notes={doctorName}
+        doctorNameList={doctorNameList}
       />
 
       <CustomModal

@@ -164,7 +164,6 @@ const PrescriptionForm = props => {
       <Divider style={styles.divider} />
 
       <CustomButton
-        loading={props.load}
         title={'Save'}
         handleSubmit={props.handleSubmit}
         contStyles={styles.contStyles}

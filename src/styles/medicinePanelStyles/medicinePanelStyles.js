@@ -32,13 +32,14 @@ const Styles = StyleSheet.create({
   },
   card: {
     width: '100%',
+    paddingBottom: 6,
   },
   list: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: colorPallete.backgroundColor,
-    marginHorizontal: 4,
-    marginTop: 8,
+    marginHorizontal: 7,
+    marginTop: 4,
     elevation: 3,
     borderRadius: 30,
     padding: 10,
@@ -50,7 +51,6 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '15%',
-    // backgroundColor: 'red',
   },
   medNameView: {
     flexDirection: 'row',

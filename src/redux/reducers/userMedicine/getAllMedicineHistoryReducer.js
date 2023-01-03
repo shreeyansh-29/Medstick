@@ -16,7 +16,12 @@ export const getAllMedicineHistoryReducer = (state = initialState, action) => {
     case GET_ALL_MED_HISTORY_REQUEST:
       return {...state, isLoading: true};
     case GET_ALL_MED_HISTORY_SUCCESS:
-      return {...state, data: action.payload, isLoading: false, error: null};
+      return {
+        ...state,
+        data: action.payload?.result,
+        isLoading: false,
+        error: null,
+      };
     case GET_ALL_MED_HISTORY_ERROR:
       return {...state, error: action.payload, isLoading: false, data: null};
     case GET_ALL_MED_HISTORY_CLEAR:

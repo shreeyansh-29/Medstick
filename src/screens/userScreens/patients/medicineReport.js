@@ -28,7 +28,7 @@ let detailData = {};
 const MedicineReport = ({navigation, route}) => {
   const dispatch = useDispatch();
   const item = route?.params?.item;
-  const {startDate, days, currentCount, totalCount, endDate} = item;
+  const {startDate, days, endDate} = item;
   const res = useSelector(state => state.getMedsHistory?.data);
   const [historyData, setHistoryData] = useState([]);
   const [allDates, setAllDates] = useState([]);
@@ -41,15 +41,26 @@ const MedicineReport = ({navigation, route}) => {
     if (res?.status === 'OK') {
       setHistoryData(res?.result);
       showAllDates();
-      overallPecentage(totalCount, currentCount);
+      overallPercentage(item);
     }
   }, [res]);
 
-  function overallPecentage(totalReminders, currentCount) {
-    if (totalReminders == 0 || currentCount == 0) {
+  function overallPercentage(data) {
+    let cc = 0;
+    let tr = 0;
+    if (data.historyList.length !== 0) {
+      data.historyList.map(item => {
+        tr += item.time.split(',').length;
+        let temp = item.taken.split(',');
+        temp.map(i => {
+          if (i !== '') {
+            cc += 1;
+          }
+        });
+      });
+      setPercentage(Math.floor((cc / tr) * 100));
+    }else{
       setPercentage(0);
-    } else {
-      setPercentage(Math.floor((currentCount / totalReminders) * 100));
     }
   }
 

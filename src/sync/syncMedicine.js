@@ -1,9 +1,14 @@
-import {syncDataRequest} from '../redux/action/userMedicine/syncDataAction';
+import {
+  syncDataClear,
+  syncDataRequest,
+} from '../redux/action/userMedicine/syncDataAction';
 import {getMedicine} from '../utils/storage';
+import {StoreProviderService} from '../utils/storeProviderService';
 
-const syncMedicine = dispatch => {
+async function syncMedicine(dispatch) {
   getMedicine()
     .then(data => {
+      // console.log('sync Data arry', data);
       if (data !== null && data.length !== 0) {
         let updatedList = data;
         let syncArray = [];
@@ -45,10 +50,12 @@ const syncMedicine = dispatch => {
             syncArray.push(obj);
           }
         });
+        // console.log('syncing Array', syncArray);
         syncArray?.length !== 0 ? dispatch(syncDataRequest(syncArray)) : null;
       }
+      StoreProviderService.dispatch(syncDataClear());
     })
     .catch(err => console.log(err));
-};
+}
 
 export default syncMedicine;

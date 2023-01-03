@@ -4,8 +4,8 @@ import styles from '../../styles/otherScreensStyles/onBoardingStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {expiryRequest} from '../../redux/action/signUpAction/expiryActions';
-import { refreshRequest } from '../../redux/action/signUpAction/refreshAction';
-import { getMedicine } from '../../utils/storage';
+import {refreshRequest} from '../../redux/action/signUpAction/refreshAction';
+import {getMedicine} from '../../utils/storage';
 import CustomImage from '../../components/atoms/customImage';
 import Notifications from '../../pushNotification/pushNotifications';
 
@@ -45,13 +45,13 @@ const SplashScreen = () => {
     setIsLoading(false);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getData();
-  },[])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     notifyNotification();
-  },[medData])
+  }, [medData]);
 
   const notifyNotification = () => {
     let date = new Date();
@@ -72,7 +72,6 @@ const SplashScreen = () => {
       dispatch(refreshRequest());
     }
   }, [expiry]);
-  
 
   return (
     <View style={styles.container}>

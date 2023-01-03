@@ -7,15 +7,19 @@ import store from './src/redux/store';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ErrorBoundary from 'react-native-error-boundary';
 import OfflineBar from './src/components/atoms/offlineBar';
+import { StoreProviderService } from './src/utils/storeProviderService';
 
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
+
+StoreProviderService.init(store);
+const reduxStore = StoreProviderService.getStore();
 
 const App = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ErrorBoundary>
-        <Provider store={store}>
+        <Provider store={reduxStore}>
           {/* <OfflineBar /> */}
           <StatusBar backgroundColor={colorPallete.mainColor} />
           <MainNavigation />

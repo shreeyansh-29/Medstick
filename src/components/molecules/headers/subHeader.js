@@ -16,7 +16,7 @@ const SubHeader = ({
   download,
   options,
   routeName,
-  notes,
+  doctorNameList,
   deleteBtn,
   prescriptionId,
   setPrescriptionList,
@@ -51,7 +51,7 @@ const SubHeader = ({
         <AddAppointment
           navigation={navigation}
           routeName={routeName}
-          notes={notes}
+          doctorNameList={doctorNameList}
         />
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}

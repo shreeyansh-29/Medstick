@@ -29,13 +29,10 @@ import Notifications from '../../pushNotification/pushNotifications';
 import {CustomAlert} from '../../components/atoms/customAlert';
 import syncMedicine from '../../sync/syncMedicine';
 import fetchUserMedicine from '../../sync/fetchUserMedicine';
-import {syncDataClear} from '../../redux/action/userMedicine/syncDataAction';
-import {
-  clearMedicineList,
-  loadMedicineList,
-} from '../../redux/action/userMedicine/medicineListAction';
+import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getAppointmentListRequest} from '../../redux/action/userMedicine/getAppointmentListAction';
+import {getAllMedicineHistoryRequest} from '../../redux/action/userMedicine/getAllMedicineHistoryAction';
 import syncHistory from '../../sync/syncHistory';
 
 const HomeScreen = ({navigation}) => {
@@ -51,14 +48,13 @@ const HomeScreen = ({navigation}) => {
   const load = useSelector(state => state.userInfo?.data);
   const res = useSelector(state => state.myCaretaker?.data);
   const userMedicine = useSelector(state => state.medicineList?.data);
-  // const appointmentList = useSelector(state => state.appointmentList);
-  // console.log(appointmentList);
+  const appointmentList = useSelector(state => state.appointmentList?.data);
+  const historyList = useSelector(state => state.allMedicineHistory?.data);
 
   useEffect(() => {
     if (userMedicine !== null && userMedicine.length !== 0) {
-      fetchUserMedicine(userMedicine, dispatch);
+      fetchUserMedicine(userMedicine, appointmentList, historyList);
     }
-    return () => dispatch(clearMedicineList());
   }, [userMedicine]);
 
   useEffect(() => {
@@ -68,7 +64,8 @@ const HomeScreen = ({navigation}) => {
       }
       (async () => {
         dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
-        // dispatch(getAppointmentListRequest());
+        dispatch(getAppointmentListRequest());
+        dispatch(getAllMedicineHistoryRequest());
       })();
     }
   }, [connected, load]);
@@ -83,15 +80,13 @@ const HomeScreen = ({navigation}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      getData();
-
-      if (connected && load) {
-        syncMedicine(dispatch);
-        syncHistory(dispatch);
-      }
-      return () => {
-        dispatch(syncDataClear());
-      };
+      getData().then(() => {
+        if (connected && load) {
+          // console.log('Huaa yaha pr');
+          syncMedicine(dispatch);
+          syncHistory(dispatch);
+        }
+      });
     }, [connected, load]),
   );
 
@@ -142,7 +137,6 @@ const HomeScreen = ({navigation}) => {
   const getData = async () => {
     getMedicine().then(data => {
       if (data.length !== 0 && data !== null) {
-        // dispatch(storeRequest(data));
         setMedData(data);
         let p = getPercentage(data);
         setPercentage(p);
@@ -166,7 +160,7 @@ const HomeScreen = ({navigation}) => {
       synced: false,
     };
     for (let i = 0; i < data?.length; i++) {
-      if (data[i].everyday == true) {
+      if (data[i].reminderId !== null && data[i].everyday == true) {
         data[i].days = [
           'Sun',
           'Mon',
@@ -176,99 +170,96 @@ const HomeScreen = ({navigation}) => {
           'Fri',
           'Sat',
         ].toString();
-      }
-      let arr = data[i].days.split(',');
-      let set = new Set(arr);
-      var start_date = data[i].startDate;
-      var end_date = data[i].endDate;
-      var tody_date = new Date();
-      let td_da = moment().format('YYYY-MM-DD');
-      if (
-        data[i].endDate !== 'No End Date' &&
-        set.has(week[tody_date.getDay()]) &&
-        start_date <= td_da &&
-        td_da <= end_date &&
-        !data[i].flag
-      ) {
-        if (data[i].historyList.length === 0) {
-          history.historyId = uuid.v4();
-          history.date = td_da;
-          history.time = data[i].reminderTime;
-          history.notTaken = '';
-          history.taken = '';
-          data[i].historyList.push(history);
-        } else {
-          const a = b => b.date === td_da;
-          const index = data[i].historyList.findIndex(a);
-          if (
-            index >= 0 &&
-            data[i].reminderTime !== data[i].historyList[index].time
-          ) {
-            // console.log('Inside Reminder update')
-            history.historyId = data[i].historyList[index].historyId;
-            history.date = data[i].historyList[index].date;
-            history.notTaken = '';
-            history.taken = '';
-            history.time = data[i].reminderTime;
-            data[i].historyList[index] = history;
-            data[i].totalReminders = 0;
-            data[i].currentCount = 0;
-          } else if (index < 0) {
+        let arr = data[i].days.split(',');
+        let set = new Set(arr);
+        var start_date = data[i].startDate;
+        var end_date = data[i].endDate;
+        var tody_date = new Date();
+        let td_da = moment().format('YYYY-MM-DD');
+        if (
+          data[i].endDate !== 'No End Date' &&
+          set.has(week[tody_date.getDay()]) &&
+          start_date <= td_da &&
+          td_da <= end_date &&
+          !data[i].flag
+        ) {
+          if (data[i].historyList.length === 0) {
             history.historyId = uuid.v4();
             history.date = td_da;
             history.time = data[i].reminderTime;
             history.notTaken = '';
             history.taken = '';
             data[i].historyList.push(history);
+          } else {
+            const a = b => b.date === td_da;
+            const index = data[i].historyList.findIndex(a);
+            if (
+              index >= 0 &&
+              data[i].reminderTime !== data[i].historyList[index].time
+            ) {
+              // console.log('Inside Reminder update')
+              history.historyId = data[i].historyList[index].historyId;
+              history.date = data[i].historyList[index].date;
+              history.notTaken = '';
+              history.taken = '';
+              history.time = data[i].reminderTime;
+              data[i].historyList[index] = history;
+              data[i].totalReminders = 0;
+              data[i].currentCount = 0;
+            } else if (index < 0) {
+              history.historyId = uuid.v4();
+              history.date = td_da;
+              history.time = data[i].reminderTime;
+              history.notTaken = '';
+              history.taken = '';
+              data[i].historyList.push(history);
+            }
           }
-        }
-      } else if (data[i].endDate === 'No End Date') {
-        const a = b => b.date == td_da;
-        const index = data[i].historyList.findIndex(a);
-        if (data[i].historyList.length === 0) {
-          history.historyId = uuid.v4();
-          history.date = td_da;
-          history.time = data[i].reminderTime;
-          history.notTaken = '';
-          data[i].historyList.push(history);
-        } else {
-          const a = b => b.date === td_da;
+        } else if (data[i].endDate === 'No End Date') {
+          const a = b => b.date == td_da;
           const index = data[i].historyList.findIndex(a);
-          // console.log('Indisde No End Date update Reminder')
-          if (
-            index >= 0 &&
-            data[i].reminderTime !== data[i].historyList[index].time
-          ) {
-            history.historyId = data[i].historyList[index].historyId;
-            history.date = data[i].historyList[index].date;
-            history.notTaken = '';
-            history.taken = '';
-            history.time = data[i].reminderTime;
-            data[i].historyList[index] = history;
-            data[i].totalReminders = 0;
-            data[i].currentCount = 0;
-          } else if (index < 0) {
+          if (data[i].historyList.length === 0) {
             history.historyId = uuid.v4();
             history.date = td_da;
             history.time = data[i].reminderTime;
             history.notTaken = '';
-            history.taken = '';
             data[i].historyList.push(history);
+          } else {
+            const a = b => b.date === td_da;
+            const index = data[i].historyList.findIndex(a);
+            // console.log('Indisde No End Date update Reminder')
+            if (
+              index >= 0 &&
+              data[i].reminderTime !== data[i].historyList[index].time
+            ) {
+              history.historyId = data[i].historyList[index].historyId;
+              history.date = data[i].historyList[index].date;
+              history.notTaken = '';
+              history.taken = '';
+              history.time = data[i].reminderTime;
+              data[i].historyList[index] = history;
+              data[i].totalReminders = 0;
+              data[i].currentCount = 0;
+            } else if (index < 0) {
+              history.historyId = uuid.v4();
+              history.date = td_da;
+              history.time = data[i].reminderTime;
+              history.notTaken = '';
+              history.taken = '';
+              data[i].historyList.push(history);
+            }
           }
+        } else if (td_da > end_date) {
+          data[i].reminderStatus = false;
         }
-      } else if (td_da > end_date) {
-        data[i].reminderStatus = false;
       }
-
       updateArray.push(data[i]);
     }
     AddMedicine(updateArray);
   };
 
   useEffect(() => {
-    medData.map(item => {
-      item.reminderId !== null && MedicineHistory(medData);
-    });
+    MedicineHistory(medData);
   }, [medData]);
 
   useEffect(() => {
@@ -366,9 +357,12 @@ const HomeScreen = ({navigation}) => {
             modalView={
               <View style={styles.modalContainer}>
                 <Text style={styles.modalHeading}>INFO</Text>
-                <Text style={{fontSize: 18, color: 'grey'}} numberOfLines={3}>
+                <Text
+                  style={{fontSize: 18, color: 'grey'}}
+                  // numberOfLines={3}
+                >
                   All your Reminders will be shown here. Save and mark your
-                  reminders to view your report in Report Section.
+                  reminders to view your report in Report Tab.
                 </Text>
                 <TouchableOpacity
                   onPress={() => {

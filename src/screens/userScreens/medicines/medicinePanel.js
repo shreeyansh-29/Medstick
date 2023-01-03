@@ -45,35 +45,42 @@ const MedicinePanel = ({navigation}) => {
   useEffect(() => {
     if (isFocused) {
       if (connected && load) {
-        syncMedicine(dispatch);
-      }
-      fetchData();
+        // console.log('Net ON');
+        syncMedicine(dispatch).then(() => fetchData());
+        // fetchData();
+      } else fetchData();
     }
-    return () => dispatch(syncDataClear());
-  }, [isFocused, connected]);
+  }, [connected, load]);
 
   const fetchData = () => {
     let arr = [];
     setRefresh(false);
-    getMedicine().then(data => {
-      if (data !== null && data.length !== 0) {
-        data.map(ele => {
-          if (ele.flag === false) arr.push(ele);
-        });
-        setMedicineResponse(arr);
-        if (connected && load) AddMedicine(arr);
-      } else {
-        setMedicineResponse([]);
-      }
-    });
+    getMedicine()
+      .then(data => {
+        // console.log('previous Data', data);
+        if (data !== null && data.length !== 0) {
+          data.map(ele => {
+            if (ele.flag === false) arr.push(ele);
+          });
+          // console.log('new Arr', arr);
+          setMedicineResponse(arr);
+        }
+      })
+      .then(() => {
+        if (connected && load) {
+          // console.log('newly pushing array', arr);
+          AddMedicine(arr);
+        }
+      });
   };
 
   const deleteMedicineLocal = async index => {
     medicineResponse[index].flag = true;
     medicineResponse[index].isSynced = false;
+    AddMedicine(medicineResponse);
+
     if (connected && load) syncMedicine(dispatch);
 
-    AddMedicine(medicineResponse);
     setShowLoader(true);
     setMedicineResponse([]);
     fetchData();

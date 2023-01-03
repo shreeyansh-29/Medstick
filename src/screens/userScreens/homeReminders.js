@@ -136,7 +136,6 @@ const Reminders = ({showAlert, setPercentage, data}) => {
 
   //This function is used for marking the medicine as taken
   function markingTaken(item) {
-    let historyList;
     const {userMedicineId, historyId, time, medName} = item;
     medData.forEach(item => {
       if (
@@ -216,7 +215,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
-                // check(time) &&
+                check(time) &&
                 markingTaken(item),
                   reminderList.splice(index, 1),
                   setReminderList(reminderList);
@@ -231,7 +230,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
-                // check(time) &&
+                check(time) &&
                   (markingNotTaken(item),
                   display(),
                   reminderList.splice(index, 1),

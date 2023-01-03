@@ -16,7 +16,7 @@ export const getAppointmentListReducer = (state = initialState, action) => {
     case GET_APPOINTMENT_REQUEST:
       return {...state, isLoading: true};
     case GET_APPOINTMENT_SUCCESS:
-      return {...state, data: action.payload, isLoading: false, error: null};
+      return {...state, data: action.payload?.result, isLoading: false, error: null};
     case GET_APPOINTMENT_ERROR:
       return {...state, error: action.payload, isLoading: false, data: null};
     case GET_APPOINTMENT_CLEAR:

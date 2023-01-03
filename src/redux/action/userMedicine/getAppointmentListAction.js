@@ -1,9 +1,8 @@
 import * as types from '../../actionTypes';
 
-export const getAppointmentListRequest = payload => {
+export const getAppointmentListRequest = () => {
   return {
     type: types.GET_APPOINTMENT_REQUEST,
-    payload,
   };
 };
 export const getAppointmentListSuccess = payload => {
