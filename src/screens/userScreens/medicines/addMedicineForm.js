@@ -156,7 +156,7 @@ const AddMedicineForm = props => {
       </View>
       <View style={styles.inputGroup}>
         <View style={styles.textbox}>
-          <Text style={styles.text}>Stock Unit</Text>
+          <Text style={styles.text}>Stock Units</Text>
         </View>
         <View style={styles.unitBox}>
           <InputField

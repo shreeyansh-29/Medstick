@@ -52,7 +52,7 @@ const MyCareTaker = ({navigation}) => {
   //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
-    if (caretaker?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+    if (caretaker?.length % 8 === 0 && a !== 0) {
       dispatch(myCaretakerRequest(a));
       setPageNo(a);
     }

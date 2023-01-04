@@ -100,7 +100,7 @@ const CareTakerRequest = () => {
   //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
-    if (caretakers?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+    if (caretakers?.length % 8 === 0 && a !== 0) {
       dispatch(caretakerReqRequest(a));
       setPageNo(a);
     }

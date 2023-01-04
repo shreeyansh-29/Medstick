@@ -24,9 +24,7 @@ const SubHeader = ({
   setDeleteBtn,
   setEdit,
   flag,
-  key1,
 }) => {
-  const name = key1;
   return (
     <View style={styles.subHeader}>
       <TouchableOpacity
@@ -65,7 +63,6 @@ const SubHeader = ({
           setPrescriptionList={setPrescriptionList}
           setPrescriptionId={setPrescriptionId}
           setDeleteBtn={setDeleteBtn}
-          name={name}
         />
       )}
     </View>

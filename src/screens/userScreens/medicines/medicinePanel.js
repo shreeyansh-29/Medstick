@@ -21,7 +21,6 @@ import Loader from '../../../components/atoms/loader';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import syncMedicine from '../../../sync/syncMedicine';
 import {useDispatch, useSelector} from 'react-redux';
-import {syncDataClear} from '../../../redux/action/userMedicine/syncDataAction';
 
 const MedicinePanel = ({navigation}) => {
   const isFocused = useIsFocused();
@@ -46,25 +45,25 @@ const MedicinePanel = ({navigation}) => {
     if (isFocused) {
       syncMedicine(dispatch).then(() => fetchData());
     }
-  }, [connected, load]);
+  }, [isFocused]);
 
   const fetchData = () => {
     let arr = [];
     setRefresh(false);
     getMedicine()
       .then(data => {
-        // console.log('previous Data', data);
+        console.log('previous Data', data);
         if (data !== null && data.length !== 0) {
           data.map(ele => {
             if (ele.flag === false) arr.push(ele);
           });
-          // console.log('new Arr', arr);
+          console.log('new Arr', arr);
           setMedicineResponse(arr);
-        } else setMedicineResponse([]);
+        }
       })
       .then(() => {
         if (connected && load) {
-          // console.log('newly pushing array', arr);
+          console.log('newly pushing array', arr);
           AddMedicine(arr);
         }
       });

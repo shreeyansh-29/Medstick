@@ -17,7 +17,7 @@ export const downloadPdfReducer = (state = initialState, action) => {
     case DOWNLOAD_PDF_SUCCESS:
       return {...state, data: action.payload, isLoading: false};
     case DOWNLOAD_PDF_ERROR:
-      return {...state, error: action.payload, isLoading: false};
+      return {...state, error: action.payload, isLoading: false, data: null};
     default:
       return state;
   }

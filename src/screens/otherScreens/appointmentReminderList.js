@@ -74,6 +74,7 @@ const AppointmentReminderList = ({navigation}) => {
     getMedicine()
       .then(data => {
         if (data !== null && data?.length !== 0) {
+          console.log(data);
           let updatedList = data;
           let doctorList = [];
           let reminderList = [];
@@ -117,12 +118,12 @@ const AppointmentReminderList = ({navigation}) => {
       let updatedList = data;
       let time;
       updatedList.map(a => {
-        if (a.appointmentList.length !== 0) {
-          a.appointmentList.map((r, index) => {
+        if (a.doctorAppointmentList.length !== 0) {
+          a.doctorAppointmentList.map((r, index) => {
             //splicing up the selected reminder
             if (r.appointmentId === deleteId) {
               time = r.localTime;
-              a.appointmentList.splice(index, 1);
+              a.doctorAppointmentList.splice(index, 1);
               a.isSynced = false;
             }
           });

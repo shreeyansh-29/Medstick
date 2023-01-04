@@ -18,7 +18,8 @@ export const HTTP_STATUS_CODES = {
 
 //list of serverErrors
 export const serverErrors = {
-  NOT_FOUND: '404 - PAGE NOT FOUND',
+  NOT_FOUND: '404 - NOT FOUND',
   SERVER_ERROR: '5XX - INTERNAL SERVER ERROR',
   CLIENT_ERROR: '-------',
+  FORBIDDEN: '403 - FORBIDDEN',
 };

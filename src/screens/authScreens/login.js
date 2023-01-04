@@ -37,7 +37,7 @@ const Login = ({navigation, logout}) => {
       await AsyncStorage.setItem('refreshToken', res?.refreshToken);
       // let token = encryptData(res?.accessToken);
       await AsyncStorage.setItem('accessToken', res?.accessToken);
-      
+
       await AsyncStorage.setItem(
         'user_photo',
         res?.userList[0].userDetails.picPath,

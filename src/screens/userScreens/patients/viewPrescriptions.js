@@ -16,12 +16,15 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
 import {TouchableOpacity} from 'react-native';
 import {style} from '../../../styles/patientStyles/viewPrescriptionStyles';
+import ErrorBoundary from '../../../screens/otherScreens/errorBoundary';
+import {serverErrors} from '../../../constants/statusCodes';
 
 const ViewPrescriptions = ({navigation, route}) => {
   const dispatch = useDispatch();
   let flag = false;
   const [prescriptions, setPrescriptions] = useState([]);
   const res = useSelector(state => state.myPrescriptions);
+  const errorState = useSelector(state => state.myPrescriptions?.error);
   const Id = route?.params?.id;
   const [refresh, setRefresh] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -54,7 +57,7 @@ const ViewPrescriptions = ({navigation, route}) => {
   //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
-    if (prescriptions?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+    if (prescriptions?.length % 8 === 0 && a !== 0) {
       dispatch(myPrescriptionsRequest({a, Id}));
       setPageNo(a);
     }
@@ -107,46 +110,53 @@ const ViewPrescriptions = ({navigation, route}) => {
         <Loader />
       ) : (
         <>
-          {prescriptions?.length === 0 ? (
-            <View style={style.imgCont}>
-              <CustomImage
-                resizeMode="contain"
-                source={require('../../../assets/images/noPrescriptionPatient.png')}
-                styles={{width: '80%'}}
-              />
-            </View>
+          {errorState === serverErrors.SERVER_ERROR ? (
+            <ErrorBoundary />
           ) : (
-            <FlatList
-              data={prescriptions}
-              renderItem={renderItem}
-              keyExtractor={item => item.prescriptionId}
-              showsVerticalScrollIndicator={false}
-              onEndReachedThreshold={0.01}
-              onMomentumScrollBegin={() =>
-                setOnEndReachedCalledDuringMomentum(false)
-              }
-              onEndReached={({distanceFromEnd}) => {
-                if (!onEndReachedCalledDuringMomentum) {
-                  onEnd();
-                  setOnEndReachedCalledDuringMomentum(true);
-                }
-              }}
-              refreshControl={
-                <RefreshControl
-                  colors={[colorPallete.mainColor]}
-                  tintColor={[colorPallete.mainColor]}
-                  refreshing={refresh}
-                  onRefresh={() => {
-                    setRefresh(true);
-                    let currentPage = 0;
-                    dispatch(myPrescriptionsRequest({currentPage, Id}));
-                    setCurrentPage(currentPage);
-                    setLoading(true);
-                    setPrescriptions([]);
+            <>
+              {errorState === serverErrors.NOT_FOUND &&
+              prescriptions?.length === 0 ? (
+                <View style={style.imgCont}>
+                  <CustomImage
+                    resizeMode="contain"
+                    source={require('../../../assets/images/noPrescriptionPatient.png')}
+                    styles={{width: '80%'}}
+                  />
+                </View>
+              ) : (
+                <FlatList
+                  data={prescriptions}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.prescriptionId}
+                  showsVerticalScrollIndicator={false}
+                  onEndReachedThreshold={0.01}
+                  onMomentumScrollBegin={() =>
+                    setOnEndReachedCalledDuringMomentum(false)
+                  }
+                  onEndReached={({distanceFromEnd}) => {
+                    if (!onEndReachedCalledDuringMomentum) {
+                      onEnd();
+                      setOnEndReachedCalledDuringMomentum(true);
+                    }
                   }}
+                  refreshControl={
+                    <RefreshControl
+                      colors={[colorPallete.mainColor]}
+                      tintColor={[colorPallete.mainColor]}
+                      refreshing={refresh}
+                      onRefresh={() => {
+                        setRefresh(true);
+                        let currentPage = 0;
+                        dispatch(myPrescriptionsRequest({currentPage, Id}));
+                        setCurrentPage(currentPage);
+                        setLoading(true);
+                        setPrescriptions([]);
+                      }}
+                    />
+                  }
                 />
-              }
-            />
+              )}
+            </>
           )}
         </>
       )}

@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import {HTTP_STATUS_CODES, serverErrors} from '../constants/statusCodes';
 // import {decryptData} from '../components/atoms/crypto';
 
 const instance = axios.create({
@@ -15,11 +16,24 @@ const requestHandler = async request => {
 };
 
 const responseHandler = response => {
-  return response;
+  const data = response.data;
+  if (!data || response.status === HTTP_STATUS_CODES.noContent) {
+    return Promise.resolve({});
+  }
+  return Promise.resolve(response);
 };
 
 const errorHandler = error => {
-  return Promise.reject(error);
+  let errorMessage = serverErrors.SERVER_ERROR;
+  if (error.response) {
+    const {status} = error.response;
+    if (status === HTTP_STATUS_CODES.notFound) {
+      errorMessage = serverErrors.NOT_FOUND;
+    } else if (status === HTTP_STATUS_CODES.forbidden) {
+      errorMessage = serverErrors.FORBIDDEN;
+    }
+  }
+  return Promise.reject(errorMessage);
 };
 
 instance.interceptors.request.use(

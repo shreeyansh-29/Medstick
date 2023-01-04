@@ -17,7 +17,7 @@ export const getUserProfileReducer = (state = initialState, action) => {
     case USER_PROFILE_SUCCESS:
       return {...state, data: action.payload.result, isLoading: false};
     case USER_PROFILE_ERROR:
-      return {...state, error: action.payload, isLoading: false};
+      return {...state, error: action.payload, isLoading: false, data: null};
 
     default:
       return state;

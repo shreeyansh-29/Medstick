@@ -27,8 +27,8 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
       item.prescriptionUrl !== null ? item.prescriptionUrl : null,
     location: item.location !== null ? item.location : null,
     specialization: item.specialization !== null ? item.specialization : null,
-    appointmentList:
-      item.appointmentList !== null ? item.appointmentList : null,
+    doctorAppointmentList:
+      item.doctorAppointmentList !== null ? item.doctorAppointmentList : null,
   });
   const [add, setAdd] = useState(item.doctorName !== null ? true : false);
 
@@ -86,7 +86,7 @@ const EditMedicineView = ({setEdit, item, navigation}) => {
         obj.location = prescriptionObj.location;
         obj.specialization = prescriptionObj.specialization;
         obj.contact = prescriptionObj.contact;
-        obj.appointmentList = [];
+        obj.doctorAppointmentList = [];
       }
 
       getMedicine()

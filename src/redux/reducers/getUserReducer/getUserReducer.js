@@ -18,7 +18,7 @@ export const getUserReducer = (state = initialState, action) => {
     case GET_USER_SUCCESS:
       return {...state, data: action.payload, isLoading: false};
     case GET_USER_ERROR:
-      return {...state, error: action.payload};
+      return {...state, error: action.payload, isLoading: false, data: null};
     case RESET_USER:
       return {data: null, isLoading: false, error: null};
     default:

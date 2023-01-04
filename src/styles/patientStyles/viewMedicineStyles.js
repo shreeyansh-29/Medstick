@@ -26,10 +26,20 @@ export const style = StyleSheet.create({
   },
   title: {
     fontWeight: '700',
+    color: colorPallete.black,
     fontSize: 17,
   },
-  subtitle1: {marginVertical: 3, fontSize: 15, fontWeight: '400'},
-  subtitle2: {fontSize: 13, fontWeight: '400'},
+  subtitle1: {
+    marginVertical: 3,
+    fontSize: 15,
+    fontWeight: '400',
+    color: colorPallete.colorTabsOutline,
+  },
+  subtitle2: {
+    fontSize: 13,
+    fontWeight: '400',
+    color: colorPallete.colorTabsOutline,
+  },
   options: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -39,7 +49,7 @@ export const style = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: colorPallete.mainColor,
   },
-  imagesText: {padding: 8, fontSize: 16, color: 'white'},
+  imagesText: {padding: 8, fontSize: 16, color: colorPallete.basicColor},
   ripple: {
     marginRight: 10,
     padding: 6,

@@ -17,7 +17,7 @@ import {acceptCaretakerReqReducer} from './caretaker/acceptCaretakerReqReducer';
 import {deleteCaretakerReqReducer} from './caretaker/deleteCaretakerReqReducer';
 import {searchMedicineReducer} from './userMedicine/searchMedicineReducer';
 import {medicineListReducer} from './userMedicine/medicineListReducer';
-import {getMedsHistoryReducer} from './patients/getMedsHistoryReducer';
+import {getPatientHistoryReducer} from './patients/getPatientHistoryReducer';
 import {sendRequestReducer} from './getUserReducer/sendReqReducer';
 import {getUserReducer} from './getUserReducer/getUserReducer';
 import {notifyUserReducer} from './patients/notifyUserReducer';
@@ -50,7 +50,7 @@ const rootReducer = combineReducers({
   caretakerRequest: caretakerRequestReducer,
   acceptCaretakerRequest: acceptCaretakerReqReducer,
   deleteCaretakerRequest: deleteCaretakerReqReducer,
-  getMedsHistory: getMedsHistoryReducer,
+  getPatientHistory: getPatientHistoryReducer,
   searchMedicine: searchMedicineReducer,
   getUser: getUserReducer,
   sendRequest: sendRequestReducer,

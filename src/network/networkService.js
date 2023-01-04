@@ -155,7 +155,7 @@ class NetworkService {
       `${apiUrl.MEDICINE_IMAGES}?userMedicineId=${medId}&Id=${id}&pageNo=${pageNo}&pageSize=5`,
     );
   }
-  async getMedicineHistory(payload) {
+  async getPatientMedicineHistory(payload) {
     const {med, pageNo} = payload.payload;
     const Id = await AsyncStorage.getItem('user_id');
     return await RequestService.getRequest(

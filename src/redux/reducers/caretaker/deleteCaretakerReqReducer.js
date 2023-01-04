@@ -18,7 +18,7 @@ export const deleteCaretakerReqReducer = (state = initialState, action) => {
     case DELETE_CARETAKER_REQ_SUCCESS:
       return {...state, data: action.payload, isLoading: false};
     case DELETE_CARETAKER_REQ_ERROR:
-      return {...state, error: action.payload, isLoading: false};
+      return {...state, error: action, isLoading: false};
     case CLEAR_REQUEST_STATUS:
       return {data: null, isLoading: false, error: null};
     default:

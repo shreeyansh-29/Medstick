@@ -17,7 +17,7 @@ const EditMedicineForm = props => {
     prescriptionUrl: null,
     location: null,
     specialization: null,
-    appointmentList: [],
+    doctorAppointmentList: [],
   };
   return (
     <View style={styles.mainView}>

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 6,
     borderRadius: 6,
-    paddingVertical: 10,
+    paddingVertical: 12,
     flexDirection: 'row',
     paddingLeft: 10,
   },

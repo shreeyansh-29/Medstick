@@ -96,7 +96,7 @@ const PatientRequest = () => {
   //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
-    if (patients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+    if (patients?.length % 8 === 0 && a !== 0) {
       dispatch(patientsReqRequest(a));
       setPageNo(a);
     }

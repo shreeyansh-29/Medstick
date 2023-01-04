@@ -11,7 +11,7 @@ export function* myPatientsSaga(data) {
     let response = yield call(networkService.getMyPatients, data);
     yield put(myPatientsSuccess(response?.data));
   } catch (error) {
-    yield put(myPatientsError(error.response));
+    yield put(myPatientsError(error));
   }
 }
 

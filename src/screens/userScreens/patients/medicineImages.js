@@ -3,13 +3,18 @@ import React, {useState, useEffect} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {useFocusEffect} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {medicineImagesRequest} from '../../../redux/action/patients/medicineImagesAction';
+import {
+  medicineImagesClear,
+  medicineImagesRequest,
+} from '../../../redux/action/patients/medicineImagesAction';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {Dimensions} from 'react-native';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import {monthName} from '../../../constants/constants';
+import {serverErrors} from '../../../constants/statusCodes';
+import ErrorBoundary from '../../otherScreens/errorBoundary';
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.84);
@@ -79,6 +84,7 @@ const MedicineImages = ({navigation, route}) => {
   const dispatch = useDispatch();
   let res = useSelector(state => state.medicineImages);
   let loading = useSelector(state => state.medicineImages?.isLoading);
+  let errorState = useSelector(state => state.medicineImages?.error);
 
   useEffect(() => {
     if (res?.data !== null) {
@@ -96,6 +102,7 @@ const MedicineImages = ({navigation, route}) => {
       let Arr = [];
       map.forEach(it => Arr.push(it));
       setImageData(Arr);
+      dispatch(medicineImagesClear());
     }
   }, [res]);
 
@@ -112,14 +119,10 @@ const MedicineImages = ({navigation, route}) => {
 
   const onEnd = () => {
     let a = pageNo + 1;
-    if (
-      imageData.length % 5 === 0 &&
-      a !== 0 &&
-      res?.data?.imageList?.length !== 0
-    ) {
+    if (imageData.length % 5 === 0 && a !== 0) {
       dispatch(medicineImagesRequest({medId, a}));
+      setPageNo(a);
     }
-    setPageNo(a);
   };
 
   return (
@@ -129,24 +132,33 @@ const MedicineImages = ({navigation, route}) => {
         <Loader />
       ) : (
         <>
-          {imageData.length === 0 ? (
-            <View style={styles.imgCont}>
-              <CustomImage
-                styles={styles.img}
-                resizeMode="contain"
-                source={require('../../../assets/images/noImagesPatient.png')}
-              />
-            </View>
+          {errorState === serverErrors.SERVER_ERROR ? (
+            <ErrorBoundary />
           ) : (
             <>
-              <FlatList
-                data={imageData}
-                renderItem={({item}) => <SingleImageComponent item={item} />}
-                keyExtractor={(item, index) => index.toString()}
-                onEndReached={onEnd}
-                onEndReachedThreshold={0.01}
-                showsVerticalScrollIndicator={false}
-              />
+              {imageData.length === 0 &&
+              errorState === serverErrors.NOT_FOUND ? (
+                <View style={styles.imgCont}>
+                  <CustomImage
+                    styles={styles.img}
+                    resizeMode="contain"
+                    source={require('../../../assets/images/noImagesPatient.png')}
+                  />
+                </View>
+              ) : (
+                <>
+                  <FlatList
+                    data={imageData}
+                    renderItem={({item}) => (
+                      <SingleImageComponent item={item} />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                    onEndReached={onEnd}
+                    onEndReachedThreshold={0.01}
+                    showsVerticalScrollIndicator={false}
+                  />
+                </>
+              )}
             </>
           )}
         </>

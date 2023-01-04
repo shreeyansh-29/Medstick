@@ -19,7 +19,6 @@ import {watchGetUserSaga} from './getUserSaga/getUserSaga';
 import {watchSendReqSaga} from './getUserSaga/sendReqSaga';
 import {watchNotifyUserSaga} from './patients/notifyUserSaga';
 import {watchMedicineImagesSaga} from './patients/medicineImagesSaga';
-import {watchGetMedicinesHistorySaga} from './patients/getMedsHistorySaga';
 import {watchDownloadPdf} from './otherScreenSaga/downloadPdfSaga';
 import {searchMedicineWatcherSaga} from './userMedicine/searchMedicineWatcherSaga';
 import {watchDeletePatientReqSaga} from './patients/deletePatientReqSaga';
@@ -29,6 +28,7 @@ import {expirySaga} from './signUpSaga/expirySaga';
 import {watchGetAppointmentListSaga} from './userMedicine/getAppointmentListSaga';
 import {watchGetAllMedicineHistorySaga} from './userMedicine/getAllMedicineHistorySaga';
 import {watchSyncHistoryDetailsSaga} from './userMedicine/syncHistoryDetailsSaga';
+import {watchGetPatientHistorySaga} from './patients/getPatientHistorySaga';
 
 export default function* RootSaga() {
   yield all([
@@ -53,7 +53,6 @@ export default function* RootSaga() {
     watchNotifyUserSaga(),
     watchMedicineImagesSaga(),
     deleteNotificationWatcherSaga(),
-    watchGetMedicinesHistorySaga(),
     watchDownloadPdf(),
     searchMedicineWatcherSaga(),
     watchSyncDataSaga(),
@@ -62,5 +61,6 @@ export default function* RootSaga() {
     expirySaga(),
     watchGetAppointmentListSaga(),
     watchGetAllMedicineHistorySaga(),
+    watchGetPatientHistorySaga(),
   ]);
 }

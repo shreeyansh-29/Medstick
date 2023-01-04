@@ -16,9 +16,9 @@ export const editProfileReducer = (state = initialState, action) => {
     case EDIT_PROFILE_REQUEST:
       return {...state, isLoading: true};
     case EDIT_PROFILE_SUCCESS:
-      return {...state, data: action.payload};
+      return {...state, data: action.payload, isLoading: false};
     case EDIT_PROFILE_ERROR:
-      return {...state, error: action};
+      return {...state, error: action.payload, isLoading: false, data: null};
     case RESET_PROFILE:
       return {data: null, isLoading: false, error: null};
     default:

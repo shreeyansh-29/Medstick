@@ -28,7 +28,19 @@ const DeletePrescription = ({
       },
     });
   };
+
+  const refresh = () => {
+    getPrescription().then(data => {
+      if (data !== null && data.length !== 0) {
+        console.log('Reseting Prescriptions', data);
+        setPrescriptionList(data);
+        setPrescriptionId('');
+        setDeleteBtn(false);
+      }
+    });
+  };
   const deletePrescription = prescriptionId => {
+    console.log('Presciption ID inside delete', prescriptionId);
     getMedicine().then(data => {
       let counter = 0;
       if (data !== null && data.length !== 0) {
@@ -41,23 +53,19 @@ const DeletePrescription = ({
           showAlert();
           return;
         } else {
+          console.log('zzzz', prescriptionId);
           Alert.alert('Are you sure', 'Click ok to proceed', [
             {
               text: 'Ok',
               onPress: () => {
                 getPrescription().then(data => {
+                  console.log('Doctor List with no med', prescriptionId, data);
                   let list = data;
                   let a = b => b.prescriptionId == prescriptionId;
                   let index = list.findIndex(a);
                   list.splice(index, 1);
                   savePrescription(list);
-                  getPrescription().then(data => {
-                    if (data !== null && data.length !== 0) {
-                      setPrescriptionList(data);
-                      setPrescriptionId('');
-                      setDeleteBtn(false);
-                    }
-                  });
+                  refresh();
                 });
               },
             },
@@ -76,18 +84,13 @@ const DeletePrescription = ({
             text: 'Ok',
             onPress: () => {
               getPrescription().then(data => {
+                // console.log('Doctor List with no med',prescriptionId, data);
                 let list = data;
                 let a = b => b.prescriptionId == prescriptionId;
                 let index = list.findIndex(a);
                 list.splice(index, 1);
                 savePrescription(list);
-                getPrescription().then(data => {
-                  if (data !== null && data.length !== 0) {
-                    setPrescriptionList(data);
-                    setPrescriptionId('');
-                    setDeleteBtn(false);
-                  }
-                });
+                refresh();
               });
             },
           },

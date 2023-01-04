@@ -19,10 +19,9 @@ const errorMedicineList = payload => {
   };
 };
 
-const clearMedicineList = payload => {
+const clearMedicineList = () => {
   return {
-    type: types.MEDICINE_LIST_ERROR,
-    payload,
+    type: types.MEDICINE_LIST_CLEAR,
   };
 };
 

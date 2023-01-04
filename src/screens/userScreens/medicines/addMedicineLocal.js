@@ -98,7 +98,7 @@ const AddMedicineLocal = ({navigation}) => {
         totalReminders: null,
         currentCount: null,
         historyList: [],
-        appointmentList: [],
+        doctorAppointmentList: [],
         notes: '',
         isSynced: false,
         flag: false,

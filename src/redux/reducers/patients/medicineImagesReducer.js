@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import {
+  USER_MED_IMAGES_CLEAR,
   USER_MED_IMAGES_ERROR,
   USER_MED_IMAGES_REQUEST,
   USER_MED_IMAGES_SUCCESS,
@@ -18,6 +19,8 @@ export const medicineImagesReducer = (state = initialState, action) => {
       return {...state, data: action.payload, isLoading: false};
     case USER_MED_IMAGES_ERROR:
       return {...state, error: action.payload, isLoading: false};
+    case USER_MED_IMAGES_CLEAR:
+      return {data: null, isLoading: false, error: null};
     default:
       return state;
   }

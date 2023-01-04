@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   ToastAndroid,
-  Alert
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
@@ -82,10 +82,15 @@ const Report = ({navigation}) => {
   const [refresh, setRefresh] = useState(false);
 
   const fetchData = () => {
+    let arr = [];
     getMedicine()
       .then(data => {
         if (data !== null && data.length !== 0) {
-          setGetUserMedicine(data);
+          data.map(ele => {
+            if (ele.flag === false) arr.push(ele);
+          });
+          console.log('new Arr', arr);
+          setGetUserMedicine(arr);
         } else {
           setGetUserMedicine([]);
           showAlert();
@@ -295,126 +300,132 @@ const Report = ({navigation}) => {
     );
   };
 
-  const pullMe = () => {
-    setRefresh(true);
-    fetchData();
-  };
-
   return (
     <>
       <View style={styles.container} />
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refresh} onRefresh={() => pullMe()} />
-        }>
-        <View style={styles.report}>
-          <MainHeader
-            title={'Report'}
-            navigation={navigation}
-            download={downloadPdf}
-          />
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}>
-            <View style={styles.modalBox}>
-              <HistoryDetail
-                data={historyData}
-                onPress={() => setModalVisible(false)}
-              />
-            </View>
-          </Modal>
-          <View style={{paddingHorizontal: 12, paddingTop: 10}}>
-            <View style={styles.picker}>
-              <Picker
-                style={{color: 'black'}}
-                mode="dialog"
-                selectedValue={medicineId}
-                onValueChange={data => {
-                  setIsLoading(true);
-                  setMedicineId(data);
-                }}>
-                {getUserMedicine?.map((item, index) => {
-                  return (
-                    <Picker.Item
-                      label={item.medicineName}
-                      value={item.userMedicineId}
-                      key={index}
-                    />
-                  );
-                })}
-              </Picker>
-            </View>
+
+      <View style={styles.report}>
+        <MainHeader
+          title={'Report'}
+          navigation={navigation}
+          download={downloadPdf}
+        />
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.modalBox}>
+            <HistoryDetail
+              data={historyData}
+              onPress={() => setModalVisible(false)}
+            />
           </View>
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <>
-              <ScrollView>
-                <View style={styles.reportContainer}>
-                  <View style={styles.analytics}>
-                    <View style={styles.container1Text}>
-                      <Text style={styles.font}>Overall Percentage</Text>
-                      <Text style={styles.fontSmall}>
-                        This percentage shows your overall adherence rate.
-                      </Text>
-                    </View>
-                    <View style={styles.progressView}>
-                      <AnimatedProgressCircle
-                        radius={57}
-                        percentage={percentage}
-                        strokeWidth={12}
-                      />
-                    </View>
+        </Modal>
+        <View style={{paddingHorizontal: 12, paddingTop: 10}}>
+          <View style={styles.picker}>
+            <Picker
+              style={{color: 'black'}}
+              mode="dialog"
+              selectedValue={medicineId}
+              onValueChange={data => {
+                setIsLoading(true);
+                setMedicineId(data);
+              }}>
+              {getUserMedicine?.map((item, index) => {
+                return (
+                  <Picker.Item
+                    label={item.medicineName}
+                    value={item.userMedicineId}
+                    key={index}
+                  />
+                );
+              })}
+            </Picker>
+          </View>
+        </View>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <ScrollView
+              refreshControl={
+                <RefreshControl
+                  refreshing={refresh}
+                  onRefresh={() => {
+                    setRefresh(true);
+                    fetchData();
+                    setIsLoading(true);
+
+                    setTimeout(() => {
+                      setIsLoading(false);
+                    }, 1500);
+                  }}
+                  colors={[colorPallete.mainColor]}
+                />
+              }>
+              <View style={styles.reportContainer}>
+                <View style={styles.analytics}>
+                  <View style={styles.container1Text}>
+                    <Text style={styles.font}>Overall Percentage</Text>
+                    <Text style={styles.fontSmall}>
+                      This percentage shows your overall adherence rate.
+                    </Text>
+                  </View>
+                  <View style={styles.progressView}>
+                    <AnimatedProgressCircle
+                      radius={57}
+                      percentage={percentage}
+                      strokeWidth={12}
+                    />
                   </View>
                 </View>
-                <View style={styles.reportHeading}>
-                  <Text style={styles.reportText}>Your Report</Text>
-                </View>
-                <View style={styles.calendarView}>
-                  <Calendar
-                    style={styles.calendar}
-                    theme={styles.theme}
-                    initialDate={startDate}
-                    minDate={'2012-05-10'}
-                    monthFormat={'yyyy MM'}
-                    hideArrows={false}
-                    hideExtraDays={true}
-                    disableMonthChange={true}
-                    firstDay={1}
-                    hideDayNames={false}
-                    onPressArrowLeft={subtractMonth => subtractMonth()}
-                    onPressArrowRight={addMonth => addMonth()}
-                    disableAllTouchEventsForDisabledDays={true}
-                    renderHeader={date => {
-                      return (
-                        <Text
-                          style={{
-                            fontSize: 20,
-                            fontWeight: '600',
-                            color: 'grey',
-                          }}>
-                          {date.getDate() +
-                            ' ' +
-                            months[date.getMonth()] +
-                            ' ,' +
-                            ' ' +
-                            date.getFullYear()}
-                        </Text>
-                      );
-                    }}
-                    enableSwipeMonths={true}
-                    dayComponent={({date, state}) => dayComponent(date, state)}
-                  />
-                </View>
-              </ScrollView>
-            </>
-          )}
-        </View>
-      </ScrollView>
+              </View>
+              <View style={styles.reportHeading}>
+                <Text style={styles.reportText}>Your Report</Text>
+              </View>
+              <View style={styles.calendarView}>
+                <Calendar
+                  style={styles.calendar}
+                  theme={styles.theme}
+                  initialDate={startDate}
+                  minDate={'2012-05-10'}
+                  monthFormat={'yyyy MM'}
+                  hideArrows={false}
+                  hideExtraDays={true}
+                  disableMonthChange={true}
+                  firstDay={1}
+                  hideDayNames={false}
+                  onPressArrowLeft={subtractMonth => subtractMonth()}
+                  onPressArrowRight={addMonth => addMonth()}
+                  disableAllTouchEventsForDisabledDays={true}
+                  renderHeader={date => {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: '600',
+                          color: 'grey',
+                        }}>
+                        {date.getDate() +
+                          ' ' +
+                          months[date.getMonth()] +
+                          ' ,' +
+                          ' ' +
+                          date.getFullYear()}
+                      </Text>
+                    );
+                  }}
+                  enableSwipeMonths={true}
+                  dayComponent={({date, state}) => dayComponent(date, state)}
+                />
+              </View>
+            </ScrollView>
+          </>
+        )}
+      </View>
     </>
   );
 };

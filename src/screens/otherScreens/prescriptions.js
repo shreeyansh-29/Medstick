@@ -46,12 +46,13 @@ const Prescriptions = ({navigation}) => {
       syncMedicine(dispatch).then(() => {
         fetchData();
       });
-    }, []),
+    }, [deleteBtn]),
   );
 
   const fetchData = () => {
     setRefresh(false);
     getPrescription().then(data => {
+      console.log('Prescriptions',data);
       if (data !== null && data.length !== 0) {
         setMyPrescriptions(data);
       } else {

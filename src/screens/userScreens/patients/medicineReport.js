@@ -14,7 +14,10 @@ import Downloadpdf from '../../../components/organisms/downloadPdf';
 import {Divider} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
-import {getMedsHistoryRequest} from '../../../redux/action/patients/getMedsHistoryAction';
+import {
+  getPatientHistoryClear,
+  getPatientHistoryRequest,
+} from '../../../redux/action/patients/getPatientHistoryAction';
 import Reminder from './medicineReminders';
 import {weeks, months, month} from '../../../constants/constants';
 import styles from '../../../styles/patientStyles/medicineReportStyles';
@@ -22,34 +25,65 @@ import LottieView from 'lottie-react-native';
 import HistoryDetail from './historyDetail';
 import CustomModal from '../../../components/molecules/customModal';
 import AnimatedProgessCircle from '../../../components/atoms/AnimatedProgressCircle';
+import Loader from '../../../components/atoms/loader';
+import {CustomAlert} from '../../../components/atoms/customAlert';
 
 let detailData = {};
 
 const MedicineReport = ({navigation, route}) => {
   const dispatch = useDispatch();
   const item = route?.params?.item;
-  const {startDate, days, endDate} = item;
-  const res = useSelector(state => state.getMedsHistory?.data);
+  const {startDate, days, endDate, reminderId} = item;
+  const res = useSelector(state => state.getPatientHistory?.data);
   const [historyData, setHistoryData] = useState([]);
   const [allDates, setAllDates] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [showDetail, showDetailState] = useState(false);
   const [percentage, setPercentage] = useState(0);
   const [pageNo, setPageNo] = useState(0);
+  const [isLoading, setIsLoading] = useState(
+    reminderId !== null ? true : false,
+  );
 
   useEffect(() => {
-    if (res?.status === 'OK') {
-      setHistoryData(res?.result);
-      showAllDates();
-      overallPercentage(item);
+    if (reminderId === null) {
+      CustomAlert({
+        text1: 'No Report Present',
+        onPress: () => {
+          navigation.pop();
+        },
+      });
     }
-  }, [res]);
+  }, [reminderId]);
+
+  async function setData() {
+    setHistoryData(res);
+    overallPercentage(historyData);
+    showAllDates();
+    setIsLoading(false);
+    dispatch(getPatientHistoryClear());
+  }
+  useEffect(() => {
+    if (res !== null && res.length !== 0) {
+      setData();
+    }
+  }, [isLoading, res]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      let med = item?.userMedicineId;
+      dispatch(getPatientHistoryRequest({med, pageNo}));
+      return () => {
+        true;
+      };
+    }, []),
+  );
 
   function overallPercentage(data) {
     let cc = 0;
     let tr = 0;
-    if (data.historyList.length !== 0) {
-      data.historyList.map(item => {
+    if (data.length !== 0) {
+      data.map(item => {
         tr += item.time.split(',').length;
         let temp = item.taken.split(',');
         temp.map(i => {
@@ -58,8 +92,9 @@ const MedicineReport = ({navigation, route}) => {
           }
         });
       });
+
       setPercentage(Math.floor((cc / tr) * 100));
-    }else{
+    } else {
       setPercentage(0);
     }
   }
@@ -67,9 +102,10 @@ const MedicineReport = ({navigation, route}) => {
   const showAllDates = () => {
     let alldates = [];
     let msd = new Date(startDate),
-      mld = new Date(endDate);
+      mld = endDate === 'No End Date' ? new Date() : new Date(endDate);
     let daysSet = new Set(days?.split(','));
     let todayDate = new Date();
+
     while (msd <= mld && msd <= todayDate) {
       if (daysSet.has(weeks[msd.getDay()])) {
         let currentDate = new Date(msd);
@@ -88,16 +124,6 @@ const MedicineReport = ({navigation, route}) => {
     }
     setAllDates(alldates);
   };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      let med = item?.userMedicineId;
-      dispatch(getMedsHistoryRequest({med, pageNo}));
-      return () => {
-        true;
-      };
-    }, []),
-  );
 
   const downloadPdf = async () => {
     await PermissionsAndroid.request(
@@ -130,7 +156,7 @@ const MedicineReport = ({navigation, route}) => {
     let a = pageNo + 1;
     if (historyData?.length % 5 === 0 && a !== 0 && res?.result?.length !== 0) {
       let med = item?.userMedicineId;
-      dispatch(getMedsHistoryRequest({med, pageNo}));
+      dispatch(getPatientHistoryRequest({med, pageNo}));
     }
     setPageNo(a);
   };
@@ -167,82 +193,89 @@ const MedicineReport = ({navigation, route}) => {
         modalVisible={modalVisible}
         customStyles={styles.detailView}
       />
-
-      <View style={styles.animatedCircle}>
-        <AnimatedProgessCircle
-          radius={58}
-          strokeWidth={12}
-          percentage={percentage}
-          outerCircleColor={'#CFF5E7'}
-          innerCircleColor={'grey'}
-        />
-        <Text style={styles.performance} numberOfLines={1}>
-          {item?.medicineName}
-        </Text>
-      </View>
-      <View style={styles.bottomSheet}>
-        <View style={styles.mainView}>
-          <Text style={styles.heading} numberOfLines={1}>
-            Scheduled Dates for {item?.medicineName}
-          </Text>
-          <ScrollView
-            keyExtractor={index => index.toString()}
-            horizontal={true}
-            contentContainerStyle={styles.scrollView}
-            showsHorizontalScrollIndicator={false}>
-            {allDates.map(mCurrentDate => {
-              return (
-                <View style={styles.scrollViewCont}>
-                  <Text style={styles.scrollViewText}>{mCurrentDate.day}</Text>
-                  <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {
-                      showDetailfun(
-                        mCurrentDate.year +
-                          '-' +
-                          month[mCurrentDate.month] +
-                          '-' +
-                          mCurrentDate.date,
-                      );
-                    }}>
-                    <View
-                      style={{
-                        marginHorizontal: 10,
-                        padding: 12,
-                        width: 70,
-                        alignItems: 'center',
-                        borderRadius: 35,
-                        backgroundColor: mCurrentDate.color,
-                      }}>
-                      <View style={styles.scrollViewDate}>
-                        <Text style={{color: 'black'}}>
-                          {mCurrentDate.date}
-                        </Text>
-                      </View>
-                      <Text style={{color: 'white', paddingVertical: 2}}>
-                        {mCurrentDate.month}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <View style={styles.animatedCircle}>
+            <AnimatedProgessCircle
+              radius={58}
+              strokeWidth={12}
+              percentage={percentage}
+              outerCircleColor={'#CFF5E7'}
+              innerCircleColor={'grey'}
+            />
+            <Text style={styles.performance} numberOfLines={1}>
+              {item?.medicineName}
+            </Text>
+          </View>
+          <View style={styles.bottomSheet}>
+            <View style={styles.mainView}>
+              <Text style={styles.heading} numberOfLines={1}>
+                Scheduled Dates for {item?.medicineName}
+              </Text>
+              <ScrollView
+                keyExtractor={index => index.toString()}
+                horizontal={true}
+                contentContainerStyle={styles.scrollView}
+                showsHorizontalScrollIndicator={false}>
+                {allDates.map(mCurrentDate => {
+                  return (
+                    <View style={styles.scrollViewCont}>
+                      <Text style={styles.scrollViewText}>
+                        {mCurrentDate.day}
                       </Text>
+                      <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => {
+                          showDetailfun(
+                            mCurrentDate.year +
+                              '-' +
+                              month[mCurrentDate.month] +
+                              '-' +
+                              mCurrentDate.date,
+                          );
+                        }}>
+                        <View
+                          style={{
+                            marginHorizontal: 10,
+                            padding: 12,
+                            width: 70,
+                            alignItems: 'center',
+                            borderRadius: 35,
+                            backgroundColor: mCurrentDate.color,
+                          }}>
+                          <View style={styles.scrollViewDate}>
+                            <Text style={{color: 'black'}}>
+                              {mCurrentDate.date}
+                            </Text>
+                          </View>
+                          <Text style={{color: 'white', paddingVertical: 2}}>
+                            {mCurrentDate.month}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </ScrollView>
-        </View>
-        <Divider style={styles.divider1} />
-        <Text style={styles.medicineHistory}>Medicine History</Text>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={historyData}
-          renderItem={({item, index}) => {
-            return <Reminder item={item} index={index} />;
-          }}
-          keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={{padding: 8}}
-          onEndReachedThreshold={0.01}
-          onEndReached={onEnd}
-        />
-      </View>
+                  );
+                })}
+              </ScrollView>
+            </View>
+            <Divider style={styles.divider1} />
+            <Text style={styles.medicineHistory}>Medicine History</Text>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={historyData}
+              renderItem={({item, index}) => {
+                return <Reminder item={item} index={index} />;
+              }}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={{padding: 8}}
+              onEndReachedThreshold={0.01}
+              onEndReached={onEnd}
+            />
+          </View>
+        </>
+      )}
     </View>
   );
 };

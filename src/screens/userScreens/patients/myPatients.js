@@ -17,7 +17,8 @@ import NoInternet from '../../../components/atoms/noInternet';
 const MyPatients = ({navigation}) => {
   //React Redux Hooks
   const dispatch = useDispatch();
-  const res = useSelector(state => state.myPatients);
+  const res = useSelector(state => state.myPatients?.data);
+  const errorState = useSelector(state => state.myPatients?.error);
   const connected = useSelector(state => state.internetConnectivity?.data);
 
   //React useState hook
@@ -42,9 +43,9 @@ const MyPatients = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    if (res?.data !== null && res.data.length !== 0) {
+    if (res !== null && res?.length !== 0) {
       setRefresh(false);
-      setMyPatients([...myPatients, ...res.data]);
+      setMyPatients([...myPatients, ...res]);
       dispatch(myPatientsClear());
     }
   }, [res]);
@@ -52,7 +53,7 @@ const MyPatients = ({navigation}) => {
   //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
-    if (myPatients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+    if (myPatients?.length % 8 === 0 && a !== 0) {
       dispatch(myPatientsRequest(a));
       setPageNo(a);
     }
