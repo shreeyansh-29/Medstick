@@ -3,6 +3,7 @@ import React from 'react';
 import CalendarStrip from 'react-native-calendar-strip';
 import {styles} from '../../styles/homeScreenStyles/calenderStyles';
 import moment from 'moment';
+import {monthsFullName} from '../../constants/constants';
 
 const Calender = props => {
   let td_da = moment().format('YYYY-MM-DD');
@@ -23,13 +24,6 @@ const Calender = props => {
     }
   };
 
-  let startDate =
-    upcomingDate.getFullYear() +
-    '-' +
-    upcomingDate.getMonth() +
-    '-' +
-    upcomingDate.getDate();
-
   // useEffect(() => {
   //   dateBlackList;
   // }, []);
@@ -45,7 +39,7 @@ const Calender = props => {
   //   },
   // ];
   return (
-    <View>
+    <View style={{height: '40%'}}>
       <CalendarStrip
         numDaysInWeek={7}
         scrollable
@@ -68,6 +62,13 @@ const Calender = props => {
         disabledDateNameStyle={{color: 'black'}}
         disabledDateNumberStyle={{color: 'black'}}
         maxDate={new Date(endDate)}
+        // headerText={
+        //   moment()._d.getDate() +
+        //   ' ' +
+        //   monthsFullName[upcomingDate.getMonth()] +
+        //   ' , ' +
+        //   upcomingDate.getFullYear()
+        // }
         // minDate={new Date(startDate)}
       />
     </View>

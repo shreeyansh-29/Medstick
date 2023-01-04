@@ -267,9 +267,10 @@ const Reminders = ({showAlert, setPercentage, data}) => {
             style={{
               width: '100%',
               height: '100%',
-              backgroundColor: colorPallete.backgroundColor,
+              // backgroundColor: colorPallete.backgroundColor,
               borderRadius: 10,
               alignSelf: 'center',
+              backgroundColor:'red'
             }}>
             <FlatList
               showsVerticalScrollIndicator={false}
