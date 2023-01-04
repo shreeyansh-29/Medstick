@@ -14,7 +14,7 @@ import {faClock, faPills, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Styles from '../../../styles/medicinePanelStyles/medicinePanelStyles';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import CustomImage from '../../../components/atoms/customImage';
 import PushNotification from 'react-native-push-notification';
 import Loader from '../../../components/atoms/loader';
@@ -42,11 +42,11 @@ const MedicinePanel = ({navigation}) => {
     };
   }, [showLoader]);
 
-  useEffect(() => {
-    if (isFocused) {
+  useFocusEffect(
+    React.useCallback(() => {
       syncMedicine(dispatch).then(() => fetchData());
-    }
-  }, [connected, load]);
+    }, [connected, load]),
+  );
 
   const fetchData = () => {
     let arr = [];

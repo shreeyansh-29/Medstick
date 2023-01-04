@@ -23,6 +23,7 @@ import {AddMedicine, getMedicine} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
 import {CustomAlert} from '../../../components/atoms/customAlert';
 import {SuccessToast} from '../../../components/atoms/customToast';
+import { horizontalScale } from '../../../components/atoms/constant';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
@@ -498,7 +499,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(0);
                     }}>
-                    <Text style={{fontSize: 15}}>
+                    <Text style={{fontSize: horizontalScale(14)}}>
                       {timearray[0] ? timearray[0] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
@@ -540,7 +541,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(1);
                     }}>
-                    <Text style={{fontSize: 15}}>
+                    <Text style={{fontSize: horizontalScale(14)}}>
                       {timearray[1] ? timearray[1] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
@@ -581,7 +582,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(2);
                     }}>
-                    <Text style={{fontSize: 15}}>
+                    <Text style={{fontSize: horizontalScale(14)}}>
                       {timearray[2] ? timearray[2] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
