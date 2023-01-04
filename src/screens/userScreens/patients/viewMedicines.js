@@ -10,9 +10,9 @@ import React, {useEffect, useState} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import {
-  clearMedicineList,
-  loadMedicineList,
-} from '../../../redux/action/userMedicine/medicineListAction';
+  userMedicineListClear,
+  userMedicineListRequest,
+} from '../../../redux/action/patients/userMedicineListAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
@@ -31,17 +31,17 @@ import ErrorBoundary from '../../otherScreens/errorBoundary';
 
 const ViewMedicines = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const res = useSelector(state => state.medicineList);
-  const errorState = useSelector(state => state.medicineList.error);
+  const res = useSelector(state => state.patientMedicineList);
+  const errorState = useSelector(state => state.patientMedicineList.error);
   const res1 = useSelector(state => state.notifyUser?.data);
-  const loading = useSelector(state => state.medicineList?.isLoading);
+  const loading = useSelector(state => state.patientMedicineList?.isLoading);
   const [medicines, setMedicines] = useState([]);
   const [refresh, setRefresh] = useState(false);
   let resp = route?.params?.item;
 
   useEffect(() => {
     if (res1?.status === 'Success') {
-      ToastAndroid.show('Send Successfully', ToastAndroid.LONG);
+      ToastAndroid.show('Sent Successfully', ToastAndroid.LONG);
     } else if (res1?.status === 'Failed') {
       ToastAndroid.show('Error', ToastAndroid.LONG);
     }
@@ -51,12 +51,12 @@ const ViewMedicines = ({navigation, route}) => {
   useEffect(() => {
     if (res?.data !== null) {
       setMedicines(res?.data);
-      dispatch(clearMedicineList());
+      dispatch(userMedicineListClear());
     }
   }, [res]);
 
   useEffect(() => {
-    dispatch(loadMedicineList(resp?.userId));
+    dispatch(userMedicineListRequest(resp?.userId));
   }, []);
 
   const sendNotificationToUser = (fcmToken, medName, patientId) => {

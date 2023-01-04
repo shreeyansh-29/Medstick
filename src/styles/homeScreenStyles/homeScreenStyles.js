@@ -37,9 +37,11 @@ export const styles = StyleSheet.create({
     backgroundColor: colorPallete.backgroundColor,
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,
-    height: verticalScale(150),
+    height: '60%',
     width: '100%',
-  },
+    alignSelf:"flex-end",
+    bottom:0
+    },
   progressText: {fontSize: 20, fontWeight: '600', color: 'black'},
   font: {
     color: colorPallete.mainColor,

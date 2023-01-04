@@ -25,15 +25,25 @@ import moment from 'moment';
 import Loader from '../../components/atoms/loader';
 import {week} from '../../constants/constants';
 import uuid from 'react-native-uuid';
-import Notifications from '../../pushNotification/pushNotifications';
+// import Notifications from '../../pushNotification/pushNotifications';
 import {CustomAlert} from '../../components/atoms/customAlert';
 import syncMedicine from '../../sync/syncMedicine';
 import fetchUserMedicine from '../../sync/fetchUserMedicine';
-import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
+import {
+  clearMedicineList,
+  loadMedicineList,
+} from '../../redux/action/userMedicine/medicineListAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getAppointmentListRequest} from '../../redux/action/userMedicine/getAppointmentListAction';
-import {getAllMedicineHistoryRequest} from '../../redux/action/userMedicine/getAllMedicineHistoryAction';
+import {
+  getAppointmentListClear,
+  getAppointmentListRequest,
+} from '../../redux/action/userMedicine/getAppointmentListAction';
+import {
+  getAllMedicineHistoryClear,
+  getAllMedicineHistoryRequest,
+} from '../../redux/action/userMedicine/getAllMedicineHistoryAction';
 import syncHistory from '../../sync/syncHistory';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -50,12 +60,16 @@ const HomeScreen = ({navigation}) => {
   const userMedicine = useSelector(state => state.medicineList?.data);
   const appointmentList = useSelector(state => state.appointmentList?.data);
   const historyList = useSelector(state => state.allMedicineHistory?.data);
+  const errorState = useSelector(state => state.medicineList?.error);
 
   useEffect(() => {
     if (userMedicine !== null && userMedicine.length !== 0) {
       fetchUserMedicine(userMedicine, appointmentList, historyList);
     }
-  }, [userMedicine]);
+    dispatch(clearMedicineList());
+    dispatch(getAppointmentListClear());
+    dispatch(getAllMedicineHistoryClear());
+  }, [userMedicine, errorState]);
 
   useEffect(() => {
     if (connected && load) {
@@ -63,9 +77,9 @@ const HomeScreen = ({navigation}) => {
         dispatch(myCaretakerRequest(0));
       }
       (async () => {
-        dispatch(loadMedicineList(await AsyncStorage.getItem('user_id')));
-        dispatch(getAppointmentListRequest());
+        dispatch(loadMedicineList());
         dispatch(getAllMedicineHistoryRequest());
+        dispatch(getAppointmentListRequest());
       })();
     }
   }, [connected, load]);
@@ -82,7 +96,6 @@ const HomeScreen = ({navigation}) => {
     React.useCallback(() => {
       getData().then(() => {
         if (connected && load) {
-          // console.log('Huaa yaha pr');
           syncMedicine(dispatch);
           syncHistory(dispatch);
         }
@@ -262,21 +275,21 @@ const HomeScreen = ({navigation}) => {
     MedicineHistory(medData);
   }, [medData]);
 
-  useEffect(() => {
-    notifyNotification(medData);
-  }, []);
+  // useEffect(() => {
+  //   notifyNotification(medData);
+  // }, []);
 
-  const notifyNotification = medData => {
-    let date = new Date();
-    let dateNew = moment(date).add(1, 'm').toDate();
-    // console.log(medData, 'date');
-    let i;
-    for (i = 0; i < medData.length; i++) {
-      if (parseInt(medData[i].leftStock) >= parseInt(medData[i].stock)) {
-        Notifications.notifyMedicineNotification(dateNew, medData[i]?.stock);
-      }
-    }
-  };
+  // const notifyNotification = medData => {
+  //   let date = new Date();
+  //   let dateNew = moment(date).add(1, 'm').toDate();
+  //   // console.log(medData, 'date');
+  //   let i;
+  //   for (i = 0; i < medData.length; i++) {
+  //     if (parseInt(medData[i].leftStock) >= parseInt(medData[i].stock)) {
+  //       Notifications.notifyMedicineNotification(dateNew, medData[i]?.stock);
+  //     }
+  //   }
+  // };
 
   //for Calculating Overall Percentage on particular date
   function getDate(data) {

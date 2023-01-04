@@ -31,6 +31,7 @@ import {expiryReducer} from './signUpReducer/expiryReducer';
 import {syncHistoryDetailsReducer} from './userMedicine/syncHistoryDetailsReducer';
 import {getAppointmentListReducer} from './userMedicine/getAppointmentListReducer';
 import {getAllMedicineHistoryReducer} from './userMedicine/getAllMedicineHistoryReducer';
+import {userMedicineListReducer} from './patients/userMedicineListReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -65,6 +66,7 @@ const rootReducer = combineReducers({
   syncHistory: syncHistoryDetailsReducer,
   appointmentList: getAppointmentListReducer,
   allMedicineHistory: getAllMedicineHistoryReducer,
+  patientMedicineList: userMedicineListReducer,
 });
 
 export default rootReducer;

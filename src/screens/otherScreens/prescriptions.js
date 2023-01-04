@@ -52,7 +52,6 @@ const Prescriptions = ({navigation}) => {
   const fetchData = () => {
     setRefresh(false);
     getPrescription().then(data => {
-      console.log('Prescriptions',data);
       if (data !== null && data.length !== 0) {
         setMyPrescriptions(data);
       } else {

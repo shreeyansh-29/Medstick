@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 16,
     marginLeft: 8,
-    fontWeight: '700',
+    fontWeight: '600',
     color: colorPallete.black,
   },
   startDateContainer: {
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     marginLeft: 8,
     marginTop: 10,
-    fontWeight: '700',
+    fontWeight: '600',
     color: colorPallete.black,
   },
   titleText: {margin: 8, marginBottom: 10, fontSize: 16},
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   selectTime: {
     fontSize: 16,
     marginLeft: 8,
-    fontWeight: '700',
+    fontWeight: '600',
     marginBottom: 5,
   },
   downIcon: {right: 0, position: 'absolute'},
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
   },
   timeText: {fontWeight: '800'},
-  selectDays: {fontSize: 16, fontWeight: '700'},
+  selectDays: {fontSize: 16, fontWeight: '600'},
   days: {paddingHorizontal: 16, paddingVertical: 5},
   durationContainer: {
     marginLeft: 10,
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    width: '100%',
   },
   medicineContainer: {
     flexDirection: 'row',
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
   },
   takeMedicineText: {
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '600',
     color: colorPallete.black,
   },
   touchableButton: {

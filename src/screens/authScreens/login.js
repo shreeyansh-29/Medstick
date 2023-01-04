@@ -20,6 +20,7 @@ import {
   ErrorToast,
   InfoToast,
 } from '../../components/atoms/customToast';
+import {HTTP_STATUS_CODES, serverErrors} from '../../constants/statusCodes';
 
 const Login = ({navigation, logout}) => {
   const result = useSelector(state => state.signIn?.data);
@@ -56,7 +57,7 @@ const Login = ({navigation, logout}) => {
 
   useEffect(() => {
     if (isFocused) {
-      if (result?.status === 200) {
+      if (result?.status === HTTP_STATUS_CODES.ok) {
         getResponse();
       }
       dispatch(resetLogin());
@@ -65,7 +66,7 @@ const Login = ({navigation, logout}) => {
 
   useEffect(() => {
     if (isFocused) {
-      if (error?.status === 404) {
+      if (error === serverErrors.NOT_FOUND) {
         logout();
         ErrorToast({text1: 'User Not Found'});
       }

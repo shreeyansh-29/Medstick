@@ -122,7 +122,13 @@ class NetworkService {
       },
     );
   }
-  async getUserMedicine(payload) {
+  async getUserMedicine() {
+    const id = await AsyncStorage.getItem('user_id');
+    return RequestService.getRequest(
+      `${apiUrl.USER_MEDICINE}?userId=${id}&Id=${id}`,
+    );
+  }
+  async getPatientMedicine(payload) {
     const Id = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
     return RequestService.getRequest(

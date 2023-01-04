@@ -16,6 +16,7 @@ import {
   InfoToast,
   SuccessToast,
 } from '../../components/atoms/customToast';
+import {HTTP_STATUS_CODES} from '../../constants/statusCodes';
 
 const SignUp = ({navigation, logout}) => {
   const dispatch = useDispatch();
@@ -44,9 +45,9 @@ const SignUp = ({navigation, logout}) => {
 
   useEffect(() => {
     if (isFocused) {
-      if (result?.status === 201) {
+      if (result?.status === HTTP_STATUS_CODES.created) {
         getResponse();
-      } else if (result?.status === 208) {
+      } else if (result?.status === HTTP_STATUS_CODES.alreadyReported) {
         logout();
         ErrorToast({text1: 'User already exists'});
         dispatch(resetSignUp());

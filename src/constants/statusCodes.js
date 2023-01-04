@@ -14,6 +14,7 @@ export const HTTP_STATUS_CODES = {
   serviceUnavailable: 503,
   gatewayTimeout: 504,
   notModified: 304,
+  alreadyReported: 208
 };
 
 //list of serverErrors

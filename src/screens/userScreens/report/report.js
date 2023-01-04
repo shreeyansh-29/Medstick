@@ -8,14 +8,14 @@ import {
   ToastAndroid,
   Alert,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DayComponent from './dayComponent';
 import HistoryDetail from '../patients/historyDetail';
 import AnimatedProgressCircle from '../../../components/atoms/AnimatedProgressCircle';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import ProgressCircle from 'react-native-progress-circle';
@@ -25,6 +25,7 @@ import Downloadpdf from '../../../components/organisms/downloadPdf';
 import Loader from '../../../components/atoms/loader';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {CustomAlert} from '../../../components/atoms/customAlert';
+import moment from 'moment';
 
 LocaleConfig.locales['en'] = {
   monthNames: [
@@ -76,20 +77,19 @@ const Report = ({navigation}) => {
   const [historyData, setHistoryData] = useState({});
   const [historyListData, setHistoryListData] = useState([]);
   const [percentage, setPercentage] = useState(0);
-  const isFocused = useIsFocused();
   const [dataMap, setDataMap] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
   const fetchData = () => {
     let arr = [];
+    setIsLoading(true);
     getMedicine()
       .then(data => {
         if (data !== null && data.length !== 0) {
           data.map(ele => {
             if (ele.flag === false) arr.push(ele);
           });
-          console.log('new Arr', arr);
           setGetUserMedicine(arr);
         } else {
           setGetUserMedicine([]);
@@ -101,32 +101,22 @@ const Report = ({navigation}) => {
           getHistory(medicineId);
         }
       })
+      .then(() => {
+        setIsLoading(false);
+      })
       .catch(error => {
         console.log('error', error);
       });
-    setIsLoading(false);
     setRefresh(false);
   };
 
-  useEffect(() => {
-    if (isFocused) {
+  useFocusEffect(
+    React.useCallback(() => {
       fetchData();
-    }
-  }, [isFocused, medicineId]);
+    }, [medicineId]),
+  );
 
-  let td = new Date();
-  let startDate = new Date(
-    td.getFullYear() + '-' + (td.getMonth() + 1) + '-' + td.getDate(),
-  ).toISOString();
-
-  let todayDate = new Date();
-  todayDate.getFullYear() +
-    '-' +
-    (todayDate.getMonth() + 1) +
-    '-' +
-    (todayDate.getDate() < 10
-      ? '0' + todayDate.getDate()
-      : todayDate.getDate());
+  let startDate = moment().format('YYYY-MM-DD');
 
   const showAlert = () => {
     Alert.alert('Add Medicine First', 'Click Ok to proceed', [
@@ -164,7 +154,6 @@ const Report = ({navigation}) => {
 
   function getHistory(medicine) {
     let histories = [];
-    console.log(getUserMedicine, 'get user medicine');
     getUserMedicine.forEach(data => {
       if (data.userMedicineId === medicine && data.historyList.length !== 0) {
         data.historyList.map(i => {
@@ -175,7 +164,6 @@ const Report = ({navigation}) => {
           his.date = i.date;
           his.time = i.time;
           histories.push(his);
-          console.log(histories, 'histories');
           dateSelector(histories);
           setHistoryListData(histories);
           overallPercentage(data);
@@ -222,6 +210,7 @@ const Report = ({navigation}) => {
   function overallPercentage(data) {
     let cc = 0;
     let tr = 0;
+    console.log(data);
     if (data.historyList.length !== 0) {
       data.historyList.map(item => {
         tr += item.time.split(',').length;
@@ -233,12 +222,13 @@ const Report = ({navigation}) => {
         });
       });
       setPercentage(Math.floor((cc / tr) * 100));
+    } else {
+      setPercentage(0);
     }
   }
 
   const dateSelector = history => {
     var data = [];
-    console.log(history, 'history');
     if (history.length !== 0) {
       history.forEach(item => {
         let percentage = dayPercentageCalculator(item.taken, item.time);
@@ -303,7 +293,6 @@ const Report = ({navigation}) => {
   return (
     <>
       <View style={styles.container} />
-
       <View style={styles.report}>
         <MainHeader
           title={'Report'}
@@ -331,8 +320,8 @@ const Report = ({navigation}) => {
               mode="dialog"
               selectedValue={medicineId}
               onValueChange={data => {
-                setIsLoading(true);
                 setMedicineId(data);
+                fetchData();
               }}>
               {getUserMedicine?.map((item, index) => {
                 return (
@@ -358,7 +347,6 @@ const Report = ({navigation}) => {
                     setRefresh(true);
                     fetchData();
                     setIsLoading(true);
-
                     setTimeout(() => {
                       setIsLoading(false);
                     }, 1500);
@@ -409,7 +397,7 @@ const Report = ({navigation}) => {
                           fontWeight: '600',
                           color: 'grey',
                         }}>
-                        {date.getDate() +
+                        {moment(date)._d.getDate() +
                           ' ' +
                           months[date.getMonth()] +
                           ' ,' +

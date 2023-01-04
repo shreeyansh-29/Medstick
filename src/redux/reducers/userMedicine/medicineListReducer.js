@@ -20,7 +20,7 @@ export const medicineListReducer = (state = initialState, action) => {
     case MEDICINE_LIST_ERROR:
       return {...state, error: action.payload, isLoading: false, data: null};
     case MEDICINE_LIST_CLEAR:
-      return {data: null, error: null, isLoading: false};
+      return {data: null, isLoading: false, error: null};
     default:
       return state;
   }

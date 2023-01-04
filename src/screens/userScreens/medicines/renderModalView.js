@@ -21,11 +21,13 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import {ListItem} from 'react-native-elements';
+import {serverErrors} from '../../../constants/statusCodes';
+import ErrorBoundary from '../../otherScreens/errorBoundary';
 
 const RenderModalView = ({setVisible, props}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.searchMedicine?.data);
-  const error = useSelector(state => state.searchMedicine?.error?.data);
+  const error = useSelector(state => state.searchMedicine?.error);
   const [pageNo, setPageNo] = useState(0);
   const [tempSearch, setTempSearch] = useState([]);
   const [med, setMed] = useState('');
@@ -66,7 +68,7 @@ const RenderModalView = ({setVisible, props}) => {
 
   const onEnd = () => {
     let a = pageNo + 1;
-    if (tempSearch.length % 8 === 0 && a !== 0 && res?.result?.length !== 0) {
+    if (tempSearch.length % 8 === 0 && a !== 0) {
       apiCall(med, a);
       setPageNo(a);
     }
@@ -190,33 +192,39 @@ const RenderModalView = ({setVisible, props}) => {
         activityIndicator()
       ) : (
         <>
-          {error?.status === 'Failed' && tempSearch.length === 0 ? (
-            <View style={styles.errorCont}>
-              <Text style={styles.text1}>Medicine Not Found</Text>
-              <Text style={styles.text2}>(Please Enter Manually)</Text>
-            </View>
+          {error === serverErrors.SERVER_ERROR ? (
+            <ErrorBoundary />
           ) : (
             <>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                data={tempSearch}
-                renderItem={renderItem}
-                contentContainerStyle={{
-                  backgroundColor: colorPallete.backgroundColor,
-                }}
-                style={{width: '100%'}}
-                onEndReachedThreshold={0.1}
-                onMomentumScrollBegin={() =>
-                  setOnEndReachedCalledDuringMomentum(false)
-                }
-                onEndReached={({distanceFromEnd}) => {
-                  if (!onEndReachedCalledDuringMomentum) {
-                    onEnd();
-                    setOnEndReachedCalledDuringMomentum(true);
-                  }
-                }}
-                keyExtractor={item => item.medicineId}
-              />
+              {error === serverErrors.NOT_FOUND && tempSearch.length === 0 ? (
+                <View style={styles.errorCont}>
+                  <Text style={styles.text1}>Medicine Not Found</Text>
+                  <Text style={styles.text2}>(Please Enter Manually)</Text>
+                </View>
+              ) : (
+                <>
+                  <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={tempSearch}
+                    renderItem={renderItem}
+                    contentContainerStyle={{
+                      backgroundColor: colorPallete.backgroundColor,
+                    }}
+                    style={{width: '100%'}}
+                    onEndReachedThreshold={0.1}
+                    onMomentumScrollBegin={() =>
+                      setOnEndReachedCalledDuringMomentum(false)
+                    }
+                    onEndReached={({distanceFromEnd}) => {
+                      if (!onEndReachedCalledDuringMomentum) {
+                        onEnd();
+                        setOnEndReachedCalledDuringMomentum(true);
+                      }
+                    }}
+                    keyExtractor={item => item.medicineId}
+                  />
+                </>
+              )}
             </>
           )}
         </>

@@ -47,12 +47,7 @@ const MedicineReport = ({navigation, route}) => {
 
   useEffect(() => {
     if (reminderId === null) {
-      CustomAlert({
-        text1: 'No Report Present',
-        onPress: () => {
-          navigation.pop();
-        },
-      });
+      showAlert();
     }
   }, [reminderId]);
 
@@ -63,6 +58,7 @@ const MedicineReport = ({navigation, route}) => {
     setIsLoading(false);
     dispatch(getPatientHistoryClear());
   }
+
   useEffect(() => {
     if (res !== null && res.length !== 0) {
       setData();
@@ -78,6 +74,15 @@ const MedicineReport = ({navigation, route}) => {
       };
     }, []),
   );
+
+  const showAlert = () => {
+    CustomAlert({
+      text1: 'No Report Present',
+      onPress: () => {
+        navigation.pop();
+      },
+    });
+  };
 
   function overallPercentage(data) {
     let cc = 0;

@@ -29,6 +29,7 @@ import {watchGetAppointmentListSaga} from './userMedicine/getAppointmentListSaga
 import {watchGetAllMedicineHistorySaga} from './userMedicine/getAllMedicineHistorySaga';
 import {watchSyncHistoryDetailsSaga} from './userMedicine/syncHistoryDetailsSaga';
 import {watchGetPatientHistorySaga} from './patients/getPatientHistorySaga';
+import {userMedicineListWatcherSaga} from './otherScreenSaga/userMedicineListSaga';
 
 export default function* RootSaga() {
   yield all([
@@ -62,5 +63,6 @@ export default function* RootSaga() {
     watchGetAppointmentListSaga(),
     watchGetAllMedicineHistorySaga(),
     watchGetPatientHistorySaga(),
+    userMedicineListWatcherSaga(),
   ]);
 }

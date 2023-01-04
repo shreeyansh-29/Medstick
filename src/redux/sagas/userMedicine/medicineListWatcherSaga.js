@@ -6,9 +6,9 @@ import {
 } from '../../action/userMedicine/medicineListAction';
 import * as types from '../../actionTypes';
 
-export function* medicineListWorkerSaga(data) {
+export function* medicineListWorkerSaga() {
   try {
-    const response = yield call(networkService.getUserMedicine, data);
+    const response = yield call(networkService.getUserMedicine);
     yield put(successMedicineList(response?.data));
   } catch (error) {
     yield put(errorMedicineList(error));
