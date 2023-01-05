@@ -1,18 +1,26 @@
 import {View} from 'react-native';
 import React from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCircleUser} from '@fortawesome/free-solid-svg-icons';
 import {styles} from '../../styles/homeScreenStyles/headerStyles';
-import {colorPallete} from './colorPalette';
+import CustomImage from '../atoms/customImage';
 
 const AppIcon = () => {
   return (
     <View style={styles.appIcon}>
-      <FontAwesomeIcon
-        icon={faCircleUser}
-        size={36}
-        color={colorPallete.basicColor}
-      />
+      <View
+        style={{
+          borderRadius: 22,
+          width: '66%',
+          backgroundColor: 'white',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <CustomImage
+          resizeMode="contain"
+          source={require('../../assets/images/appIcon.png')}
+          styles={{width: 25, height: 25}}
+        />
+      </View>
     </View>
   );
 };

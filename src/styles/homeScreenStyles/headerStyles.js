@@ -19,6 +19,8 @@ export const styles = StyleSheet.create({
   appIcon: {
     alignItems: 'center',
     width: '17%',
+    justifyContent: 'center',
+    height:verticalScale(36),
   },
   bellIcon: {
     width: '14%',
