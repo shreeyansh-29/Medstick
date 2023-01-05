@@ -12,6 +12,7 @@ LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 
 const App = () => {
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ErrorBoundary>

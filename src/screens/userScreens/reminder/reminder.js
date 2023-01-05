@@ -132,6 +132,7 @@ const Reminder = ({route, navigation}) => {
           endDate,
           check2,
           lengthSelectedDays,
+          number[i],
         );
       } else {
         let dateTime = moment(obj.startDate + ' ' + number[i]);
@@ -142,6 +143,7 @@ const Reminder = ({route, navigation}) => {
           endDate,
           check2,
           lengthSelectedDays,
+          number[i],
         );
       }
     }
@@ -306,10 +308,8 @@ const Reminder = ({route, navigation}) => {
       setfDate('null');
     }
 
-    
-
     let obj = route?.params?.data;
-    
+
     obj.days = days;
     obj.frequency = frequencyTemp;
     obj.endDate = fDateSecondary;
@@ -326,10 +326,17 @@ const Reminder = ({route, navigation}) => {
 
     let name = route.params.data.medicineName;
 
+    function test(arr, sub) {
+      sub = sub.toLowerCase();
+      return arr.map(str =>
+        str.toLowerCase().startsWith(sub.slice(0, Math.max(str.length - 1, 1))),
+      );
+    }
+
     if (reminderStatus === true) {
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
-          if ('Take ' + name === rn[i].message) {
+          if (test(rn[i].message, `Take ${name}`)) {
             PushNotification.cancelLocalNotification({id: rn[i].id});
           }
         }

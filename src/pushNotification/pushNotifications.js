@@ -4,7 +4,6 @@ class Notifications {
     PushNotification.configure({
       onRegister: function (token) {},
       onNotification: function (notification) {
-        console.log('Notification:', notification);
       },
       popInitialNotification: true,
       requestPermissions: false.valueOf,
@@ -26,7 +25,7 @@ class Notifications {
     });
   }
 
-  schduleNotification(date, check1, name, enddate, check2, length) {
+  schduleNotification(date, check1, name, enddate, check2, length, time) {
     let currentTime = new Date();
     let currentTime2 =
       currentTime.getFullYear() +
@@ -34,13 +33,12 @@ class Notifications {
       (currentTime.getMonth() + 1) +
       '-' +
       currentTime.getDate();
-    console.log(date, check1, name, enddate, check2, length, 'local');
 
     if (check1 || enddate=="No End Date") {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name,
+        message: `Take ${name} at ${time}`,
         date: date,
         repeatType: 'day',
       });
@@ -48,7 +46,7 @@ class Notifications {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name,
+        message: `Take ${name} at ${time}`,
         date: date,
         repeatType: 'week',
         repeatTime: length,
@@ -57,7 +55,7 @@ class Notifications {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
         title: 'Reminder!',
-        message: 'Take ' + name,
+        message: `Take ${name} at ${time}`,
         date: date,
         repeatType: currentTime2 <= enddate ? 'day' : null,
       });

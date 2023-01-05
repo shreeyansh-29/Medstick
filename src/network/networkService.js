@@ -3,6 +3,7 @@ import * as apiUrl from '../constants/apiUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {decryptData} from '../components/atoms/crypto';
 
+// axios instance for http request with authentication
 class NetworkService {
   async login(payload) {
     const {email, token} = payload.payload;
@@ -35,6 +36,7 @@ class NetworkService {
       },
     );
   }
+
   async signUp(payload) {
     const {name, email, photo, token} = payload.payload;
     return RequestService.postRequest(apiUrl.SIGN_UP, {

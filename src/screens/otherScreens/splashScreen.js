@@ -18,22 +18,6 @@ const SplashScreen = () => {
   const [medData, setMedData] = useState([]);
   const Refresh = useSelector(state => state.refresh?.data);
 
-  useEffect(() => {
-    connected && load ? dispatch(expiryRequest()) : null;
-  }, [connected, load]);
-
-  useEffect(() => {
-    if (Refresh !== null) {
-      (async () => {
-        await AsyncStorage.removeItem('refreshToken');
-        await AsyncStorage.removeItem('accessToken');
-
-        await AsyncStorage.setItem('refreshToken', Refresh.refreshToken);
-        await AsyncStorage.setItem('accessToken', Refresh.accessToken);
-      })();
-    }
-  }, [Refresh]);
-
   const getData = async () => {
     getMedicine().then(data => {
       if (data.length !== 0 && data !== null) {
@@ -66,13 +50,6 @@ const SplashScreen = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (expiry?.status === 403 && expiry?.status !== undefined) {
-      dispatch(refreshRequest());
-    }
-  }, [expiry]);
-  
 
   return (
     <View style={styles.container}>
