@@ -40,7 +40,7 @@ const DeletePrescription = ({
     });
   };
   const deletePrescription = prescriptionId => {
-    console.log('Presciption ID inside delete', prescriptionId);
+    // console.log('Presciption ID inside delete', prescriptionId);
     getMedicine().then(data => {
       let counter = 0;
       if (data !== null && data.length !== 0) {

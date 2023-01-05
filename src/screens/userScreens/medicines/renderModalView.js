@@ -217,7 +217,7 @@ const RenderModalView = ({setVisible, props}) => {
                     }
                     onEndReached={({distanceFromEnd}) => {
                       if (!onEndReachedCalledDuringMomentum) {
-                        onEnd();
+                        !error ? onEnd() : null;
                         setOnEndReachedCalledDuringMomentum(true);
                       }
                     }}

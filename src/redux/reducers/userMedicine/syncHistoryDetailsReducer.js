@@ -14,7 +14,7 @@ const initialState = {
 export const syncHistoryDetailsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SYNC_HISTORY_DETAILS_REQUEST:
-      return {...state, isLoading: true};
+      return {...state, isLoading: true, data: null, error: null};
     case SYNC_HISTORY_DETAILS_SUCCESS:
       return {...state, data: action.payload, isLoading: false, error: null};
     case SYNC_HISTORY_DETAILS_ERROR:

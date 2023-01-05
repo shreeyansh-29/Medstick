@@ -18,8 +18,8 @@ const MyPatients = ({navigation}) => {
   //React Redux Hooks
   const dispatch = useDispatch();
   const res = useSelector(state => state.myPatients?.data);
-  const errorState = useSelector(state => state.myPatients?.error);
   const connected = useSelector(state => state.internetConnectivity?.data);
+  const errorState = useSelector(state => state.myPatients?.error);
 
   //React useState hook
   const [pageNo, setPageNo] = useState(0);
@@ -112,7 +112,7 @@ const MyPatients = ({navigation}) => {
               }
               onEndReached={({distanceFromEnd}) => {
                 if (!onEndReachedCalledDuringMomentum) {
-                  onEnd();
+                  errorState === null ? onEnd() : null;
                   setOnEndReachedCalledDuringMomentum(true);
                 }
               }}

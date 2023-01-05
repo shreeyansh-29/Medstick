@@ -18,9 +18,8 @@ export const myPrescriptionsError = payload => {
     payload,
   };
 };
-export const myPrescriptionsClear = payload => {
+export const myPrescriptionsClear = () => {
   return {
     type: types.MY_PRESCRIPTIONS_CLEAR,
-    payload,
   };
 };

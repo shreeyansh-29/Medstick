@@ -28,6 +28,7 @@ import Ripple from 'react-native-material-ripple';
 import {style} from '../../../styles/patientStyles/viewMedicineStyles';
 import {serverErrors} from '../../../constants/statusCodes';
 import ErrorBoundary from '../../otherScreens/errorBoundary';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ViewMedicines = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -48,16 +49,18 @@ const ViewMedicines = ({navigation, route}) => {
     dispatch(notifyUserClear());
   }, [res1]);
 
-  useEffect(() => {
+  useEffect(() => { 
     if (res?.data !== null) {
       setMedicines(res?.data);
       dispatch(userMedicineListClear());
     }
   }, [res]);
 
-  useEffect(() => {
-    dispatch(userMedicineListRequest(resp?.userId));
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(userMedicineListRequest(resp?.userId));
+    }, []),
+  );
 
   const sendNotificationToUser = (fcmToken, medName, patientId) => {
     dispatch(notifyUserRequest({medName, fcmToken, patientId}));
@@ -166,7 +169,7 @@ const ViewMedicines = ({navigation, route}) => {
                         refreshing={refresh}
                         onRefresh={() => {
                           setRefresh(false);
-                          dispatch(loadMedicineList(resp?.userId));
+                          dispatch(userMedicineListRequest(resp?.userId));
                         }}
                       />
                     }

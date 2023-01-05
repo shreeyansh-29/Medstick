@@ -18,6 +18,7 @@ import {TouchableOpacity} from 'react-native';
 import {style} from '../../../styles/patientStyles/viewPrescriptionStyles';
 import ErrorBoundary from '../../../screens/otherScreens/errorBoundary';
 import {serverErrors} from '../../../constants/statusCodes';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ViewPrescriptions = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -48,18 +49,21 @@ const ViewPrescriptions = ({navigation, route}) => {
     }
   }, [res]);
 
-  useEffect(() => {
-    currentPage === 0
-      ? dispatch(myPrescriptionsRequest({currentPage, Id}))
-      : null;
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      currentPage === 0
+        ? dispatch(myPrescriptionsRequest({currentPage, Id}))
+        : null;
+    }, []),
+  );
 
   //FlatList OnEnd Function
   const onEnd = () => {
-    let a = pageNo + 1;
+    let a = currentPage + 1;
     if (prescriptions?.length % 8 === 0 && a !== 0) {
-      dispatch(myPrescriptionsRequest({a, Id}));
-      setPageNo(a);
+      let currentPage = a;
+      dispatch(myPrescriptionsRequest({currentPage, Id}));
+      setCurrentPage(a);
     }
   };
 
@@ -86,6 +90,8 @@ const ViewPrescriptions = ({navigation, route}) => {
               style={style.btn}
               activeOpacity={1}
               onPress={() => {
+                setPrescriptions([]);
+                setLoading(true);
                 navigation.navigate('ViewPrescription', {
                   item: item,
                   flag: flag,
@@ -135,7 +141,7 @@ const ViewPrescriptions = ({navigation, route}) => {
                   }
                   onEndReached={({distanceFromEnd}) => {
                     if (!onEndReachedCalledDuringMomentum) {
-                      onEnd();
+                      errorState === null ? onEnd() : null;
                       setOnEndReachedCalledDuringMomentum(true);
                     }
                   }}

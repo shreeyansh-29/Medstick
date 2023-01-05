@@ -18,6 +18,7 @@ const MyCareTaker = ({navigation}) => {
   //React Redux Hooks
   const dispatch = useDispatch();
   const res = useSelector(state => state.myCaretaker);
+  const errorState = useSelector(state => state.myCaretaker.error);
   const connected = useSelector(state => state.internetConnectivity?.data);
 
   //React useState hook
@@ -111,7 +112,7 @@ const MyCareTaker = ({navigation}) => {
               }
               onEndReached={({distanceFromEnd}) => {
                 if (!onEndReachedCalledDuringMomentum) {
-                  onEnd();
+                  !errorState ? onEnd() : null;
                   setOnEndReachedCalledDuringMomentum(true);
                 }
               }}

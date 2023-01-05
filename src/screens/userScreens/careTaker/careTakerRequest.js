@@ -30,6 +30,7 @@ const CareTakerRequest = () => {
   //React Redux Hooks
   const dispatch = useDispatch();
   const res = useSelector(state => state.caretakerRequest);
+  const errorState = useSelector(state => state.caretakerRequest.error);
   const acceptedStatus = useSelector(
     state => state.acceptCaretakerRequest?.data,
   );
@@ -218,7 +219,7 @@ const CareTakerRequest = () => {
               }
               onEndReached={({distanceFromEnd}) => {
                 if (!onEndReachedCalledDuringMomentum) {
-                  onEnd();
+                  !errorState ? onEnd() : null;
                   setOnEndReachedCalledDuringMomentum();
                 }
               }}

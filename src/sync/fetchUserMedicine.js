@@ -24,9 +24,9 @@ const fetchUserMedicine = async (
     .then(() => {
       getMedicine()
         .then(data => {
-          console.log('fetch data at start', data);
+          // console.log('fetch data at start', data);
           if (data === null || data.length === 0) {
-            console.log('data in 1st condition', data);
+            // console.log('data in 1st condition', data);
             let updatedList = [];
             userMedicine.map(item => {
               if (item.prescriptionId !== null) {
@@ -79,7 +79,7 @@ const fetchUserMedicine = async (
             AddMedicine(updatedList);
             savePrescription(prescriptionList);
           } else if (data.length !== 0) {
-            console.log('Data not empty', data);
+            // console.log('Data not empty', data);
             let userMedicineList = [];
             let updatedList = data;
 
@@ -132,7 +132,7 @@ const fetchUserMedicine = async (
               }
             });
 
-            console.log('Before Pushing Updated data', updatedList);
+            // console.log('Before Pushing Updated data', updatedList);
             AddMedicine(updatedList);
             savePrescription(prescriptionList);
           }

@@ -24,6 +24,7 @@ const SubHeader = ({
   setDeleteBtn,
   setEdit,
   flag,
+  errorState,
 }) => {
   return (
     <View style={styles.subHeader}>
@@ -42,9 +43,9 @@ const SubHeader = ({
       <View style={styles.header}>
         <Text style={styles.subHeaderFont}>{title}</Text>
       </View>
-      {title !== 'Medicine Report' ? null : (
+      {title !== 'Medicine Report' ? null : errorState === null ? (
         <DownloadButton download={download} />
-      )}
+      ) : null}
       {title !== 'Appointment Reminders' ? null : (
         <AddAppointment
           navigation={navigation}

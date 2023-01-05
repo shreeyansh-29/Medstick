@@ -20,6 +20,7 @@ import {colorPallete} from '../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import {bloodGroup, gender} from '../../constants/pickerItem';
 import {ErrorToast, SuccessToast} from '../../components/atoms/customToast';
+import {getUserProfileClear} from '../../redux/action/profileAction/getUserProfileAction';
 
 const RenderModalVisible = ({
   isCancel,
@@ -34,6 +35,7 @@ const RenderModalVisible = ({
 
   useEffect(() => {
     if (res?.data?.status === 'Success') {
+      dispatch(getUserProfileClear());
       dispatch(resetProfile());
       SuccessToast({text1: 'Updated Successfully', position: 'bottom'});
 
@@ -42,6 +44,7 @@ const RenderModalVisible = ({
         setEdit(false);
       }, 1500);
     } else if (res?.data?.status === 'Failed') {
+      dispatch(getUserProfileClear());
       dispatch(resetProfile());
       ErrorToast({text1: 'Something Went Wrong!!!', position: 'bottom'});
     }

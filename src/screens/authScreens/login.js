@@ -70,6 +70,10 @@ const Login = ({navigation, logout}) => {
         logout();
         ErrorToast({text1: 'User Not Found'});
       }
+      if (error === serverErrors.SERVER_ERROR) {
+        logout();
+        InfoToast({text1: 'Something Went Wrong', text1: 'Try Again Later'});
+      }
       dispatch(resetLogin());
     }
   }, [isFocused, error]);
@@ -87,7 +91,6 @@ const Login = ({navigation, logout}) => {
         if (await GoogleSignin.isSignedIn()) {
           await GoogleSignin.signOut();
         }
-        // InfoToast({text1: 'Something Went Wrong'});
       }
     }
   };

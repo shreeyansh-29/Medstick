@@ -1,9 +1,8 @@
 import * as types from '../../actionTypes';
 
-export const getUserProfileRequest = payload => {
+export const getUserProfileRequest = () => {
   return {
     type: types.USER_PROFILE_REQUEST,
-    payload,
   };
 };
 export const getUserProfileSuccess = payload => {
@@ -16,5 +15,10 @@ export const getUserProfileError = payload => {
   return {
     type: types.USER_PROFILE_ERROR,
     payload,
+  };
+};
+export const getUserProfileClear = () => {
+  return {
+    type: types.USER_PROFILE_CLEAR,
   };
 };

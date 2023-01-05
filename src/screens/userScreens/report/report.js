@@ -210,7 +210,6 @@ const Report = ({navigation}) => {
   function overallPercentage(data) {
     let cc = 0;
     let tr = 0;
-    console.log(data);
     if (data.historyList.length !== 0) {
       data.historyList.map(item => {
         tr += item.time.split(',').length;

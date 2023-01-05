@@ -16,11 +16,12 @@ import {
   InfoToast,
   SuccessToast,
 } from '../../components/atoms/customToast';
-import {HTTP_STATUS_CODES} from '../../constants/statusCodes';
+import {HTTP_STATUS_CODES, serverErrors} from '../../constants/statusCodes';
 
 const SignUp = ({navigation, logout}) => {
   const dispatch = useDispatch();
   const result = useSelector(state => state.signUp?.data);
+  const errorState = useSelector(state => state.signUp?.error);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const isFocused = useIsFocused();
 
@@ -54,6 +55,16 @@ const SignUp = ({navigation, logout}) => {
       }
     }
   }, [isFocused, result]);
+
+  useEffect(() => {
+    if (isFocused) {
+      if (errorState === serverErrors.SERVER_ERROR) {
+        logout();
+        InfoToast({text1: 'Something Went Wrong', text2: 'Try Again Later'});
+      }
+      dispatch(resetSignUp());
+    }
+  }, [isFocused, errorState]);
 
   const signUp = async () => {
     if (connected) {

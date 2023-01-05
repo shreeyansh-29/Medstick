@@ -2,7 +2,6 @@ import RequestService from './requestService';
 import * as apiUrl from '../constants/apiUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {decryptData} from '../components/atoms/crypto';
-import {HTTP_STATUS_CODES} from '../constants/statusCodes';
 import {HelperPromise} from '../constants/promise';
 class NetworkService {
   async login(payload) {
@@ -162,7 +161,8 @@ class NetworkService {
     );
   }
   async getPatientMedicineHistory(payload) {
-    const {med, pageNo} = payload.payload;
+    const {med} = payload.payload;
+    let pageNo = payload.payload.pageNo;
     const Id = await AsyncStorage.getItem('user_id');
     return await RequestService.getRequest(
       `${apiUrl.GET_MEDICINE_HISTORY}?userMedicineId=${med}&Id=${Id}&pageNo=${pageNo}&pageSize=5`,

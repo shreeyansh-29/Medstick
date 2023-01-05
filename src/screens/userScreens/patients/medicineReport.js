@@ -27,6 +27,9 @@ import CustomModal from '../../../components/molecules/customModal';
 import AnimatedProgessCircle from '../../../components/atoms/AnimatedProgressCircle';
 import Loader from '../../../components/atoms/loader';
 import {CustomAlert} from '../../../components/atoms/customAlert';
+import moment from 'moment';
+import {serverErrors} from '../../../constants/statusCodes';
+import ErrorBoundary from '../../otherScreens/errorBoundary';
 
 let detailData = {};
 
@@ -35,6 +38,7 @@ const MedicineReport = ({navigation, route}) => {
   const item = route?.params?.item;
   const {startDate, days, endDate, reminderId} = item;
   const res = useSelector(state => state.getPatientHistory?.data);
+  const errorState = useSelector(state => state.getPatientHistory?.error);
   const [historyData, setHistoryData] = useState([]);
   const [allDates, setAllDates] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -44,16 +48,20 @@ const MedicineReport = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(
     reminderId !== null ? true : false,
   );
+  const [scrollEnd, setScrollEnd] = useState(true);
+  let td_da = moment().format('YYYY-MM-DD');
 
   useEffect(() => {
     if (reminderId === null) {
+      showAlert();
+    } else if (startDate > td_da) {
       showAlert();
     }
   }, [reminderId]);
 
   async function setData() {
-    setHistoryData(res);
-    overallPercentage(historyData);
+    setHistoryData([...historyData, ...res]);
+    overallPercentage([...historyData, ...res]);
     showAllDates();
     setIsLoading(false);
     dispatch(getPatientHistoryClear());
@@ -62,7 +70,7 @@ const MedicineReport = ({navigation, route}) => {
   useEffect(() => {
     if (res !== null && res.length !== 0) {
       setData();
-    }
+    } else setIsLoading(false);
   }, [isLoading, res]);
 
   useFocusEffect(
@@ -159,11 +167,12 @@ const MedicineReport = ({navigation, route}) => {
 
   const onEnd = () => {
     let a = pageNo + 1;
-    if (historyData?.length % 5 === 0 && a !== 0 && res?.result?.length !== 0) {
+    if (historyData?.length % 5 === 0 && a !== 0) {
       let med = item?.userMedicineId;
+      let pageNo = a;
       dispatch(getPatientHistoryRequest({med, pageNo}));
+      setPageNo(a);
     }
-    setPageNo(a);
   };
 
   return (
@@ -172,6 +181,7 @@ const MedicineReport = ({navigation, route}) => {
         title={'Medicine Report'}
         download={downloadPdf}
         navigation={navigation}
+        errorState={errorState}
       />
       <CustomModal
         onRequestClose={() => setModalVisible(false)}
@@ -202,83 +212,97 @@ const MedicineReport = ({navigation, route}) => {
         <Loader />
       ) : (
         <>
-          <View style={styles.animatedCircle}>
-            <AnimatedProgessCircle
-              radius={58}
-              strokeWidth={12}
-              percentage={percentage}
-              outerCircleColor={'#CFF5E7'}
-              innerCircleColor={'grey'}
-            />
-            <Text style={styles.performance} numberOfLines={1}>
-              {item?.medicineName}
-            </Text>
-          </View>
-          <View style={styles.bottomSheet}>
-            <View style={styles.mainView}>
-              <Text style={styles.heading} numberOfLines={1}>
-                Scheduled Dates for {item?.medicineName}
-              </Text>
-              <ScrollView
-                keyExtractor={index => index.toString()}
-                horizontal={true}
-                contentContainerStyle={styles.scrollView}
-                showsHorizontalScrollIndicator={false}>
-                {allDates.map(mCurrentDate => {
-                  return (
-                    <View style={styles.scrollViewCont}>
-                      <Text style={styles.scrollViewText}>
-                        {mCurrentDate.day}
-                      </Text>
-                      <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => {
-                          showDetailfun(
-                            mCurrentDate.year +
-                              '-' +
-                              month[mCurrentDate.month] +
-                              '-' +
-                              mCurrentDate.date,
-                          );
-                        }}>
-                        <View
-                          style={{
-                            marginHorizontal: 10,
-                            padding: 12,
-                            width: 70,
-                            alignItems: 'center',
-                            borderRadius: 35,
-                            backgroundColor: mCurrentDate.color,
-                          }}>
-                          <View style={styles.scrollViewDate}>
-                            <Text style={{color: 'black'}}>
-                              {mCurrentDate.date}
-                            </Text>
-                          </View>
-                          <Text style={{color: 'white', paddingVertical: 2}}>
-                            {mCurrentDate.month}
+          {errorState === serverErrors.SERVER_ERROR ? (
+            <ErrorBoundary />
+          ) : (
+            <>
+              <View style={styles.animatedCircle}>
+                <AnimatedProgessCircle
+                  radius={58}
+                  strokeWidth={12}
+                  percentage={percentage}
+                  outerCircleColor={'#CFF5E7'}
+                  innerCircleColor={'grey'}
+                />
+                <Text style={styles.performance} numberOfLines={1}>
+                  {item?.medicineName}
+                </Text>
+              </View>
+              <View style={styles.bottomSheet}>
+                <View style={styles.mainView}>
+                  <Text style={styles.heading} numberOfLines={1}>
+                    Scheduled Dates for {item?.medicineName}
+                  </Text>
+                  <ScrollView
+                    keyExtractor={index => index.toString()}
+                    horizontal={true}
+                    contentContainerStyle={styles.scrollView}
+                    showsHorizontalScrollIndicator={false}>
+                    {allDates.map(mCurrentDate => {
+                      return (
+                        <View style={styles.scrollViewCont}>
+                          <Text style={styles.scrollViewText}>
+                            {mCurrentDate.day}
                           </Text>
+                          <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => {
+                              showDetailfun(
+                                mCurrentDate.year +
+                                  '-' +
+                                  month[mCurrentDate.month] +
+                                  '-' +
+                                  (mCurrentDate.date < 10
+                                    ? '0' + mCurrentDate.date
+                                    : mCurrentDate.date),
+                              );
+                            }}>
+                            <View
+                              style={{
+                                marginHorizontal: 10,
+                                padding: 12,
+                                width: 70,
+                                alignItems: 'center',
+                                borderRadius: 35,
+                                backgroundColor: mCurrentDate.color,
+                              }}>
+                              <View style={styles.scrollViewDate}>
+                                <Text style={{color: 'black'}}>
+                                  {mCurrentDate.date}
+                                </Text>
+                              </View>
+                              <Text
+                                style={{color: 'white', paddingVertical: 2}}>
+                                {mCurrentDate.month}
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
                         </View>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                })}
-              </ScrollView>
-            </View>
-            <Divider style={styles.divider1} />
-            <Text style={styles.medicineHistory}>Medicine History</Text>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={historyData}
-              renderItem={({item, index}) => {
-                return <Reminder item={item} index={index} />;
-              }}
-              keyExtractor={(item, index) => index.toString()}
-              contentContainerStyle={{padding: 8}}
-              onEndReachedThreshold={0.01}
-              onEndReached={onEnd}
-            />
-          </View>
+                      );
+                    })}
+                  </ScrollView>
+                </View>
+                <Divider style={styles.divider1} />
+                <Text style={styles.medicineHistory}>Medicine History</Text>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={historyData}
+                  renderItem={({item, index}) => {
+                    return <Reminder item={item} index={index} />;
+                  }}
+                  onEndReachedThreshold={0.01}
+                  onMomentumScrollBegin={() => setScrollEnd(false)}
+                  onEndReached={({distanceFromEnd}) => {
+                    if (!scrollEnd) {
+                      !errorState ? onEnd() : null;
+                      setScrollEnd(true);
+                    }
+                  }}
+                  keyExtractor={item => item.historyId}
+                />
+              </View>
+            </>
+          )}
         </>
       )}
     </View>

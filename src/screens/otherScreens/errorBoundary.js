@@ -8,7 +8,6 @@ import SubHeader from '../../components/molecules/headers/subHeader';
 const ErrorBoundary = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <SubHeader navigation={navigation} />
       <View style={styles.mainView}>
         <LottieView
           style={styles.lottie}

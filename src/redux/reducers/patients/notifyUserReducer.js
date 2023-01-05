@@ -14,11 +14,11 @@ const initialState = {
 export const notifyUserReducer = (state = initialState, action) => {
   switch (action.type) {
     case NOTIFY_USER_REQUEST:
-      return {...state, isLoading: true, error: null};
+      return {...state, isLoading: true, error: null, data: null};
     case NOTIFY_USER_SUCCESS:
-      return {...state, data: action.payload, isLoading: false};
+      return {...state, data: action.payload, isLoading: false, error: null};
     case NOTIFY_USER_ERROR:
-      return {...state, error: action.payload, isLoading: false};
+      return {...state, error: action.payload, isLoading: false, data: null};
     case NOTIFY_USER_CLEAR:
       return {date: null, error: null, isLoading: false};
     default:

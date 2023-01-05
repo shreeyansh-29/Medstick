@@ -30,6 +30,7 @@ const PatientRequest = () => {
   //React Redux Hooks
   const dispatch = useDispatch();
   const res = useSelector(state => state.patientsRequest);
+  const errorState = useSelector(state => state.patientsRequest?.error);
   const acceptedStatus = useSelector(state => state.acceptPatientRequest?.data);
   const deletedStatus = useSelector(state => state.deletePatientRequest?.data);
   const connected = useSelector(state => state.internetConnectivity?.data);
@@ -214,7 +215,7 @@ const PatientRequest = () => {
               }
               onEndReached={({distanceFromEnd}) => {
                 if (!onEndReachedCalledDuringMomentum) {
-                  onEnd();
+                  !errorState ? onEnd() : null;
                   setOnEndReachedCalledDuringMomentum();
                 }
               }}
