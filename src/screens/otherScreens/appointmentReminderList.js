@@ -6,8 +6,9 @@ import {
   StyleSheet,
   Text,
   RefreshControl,
+  ScrollView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -40,6 +41,7 @@ const AppointmentReminderList = ({navigation}) => {
   const [showLoader, setShowLoader] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
+  const [refreshing,setRefreshing]=useState(false)
   let todayDate = new Date();
   let currentTime =
     todayDate?.getHours() +
@@ -47,6 +49,9 @@ const AppointmentReminderList = ({navigation}) => {
     (todayDate?.getMinutes() < 10
       ? '0' + todayDate.getMinutes()
       : todayDate.getMinutes());
+
+  
+
 
   todayDate =
     todayDate.getFullYear() +
@@ -224,6 +229,47 @@ const AppointmentReminderList = ({navigation}) => {
   };
 
   //FlatList RenderItem
+  const refresh1=()=>{
+    if (isFocused) {
+      getMedicine().then(data => {
+        if (data !== null && data.length !== 0) {
+          let updatedList = data;
+          let doctorList = [];
+          let reminderList = [];
+
+          updatedList.map(item => {
+            if (item.doctorName !== null && item.medicineName !== null) {
+              doctorList.push({
+                doctorName: item.doctorName,
+                prescriptionId: item.prescriptionId,
+              });
+            }
+            if (item.appointmentList.length !== 0) {
+              item.appointmentList.map(ele => {
+                if (ele?.date >= todayDate) {
+                  reminderList.push(ele);
+                } else {
+                  item.appointmentList.pop(ele);
+                  AddMedicine(updatedList);
+                }
+              });
+            }
+          });
+          setAppointments(reminderList);
+          setDoctorName(doctorList);
+        }
+      });
+    }
+  }
+
+  const onRefresh=()=>{
+    setRefreshing(true)
+   refresh1()
+   setTimeout(()=>{
+    setRefreshing(false)
+   },3000) 
+  }
+
   const renderItem = ({item}) => {
     const dateHandler = date => {
       let dob = date.split('-');
@@ -233,7 +279,9 @@ const AppointmentReminderList = ({navigation}) => {
     let localTime = moment(item.localTime, ['h:mm A']).format('HH:mm');
 
     return (
-      <View style={styles.top}>
+      <View style={styles.top}
+    >
+      
         <ListItem>
           <ListItem.Content style={styles.mainView}>
             <View style={styles.view}>
@@ -339,7 +387,7 @@ const AppointmentReminderList = ({navigation}) => {
               keyExtractor={(item, index) => index.toString()}
               refreshControl={
                 <RefreshControl
-                  refreshing={refresh}
+                  refreshing={refresh1}
                   onRefresh={() => {
                     setRefresh(true);
                     setShowLoader(true);

@@ -302,8 +302,14 @@ const Reminder = ({route, navigation}) => {
     frequencyHandler();
     const frequencyTemp = frequency.toString();
 
-    let obj = route?.params?.data;
+    if (endDate === 'No End Date') {
+      setfDate('null');
+    }
 
+    
+
+    let obj = route?.params?.data;
+    
     obj.days = days;
     obj.frequency = frequencyTemp;
     obj.endDate = fDateSecondary;
@@ -353,7 +359,7 @@ const Reminder = ({route, navigation}) => {
 
     setTimeout(() => {
       navigation.pop();
-    }, 1500);
+    }, 1000);
   };
 
   return (

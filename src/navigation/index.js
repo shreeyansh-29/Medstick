@@ -15,6 +15,14 @@ import {saveInternetConnectivityStatus} from '../redux/action/loginAction/saveIn
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {saveUserLoggedIn} from '../redux/action/loginAction/saveUserLoggedIn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TabNavigation from './stacks/tabNavigation';
+import HomeScreen from '../screens/userScreens/homeScreen';
+import Report from '../screens/userScreens/report/report';
+import AddMedicineLocal from '../screens/userScreens/medicines/addMedicineLocal';
+import MedicinePanel from '../screens/userScreens/medicines/medicinePanel';
+import AccountTab from '../screens/userScreens/accountTab';
+import BottomTabNavigation from './stacks/bottomTabNavigation';
+ 
 
 const Stack = createNativeStackNavigator();
 
@@ -54,12 +62,12 @@ const MainNavigation = () => {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{headerShown: false, orientation: 'portrait'}}
-          initialRouteName="Bottom">
+          initialRouteName="Tab">
+                    <Stack.Screen name="Tab" component={BottomTabNavigation} />
           <Stack.Screen name="Bottom" component={BottomNavigator} />
           <Stack.Screen name="AuthScreen" component={AuthScreen} />
           <Stack.Screen name="AddMedicineStack" component={AddMedicineStack} />
-          <Stack.Screen
-            name="MedicinePanelStack"
+          <Stack.Screen name="MedicinePanelStack"
             component={MedicinePanelStack}
           />
           <Stack.Screen name="AccountStack" component={AccountStack} />
