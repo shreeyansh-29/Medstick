@@ -44,8 +44,6 @@ const AccountStack = () => {
       <Stack.Screen name="MedicineImages" component={MedicineImages} />
       <Stack.Screen name="SaveAppointment" component={SaveAppointment} />
       <Stack.Screen name="Feedback" component={Feedback} />
-      {/* <Stack.Screen name="Logout" component={Logout} />
-      <Stack.Screen name="AuthScreen" component={AuthScreen} /> */}
       <Stack.Screen
         name="AppointmentReminderList"
         component={AppointmentReminderList}

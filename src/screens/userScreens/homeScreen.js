@@ -1,5 +1,5 @@
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import React, {useState, useEffect, useRef} from 'react';
+import {View, Text, TouchableOpacity, Alert, BackHandler} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
 import Reminders from './homeReminders';
@@ -61,6 +61,25 @@ const HomeScreen = ({navigation}) => {
   const appointmentList = useSelector(state => state.appointmentList?.data);
   const historyList = useSelector(state => state.allMedicineHistory?.data);
   const errorState = useSelector(state => state.medicineList?.error);
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     if (userMedicine !== null && userMedicine.length !== 0) {

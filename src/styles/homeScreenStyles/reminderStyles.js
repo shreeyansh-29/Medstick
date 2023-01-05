@@ -5,10 +5,9 @@ import {horizontalScale, verticalScale} from '../../components/atoms/constant';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: verticalScale(6),
+    paddingTop: verticalScale(4),
     alignItems: 'center',
     paddingHorizontal: horizontalScale(13),
-    // backgroundColor:colorPallete.basicColor
   },
   imgContainer: {
     backgroundColor: colorPallete.basicColor,
@@ -19,7 +18,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     elevation: 4,
     height: 300,
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   flatList: {
     flex: 1,

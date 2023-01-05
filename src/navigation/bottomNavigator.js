@@ -67,7 +67,8 @@ const BottomNavigator = ({navigation}) => {
         headerShown: false,
         lazy: true,
       }}
-      backBehavior={'none'}>
+      backBehavior="history"
+      initialRouteName="Home">
       {TabBar.map((item, index) => {
         if (item.route === 'Add') {
           return (

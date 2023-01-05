@@ -57,6 +57,7 @@ const Styles = StyleSheet.create({
     backgroundColor: colorPallete.backgroundColor,
     width: '57%',
     paddingLeft: 10,
+    marginVertical: 4,
   },
   medName: {fontWeight: '600', fontSize: 17},
   icon: {
