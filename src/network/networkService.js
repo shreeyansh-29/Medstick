@@ -28,6 +28,7 @@ class NetworkService {
       },
     );
   }
+
   async signUp(payload) {
     const {name, email, photo, token} = payload.payload;
     return RequestService.postRequest(apiUrl.SIGN_UP, {

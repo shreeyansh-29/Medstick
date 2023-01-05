@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
+import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SplashScreen from '../screens/otherScreens/splashScreen';
 import BottomNavigator from './bottomNavigator';
 import AuthScreen from '../screens/authScreens/authScreen';
 import AccountStack from './stacks/AccountStack';
@@ -19,13 +18,6 @@ const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {
   const dispatch = useDispatch();
-  const [showSplashScreen, setShowSplashScreen] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShowSplashScreen(false);
-    }, 3000);
-  }, []);
 
   useEffect(() => {
     let intenetInfo;
@@ -52,12 +44,11 @@ const MainNavigation = () => {
 
   return (
     <>
-      {showSplashScreen ? <SplashScreen /> : null}
-
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{headerShown: false, orientation: 'portrait'}}
           initialRouteName="Bottom">
+          {/* <Stack.Screen name="Tab" component={BottomTabNavigation} /> */}
           <Stack.Screen name="Bottom" component={BottomNavigator} />
           <Stack.Screen name="HomeStack" component={HomeStack} />
           <Stack.Screen name="AddMedicineStack" component={AddMedicineStack} />

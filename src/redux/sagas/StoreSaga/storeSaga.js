@@ -5,7 +5,6 @@ import { storeError, storeSuccess } from '../../action/StoreAction/storeAction';
 export function* storeSaga(data) {
   try {
     let response = yield put(data);
-    console.log(response,"response");
     yield put(storeSuccess(response?.data));
   } catch (error) {
     yield put(storeError(error));

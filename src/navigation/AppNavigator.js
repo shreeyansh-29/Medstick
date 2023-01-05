@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OnboardingScreen from '../screens/onBoardingScreen';
 import BottomTabs from './BottomTabs';
+import TabNavigation from './stacks/tabNavigation';
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
@@ -21,7 +22,7 @@ const AppNavigator = () => {
           headerShown: false,
           orientation: 'portrait',
         }}>
-        <Stack.Screen name="BottomTabs" component={BottomTabs} />
+        <Stack.Screen name="Tab" component={TabNavigation} />
       </Stack.Navigator>
     </>
   );

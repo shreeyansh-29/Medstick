@@ -2,10 +2,41 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {HTTP_STATUS_CODES, serverErrors} from '../constants/statusCodes';
 // import {decryptData} from '../components/atoms/crypto';
+import * as apiUrl from '../constants/apiUrl';
 
 const instance = axios.create({
   timeout: 10000,
 });
+
+async function saveToken(accessToken, refreshToken) {
+  await AsyncStorage.setItem('accessToken', accessToken);
+  await AsyncStorage.setItem('refreshToken', refreshToken);
+}
+
+async function destroyToken() {
+  await AsyncStorage.removeItem('accessToken');
+  await AsyncStorage.removeItem('refreshToken');
+}
+
+const refreshToken = async () => {
+  const id = await AsyncStorage.getItem('user_id');
+  const refresh = await AsyncStorage.getItem('refreshToken');
+
+  axios
+    .post(
+      `${apiUrl.REFRESH_TOKEN}?userId=${id}`,
+      {},
+      {
+        headers: {
+          Authorization: refresh,
+        },
+      },
+    )
+    .then(response => {
+      destroyToken();
+      saveToken(response.data.accessToken, response.data.refreshToken);
+    });
+};
 
 const requestHandler = async request => {
   let token = await AsyncStorage.getItem('accessToken');
@@ -30,7 +61,7 @@ const errorHandler = error => {
     if (status === HTTP_STATUS_CODES.notFound) {
       errorMessage = serverErrors.NOT_FOUND;
     } else if (status === HTTP_STATUS_CODES.forbidden) {
-      errorMessage = serverErrors.FORBIDDEN;
+      refreshToken();
     }
   }
   return Promise.reject(errorMessage);
