@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -23,7 +23,7 @@ import {AddMedicine, getMedicine} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
 import {CustomAlert} from '../../../components/atoms/customAlert';
 import {SuccessToast} from '../../../components/atoms/customToast';
-import { horizontalScale } from '../../../components/atoms/constant';
+import {horizontalScale} from '../../../components/atoms/constant';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
@@ -77,6 +77,22 @@ const Reminder = ({route, navigation}) => {
     (startDate.getMonth() + 1) +
     '-' +
     startDate.getDate();
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          height: 58,
+          backgroundColor: colorPallete.basicColor,
+          paddingHorizontal: 16,
+        },
+      });
+  }, [navigation]);
 
   const onSelecteddaysItemsChange = selectedi => {
     slecteddaysstate(selectedi);

@@ -2,14 +2,15 @@ import {TouchableOpacity} from 'react-native';
 import React from 'react';
 import LottieView from 'lottie-react-native';
 
-const AddButton = ({routeName, navigation, styles, text}) => {
+const AddButton = ({routeName, navigation, styles, stackName, params}) => {
   return (
     <>
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          navigation.navigate(routeName, {
-            sentBy: text,
+          navigation.navigate(stackName, {
+            params: params,
+            screen: routeName,
           });
         }}>
         <LottieView

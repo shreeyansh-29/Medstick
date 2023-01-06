@@ -52,18 +52,18 @@ const MedicinePanel = ({navigation}) => {
     setRefresh(false);
     getMedicine()
       .then(data => {
-        console.log('previous Data', data);
+        // console.log('previous Data', data);
         if (data !== null && data.length !== 0) {
           data.map(ele => {
             if (ele.flag === false) arr.push(ele);
           });
-          console.log('new Arr', arr);
+          // console.log('new Arr', arr);
           setMedicineResponse(arr);
         }
       })
       .then(() => {
         if (connected && load) {
-          console.log('newly pushing array', arr);
+          // console.log('newly pushing array', arr);
           AddMedicine(arr);
         }
       });
@@ -98,7 +98,7 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('MedicinePanelStack', {
+              navigation.navigate('Medicine', {
                 screen: 'MedicineList',
                 params: {
                   data: medicineResponse,
@@ -145,7 +145,7 @@ const MedicinePanel = ({navigation}) => {
                     activeOpacity={1}
                     style={Styles.rem}
                     onPress={() => {
-                      navigation.navigate('MedicinePanelStack', {
+                      navigation.navigate('Medicine', {
                         screen: 'Reminder',
                         params: {
                           data: item,

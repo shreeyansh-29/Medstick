@@ -10,6 +10,7 @@ import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {ErrorToast, SuccessToast} from '../../../components/atoms/customToast';
 import {CustomAlert} from '../../../components/atoms/customAlert';
+import {useFocusEffect} from '@react-navigation/native';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -30,6 +31,16 @@ const AddMedicineLocal = ({navigation}) => {
   const [medId, setMedId] = useState('');
 
   //React useEffect Hooks
+  useFocusEffect(
+    React.useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          display: 'none',
+        },
+      });
+    }, [navigation]),
+  );
+
   useEffect(() => {
     setType();
   }, [pill]);

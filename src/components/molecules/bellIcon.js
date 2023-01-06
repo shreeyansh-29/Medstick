@@ -18,7 +18,7 @@ const BellIcon = ({navigation}) => {
         activeOpacity={1}
         onPress={() =>
           load
-            ? navigation?.navigate('HomeStack', {screen: 'Notification'})
+            ? navigation?.navigate('Home', {screen: 'Notification'})
             : showAlert()
         }>
         <FontAwesomeIcon icon={faBell} color={'white'} size={24} />

@@ -24,7 +24,7 @@ const AccountTab = ({navigation}) => {
 
   useFocusEffect(() => {
     async function checkforlog() {
-      const checkforlogin = await AsyncStorage.getItem('user_id');   
+      const checkforlogin = await AsyncStorage.getItem('user_id');
       if (checkforlogin !== null) {
         setName(await AsyncStorage.getItem('user_name'));
         imgstate(await AsyncStorage.getItem('user_photo'));
@@ -50,7 +50,7 @@ const AccountTab = ({navigation}) => {
           activeOpacity={0.8}
           onPress={() => {
             isLoggedIn
-              ? navigation.navigate('AccountStack', {screen: 'EditProfile'})
+              ? navigation.navigate('Account', {screen: 'EditProfile'})
               : navigation.navigate('AuthScreen');
           }}>
           {isLoggedIn ? (

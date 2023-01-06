@@ -2,12 +2,11 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Animated,
   KeyboardAvoidingView,
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Formik} from 'formik';
@@ -32,14 +31,6 @@ const AddPrescription = ({navigation}) => {
       url: uri,
     },
   ];
-  const progress = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
 
   const savePrescriptionValues = values => {
     let prescription_id = uuid.v4();
