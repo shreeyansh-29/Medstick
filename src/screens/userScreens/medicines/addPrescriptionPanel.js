@@ -48,6 +48,22 @@ const AddPrescriptionPanel = ({navigation, route}) => {
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          height: 58,
+          backgroundColor: colorPallete.basicColor,
+          paddingHorizontal: 16,
+        },
+      });
+  }, [navigation]);
+
+  useEffect(() => {
     setTimeout(() => {
       setShowLoader(false);
     }, 1500);
@@ -224,7 +240,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
               btnStyles={styles.btnStyles}
               contStyles={styles.contStyles}
               handleSubmit={() => {
-                navigation.navigate('Prescription');
+                navigation.navigate('Add', {screen: 'AddPrescription'});
               }}
             />
           </>

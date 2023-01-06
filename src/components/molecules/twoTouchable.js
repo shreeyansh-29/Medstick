@@ -32,9 +32,9 @@ const TwoTouchable = ({icon, title, navigation, navigationTitle}) => {
             title === 'Appointment Reminders' ||
             title === 'Settings'
           ) {
-            navigation.navigate('AccountStack', {screen: navigationTitle});
+            navigation.navigate('Account', {screen: navigationTitle});
           } else if (load) {
-            navigation.navigate('AccountStack', {screen: navigationTitle});
+            navigation.navigate('Account', {screen: navigationTitle});
           } else showAlert();
         }}>
         <View style={Styles.icon}>

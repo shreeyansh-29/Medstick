@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getUserProfileRequest} from '../../redux/action/profileAction/getUserProfileAction';
 import {serverErrors} from '../../constants/statusCodes';
 import ErrorBoundary from '../../screens/otherScreens/errorBoundary';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 const EditProfile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -24,6 +25,22 @@ const EditProfile = ({navigation}) => {
   });
   const [result, setResult] = useState({});
   const [img, imgstate] = useState('https://i.stack.imgur.com/l60Hf.png');
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          height: 58,
+          backgroundColor: colorPallete.basicColor,
+          paddingHorizontal: 16,
+        },
+      });
+  }, [navigation]);
 
   useEffect(() => {
     if (res?.data !== null) {

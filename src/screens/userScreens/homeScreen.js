@@ -62,23 +62,23 @@ const HomeScreen = ({navigation}) => {
   const historyList = useSelector(state => state.allMedicineHistory?.data);
   const errorState = useSelector(state => state.medicineList?.error);
 
+  const backAction = () => {
+    Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+      {text: 'YES', onPress: () => BackHandler.exitApp()},
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+    ]);
+    return true;
+  };
+
   useEffect(() => {
-    const backAction = () => {
-      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-        {text: 'YES', onPress: () => BackHandler.exitApp()},
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'cancel',
-        },
-      ]);
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-    return () => backHandler.remove();
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
   }, []);
 
   useEffect(() => {

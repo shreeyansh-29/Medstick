@@ -17,13 +17,18 @@ import AddButton from '../components/atoms/addButton';
 import {styles} from '../styles/navigationStyles';
 import Report from '../screens/userScreens/report/report';
 import {colorPallete} from '../components/atoms/colorPalette';
+import HomeStack from './stacks/HomeStack';
+import ReportStack from './stacks/ReportStack';
+import AddMedicineStack from './stacks/AddMedicineStack';
+import MedicinePanelStack from './stacks/MedicinePanelStack';
+import AccountStack from './stacks/AccountStack';
 
 const TabBar = [
-  {route: 'Home', component: HomeScreen, iconName: faHouseMedical},
-  {route: 'Report', component: Report, iconName: faFileContract},
-  {route: 'Add', component: AddMedicineLocal},
-  {route: 'Medicine', component: MedicinePanel, iconName: faCapsules},
-  {route: 'Account', component: AccountTab, iconName: faCircleUser},
+  {route: 'Home', component: HomeStack, iconName: faHouseMedical},
+  {route: 'Report', component: ReportStack, iconName: faFileContract},
+  {route: 'Add', component: AddMedicineStack},
+  {route: 'Medicine', component: MedicinePanelStack, iconName: faCapsules},
+  {route: 'Account', component: AccountStack, iconName: faCircleUser},
 ];
 const Tab = createBottomTabNavigator();
 
@@ -65,9 +70,9 @@ const BottomNavigator = ({navigation}) => {
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
         headerShown: false,
-        lazy: true,
+        lazy: false,
       }}
-      backBehavior="history"
+      backBehavior="firstRoute"
       initialRouteName="Home">
       {TabBar.map((item, index) => {
         if (item.route === 'Add') {
@@ -80,7 +85,8 @@ const BottomNavigator = ({navigation}) => {
                 tabBarIcon: () => (
                   <View style={styles.addbtn}>
                     <AddButton
-                      routeName={'AddMedicineStack'}
+                      stackName={'Add'}
+                      routeName={'AddMedicineLocal'}
                       navigation={navigation}
                       styles={styles.btn}
                     />

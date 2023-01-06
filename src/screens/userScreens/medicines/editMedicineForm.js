@@ -202,7 +202,7 @@ const EditMedicineForm = props => {
             <CustomButton
               title={'Add'}
               handleSubmit={() => {
-                props.navigation.navigate('AddMedicineStack', {
+                props.navigation.navigate('Add', {
                   screen: 'AddPrescriptionPanel',
                   params: {prescriptionObject: props.prescriptionObject},
                 });

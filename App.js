@@ -22,7 +22,7 @@ const App = () => {
     setTimeout(() => {
       setShowSplashScreen(false);
     }, 2000);
-  }, []);
+  }, [showSplashScreen]);
 
   return (
     <>

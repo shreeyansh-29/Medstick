@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
@@ -25,6 +25,22 @@ const MedicineList = ({route, navigation}) => {
   const [userMedicineId, setUserMedicineId] = useState('');
   const [edit, setEdit] = useState(false);
   const [medData, setMedData] = useState('');
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          height: 58,
+          backgroundColor: colorPallete.basicColor,
+          paddingHorizontal: 16,
+        },
+      });
+  }, [navigation]);
 
   const MedicineDetailCard = ({item}) => {
     return (
@@ -71,9 +87,7 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Description : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>
-                      {item.description}
-                    </Text>
+                    <Text style={styles.itemData}>{item.description}</Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>

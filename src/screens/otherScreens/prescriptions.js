@@ -11,7 +11,7 @@ import {colorPallete} from '../../components/atoms/colorPalette';
 import * as Animatable from 'react-native-animatable';
 import {styles} from '../../styles/otherScreensStyles/prescriptionsStyles';
 import CustomImage from '../../components/atoms/customImage';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {ListItem} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -31,6 +31,22 @@ const Prescriptions = ({navigation}) => {
   let flag = true;
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          height: 58,
+          backgroundColor: colorPallete.basicColor,
+          paddingHorizontal: 16,
+        },
+      });
+  }, [navigation]);
 
   useEffect(() => {
     setTimeout(() => {

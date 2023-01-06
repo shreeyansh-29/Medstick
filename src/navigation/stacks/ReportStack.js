@@ -7,9 +7,8 @@ const Stack = createNativeStackNavigator();
 const ReportStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Report"
-      screenOptions={{headerShown: false, orientation:'portrait'}}>
-      <Stack.Screen name="Report" component={Report} />
+      screenOptions={{headerShown: false, orientation: 'portrait'}}>
+      <Stack.Screen name="ReportScreen" component={Report} />
     </Stack.Navigator>
   );
 };

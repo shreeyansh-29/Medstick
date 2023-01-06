@@ -50,13 +50,13 @@ const MainNavigation = () => {
           initialRouteName="Bottom">
           {/* <Stack.Screen name="Tab" component={BottomTabNavigation} /> */}
           <Stack.Screen name="Bottom" component={BottomNavigator} />
-          <Stack.Screen name="HomeStack" component={HomeStack} />
+          {/* <Stack.Screen name="HomeStack" component={HomeStack} />
           <Stack.Screen name="AddMedicineStack" component={AddMedicineStack} />
           <Stack.Screen
             name="MedicinePanelStack"
             component={MedicinePanelStack}
           />
-          <Stack.Screen name="AccountStack" component={AccountStack} />
+          <Stack.Screen name="AccountStack" component={AccountStack} /> */}
           <Stack.Screen name="AuthScreen" component={AuthScreen} />
           <Stack.Screen name="Logout" component={Logout} />
         </Stack.Navigator>

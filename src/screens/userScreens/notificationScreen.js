@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
-  img: {width: '70%'},
+  img: {width: '80%'},
 });
 
 export default NotificationScreen;

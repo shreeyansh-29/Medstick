@@ -138,7 +138,8 @@ const MyCareTaker = ({navigation}) => {
           {connected ? (
             <View style={styles.button}>
               <AddButton
-                text="Patient"
+                stackName={'Account'}
+                params={{sentBy: 'Patient'}}
                 routeName={'SearchScreen'}
                 navigation={navigation}
                 styles={styles.addBtn}
