@@ -17,18 +17,13 @@ import AddButton from '../components/atoms/addButton';
 import {styles} from '../styles/navigationStyles';
 import Report from '../screens/userScreens/report/report';
 import {colorPallete} from '../components/atoms/colorPalette';
-import HomeStack from './stacks/HomeStack';
-import ReportStack from './stacks/ReportStack';
-import AddMedicineStack from './stacks/AddMedicineStack';
-import MedicinePanelStack from './stacks/MedicinePanelStack';
-import AccountStack from './stacks/AccountStack';
 
 const TabBar = [
-  {route: 'Home', component: HomeStack, iconName: faHouseMedical},
-  {route: 'Report', component: ReportStack, iconName: faFileContract},
-  {route: 'Add', component: AddMedicineStack},
-  {route: 'Medicine', component: MedicinePanelStack, iconName: faCapsules},
-  {route: 'Account', component: AccountStack, iconName: faCircleUser},
+  {route: 'Home', component: HomeScreen, iconName: faHouseMedical},
+  {route: 'Report', component: Report, iconName: faFileContract},
+  {route: 'Add', component: AddMedicineLocal},
+  {route: 'Medicine', component: MedicinePanel, iconName: faCapsules},
+  {route: 'Account', component: AccountTab, iconName: faCircleUser},
 ];
 const Tab = createBottomTabNavigator();
 
@@ -85,8 +80,7 @@ const BottomNavigator = ({navigation}) => {
                 tabBarIcon: () => (
                   <View style={styles.addbtn}>
                     <AddButton
-                      stackName={'Add'}
-                      routeName={'AddMedicineLocal'}
+                      routeName={'AddMedicineStack'}
                       navigation={navigation}
                       styles={styles.btn}
                     />

@@ -212,6 +212,7 @@ const MedicinePanel = ({navigation}) => {
           ) : (
             <>
               <FlatList
+                style={{paddingTop: 3}}
                 data={medicineResponse}
                 renderItem={renderItemLocal}
                 showsVerticalScrollIndicator={false}

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import MyPatients from './myPatients';
 import PatientRequest from './patientRequest';
 import {View} from 'react-native';
@@ -6,26 +6,9 @@ import {Tab, TabView} from 'react-native-elements';
 import {styles} from '../../../styles/patientStyles/patientsStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Iconcomp1, Iconcomp2} from '../careTaker/allIcons';
-import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const Patients = ({navigation}) => {
   const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    navigation.getParent()?.setOptions({
-      tabBarStyle: {
-        display: 'none',
-      },
-    });
-    return () =>
-      navigation.getParent()?.setOptions({
-        tabBarStyle: {
-          height: 58,
-          backgroundColor: colorPallete.basicColor,
-          paddingHorizontal: 16,
-        },
-      });
-  }, [navigation]);
 
   return (
     <View style={{flex: 1}}>

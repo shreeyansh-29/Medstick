@@ -235,11 +235,8 @@ const AddMedicineForm = props => {
               title={'Add'}
               handleSubmit={() => {
                 if (props.values.medicineName.length !== 0) {
-                  props.navigation.navigate('Add', {
-                    params: {
-                      prescriptionObject: props.prescriptionObject,
-                    },
-                    screen: 'AddPrescriptionPanel',
+                  props.navigation.navigate('AddPrescriptionPanel', {
+                    prescriptionObject: props.prescriptionObject,
                   });
                 } else {
                   CustomAlert({text1: 'Fill rest details first'});

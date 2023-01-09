@@ -33,22 +33,6 @@ const Prescriptions = ({navigation}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    navigation.getParent()?.setOptions({
-      tabBarStyle: {
-        display: 'none',
-      },
-    });
-    return () =>
-      navigation.getParent()?.setOptions({
-        tabBarStyle: {
-          height: 58,
-          backgroundColor: colorPallete.basicColor,
-          paddingHorizontal: 16,
-        },
-      });
-  }, [navigation]);
-
-  useEffect(() => {
     setTimeout(() => {
       setShowLoader(false);
     }, 1500);

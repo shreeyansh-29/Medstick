@@ -240,7 +240,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
               btnStyles={styles.btnStyles}
               contStyles={styles.contStyles}
               handleSubmit={() => {
-                navigation.navigate('Add', {screen: 'AddPrescription'});
+                navigation.navigate('AddPrescription');
               }}
             />
           </>

@@ -10,8 +10,9 @@ const Stack = createNativeStackNavigator();
 const MedicinePanelStack = () => {
   return (
     <Stack.Navigator
+      initialRouteName="MedicineList"
       screenOptions={{headerShown: false, orientation: 'portrait'}}>
-      <Stack.Screen name="MedicinePanel" component={MedicinePanel} />
+      {/* <Stack.Screen name="MedicinePanel" component={MedicinePanel} /> */}
       <Stack.Screen name="MedicineList" component={MedicineList} />
       <Stack.Screen name="Reminder" component={Reminder} />
       <Stack.Screen name="ReminderDuration" component={ReminderDuration} />

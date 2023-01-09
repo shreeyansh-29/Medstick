@@ -11,22 +11,6 @@ import {colorPallete} from '../../components/atoms/colorPalette';
 const Settings = ({navigation}) => {
   const connected = useSelector(state => state.internetConnectivity?.data);
 
-  useEffect(() => {
-    navigation.getParent()?.setOptions({
-      tabBarStyle: {
-        display: 'none',
-      },
-    });
-    return () =>
-      navigation.getParent()?.setOptions({
-        tabBarStyle: {
-          height: 58,
-          backgroundColor: colorPallete.basicColor,
-          paddingHorizontal: 16,
-        },
-      });
-  }, [navigation]);
-
   return (
     <View style={styles.container}>
       <SubHeader title={'Settings'} navigation={navigation} />

@@ -32,7 +32,7 @@ const Styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    paddingBottom: 6,
+    paddingBottom: 4,
   },
   list: {
     flexDirection: 'row',

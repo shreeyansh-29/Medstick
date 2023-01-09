@@ -1,31 +1,14 @@
 import MyCareTaker from './myCareTaker';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import CareTakerRequest from './careTakerRequest';
 import {View} from 'react-native';
 import {Tab, TabView} from 'react-native-elements';
 import {Caretaker_nurse, Userfriend} from './allIcons';
 import {styles} from '../../../styles/careTakerStyles/careTakerStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-import {colorPallete} from '../../../components/atoms/colorPalette';
 
 const CareTaker = ({navigation}) => {
   const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    navigation.getParent()?.setOptions({
-      tabBarStyle: {
-        display: 'none',
-      },
-    });
-    return () =>
-      navigation.getParent()?.setOptions({
-        tabBarStyle: {
-          height: 58,
-          backgroundColor: colorPallete.basicColor,
-          paddingHorizontal: 16,
-        },
-      });
-  }, [navigation]);
 
   return (
     <View style={{flex: 1}}>
