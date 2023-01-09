@@ -60,6 +60,7 @@ const Reminder = ({route, navigation}) => {
   const [dinnerTouchable, setDinnerTouchable] = useState(false);
   const [noEndDate, setNoEndDate] = useState(false);
   let reminderStatus = true;
+  let td_da = moment().format('YYYY-MM-DD');
   const totalReminders = 0;
   const currentCount = 0;
   const [foodBefore, setFoodBefore] = useState(
@@ -291,6 +292,9 @@ const Reminder = ({route, navigation}) => {
       (dinner === true && timearray[2] === undefined)
     ) {
       CustomAlert({text1: "Frequency can't be left as empty"});
+      return;
+    } else if (td_da > moment(fDateSecondary).format('YYYY-MM-DD')) {
+      CustomAlert({text1: "End Date should be greater than Today's Date"});
       return;
     }
 
