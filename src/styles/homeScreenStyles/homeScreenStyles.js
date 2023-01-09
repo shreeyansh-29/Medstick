@@ -39,20 +39,20 @@ export const styles = StyleSheet.create({
     borderBottomRightRadius: 18,
     height: '60%',
     width: '100%',
-    alignSelf:"flex-end",
-    bottom:0
-    },
+    alignSelf: 'flex-end',
+    bottom: 0,
+  },
   progressText: {fontSize: 20, fontWeight: '600', color: 'black'},
   font: {
     color: colorPallete.mainColor,
     fontSize: 22,
-    marginHorizontal: horizontalScale(20),
-    alignSelf: 'flex-start',
+    // marginHorizontal: horizontalScale(20),
+    // alignSelf: 'flex-start',
   },
   reminderView: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    width: '100%',
+    width: '92%',
     height: '4%',
   },
   circle: {
@@ -109,5 +109,6 @@ export const styles = StyleSheet.create({
   info: {
     width: '15%',
     justifyContent: 'center',
+    alignItems: 'flex-end',
   },
 });

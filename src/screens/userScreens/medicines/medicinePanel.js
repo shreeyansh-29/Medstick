@@ -23,7 +23,6 @@ import syncMedicine from '../../../sync/syncMedicine';
 import {useDispatch, useSelector} from 'react-redux';
 
 const MedicinePanel = ({navigation}) => {
-  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const [medicineResponse, setMedicineResponse] = useState([]);
   const [showLoader, setShowLoader] = useState(true);

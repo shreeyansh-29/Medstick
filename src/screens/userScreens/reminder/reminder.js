@@ -27,17 +27,26 @@ import {horizontalScale} from '../../../components/atoms/constant';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
+
   const [picker, pickerstate] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = useState(false);
   const [startDate, setStartDate] = useState(
     item.startDate !== null ? new Date(item.startDate) : new Date(),
   );
-  const [endDate, endDateState] = useState(new Date());
+  const [endDate, endDateState] = useState(
+    item.endDate !== null
+      ? item.endDate !== 'No End Date'
+        ? new Date(item.endDate)
+        : item.endDate
+      : new Date(),
+  );
   const [check1, setCheck1] = useState(
     item.everyday !== null ? item.everyday : false,
   );
-  const [check2, setCheck2] = useState(false);
+  const [check2, setCheck2] = useState(
+    item.everyday !== null && item.everyday === false ? true : false,
+  );
   const [title, titlestate] = useState(
     item.reminderTitle !== null ? item.reminderTitle : '',
   );
@@ -50,7 +59,7 @@ const Reminder = ({route, navigation}) => {
   const [lunchTouchable, setLunchTouchable] = useState(false);
   const [dinnerTouchable, setDinnerTouchable] = useState(false);
   const [noEndDate, setNoEndDate] = useState(false);
-  const [reminderStatus, setReminderStatus] = useState(true);
+  let reminderStatus = true;
   const totalReminders = 0;
   const currentCount = 0;
   const [foodBefore, setFoodBefore] = useState(
@@ -64,11 +73,15 @@ const Reminder = ({route, navigation}) => {
   const [dinner, setDinner] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
   const [fDateSecondary, setfDate] = useState(
-    startDate.getFullYear() +
-      '-' +
-      (startDate.getMonth() + 1) +
-      '-' +
-      startDate.getDate(),
+    item.endDate !== null
+      ? item.endDate !== 'No End Date'
+        ? item.endDate
+        : 'No End Date'
+      : startDate.getFullYear() +
+          '-' +
+          (startDate.getMonth() + 1) +
+          '-' +
+          startDate.getDate(),
   );
 
   let fDatePrimary =
@@ -77,6 +90,34 @@ const Reminder = ({route, navigation}) => {
     (startDate.getMonth() + 1) +
     '-' +
     startDate.getDate();
+
+  useEffect(() => {
+    if (item !== null) {
+      if (item.days !== null) {
+        let days = item.days.split(',');
+        if (days.length !== 7) {
+          slecteddaysstate(days);
+        }
+      }
+      if (item.frequency !== null) {
+        let frequency = item.frequency.split(',');
+
+        frequency.map(ele => {
+          if (ele === 'Breakfast') {
+            setBreakfastTouchable(true);
+            setBreakfast(true);
+          } else if (ele === 'Lunch') {
+            setLunchTouchable(true);
+            setLunch(true);
+          } else if (ele === 'Dinner') {
+            setDinnerTouchable(true);
+            setDinner(true);
+          }
+        });
+      }
+    }
+    return () => false;
+  }, [item]);
 
   useEffect(() => {
     navigation.getParent()?.setOptions({
@@ -185,7 +226,6 @@ const Reminder = ({route, navigation}) => {
   const handleConfirm = date => {
     pickerstate(false);
     setStartDate(date);
-    store_start_date(date);
   };
 
   const handleConfirmfortime = date => {
@@ -324,18 +364,22 @@ const Reminder = ({route, navigation}) => {
     frequencyHandler();
     const frequencyTemp = frequency.toString();
 
+    let temporaryDate = fDateSecondary;
+
     if (endDate === 'No End Date') {
       setfDate('null');
     }
 
     let obj = route?.params?.data;
 
-    obj.days = days;
+    obj.days = check1
+      ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'].toString()
+      : days;
     obj.frequency = frequencyTemp;
     obj.endDate =
-      fDateSecondary !== 'No End Date'
-        ? moment(fDateSecondary).format('YYYY-MM-DD')
-        : fDateSecondary;
+      temporaryDate !== 'No End Date'
+        ? moment(temporaryDate).format('YYYY-MM-DD')
+        : temporaryDate;
     obj.noEndDate = noEndDate;
     obj.reminderStatus = true;
     obj.reminderTime = time;
@@ -368,6 +412,8 @@ const Reminder = ({route, navigation}) => {
     let lengthSelectedDays = selecteddaysItems.length;
 
     handlePushNotification(obj, check1, fDateSecondary, lengthSelectedDays);
+
+    setfDate(temporaryDate);
 
     getMedicine().then(data => {
       const temp = data;

@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colorPallete.mainColor,
+    width: '100%',
   },
   header: {
     width: '69%',
@@ -20,7 +21,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: '17%',
     justifyContent: 'center',
-    height:verticalScale(36),
+    height: verticalScale(36),
+    paddingLeft: 7,
   },
   bellIcon: {
     width: '14%',

@@ -45,6 +45,22 @@ const NotificationScreen = ({navigation}) => {
     }
   };
 
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          height: 58,
+          backgroundColor: colorPallete.basicColor,
+          paddingHorizontal: 16,
+        },
+      });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <SubHeader title={'Notifications'} navigation={navigation} />

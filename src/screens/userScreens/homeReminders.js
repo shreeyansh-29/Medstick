@@ -164,7 +164,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     let percent = getPercentage(medData);
     setPercentage(percent);
     AddMedicine(medData);
-    syncHistory(dispatch);
+    syncHistory(dispatch, userMedicineId);
   }
 
   //This function is used for marking the medicine as not taken
@@ -186,7 +186,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     let percent = getPercentage(medData);
     setPercentage(percent);
     AddMedicine(medData);
-    syncHistory(dispatch);
+    syncHistory(dispatch, userMedicineId);
   }
 
   const renderItem = (item, index) => {
@@ -215,8 +215,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
-                check(time) &&
-                markingTaken(item),
+                check(time) && markingTaken(item),
                   reminderList.splice(index, 1),
                   setReminderList(reminderList);
               }}>

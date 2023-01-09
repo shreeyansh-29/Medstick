@@ -192,16 +192,7 @@ const HomeScreen = ({navigation}) => {
       synced: false,
     };
     for (let i = 0; i < data?.length; i++) {
-      if (data[i].reminderId !== null && data[i].everyday == true) {
-        data[i].days = [
-          'Sun',
-          'Mon',
-          'Tue',
-          'Wed',
-          'Thur',
-          'Fri',
-          'Sat',
-        ].toString();
+      if (data[i].reminderId !== null) {
         let arr = data[i].days.split(',');
         let set = new Set(arr);
         var start_date = data[i].startDate;
@@ -283,6 +274,7 @@ const HomeScreen = ({navigation}) => {
           }
         } else if (td_da > end_date) {
           data[i].reminderStatus = false;
+          data[i].isSynced = true;
         }
       }
       updateArray.push(data[i]);

@@ -8,12 +8,14 @@ const AppIcon = () => {
     <View style={styles.appIcon}>
       <View
         style={{
-          borderRadius: 22,
-          width: '66%',
+          borderRadius: 21,
+          // width: '66%',
           backgroundColor: 'white',
-          height: '100%',
+          // height: '100%',
           justifyContent: 'center',
           alignItems: 'center',
+          width: 42,
+          height: 42,
         }}>
         <CustomImage
           resizeMode="contain"
