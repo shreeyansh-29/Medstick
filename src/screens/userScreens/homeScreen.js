@@ -14,17 +14,9 @@ import {
   myCaretakerRequest,
 } from '../../redux/action/caretaker/myCaretakerAction';
 import {verticalScale} from '../../components/atoms/constant';
-import {
-  AddMedicine,
-  getMedicine,
-  getPercentageDetails,
-  savePercentageDetails,
-} from '../../utils/storage';
+import {getMedicine, getPercentageDetails} from '../../utils/storage';
 import {useFocusEffect} from '@react-navigation/native';
-import moment from 'moment';
 import Loader from '../../components/atoms/loader';
-import {week} from '../../constants/constants';
-import uuid from 'react-native-uuid';
 // import Notifications from '../../pushNotification/pushNotifications';
 import {CustomAlert} from '../../components/atoms/customAlert';
 import syncMedicine from '../../sync/syncMedicine';
@@ -33,7 +25,6 @@ import {
   clearMedicineList,
   loadMedicineList,
 } from '../../redux/action/userMedicine/medicineListAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   getAppointmentListClear,
   getAppointmentListRequest,
@@ -42,8 +33,8 @@ import {
   getAllMedicineHistoryClear,
   getAllMedicineHistoryRequest,
 } from '../../redux/action/userMedicine/getAllMedicineHistoryAction';
-import syncHistory from '../../sync/syncHistory';
-import {colorPallete} from '../../components/atoms/colorPalette';
+import MedicineHistory from './medicineHistory';
+import getPercentage from './getPercentage';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -52,7 +43,6 @@ const HomeScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [myCaretakers, setMyCaretakers] = useState([]);
-  let td_da = moment().format('YYYY-MM-DD');
 
   const connected = useSelector(state => state.internetConnectivity?.data);
   const load = useSelector(state => state.userInfo?.data);
@@ -62,24 +52,24 @@ const HomeScreen = ({navigation}) => {
   const historyList = useSelector(state => state.allMedicineHistory?.data);
   const errorState = useSelector(state => state.medicineList?.error);
 
-  const backAction = () => {
-    Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-      {text: 'YES', onPress: () => BackHandler.exitApp()},
-      {
-        text: 'Cancel',
-        onPress: () => null,
-        style: 'cancel',
-      },
-    ]);
-    return true;
-  };
+  // const backAction = () => {
+  //   Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+  //     {text: 'YES', onPress: () => BackHandler.exitApp()},
+  //     {
+  //       text: 'Cancel',
+  //       onPress: () => null,
+  //       style: 'cancel',
+  //     },
+  //   ]);
+  //   return true;
+  // };
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', backAction);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', backAction);
 
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', backAction);
-  }, []);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
+  // }, []);
 
   useEffect(() => {
     if (userMedicine !== null && userMedicine.length !== 0) {
@@ -116,60 +106,16 @@ const HomeScreen = ({navigation}) => {
       getData().then(() => {
         if (connected && load) {
           syncMedicine(dispatch);
-          syncHistory(dispatch);
         }
       });
     }, [connected, load]),
   );
 
-  //for Calculating Overall Percentage
-  function getPercentage(data) {
-    let tr = 0;
-    let cc = 0;
-    data.map(item => {
-      item.historyList.map(k => {
-        if (k.date === td_da && item.reminderTime !== '') {
-          tr += item.reminderTime.split(',').length;
-          let temp = k.taken.split(',');
-          temp.map(i => {
-            if (i !== '') {
-              cc += 1;
-            }
-          });
-        }
-      });
-    });
-    getPercentageDetails().then(data => {
-      let obj = [];
-      let temp = {};
-      if (data === null) {
-        temp.date = td_da;
-        temp.percentage = Math.floor((cc / tr) * 100);
-        obj.push(temp);
-        savePercentageDetails(obj);
-      } else if (data !== null && data.length !== 0) {
-        obj = data;
-        obj.map((item, index) => {
-          const a = b => b.date == td_da;
-          if (item.date === td_da) {
-            item.percentage = Math.floor((cc / tr) * 100);
-            obj[index] = item;
-          } else if (!obj.some(a) && tr !== 0) {
-            temp.date = td_da;
-            temp.percentage = Math.floor((cc / tr) * 100);
-            obj.push(temp);
-          }
-        });
-        savePercentageDetails(data);
-      }
-    });
-    return Math.floor((cc / tr) * 100);
-  }
-
   const getData = async () => {
     getMedicine().then(data => {
       if (data.length !== 0 && data !== null) {
         setMedData(data);
+        //for Calculating Overall Percentage
         let p = getPercentage(data);
         setPercentage(p);
       } else {
@@ -180,110 +126,9 @@ const HomeScreen = ({navigation}) => {
     setIsLoading(false);
   };
 
-  //for Calculating today's Reminder
-  const MedicineHistory = data => {
-    var updateArray = [];
-    let history = {
-      historyId: null,
-      date: null,
-      taken: '',
-      notTaken: '',
-      time: '',
-      synced: false,
-    };
-    for (let i = 0; i < data?.length; i++) {
-      if (data[i].reminderId !== null) {
-        let arr = data[i].days.split(',');
-        let set = new Set(arr);
-        var start_date = data[i].startDate;
-        var end_date = data[i].endDate;
-        var tody_date = new Date();
-        let td_da = moment().format('YYYY-MM-DD');
-        if (
-          data[i].endDate !== 'No End Date' &&
-          set.has(week[tody_date.getDay()]) &&
-          start_date <= td_da &&
-          td_da <= end_date &&
-          !data[i].flag
-        ) {
-          if (data[i].historyList.length === 0) {
-            history.historyId = uuid.v4();
-            history.date = td_da;
-            history.time = data[i].reminderTime;
-            history.notTaken = '';
-            history.taken = '';
-            data[i].historyList.push(history);
-          } else {
-            const a = b => b.date === td_da;
-            const index = data[i].historyList.findIndex(a);
-            if (
-              index >= 0 &&
-              data[i].reminderTime !== data[i].historyList[index].time
-            ) {
-              // console.log('Inside Reminder update')
-              history.historyId = data[i].historyList[index].historyId;
-              history.date = data[i].historyList[index].date;
-              history.notTaken = '';
-              history.taken = '';
-              history.time = data[i].reminderTime;
-              data[i].historyList[index] = history;
-              data[i].totalReminders = 0;
-              data[i].currentCount = 0;
-            } else if (index < 0) {
-              history.historyId = uuid.v4();
-              history.date = td_da;
-              history.time = data[i].reminderTime;
-              history.notTaken = '';
-              history.taken = '';
-              data[i].historyList.push(history);
-            }
-          }
-        } else if (data[i].endDate === 'No End Date') {
-          const a = b => b.date == td_da;
-          const index = data[i].historyList.findIndex(a);
-          if (data[i].historyList.length === 0) {
-            history.historyId = uuid.v4();
-            history.date = td_da;
-            history.time = data[i].reminderTime;
-            history.notTaken = '';
-            data[i].historyList.push(history);
-          } else {
-            const a = b => b.date === td_da;
-            const index = data[i].historyList.findIndex(a);
-            // console.log('Indisde No End Date update Reminder')
-            if (
-              index >= 0 &&
-              data[i].reminderTime !== data[i].historyList[index].time
-            ) {
-              history.historyId = data[i].historyList[index].historyId;
-              history.date = data[i].historyList[index].date;
-              history.notTaken = '';
-              history.taken = '';
-              history.time = data[i].reminderTime;
-              data[i].historyList[index] = history;
-              data[i].totalReminders = 0;
-              data[i].currentCount = 0;
-            } else if (index < 0) {
-              history.historyId = uuid.v4();
-              history.date = td_da;
-              history.time = data[i].reminderTime;
-              history.notTaken = '';
-              history.taken = '';
-              data[i].historyList.push(history);
-            }
-          }
-        } else if (td_da > end_date) {
-          data[i].reminderStatus = false;
-          data[i].isSynced = true;
-        }
-      }
-      updateArray.push(data[i]);
-    }
-    AddMedicine(updateArray);
-  };
-
   useEffect(() => {
-    MedicineHistory(medData);
+    //for Calculating today's Reminder
+    medData.length !== 0 ? MedicineHistory(medData, dispatch) : null;
   }, [medData]);
 
   // useEffect(() => {

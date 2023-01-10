@@ -289,6 +289,15 @@ const Report = ({navigation}) => {
     );
   };
 
+  const onRefresh = () => {
+    setRefresh(true);
+    fetchData();
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  };
+
   return (
     <>
       <View style={styles.container} />
@@ -342,14 +351,7 @@ const Report = ({navigation}) => {
               refreshControl={
                 <RefreshControl
                   refreshing={refresh}
-                  onRefresh={() => {
-                    setRefresh(true);
-                    fetchData();
-                    setIsLoading(true);
-                    setTimeout(() => {
-                      setIsLoading(false);
-                    }, 1500);
-                  }}
+                  onRefresh={() => onRefresh()}
                   colors={[colorPallete.mainColor]}
                 />
               }>

@@ -97,7 +97,7 @@ const MedicinePanel = ({navigation}) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              navigation.navigate('Medicine', {
+              navigation.navigate('MedicinePanelStack', {
                 screen: 'MedicineList',
                 params: {
                   data: medicineResponse,
@@ -144,7 +144,7 @@ const MedicinePanel = ({navigation}) => {
                     activeOpacity={1}
                     style={Styles.rem}
                     onPress={() => {
-                      navigation.navigate('Medicine', {
+                      navigation.navigate('MedicinePanelStack', {
                         screen: 'Reminder',
                         params: {
                           data: item,

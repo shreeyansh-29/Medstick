@@ -26,6 +26,7 @@ const syncHistory = dispatch => {
                 }
               });
             }
+
             historyList.length !== 0 &&
               dispatch(
                 syncHistoryDetailsRequest({

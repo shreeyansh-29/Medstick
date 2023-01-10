@@ -397,17 +397,10 @@ const Reminder = ({route, navigation}) => {
 
     let name = route.params.data.medicineName;
 
-    function test(arr, sub) {
-      sub = sub.toLowerCase();
-      return arr.map(str =>
-        str.toLowerCase().startsWith(sub.slice(0, Math.max(str.length - 1, 1))),
-      );
-    }
-
     if (reminderStatus === true) {
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
-          if (test(rn[i].message, `Take ${name}`)) {
+          if (rn[i].message.includes(`Take ${name}`)) {
             PushNotification.cancelLocalNotification({id: rn[i].id});
           }
         }

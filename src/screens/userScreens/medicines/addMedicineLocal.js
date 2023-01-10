@@ -133,6 +133,7 @@ const AddMedicineLocal = ({navigation}) => {
             let temp = [];
             temp.push(obj);
             AddMedicine(temp);
+            getMedicine().then(data => console.log(data, 'after'));
             SuccessToast({
               text1: 'Medicine Saved Successfully',
               position: 'bottom',

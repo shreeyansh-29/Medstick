@@ -235,6 +235,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
         ) : (
           <>
             <CustomButton
+              loading={!loading}
               title={'Upload New'}
               titleStyle={styles.buttonText}
               btnStyles={styles.btnStyles}

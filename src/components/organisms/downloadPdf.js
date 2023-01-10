@@ -33,9 +33,10 @@ const Downloadpdf = async globalmedId => {
             return 'err';
           });
       })
-      .catch(() => {
-        response = 'err';
-        return response;
+      .catch((err) => {
+        console.log(err);
+        // response = 'err';
+        // return response;
       });
     return response;
   } catch (err) {
