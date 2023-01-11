@@ -62,10 +62,12 @@ const CareTakerRequest = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+    return () => false;
   }, [isLoading]);
 
   useEffect(() => {
     pageNo === 0 ? dispatch(caretakerReqRequest(pageNo)) : null;
+    return () => false;
   }, []);
 
   useEffect(() => {
@@ -76,7 +78,7 @@ const CareTakerRequest = () => {
       InfoToast({text1: 'Something Went Wrong', position: 'bottom'});
       dispatch(clearRequestStatus());
     }
-    return () => {};
+    return () => false;
   }, [acceptedStatus]);
 
   useEffect(() => {
@@ -87,7 +89,7 @@ const CareTakerRequest = () => {
       InfoToast({text1: 'Something Went Wrong', position: 'bottom'});
       dispatch(clearRequestStatus());
     }
-    return () => {};
+    return () => false;
   }, [deletedStatus]);
 
   useEffect(() => {
@@ -96,6 +98,7 @@ const CareTakerRequest = () => {
       setCaretakers([...caretakers, ...res.data]);
       dispatch(caretakerReqClear());
     }
+    return () => false;
   }, [res]);
 
   //FlatList OnEnd Function

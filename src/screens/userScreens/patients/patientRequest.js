@@ -58,10 +58,12 @@ const PatientRequest = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+    return () => false;
   }, [isLoading]);
 
   useEffect(() => {
     pageNo === 0 ? dispatch(patientsReqRequest(pageNo)) : null;
+    return () => false;
   }, []);
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const PatientRequest = () => {
       InfoToast({text1: 'Something Went Wrong', position: 'bottom'});
       dispatch(clearRequestStatus());
     }
-    return () => {};
+    return () => false;
   }, [acceptedStatus]);
 
   useEffect(() => {
@@ -83,7 +85,7 @@ const PatientRequest = () => {
       InfoToast({text1: 'Something Went Wrong', position: 'bottom'});
       dispatch(clearRequestStatus());
     }
-    return () => {};
+    return () => false;
   }, [deletedStatus]);
 
   useEffect(() => {
@@ -92,6 +94,7 @@ const PatientRequest = () => {
       setPatients([...patients, ...res.data]);
       dispatch(patientsReqClear());
     }
+    return () => false;
   }, [res]);
 
   //FlatList OnEnd Function

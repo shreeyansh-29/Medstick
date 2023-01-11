@@ -69,7 +69,7 @@ const ViewPrescriptions = ({navigation, route}) => {
 
   const renderItem = ({item, index}) => {
     return (
-      <Animatable.View animation="zoomInUp" duration={400} delay={index * 400}>
+      <Animatable.View animation="zoomIn" duration={400} delay={index * 400}>
         <View style={style.top}>
           <ListItem
             style={style.list}

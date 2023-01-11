@@ -140,11 +140,11 @@ const AddMedicineLocal = ({navigation}) => {
             });
           }
         })
-        .then(() => [
+        .then(() => {
           setTimeout(() => {
             navigation.navigate('Home');
-          }, 2000),
-        ])
+          }, 2000);
+        })
         .catch(errors => {
           //some error occured
           console.log(errors);

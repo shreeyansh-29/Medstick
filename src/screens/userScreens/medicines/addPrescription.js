@@ -45,32 +45,37 @@ const AddPrescription = ({navigation}) => {
       flag: false,
     };
 
-    getPrescription().then(data => {
-      if (data !== null) {
-        const temp = [...data, obj];
-        savePrescription(temp);
-        SuccessToast({
-          text1: 'Prescription Added Successfully',
-          position: 'bottom',
-        });
-      } else if (data === null || data === undefined) {
-        let temp = [];
-        temp.push(obj);
-        savePrescription(temp);
-        SuccessToast({
-          text1: 'Prescription Added Successfully',
-          position: 'bottom',
-        });
-      } else {
+    getPrescription()
+      .then(data => {
+        if (data !== null) {
+          const temp = [...data, obj];
+          savePrescription(temp);
+          SuccessToast({
+            text1: 'Prescription Added Successfully',
+            position: 'bottom',
+          });
+        } else if (data === null || data === undefined) {
+          let temp = [];
+          temp.push(obj);
+          savePrescription(temp);
+          SuccessToast({
+            text1: 'Prescription Added Successfully',
+            position: 'bottom',
+          });
+        }
+      })
+      .then(() => {
+        setTimeout(() => {
+          navigation.pop();
+        }, 1500);
+      })
+      .catch(err => {
+        console.log(err);
         ErrorToast({
           text1: 'Something Went Wrong',
           position: 'bottom',
         });
-      }
-    });
-    setTimeout(() => {
-      navigation.pop();
-    }, 1500);
+      });
   };
 
   return (

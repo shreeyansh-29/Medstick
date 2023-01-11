@@ -150,6 +150,7 @@ const EditMedicineForm = props => {
       <View style={styles.inputGroup}>
         <View style={styles.textbox}>
           <Text style={styles.text}>Notify me when only </Text>
+          <Text style={styles.subText}>(Optional)</Text>
         </View>
         <View style={styles.unitBox}>
           <InputField
@@ -202,7 +203,7 @@ const EditMedicineForm = props => {
             <CustomButton
               title={'Add'}
               handleSubmit={() => {
-                props.navigation.navigate('Add', {
+                props.navigation.navigate('AddMedicineStack', {
                   screen: 'AddPrescriptionPanel',
                   params: {prescriptionObject: props.prescriptionObject},
                 });

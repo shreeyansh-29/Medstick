@@ -3,9 +3,8 @@ import React from 'react';
 import LottieView from 'lottie-react-native';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import {StyleSheet} from 'react-native';
-import SubHeader from '../../components/molecules/headers/subHeader';
 
-const ErrorBoundary = ({navigation}) => {
+const ErrorBoundary = () => {
   return (
     <View style={styles.container}>
       <View style={styles.mainView}>
@@ -32,12 +31,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-  lottie: {width: '40%'},
+  lottie: {width: '34%'},
   textContainer: {marginVertical: 28, alignItems: 'center'},
-  heading: {fontWeight: '600', fontSize: 24, color: 'black'},
+  heading: {fontWeight: '600', fontSize: 20, color: 'black'},
   content: {
     marginTop: 12,
-    fontSize: 20,
+    fontSize: 18,
     color: 'black',
     fontWeight: '400',
   },

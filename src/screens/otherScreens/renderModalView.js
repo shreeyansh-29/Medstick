@@ -65,30 +65,35 @@ const RenderModalView = ({item, setEdit, navigation}) => {
       }
     });
 
-    getPrescription().then(data => {
-      if (data !== null && data.length !== 0) {
-        let updatedList = data;
-        updatedList.map((item, index) => {
-          if (item.prescriptionId === prescription_id) {
-            updatedList[index] = obj;
-          }
-        });
-        savePrescription(updatedList);
+    getPrescription()
+      .then(data => {
+        if (data !== null && data.length !== 0) {
+          let updatedList = data;
+          updatedList.map((item, index) => {
+            if (item.prescriptionId === prescription_id) {
+              updatedList[index] = obj;
+            }
+          });
+          savePrescription(updatedList);
 
-        SuccessToast({
-          text1: 'Prescription Updated Successfully',
-          position: 'bottom',
-        });
-      } else {
+          SuccessToast({
+            text1: 'Prescription Updated Successfully',
+            position: 'bottom',
+          });
+        }
+      })
+      .then(() => {
+        setTimeout(() => {
+          navigation.pop();
+        }, 2000);
+      })
+      .catch(err => {
+        console.log(err);
         ErrorToast({
           text1: 'Something Went Wrong',
           position: 'bottom',
         });
-      }
-    });
-    setTimeout(() => {
-      navigation.pop();
-    }, 2000);
+      });
   };
 
   return (

@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
   backIcon: {
     alignItems: 'center',
     width: '14%',
+    padding: 10,
   },
   bellIcon: {
     width: '23%',

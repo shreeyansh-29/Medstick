@@ -36,10 +36,12 @@ const MyCareTaker = ({navigation}) => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+    return () => false;
   }, [isLoading]);
 
   useEffect(() => {
     pageNo === 0 ? dispatch(myCaretakerRequest(pageNo)) : null;
+    return () => false;
   }, []);
 
   useEffect(() => {
@@ -48,6 +50,7 @@ const MyCareTaker = ({navigation}) => {
       setCaretaker([...caretaker, ...res.data]);
       dispatch(myCaretakerClear());
     }
+    return () => false;
   }, [res]);
 
   //FlatList OnEnd Function

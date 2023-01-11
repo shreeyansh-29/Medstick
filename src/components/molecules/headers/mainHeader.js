@@ -30,8 +30,8 @@ const MainHeader = ({title, navigation, download}) => {
             onPress={() => {
               connected ? download() : showAlert();
             }}
-            activeOpacity={1}
-            style={{padding: 2}}>
+            activeOpacity={0.8}
+            style={{padding: 10}}>
             <FontAwesomeIcon icon={faDownload} color={'white'} size={18} />
           </TouchableOpacity>
         </View>

@@ -113,7 +113,7 @@ const Report = ({navigation}) => {
   useFocusEffect(
     React.useCallback(() => {
       fetchData();
-    }, [medicineId]),
+    }, []),
   );
 
   let startDate = moment().format('YYYY-MM-DD');
@@ -144,12 +144,33 @@ const Report = ({navigation}) => {
     await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
     );
-    const downloadResp = await Downloadpdf(medicineId);
-    if (downloadResp !== 'err') {
-      ToastAndroid.show('Downloaded successfully', ToastAndroid.LONG);
-    } else {
-      ToastAndroid.show('Error while downloading', ToastAndroid.LONG);
-    }
+    let reminderId = null;
+    getMedicine()
+      .then(data => {
+        if (data !== null && data.length !== 0) {
+          data.map((item, index) => {
+            if (
+              item.userMedicineId === medicineId &&
+              item.reminderId !== null
+            ) {
+              reminderId = item.reminderId;
+            }
+          });
+        }
+      })
+      .then(async () => {
+        if (reminderId !== null) {
+          const downloadResp = await Downloadpdf(medicineId);
+          if (downloadResp !== 'err') {
+            ToastAndroid.show('Downloaded successfully', ToastAndroid.LONG);
+          } else {
+            ToastAndroid.show('Error while downloading', ToastAndroid.LONG);
+          }
+        } else {
+          CustomAlert({text1: 'No reminder present'});
+        }
+      })
+      .catch(err => console.log(err));
   };
 
   function getHistory(medicine) {
@@ -348,6 +369,7 @@ const Report = ({navigation}) => {
         ) : (
           <>
             <ScrollView
+              showsVerticalScrollIndicator={false}
               refreshControl={
                 <RefreshControl
                   refreshing={refresh}

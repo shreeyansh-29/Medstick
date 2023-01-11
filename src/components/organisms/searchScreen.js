@@ -77,10 +77,6 @@ const SearchScreen = ({navigation}) => {
         position: 'bottom',
         text2: 'Invitation mail sent',
       });
-
-      setTimeout(() => {
-        navigation.pop();
-      }, 2000);
     }
     dispatch(resetSend());
     dispatch(resetUser());
@@ -138,7 +134,7 @@ const SearchScreen = ({navigation}) => {
                 </View>
               </ListItem.Content>
               <TouchableOpacity
-                activeOpacity={1}
+                activeOpacity={0.6}
                 style={styles.listButton}
                 onPress={() => {
                   sendReqToCaretaker(item?.id, item?.userDetails?.fcmToken);

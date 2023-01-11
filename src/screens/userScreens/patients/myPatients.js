@@ -36,10 +36,12 @@ const MyPatients = ({navigation}) => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+    return () => false;
   }, [isLoading]);
 
   useEffect(() => {
     pageNo === 0 ? dispatch(myPatientsRequest(pageNo)) : null;
+    return () => false;
   }, []);
 
   useEffect(() => {
@@ -48,6 +50,7 @@ const MyPatients = ({navigation}) => {
       setMyPatients([...myPatients, ...res]);
       dispatch(myPatientsClear());
     }
+    return () => false;
   }, [res]);
 
   //FlatList OnEnd Function
