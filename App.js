@@ -8,6 +8,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import ErrorBoundary from 'react-native-error-boundary';
 import {StoreProviderService} from './src/utils/storeProviderService';
 import SplashScreen from './src/screens/otherScreens/splashScreen';
+import IntroScreen from './src/screens/otherScreens/introScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
@@ -17,10 +19,17 @@ const reduxStore = StoreProviderService.getStore();
 
 const App = () => {
   const [showSplashScreen, setShowSplashScreen] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
+  const [showNextTimeIntro, setShowNextTimeIntro] = useState(false);
 
   useEffect(() => {
+    (async () => {
+      setShowNextTimeIntro(await AsyncStorage.getItem('intro'));
+    })();
+
     setTimeout(() => {
       setShowSplashScreen(false);
+      setShowIntro(true);
     }, 2000);
   }, [showSplashScreen]);
 
@@ -28,14 +37,18 @@ const App = () => {
     <>
       {showSplashScreen ? <SplashScreen /> : null}
 
-      <SafeAreaView style={{flex: 1}}>
-        <ErrorBoundary>
-          <Provider store={reduxStore}>
-            <StatusBar backgroundColor={colorPallete.mainColor} />
-            <MainNavigation />
-          </Provider>
-        </ErrorBoundary>
-      </SafeAreaView>
+      {showIntro && !showNextTimeIntro ? (
+        <IntroScreen setShowIntro={setShowIntro} showIntro={showIntro} />
+      ) : (
+        <SafeAreaView style={{flex: 1}}>
+          <ErrorBoundary>
+            <Provider store={reduxStore}>
+              <StatusBar backgroundColor={colorPallete.mainColor} />
+              <MainNavigation />
+            </Provider>
+          </ErrorBoundary>
+        </SafeAreaView>
+      )}
     </>
   );
 };

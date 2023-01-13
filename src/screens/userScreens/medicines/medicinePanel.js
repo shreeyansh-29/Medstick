@@ -43,6 +43,7 @@ const MedicinePanel = ({navigation}) => {
   useFocusEffect(
     React.useCallback(() => {
       syncMedicine(dispatch).then(() => fetchData());
+      return () => false;
     }, [connected, load]),
   );
 
