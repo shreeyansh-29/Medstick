@@ -9,7 +9,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {useSelector} from 'react-redux';
 import {CustomAlert} from '../../atoms/customAlert';
 
-const MainHeader = ({title, navigation, download}) => {
+const MainHeader = ({title, navigation, download, setIsVisible}) => {
   const load = useSelector(state => state.userInfo?.data);
   const connected = useSelector(state => state.internetConnectivity?.data);
 
@@ -28,7 +28,7 @@ const MainHeader = ({title, navigation, download}) => {
         <View style={styles.bellIcon}>
           <TouchableOpacity
             onPress={() => {
-              connected ? download() : showAlert();
+              connected ? (setIsVisible(true), download()) : showAlert();
             }}
             activeOpacity={0.8}
             style={{padding: 10}}>

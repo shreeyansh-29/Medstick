@@ -10,14 +10,17 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import CustomModal from '../../../components/molecules/customModal';
 import {styles} from '../../../styles/medicinePanelStyles/medicineFormStyles';
-import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import {faInfoCircle, faSearch} from '@fortawesome/free-solid-svg-icons';
 import RenderModalView from './renderModalView';
 import {useSelector} from 'react-redux';
 import {CustomAlert} from '../../../components/atoms/customAlert';
+import CustomTooltip from '../../../components/atoms/customTooltip';
 
 const AddMedicineForm = props => {
   //React useState hooks
   const [visible, setVisible] = useState(false);
+  const [showStock, setShowStock] = useState(false);
+  const [showLeftStock, setShowLeftStock] = useState(false);
 
   //React Redux hooks
   const load = useSelector(state => state.userInfo?.data);
@@ -157,6 +160,29 @@ const AddMedicineForm = props => {
       <View style={styles.inputGroup}>
         <View style={styles.textbox}>
           <Text style={styles.text}>Stock Units</Text>
+          <CustomTooltip
+            isVisible={showStock}
+            placement="top"
+            supportedOrientations={['portrait']}
+            tooltipStyle={{marginLeft: 4}}
+            contentStyle={{width: '100%', height: '100%'}}
+            onClose={() => setShowStock(false)}
+            content={
+              <Text style={{fontSize: 16, color: 'grey'}}>
+                Enter the total stocks you want to add.
+              </Text>
+            }>
+            <TouchableOpacity
+              style={{padding: 8}}
+              activeOpacity={0.8}
+              onPress={() => setShowStock(true)}>
+              <FontAwesomeIcon
+                icon={faInfoCircle}
+                size={18}
+                color={colorPallete.mainColor}
+              />
+            </TouchableOpacity>
+          </CustomTooltip>
         </View>
         <View style={styles.unitBox}>
           <InputField
@@ -180,9 +206,35 @@ const AddMedicineForm = props => {
         </View>
       </View>
       <View style={Styles.textView1}>
-        <View style={Styles.textbox}>
-          <Text style={Styles.text}>Notify me when only </Text>
-          <Text style={styles.subText}>(Optional)</Text>
+        <View style={styles.textbox}>
+          <View>
+            <Text style={Styles.text}>Notify me when only </Text>
+            <Text style={styles.subText}>(Optional)</Text>
+          </View>
+
+          <CustomTooltip
+            isVisible={showLeftStock}
+            placement="top"
+            supportedOrientations={['portrait']}
+            tooltipStyle={{marginLeft: 4}}
+            contentStyle={{width: '100%', height: '100%'}}
+            onClose={() => setShowLeftStock(false)}
+            content={
+              <Text style={{fontSize: 16, color: 'grey'}}>
+                Gives an alert when required stocks are left.
+              </Text>
+            }>
+            <TouchableOpacity
+              style={{padding: 8}}
+              activeOpacity={0.8}
+              onPress={() => setShowLeftStock(true)}>
+              <FontAwesomeIcon
+                icon={faInfoCircle}
+                size={18}
+                color={colorPallete.mainColor}
+              />
+            </TouchableOpacity>
+          </CustomTooltip>
         </View>
         <View style={styles.unitBox}>
           <InputField

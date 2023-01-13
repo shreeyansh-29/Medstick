@@ -10,8 +10,7 @@ export const style = StyleSheet.create({
     alignItems: 'center',
   },
   flatList: {
-    flex: 1,
-    alignItems: 'center',
+    paddingTop: 4,
     backgroundColor: colorPallete.backgroundColor,
   },
   list: {

@@ -1833,10 +1833,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  "integrity" "sha512-xD6c0KDT4m7n9uD4ZHi02lzskaiqcBxf4zi+tXZY98a04wvc0hi/TcCPC2FOESZi51Nd7tlUeOJY8RofL799/g=="
-  "resolved" "https://registry.npmjs.org/@types/react/-/react-18.0.25.tgz"
-  "version" "18.0.25"
+"@types/react@*", "@types/react@>=16.8.24 <18":
+  "integrity" "sha512-vwk8QqVODi0VaZZpDXQCmEmiOuyjEFPY7Ttaw5vjM112LOq37yz1CDJGrRJwA1fYEq4Iitd5rnjd1yWAc/bT+A=="
+  "resolved" "https://registry.npmjs.org/@types/react/-/react-17.0.52.tgz"
+  "version" "17.0.52"
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -8212,7 +8212,7 @@
     "react-devtools-core" "4.27.0"
     "update-notifier" "^2.1.0"
 
-"react-fast-compare@^2.0.1":
+"react-fast-compare@^2.0.1", "react-fast-compare@^2.0.4":
   "integrity" "sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw=="
   "resolved" "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-2.0.4.tgz"
   "version" "2.0.4"
@@ -8601,6 +8601,14 @@
     "plist" "^3.0.1"
     "resolve-from" "^5.0.0"
     "semver" "^7.0.0"
+
+"react-native-walkthrough-tooltip@^1.5.0":
+  "integrity" "sha512-xzpTs3JQkUMkmurc7WJDSAWaH2KRiRL2YoTXVCRqEEWxIvLQTn9eQv0jBzs1geR0wL+ezRpjkBEGAlfQ6eMimw=="
+  "resolved" "https://registry.npmjs.org/react-native-walkthrough-tooltip/-/react-native-walkthrough-tooltip-1.5.0.tgz"
+  "version" "1.5.0"
+  dependencies:
+    "prop-types" "^15.6.1"
+    "react-fast-compare" "^2.0.4"
 
 "react-native-webview@^11.24.0":
   "integrity" "sha512-yq3con7vDQUQKAyl9a7pJaR3A1/cI0K2AeRhGugXfWQfdsne18pddJwQuOsc63khecipeCbB8pthCqw0UlsgVw=="

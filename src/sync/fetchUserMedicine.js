@@ -1,13 +1,9 @@
-import {getAllMedicineHistoryClear} from '../redux/action/userMedicine/getAllMedicineHistoryAction';
-import {getAppointmentListClear} from '../redux/action/userMedicine/getAppointmentListAction';
-import {clearMedicineList} from '../redux/action/userMedicine/medicineListAction';
 import {
   AddMedicine,
   getMedicine,
   getPrescription,
   savePrescription,
 } from '../utils/storage';
-import {StoreProviderService} from '../utils/storeProviderService';
 
 const fetchUserMedicine = async (
   userMedicine,

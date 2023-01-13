@@ -131,6 +131,7 @@ const ViewPrescriptions = ({navigation, route}) => {
                 </View>
               ) : (
                 <FlatList
+                  style={style.flatList}
                   data={prescriptions}
                   renderItem={renderItem}
                   keyExtractor={item => item.prescriptionId}

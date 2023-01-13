@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
   },
   circle: {
     borderWidth: 2,
-    borderColor: 'lightgrey',
+    borderColor: colorPallete.mainColor,
     borderRadius: 15,
     height: 20,
     width: 20,

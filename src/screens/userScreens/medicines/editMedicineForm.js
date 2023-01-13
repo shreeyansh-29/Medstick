@@ -149,8 +149,10 @@ const EditMedicineForm = props => {
       </View>
       <View style={styles.inputGroup}>
         <View style={styles.textbox}>
-          <Text style={styles.text}>Notify me when only </Text>
-          <Text style={styles.subText}>(Optional)</Text>
+          <View>
+            <Text style={styles.text}>Notify me when only </Text>
+            <Text style={styles.subText}>(Optional)</Text>
+          </View>
         </View>
         <View style={styles.unitBox}>
           <InputField
@@ -174,8 +176,10 @@ const EditMedicineForm = props => {
 
       <View style={styles.inputGroup}>
         <View style={styles.textbox}>
-          <Text style={styles.text}>Add Prescription Here </Text>
-          <Text style={styles.subText}>(Optional)</Text>
+          <View>
+            <Text style={styles.text}>Add Prescription Here </Text>
+            <Text style={styles.subText}>(Optional)</Text>
+          </View>
         </View>
 
         {props.add ? (

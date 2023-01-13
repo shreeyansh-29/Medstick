@@ -1,4 +1,5 @@
 import {View, Text, TouchableOpacity, Alert, BackHandler} from 'react-native';
+import Tooltip from 'react-native-walkthrough-tooltip';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
@@ -7,7 +8,6 @@ import {styles} from '../../styles/homeScreenStyles/homeScreenStyles';
 import AnimatedProgressCircle from '../../components/atoms/AnimatedProgressCircle';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faInfo} from '@fortawesome/free-solid-svg-icons';
-import CustomModal from '../../components/molecules/customModal';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   myCaretakerClear,
@@ -35,14 +35,16 @@ import {
 } from '../../redux/action/userMedicine/getAllMedicineHistoryAction';
 import MedicineHistory from './medicineHistory';
 import getPercentage from './getPercentage';
+import {colorPallete} from '../../components/atoms/colorPalette';
+import CustomTooltip from '../../components/atoms/customTooltip';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const [percentage, setPercentage] = useState(0);
   const [medData, setMedData] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [myCaretakers, setMyCaretakers] = useState([]);
+  const [showTip, setShowTip] = useState(false);
 
   const connected = useSelector(state => state.internetConnectivity?.data);
   const load = useSelector(state => state.userInfo?.data);
@@ -219,43 +221,35 @@ const HomeScreen = ({navigation}) => {
             <Text style={styles.progressText}>Overall Performance</Text>
           </View>
         </View>
-        <View>
-          <CustomModal
-            modalVisible={modalVisible}
-            type="fade"
-            modalView={
-              <View style={styles.modalContainer}>
-                <Text style={styles.modalHeading}>INFO</Text>
-                <Text
-                  style={{fontSize: 18, color: 'grey'}}
-                  // numberOfLines={3}
-                >
-                  All your Reminders will be shown here. Save and mark your
-                  reminders to view your report in Report Tab.
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                  activeOpacity={0.8}
-                  style={styles.modalTouch}>
-                  <Text style={styles.modalOk}>OK</Text>
-                </TouchableOpacity>
-              </View>
-            }
-            onRequestClose={() => setModalVisible(!modalVisible)}
-            customStyles={styles.modal}
-          />
-        </View>
+
         <View style={styles.reminderView}>
           <Text style={styles.font}>Reminders</Text>
           <View style={styles.info}>
-            <TouchableOpacity
-              style={styles.circle}
-              activeOpacity={0.8}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <FontAwesomeIcon icon={faInfo} color={'grey'} size={13} />
-            </TouchableOpacity>
+            <CustomTooltip
+              isVisible={showTip}
+              setShowTip={setShowTip}
+              placement="top"
+              supportedOrientations={['portrait']}
+              tooltipStyle={{marginLeft: 14}}
+              contentStyle={{width: '100%', height: '100%'}}
+              onClose={() => setShowTip(false)}
+              content={
+                <Text style={{fontSize: 16, color: 'grey'}}>
+                  All your reminders will be shown here. Save and mark your
+                  reminders to view your report in Report Tab.
+                </Text>
+              }>
+              <TouchableOpacity
+                style={styles.circle}
+                activeOpacity={0.6}
+                onPress={() => setShowTip(true)}>
+                <FontAwesomeIcon
+                  icon={faInfo}
+                  color={colorPallete.mainColor}
+                  size={13}
+                />
+              </TouchableOpacity>
+            </CustomTooltip>
           </View>
         </View>
         <View style={{width: '100%', height: '44%'}}>
