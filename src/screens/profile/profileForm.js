@@ -63,13 +63,9 @@ const ProfileForm = props => {
             setDateOpen(true);
           }}
           style={styles.dobTouch}>
-          {props.values.dateofBirth === undefined ? (
-            <Text style={styles.dobText}>Date Of Birth</Text>
-          ) : (
-            <Text style={[styles.dobText, {color: 'black'}]}>
-              {moment(props.values.dateofBirth).format('YYYY-MM-DD')}
-            </Text>
-          )}
+          <Text style={[styles.dobText, {color: 'black'}]}>
+            {moment(props.values.dateofBirth).format('DD-MM-YYYY')}
+          </Text>
         </TouchableOpacity>
         {props.errors.dateofBirth && props.touched.dateofBirth && (
           <Text style={styles.errorText}>{props.errors.dateofBirth}</Text>
@@ -180,6 +176,7 @@ const ProfileForm = props => {
       </View>
 
       <CustomButton
+        loading={props.loadState}
         title="Save"
         btnStyles={styles.editButton}
         contStyles={styles.editButtonContainer}

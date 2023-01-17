@@ -22,7 +22,7 @@ import Notifications from '../../../pushNotification/pushNotifications';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
 import {CustomAlert} from '../../../components/atoms/customAlert';
-import {SuccessToast} from '../../../components/atoms/customToast';
+import {ErrorToast, SuccessToast} from '../../../components/atoms/customToast';
 import {horizontalScale} from '../../../components/atoms/constant';
 
 const Reminder = ({route, navigation}) => {
@@ -94,7 +94,7 @@ const Reminder = ({route, navigation}) => {
 
   useEffect(() => {
     if (item !== null) {
-      if (item.days !== null) {
+      if (item.days !== '') {
         let days = item.days.split(',');
         if (days.length !== 7) {
           slecteddaysstate(days);
@@ -192,6 +192,7 @@ const Reminder = ({route, navigation}) => {
           check2,
           lengthSelectedDays,
           number[i],
+          obj.title,
         );
       } else {
         let dateTime = moment(obj.startDate + ' ' + number[i]);
@@ -203,6 +204,7 @@ const Reminder = ({route, navigation}) => {
           check2,
           lengthSelectedDays,
           number[i],
+          obj.title,
         );
       }
     }
@@ -412,26 +414,36 @@ const Reminder = ({route, navigation}) => {
 
     setfDate(temporaryDate);
 
-    getMedicine().then(data => {
-      const temp = data;
-      if (temp[route.params.index].reminderId !== null) {
-        temp[route.params.index] = obj;
-      } else {
-        obj.reminderId = uuid.v4();
-        temp[route.params.index] = obj;
-      }
-      AddMedicine(temp);
-    });
-    loadstate(false);
+    getMedicine()
+      .then(data => {
+        const temp = data;
+        if (temp[route.params.index].reminderId !== null) {
+          temp[route.params.index] = obj;
+        } else {
+          obj.reminderId = uuid.v4();
+          temp[route.params.index] = obj;
+        }
+        AddMedicine(temp);
+        loadstate(false);
+      })
+      .then(() => {
+        SuccessToast({
+          text1: 'Reminder Saved',
+          position: 'bottom',
+        });
 
-    SuccessToast({
-      text1: 'Reminder Saved',
-      position: 'bottom',
-    });
-
-    setTimeout(() => {
-      navigation.pop();
-    }, 1000);
+        setTimeout(() => {
+          navigation.pop();
+        }, 1500);
+      })
+      .catch(err => {
+        console.log(err);
+        ErrorToast({
+          text1: 'Something Went Wrong',
+          text2: 'Try Again',
+          position: 'bottom',
+        });
+      });
   };
 
   return (

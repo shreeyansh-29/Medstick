@@ -6,6 +6,7 @@ import uuid from 'react-native-uuid';
 
 const MedicineHistory = (data, dispatch) => {
   let updateArray = [];
+  // console.log('med history creation');
   for (let i = 0; i < data?.length; i++) {
     if (data[i].reminderId !== null && !data[i].flag) {
       let arr = data[i].days.split(',');
@@ -29,6 +30,7 @@ const MedicineHistory = (data, dispatch) => {
         td_da <= end_date
       ) {
         if (data[i].historyList.length === 0) {
+          // console.log('med history creation');
           history.historyId = uuid.v4();
           history.date = td_da;
           history.time = data[i].reminderTime;
@@ -42,6 +44,7 @@ const MedicineHistory = (data, dispatch) => {
             index >= 0 &&
             data[i].reminderTime !== data[i].historyList[index].time
           ) {
+            console.log('Existing Reminder update');
             history.historyId = data[i].historyList[index].historyId;
             history.date = data[i].historyList[index].date;
             history.notTaken = '';
@@ -110,7 +113,7 @@ const MedicineHistory = (data, dispatch) => {
     updateArray.push(data[i]);
   }
   // console.log('Updated Med', updateArray);
-  updateArray.length !== 0 && (AddMedicine(updateArray), syncHistory(dispatch));
+  updateArray.length !== 0 && AddMedicine(updateArray);
 };
 
 export default MedicineHistory;

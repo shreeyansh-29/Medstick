@@ -1,9 +1,8 @@
 import * as types from '../../actionTypes';
 
-export const getAllMedicineHistoryRequest = payload => {
+export const getAllMedicineHistoryRequest = () => {
   return {
     type: types.GET_ALL_MED_HISTORY_REQUEST,
-    payload,
   };
 };
 export const getAllMedicineHistorySuccess = payload => {
