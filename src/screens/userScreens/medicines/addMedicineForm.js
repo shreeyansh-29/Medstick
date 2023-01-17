@@ -102,6 +102,7 @@ const AddMedicineForm = props => {
               onValueChange={val => props.setPill(val)}>
               <Picker.Item label="Tablet" value="Tablet" />
               <Picker.Item label="Injection" value="Injection" />
+              <Picker.Item label="Syrup" value="Syrup" />
             </Picker>
           </View>
         </View>
@@ -164,7 +165,7 @@ const AddMedicineForm = props => {
             isVisible={showStock}
             placement="top"
             supportedOrientations={['portrait']}
-            tooltipStyle={{marginLeft: 4}}
+            // tooltipStyle={{marginLeft: 4}}
             contentStyle={{width: '100%', height: '100%'}}
             onClose={() => setShowStock(false)}
             content={
@@ -216,7 +217,7 @@ const AddMedicineForm = props => {
             isVisible={showLeftStock}
             placement="top"
             supportedOrientations={['portrait']}
-            tooltipStyle={{marginLeft: 4}}
+            // tooltipStyle={{marginLeft: 4}}
             contentStyle={{width: '100%', height: '100%'}}
             onClose={() => setShowLeftStock(false)}
             content={

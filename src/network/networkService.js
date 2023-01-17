@@ -124,7 +124,7 @@ class NetworkService {
   }
   async getUserMedicine() {
     const id = await AsyncStorage.getItem('user_id');
-    return RequestService.getRequest(
+    return await RequestService.getRequest(
       `${apiUrl.USER_MEDICINE}?userId=${id}&Id=${id}`,
     );
   }
@@ -195,7 +195,7 @@ class NetworkService {
   async sendSnap(payload) {
     const formdata = payload.payload;
     const id = await AsyncStorage.getItem('user_id');
-    let token = decryptData(await AsyncStorage.getItem('accessToken'));
+    let token = await AsyncStorage.getItem('accessToken');
     return await RequestService.sendSnapRequest(
       `${apiUrl.SEND_SNAP}?Id=${id}`,
       formdata,

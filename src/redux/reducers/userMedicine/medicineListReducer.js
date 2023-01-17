@@ -14,7 +14,7 @@ const initialState = {
 export const medicineListReducer = (state = initialState, action) => {
   switch (action.type) {
     case MEDICINE_LIST_REQUEST:
-      return {...state, isLoading: true};
+      return {...state, isLoading: true, data: null, error: null};
     case MEDICINE_LIST_SUCCESS:
       return {...state, data: action.payload.result, isLoading: false};
     case MEDICINE_LIST_ERROR:

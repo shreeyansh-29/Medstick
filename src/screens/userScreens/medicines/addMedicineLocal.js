@@ -62,6 +62,10 @@ const AddMedicineLocal = ({navigation}) => {
         setDoseType('ml');
         break;
       }
+      case 'Syrup': {
+        setDoseType('ml');
+        break;
+      }
       default: {
         setDoseType('mg');
       }
@@ -133,7 +137,6 @@ const AddMedicineLocal = ({navigation}) => {
             let temp = [];
             temp.push(obj);
             AddMedicine(temp);
-            getMedicine().then(data => console.log(data, 'after'));
             SuccessToast({
               text1: 'Medicine Saved Successfully',
               position: 'bottom',

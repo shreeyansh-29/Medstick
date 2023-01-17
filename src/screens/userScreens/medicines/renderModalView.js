@@ -192,7 +192,7 @@ const RenderModalView = ({setVisible, props}) => {
         activityIndicator()
       ) : (
         <>
-          {error === serverErrors.SERVER_ERROR ? (
+          {error !== serverErrors.SERVER_ERROR ? (
             <ErrorBoundary />
           ) : (
             <>
@@ -234,7 +234,11 @@ const RenderModalView = ({setVisible, props}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: 'white', alignItems: 'center'},
+  container: {
+    flex: 1,
+    backgroundColor: colorPallete.backgroundColor,
+    alignItems: 'center',
+  },
   backBtnCont: {
     alignSelf: 'flex-start',
     marginTop: 16,

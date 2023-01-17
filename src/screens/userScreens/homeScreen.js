@@ -37,6 +37,7 @@ import MedicineHistory from './medicineHistory';
 import getPercentage from './getPercentage';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import CustomTooltip from '../../components/atoms/customTooltip';
+import syncHistory from '../../sync/syncHistory';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -52,56 +53,38 @@ const HomeScreen = ({navigation}) => {
   const userMedicine = useSelector(state => state.medicineList?.data);
   const appointmentList = useSelector(state => state.appointmentList?.data);
   const historyList = useSelector(state => state.allMedicineHistory?.data);
-  const errorState = useSelector(state => state.medicineList?.error);
 
-  // const backAction = () => {
-  //   Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-  //     {text: 'YES', onPress: () => BackHandler.exitApp()},
-  //     {
-  //       text: 'Cancel',
-  //       onPress: () => null,
-  //       style: 'cancel',
-  //     },
-  //   ]);
-  //   return true;
-  // };
+  // console.log('userMed', userMedicine);
 
-  // useEffect(() => {
-  //   BackHandler.addEventListener('hardwareBackPress', backAction);
-
-  //   return () =>
-  //     BackHandler.removeEventListener('hardwareBackPress', backAction);
-  // }, []);
+  const backAction = () => {
+    Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+      {text: 'YES', onPress: () => BackHandler.exitApp()},
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+    ]);
+    return true;
+  };
 
   useEffect(() => {
-    if (userMedicine !== null && userMedicine.length !== 0) {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, []);
+
+  useEffect(() => {
+    if (
+      userMedicine !== null &&
+      userMedicine.length !== 0 &&
+      historyList !== null &&
+      appointmentList != null
+    ) {
       fetchUserMedicine(userMedicine, appointmentList, historyList);
     }
-    dispatch(clearMedicineList());
-    dispatch(getAppointmentListClear());
-    dispatch(getAllMedicineHistoryClear());
-  }, [userMedicine, errorState]);
-
-  useEffect(() => {
-    if (connected && load) {
-      if (medData.length !== 0) {
-        dispatch(myCaretakerRequest(0));
-      }
-      (async () => {
-        dispatch(loadMedicineList());
-        dispatch(getAllMedicineHistoryRequest());
-        dispatch(getAppointmentListRequest());
-      })();
-    }
-  }, [connected, load]);
-
-  useEffect(() => {
-    if (res !== null && res.length !== 0) {
-      setMyCaretakers(res);
-      dispatch(myCaretakerClear());
-    }
-    return () => {};
-  }, [res]);
+  }, [userMedicine, historyList, appointmentList]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -113,9 +96,29 @@ const HomeScreen = ({navigation}) => {
     }, [connected, load]),
   );
 
+  useEffect(() => {
+    if (connected && load) {
+      if (medData.length !== 0) {
+        dispatch(myCaretakerRequest(0));
+      }
+      dispatch(loadMedicineList());
+      dispatch(getAllMedicineHistoryRequest());
+      dispatch(getAppointmentListRequest());
+    }
+  }, [connected, load]);
+
+  useEffect(() => {
+    if (res !== null && res.length !== 0) {
+      setMyCaretakers(res);
+      dispatch(myCaretakerClear());
+    }
+    return () => false;
+  }, [res]);
+
   const getData = async () => {
     getMedicine().then(data => {
-      if (data.length !== 0 && data !== null) {
+      // console.log(data,"homescreen");
+      if (data !== null && data.length !== 0) {
         setMedData(data);
         //for Calculating Overall Percentage
         let p = getPercentage(data);
@@ -154,14 +157,13 @@ const HomeScreen = ({navigation}) => {
     getPercentageDetails().then(item => {
       if (item !== null && item.length !== 0) {
         let temp = item;
-        temp.forEach(p => {
-          if (p.date === data) {
-            console.log('Fetch % from local for date', p.percentage);
-            setPercentage(p.percentage);
-          } else {
-            setPercentage(0);
-          }
-        });
+        const index = temp.findIndex(a => a.date == data);
+        if (index >= 0) {
+          setPercentage(temp[index].percentage);
+        } else {
+          setPercentage(0);
+        }
+        return;
       }
     });
   }

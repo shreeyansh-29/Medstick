@@ -8,7 +8,7 @@ import {
   ToastAndroid,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import MainHeader from '../../../components/molecules/headers/mainHeader';
 import {styles} from '../../../styles/reportScreenStyles/reportScreenStyles';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
@@ -83,7 +83,6 @@ const Report = ({navigation}) => {
 
   const fetchData = () => {
     let arr = [];
-    setIsLoading(true);
     getMedicine()
       .then(data => {
         if (data !== null && data.length !== 0) {
@@ -101,19 +100,22 @@ const Report = ({navigation}) => {
           getHistory(medicineId);
         }
       })
-      .then(() => {
-        setIsLoading(false);
-      })
       .catch(error => {
         console.log('error', error);
       });
     setRefresh(false);
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, [isLoading]);
+
   useFocusEffect(
     React.useCallback(() => {
       fetchData();
-    }, []),
+    }, [medicineId]),
   );
 
   let startDate = moment().format('YYYY-MM-DD');
@@ -148,7 +150,7 @@ const Report = ({navigation}) => {
     getMedicine()
       .then(data => {
         if (data !== null && data.length !== 0) {
-          data.map((item, index) => {
+          data.map(item => {
             if (
               item.userMedicineId === medicineId &&
               item.reminderId !== null
@@ -167,16 +169,19 @@ const Report = ({navigation}) => {
             ToastAndroid.show('Error while downloading', ToastAndroid.LONG);
           }
         } else {
-          CustomAlert({text1: 'No reminder present'});
+          CustomAlert({
+            text1: 'No reminder present',
+            text2: 'Please add reminder to download report',
+          });
         }
       })
       .catch(err => console.log(err));
   };
 
-  function getHistory(medicine) {
+  function getHistory(medicineId) {
     let histories = [];
     getUserMedicine.forEach(data => {
-      if (data.userMedicineId === medicine && data.historyList.length !== 0) {
+      if (data.userMedicineId === medicineId && data.historyList.length !== 0) {
         data.historyList.map(i => {
           let his = {};
           his.historyId = i.historyId;
@@ -231,6 +236,7 @@ const Report = ({navigation}) => {
   function overallPercentage(data) {
     let cc = 0;
     let tr = 0;
+    // console.log('data', data);
     if (data.historyList.length !== 0) {
       data.historyList.map(item => {
         tr += item.time.split(',').length;
@@ -241,6 +247,7 @@ const Report = ({navigation}) => {
           }
         });
       });
+      // console.log('tt cc', cc , tr);
       setPercentage(Math.floor((cc / tr) * 100));
     } else {
       setPercentage(0);
@@ -311,12 +318,12 @@ const Report = ({navigation}) => {
   };
 
   const onRefresh = () => {
+    setIsLoading(true);
     setRefresh(true);
     fetchData();
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    // }, 1500);
   };
 
   return (
@@ -349,8 +356,8 @@ const Report = ({navigation}) => {
               mode="dialog"
               selectedValue={medicineId}
               onValueChange={data => {
+                setIsLoading(true);
                 setMedicineId(data);
-                fetchData();
               }}>
               {getUserMedicine?.map((item, index) => {
                 return (

@@ -66,7 +66,7 @@ const AppointmentReminderList = ({navigation}) => {
       setShowLoader(false);
     }, 1500);
 
-    return () => {};
+    return () => false;
   }, [showLoader]);
 
   //Function to display data

@@ -18,6 +18,7 @@ import {
   faImage,
   faSquare,
   faSquareCheck,
+  faXmarkCircle,
 } from '@fortawesome/free-regular-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -142,7 +143,24 @@ const AddPrescriptionPanel = ({navigation, route}) => {
         text="imageViewer"
         onRequestClose={() => setVisible(!visible)}
         modalView={
-          <View style={{flex: 1}}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: colorPallete.basicColor,
+              paddingTop: 10,
+              borderTopStartRadius: 12,
+              borderTopEndRadius: 12,
+            }}>
+            <TouchableOpacity
+              style={{alignSelf: 'flex-end', marginRight: 6}}
+              onPress={() => setVisible(false)}
+              activeOpacity={1}>
+              <FontAwesomeIcon
+                icon={faXmarkCircle}
+                color={colorPallete.mainColor}
+                size={26}
+              />
+            </TouchableOpacity>
             <ImageViewer imageUrls={images} backgroundColor="white" />
           </View>
         }

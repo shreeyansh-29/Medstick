@@ -1,15 +1,20 @@
+import {getAllMedicineHistoryClear} from '../redux/action/userMedicine/getAllMedicineHistoryAction';
+import {getAppointmentListClear} from '../redux/action/userMedicine/getAppointmentListAction';
+import {clearMedicineList} from '../redux/action/userMedicine/medicineListAction';
 import {
   AddMedicine,
   getMedicine,
   getPrescription,
   savePrescription,
 } from '../utils/storage';
+import {StoreProviderService} from '../utils/storeProviderService';
 
 const fetchUserMedicine = async (
   userMedicine,
   appointmentList,
   historyList,
 ) => {
+  // console.log(userMedicine,"fetchUserMeds");
   let prescriptionList = [];
   getPrescription()
     .then(data => {
@@ -22,9 +27,9 @@ const fetchUserMedicine = async (
         .then(data => {
           // console.log('fetch data at start', data);
           if (data === null || data.length === 0) {
-            // console.log('data in 1st condition', data);
             let updatedList = [];
             userMedicine.map(item => {
+              // console.log('before', item);
               if (item.prescriptionId !== null) {
                 let obj = {
                   doctorName: item.doctorName,
@@ -42,6 +47,7 @@ const fetchUserMedicine = async (
 
               item.historyList = [];
               historyList !== null &&
+                historyList?.length !== 0 &&
                 historyList.map(ele => {
                   if (ele.userMedicineId === item.userMedicineId) {
                     ele.userMedicineHistory.map(r => {
@@ -53,6 +59,7 @@ const fetchUserMedicine = async (
 
               item.doctorAppointmentList = [];
               appointmentList !== null &&
+                appointmentList?.length !== 0 &&
                 appointmentList.map(ele => {
                   if (ele.userMedicineId === item.userMedicineId) {
                     item.doctorAppointmentList = ele.doctorAppointmentList;
@@ -67,6 +74,9 @@ const fetchUserMedicine = async (
               item.present = !item.present ? false : true;
               item.flag = !item.flag ? false : true;
               item.isSynced = true;
+
+              // console.log('after', item);
+
               updatedList.push(item);
             });
 
@@ -101,6 +111,7 @@ const fetchUserMedicine = async (
 
                 item.historyList = [];
                 historyList !== null &&
+                  historyList?.length !== 0 &&
                   historyList.map(ele => {
                     if (ele.userMedicineId === item.userMedicineId) {
                       ele.userMedicineHistory.map(r => {
@@ -112,6 +123,7 @@ const fetchUserMedicine = async (
 
                 item.doctorAppointmentList = [];
                 appointmentList !== null &&
+                  appointmentList?.length !== 0 &&
                   appointmentList.map(ele => {
                     if (ele.userMedicineId === item.userMedicineId) {
                       item.doctorAppointmentList = ele.doctorAppointmentList;
@@ -133,7 +145,6 @@ const fetchUserMedicine = async (
             savePrescription(prescriptionList);
           }
         })
-
         .catch(err => console.log(err));
     })
     .catch(err => console.log(err));

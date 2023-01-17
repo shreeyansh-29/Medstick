@@ -46,6 +46,7 @@ const SearchScreen = ({navigation}) => {
   let sentby = route.params.sentBy;
   const dispatch = useDispatch();
   const res = useSelector(state => state.getUser?.data);
+  const errorState = useSelector(state => state.getUser?.error);
   const res1 = useSelector(state => state.sendRequest?.data);
   const [data, setData] = useState([]);
   const loading = useSelector(state => state.getUser.isLoading);
@@ -77,10 +78,16 @@ const SearchScreen = ({navigation}) => {
         position: 'bottom',
         text2: 'Invitation mail sent',
       });
+    } else if (errorState !== null) {
+      ErrorToast({
+        text1: 'Something went wrong',
+        position: 'bottomt',
+        text2:'Try again later'
+      });
     }
     dispatch(resetSend());
     dispatch(resetUser());
-  }, [res]);
+  }, [res, errorState]);
 
   useEffect(() => {
     if (res1?.status === 'Success') {
@@ -195,7 +202,7 @@ const SearchScreen = ({navigation}) => {
                       type="font-awesome"
                       color={colorPallete.mainColor}
                       onPress={() => handleSubmit()}
-                      containerStyle={{marginLeft: 10}}
+                      containerStyle={{padding: 8}}
                     />
                   }
                   searchIcon={
@@ -241,7 +248,7 @@ const SearchScreen = ({navigation}) => {
           )}
         </>
       )}
-      <Toast visibilityTime={1500} />
+      <Toast visibilityTime={2000} />
     </View>
   );
 };

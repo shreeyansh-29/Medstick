@@ -103,9 +103,7 @@ const AddPrescription = ({navigation}) => {
         }
         customStyles={styles.customStyles}
         type="slide"
-        onRequestClose={() => {
-          setVisible(!visible);
-        }}
+        onRequestClose={() => setVisible(!visible)}
       />
       <KeyboardAvoidingView
         style={styles.keyboardView}
