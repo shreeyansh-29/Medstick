@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import * as apiUrl from '../constants/apiUrl';
+import { hideMessage } from 'react-native-flash-message';
 
 const instance = axios.create({
   timeout: 10000,
@@ -16,7 +17,19 @@ async function destroyToken() {
   await AsyncStorage.removeItem('refreshToken');
 }
 
-const refreshToken = async () => {
+const Refresh = status => {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      if (status === 401) {
+        resolve();
+      } else {
+        reject();
+      }
+    }, 1000);
+  });
+};
+
+const refreshToken = async status => {
   const id = await AsyncStorage.getItem('user_id');
   const refresh = await AsyncStorage.getItem('refreshToken');
 
@@ -31,7 +44,7 @@ const refreshToken = async () => {
       },
     )
     .then(response => {
-      destroyToken()
+      destroyToken();
       saveToken(response.data.accessToken, response.data.refreshToken);
     });
 };
@@ -50,9 +63,9 @@ const responseHandler = response => {
 
 const errorHandler = error => {
   const status = error.response ? error.response.status : null;
-  if (status === 401) {
-    refreshToken();
-  }
+  Refresh(status).then(refreshToken).catch(function(){
+    
+  })
 };
 
 instance.interceptors.request.use(

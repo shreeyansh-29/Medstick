@@ -32,6 +32,7 @@ const Reminder = ({route, navigation}) => {
   const [startDate, setStartDate] = useState(
     item.startDate !== null ? new Date(item.startDate) : new Date(),
   );
+  console.log(startDate,"start Date");
   const [endDate, endDateState] = useState(new Date());
   const [check1, setCheck1] = useState(
     item.everyday !== null ? item.everyday : false,
