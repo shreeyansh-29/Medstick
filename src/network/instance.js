@@ -3,6 +3,7 @@ import axios from 'axios';
 import {HTTP_STATUS_CODES, serverErrors} from '../constants/statusCodes';
 // import {decryptData} from '../components/atoms/crypto';
 import * as apiUrl from '../constants/apiUrl';
+import { hideMessage } from 'react-native-flash-message';
 
 const instance = axios.create({
   timeout: 10000,
@@ -18,7 +19,19 @@ async function destroyToken() {
   await AsyncStorage.removeItem('refreshToken');
 }
 
-const refreshToken = async () => {
+const Refresh = status => {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      if (status === 401) {
+        resolve();
+      } else {
+        reject();
+      }
+    }, 1000);
+  });
+};
+
+const refreshToken = async status => {
   const id = await AsyncStorage.getItem('user_id');
   const refresh = await AsyncStorage.getItem('refreshToken');
 
@@ -55,16 +68,10 @@ const responseHandler = response => {
 };
 
 const errorHandler = error => {
-  let errorMessage = serverErrors.SERVER_ERROR;
-  if (error.response) {
-    const {status} = error.response;
-    if (status === HTTP_STATUS_CODES.notFound) {
-      errorMessage = serverErrors.NOT_FOUND;
-    } else if (status === HTTP_STATUS_CODES.forbidden) {
-      refreshToken();
-    }
-  }
-  return Promise.reject(errorMessage);
+  const status = error.response ? error.response.status : null;
+  Refresh(status).then(refreshToken).catch(function(){
+    
+  })
 };
 
 instance.interceptors.request.use(
