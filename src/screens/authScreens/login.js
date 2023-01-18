@@ -20,6 +20,7 @@ import {
   ErrorToast,
   InfoToast,
 } from '../../components/atoms/customToast';
+import {HTTP_STATUS_CODES, serverErrors} from '../../constants/statusCodes';
 
 const Login = ({navigation, logout}) => {
   const result = useSelector(state => state.signIn?.data);
@@ -37,7 +38,7 @@ const Login = ({navigation, logout}) => {
       await AsyncStorage.setItem('refreshToken', res?.refreshToken);
       // let token = encryptData(res?.accessToken);
       await AsyncStorage.setItem('accessToken', res?.accessToken);
-      
+
       await AsyncStorage.setItem(
         'user_photo',
         res?.userList[0].userDetails.picPath,
@@ -56,7 +57,7 @@ const Login = ({navigation, logout}) => {
 
   useEffect(() => {
     if (isFocused) {
-      if (result?.status === 200) {
+      if (result?.status === HTTP_STATUS_CODES.ok) {
         getResponse();
       }
       dispatch(resetLogin());
@@ -65,9 +66,13 @@ const Login = ({navigation, logout}) => {
 
   useEffect(() => {
     if (isFocused) {
-      if (error?.status === 404) {
+      if (error === serverErrors.NOT_FOUND) {
         logout();
         ErrorToast({text1: 'User Not Found'});
+      }
+      if (error === serverErrors.SERVER_ERROR) {
+        logout();
+        InfoToast({text1: 'Something Went Wrong', text1: 'Try Again Later'});
       }
       dispatch(resetLogin());
     }
@@ -86,7 +91,6 @@ const Login = ({navigation, logout}) => {
         if (await GoogleSignin.isSignedIn()) {
           await GoogleSignin.signOut();
         }
-        // InfoToast({text1: 'Something Went Wrong'});
       }
     }
   };

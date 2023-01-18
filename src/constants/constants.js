@@ -1,12 +1,4 @@
-export var weeks = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
+export var weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export const months = [
   'Jan',
   'Feb',
@@ -21,6 +13,23 @@ export const months = [
   'Nov',
   'Dec',
 ];
+
+export const monthsFullName = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+
 
 export const month = {
   Jan: '01',

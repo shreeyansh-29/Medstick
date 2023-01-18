@@ -16,10 +16,12 @@ import {
   InfoToast,
   SuccessToast,
 } from '../../components/atoms/customToast';
+import {HTTP_STATUS_CODES, serverErrors} from '../../constants/statusCodes';
 
 const SignUp = ({navigation, logout}) => {
   const dispatch = useDispatch();
   const result = useSelector(state => state.signUp?.data);
+  const errorState = useSelector(state => state.signUp?.error);
   const connected = useSelector(state => state.internetConnectivity?.data);
   const isFocused = useIsFocused();
 
@@ -44,15 +46,25 @@ const SignUp = ({navigation, logout}) => {
 
   useEffect(() => {
     if (isFocused) {
-      if (result?.status === 201) {
+      if (result?.status === HTTP_STATUS_CODES.created) {
         getResponse();
-      } else if (result?.status === 208) {
+      } else if (result?.status === HTTP_STATUS_CODES.alreadyReported) {
         logout();
         ErrorToast({text1: 'User already exists'});
         dispatch(resetSignUp());
       }
     }
   }, [isFocused, result]);
+
+  useEffect(() => {
+    if (isFocused) {
+      if (errorState === serverErrors.SERVER_ERROR) {
+        logout();
+        InfoToast({text1: 'Something Went Wrong', text2: 'Try Again Later'});
+      }
+      dispatch(resetSignUp());
+    }
+  }, [isFocused, errorState]);
 
   const signUp = async () => {
     if (connected) {

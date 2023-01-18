@@ -21,11 +21,13 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import {ListItem} from 'react-native-elements';
+import {serverErrors} from '../../../constants/statusCodes';
+import ErrorBoundary from '../../otherScreens/errorBoundary';
 
 const RenderModalView = ({setVisible, props}) => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.searchMedicine?.data);
-  const error = useSelector(state => state.searchMedicine?.error?.data);
+  const error = useSelector(state => state.searchMedicine?.error);
   const [pageNo, setPageNo] = useState(0);
   const [tempSearch, setTempSearch] = useState([]);
   const [med, setMed] = useState('');
@@ -66,7 +68,7 @@ const RenderModalView = ({setVisible, props}) => {
 
   const onEnd = () => {
     let a = pageNo + 1;
-    if (tempSearch.length % 8 === 0 && a !== 0 && res?.result?.length !== 0) {
+    if (tempSearch.length % 8 === 0 && a !== 0) {
       apiCall(med, a);
       setPageNo(a);
     }
@@ -78,6 +80,7 @@ const RenderModalView = ({setVisible, props}) => {
     props.setFieldValue('medicineName', item.medicineName);
     props.setFieldValue('description', item.description);
     props.setKey(false);
+    props.setMedId(item.medicineId);
   };
 
   const renderItem = ({item, index}) => {
@@ -189,15 +192,15 @@ const RenderModalView = ({setVisible, props}) => {
         activityIndicator()
       ) : (
         <>
-          {error?.status === 'Failed' ? (
-            <View style={styles.errorCont}>
-              <Text style={styles.text1}>Medicine Not Found</Text>
-              <Text style={styles.text2}>(Please Enter Manually)</Text>
-            </View>
+          {error === serverErrors.SERVER_ERROR ? (
+            <ErrorBoundary />
           ) : (
             <>
-              {tempSearch.length === 0 ? (
-                <></>
+              {error === serverErrors.NOT_FOUND && tempSearch.length === 0 ? (
+                <View style={styles.errorCont}>
+                  <Text style={styles.text1}>Medicine Not Found</Text>
+                  <Text style={styles.text2}>(Please Enter Manually)</Text>
+                </View>
               ) : (
                 <>
                   <FlatList
@@ -214,7 +217,7 @@ const RenderModalView = ({setVisible, props}) => {
                     }
                     onEndReached={({distanceFromEnd}) => {
                       if (!onEndReachedCalledDuringMomentum) {
-                        onEnd();
+                        !error ? onEnd() : null;
                         setOnEndReachedCalledDuringMomentum(true);
                       }
                     }}
@@ -231,7 +234,11 @@ const RenderModalView = ({setVisible, props}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: 'white', alignItems: 'center'},
+  container: {
+    flex: 1,
+    backgroundColor: colorPallete.backgroundColor,
+    alignItems: 'center',
+  },
   backBtnCont: {
     alignSelf: 'flex-start',
     marginTop: 16,

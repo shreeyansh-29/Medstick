@@ -18,6 +18,7 @@ const MyCareTaker = ({navigation}) => {
   //React Redux Hooks
   const dispatch = useDispatch();
   const res = useSelector(state => state.myCaretaker);
+  const errorState = useSelector(state => state.myCaretaker.error);
   const connected = useSelector(state => state.internetConnectivity?.data);
 
   //React useState hook
@@ -35,10 +36,12 @@ const MyCareTaker = ({navigation}) => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+    return () => false;
   }, [isLoading]);
 
   useEffect(() => {
     pageNo === 0 ? dispatch(myCaretakerRequest(pageNo)) : null;
+    return () => false;
   }, []);
 
   useEffect(() => {
@@ -47,12 +50,13 @@ const MyCareTaker = ({navigation}) => {
       setCaretaker([...caretaker, ...res.data]);
       dispatch(myCaretakerClear());
     }
+    return () => false;
   }, [res]);
 
   //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
-    if (caretaker?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+    if (caretaker?.length % 8 === 0 && a !== 0) {
       dispatch(myCaretakerRequest(a));
       setPageNo(a);
     }
@@ -111,7 +115,7 @@ const MyCareTaker = ({navigation}) => {
               }
               onEndReached={({distanceFromEnd}) => {
                 if (!onEndReachedCalledDuringMomentum) {
-                  onEnd();
+                  !errorState ? onEnd() : null;
                   setOnEndReachedCalledDuringMomentum(true);
                 }
               }}
@@ -137,7 +141,7 @@ const MyCareTaker = ({navigation}) => {
           {connected ? (
             <View style={styles.button}>
               <AddButton
-                text="Patient"
+                text={'Patient'}
                 routeName={'SearchScreen'}
                 navigation={navigation}
                 styles={styles.addBtn}

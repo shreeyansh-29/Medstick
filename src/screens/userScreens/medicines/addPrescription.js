@@ -2,12 +2,11 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  Animated,
   KeyboardAvoidingView,
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {Formik} from 'formik';
@@ -32,14 +31,6 @@ const AddPrescription = ({navigation}) => {
       url: uri,
     },
   ];
-  const progress = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration: 3000,
-      useNativeDriver: true,
-    }).start();
-  }, []);
 
   const savePrescriptionValues = values => {
     let prescription_id = uuid.v4();
@@ -54,32 +45,37 @@ const AddPrescription = ({navigation}) => {
       flag: false,
     };
 
-    getPrescription().then(data => {
-      if (data !== null) {
-        const temp = [...data, obj];
-        savePrescription(temp);
-        SuccessToast({
-          text1: 'Prescription Added Successfully',
-          position: 'bottom',
-        });
-      } else if (data === null || data === undefined) {
-        let temp = [];
-        temp.push(obj);
-        savePrescription(temp);
-        SuccessToast({
-          text1: 'Prescription Added Successfully',
-          position: 'bottom',
-        });
-      } else {
+    getPrescription()
+      .then(data => {
+        if (data !== null) {
+          const temp = [...data, obj];
+          savePrescription(temp);
+          SuccessToast({
+            text1: 'Prescription Added Successfully',
+            position: 'bottom',
+          });
+        } else if (data === null || data === undefined) {
+          let temp = [];
+          temp.push(obj);
+          savePrescription(temp);
+          SuccessToast({
+            text1: 'Prescription Added Successfully',
+            position: 'bottom',
+          });
+        }
+      })
+      .then(() => {
+        setTimeout(() => {
+          navigation.pop();
+        }, 2000);
+      })
+      .catch(err => {
+        console.log(err);
         ErrorToast({
           text1: 'Something Went Wrong',
           position: 'bottom',
         });
-      }
-    });
-    setTimeout(() => {
-      navigation.pop();
-    }, 1500);
+      });
   };
 
   return (
@@ -107,9 +103,7 @@ const AddPrescription = ({navigation}) => {
         }
         customStyles={styles.customStyles}
         type="slide"
-        onRequestClose={() => {
-          setVisible(!visible);
-        }}
+        onRequestClose={() => setVisible(!visible)}
       />
       <KeyboardAvoidingView
         style={styles.keyboardView}
@@ -157,7 +151,7 @@ const AddPrescription = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={1000} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

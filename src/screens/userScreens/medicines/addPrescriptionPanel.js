@@ -18,6 +18,7 @@ import {
   faImage,
   faSquare,
   faSquareCheck,
+  faXmarkCircle,
 } from '@fortawesome/free-regular-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -141,7 +142,28 @@ const AddPrescriptionPanel = ({navigation, route}) => {
         modalVisible={visible}
         text="imageViewer"
         onRequestClose={() => setVisible(!visible)}
-        modalView={<ImageViewer imageUrls={images} backgroundColor="white" />}
+        modalView={
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: colorPallete.basicColor,
+              paddingTop: 10,
+              borderTopStartRadius: 12,
+              borderTopEndRadius: 12,
+            }}>
+            <TouchableOpacity
+              style={{alignSelf: 'flex-end', marginRight: 6}}
+              onPress={() => setVisible(false)}
+              activeOpacity={1}>
+              <FontAwesomeIcon
+                icon={faXmarkCircle}
+                color={colorPallete.mainColor}
+                size={26}
+              />
+            </TouchableOpacity>
+            <ImageViewer imageUrls={images} backgroundColor="white" />
+          </View>
+        }
       />
 
       <View style={styles.textContainer}>
@@ -207,7 +229,7 @@ const AddPrescriptionPanel = ({navigation, route}) => {
 
                   setTimeout(() => {
                     navigation.pop();
-                  }, 1500);
+                  }, 2000);
                 }
               }}
             />
@@ -215,18 +237,19 @@ const AddPrescriptionPanel = ({navigation, route}) => {
         ) : (
           <>
             <CustomButton
+              disabled={showLoader}
               title={'Upload New'}
               titleStyle={styles.buttonText}
               btnStyles={styles.btnStyles}
               contStyles={styles.contStyles}
               handleSubmit={() => {
-                navigation.navigate('Prescription');
+                navigation.navigate('AddPrescription');
               }}
             />
           </>
         )}
       </View>
-      <Toast visibilityTime={1000} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

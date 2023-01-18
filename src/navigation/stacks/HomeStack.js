@@ -10,11 +10,11 @@ const HomeStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false, orientation: 'portrait'}}>
+      {/* <Stack.Screen name="Homescreen" component={HomeScreen} /> */}
       <Stack.Screen
         name="SendSnapToCaretaker"
         component={SendSnapToCaretaker}
       />
-      {/* <Stack.Screen name="SendSnap" component={SendSnap} /> */}
       <Stack.Screen name="Notification" component={NotificationScreen} />
     </Stack.Navigator>
   );

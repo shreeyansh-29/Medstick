@@ -17,7 +17,7 @@ import {acceptCaretakerReqReducer} from './caretaker/acceptCaretakerReqReducer';
 import {deleteCaretakerReqReducer} from './caretaker/deleteCaretakerReqReducer';
 import {searchMedicineReducer} from './userMedicine/searchMedicineReducer';
 import {medicineListReducer} from './userMedicine/medicineListReducer';
-import {getMedsHistoryReducer} from './patients/getMedsHistoryReducer';
+import {getPatientHistoryReducer} from './patients/getPatientHistoryReducer';
 import {sendRequestReducer} from './getUserReducer/sendReqReducer';
 import {getUserReducer} from './getUserReducer/getUserReducer';
 import {notifyUserReducer} from './patients/notifyUserReducer';
@@ -26,8 +26,12 @@ import {downloadPdfReducer} from './otherScreenReducer/downloadPdfReducer';
 import {saveInternetConnectivityReducer} from './loginReducer/saveInternetConnectivityReducer';
 import {saveUserLoggedInReducer} from './loginReducer/saveUserLoggedInReducer';
 import {syncDataReducer} from './userMedicine/syncDataReducer';
-import { refreshReducer } from './signUpReducer/refreshReducer';
-import { expiryReducer } from './signUpReducer/expiryReducer';
+import {refreshReducer} from './signUpReducer/refreshReducer';
+import {expiryReducer} from './signUpReducer/expiryReducer';
+import {syncHistoryDetailsReducer} from './userMedicine/syncHistoryDetailsReducer';
+import {getAppointmentListReducer} from './userMedicine/getAppointmentListReducer';
+import {getAllMedicineHistoryReducer} from './userMedicine/getAllMedicineHistoryReducer';
+import {userMedicineListReducer} from './patients/userMedicineListReducer';
 
 const rootReducer = combineReducers({
   signIn: signInReducer,
@@ -47,7 +51,7 @@ const rootReducer = combineReducers({
   caretakerRequest: caretakerRequestReducer,
   acceptCaretakerRequest: acceptCaretakerReqReducer,
   deleteCaretakerRequest: deleteCaretakerReqReducer,
-  getMedsHistory: getMedsHistoryReducer,
+  getPatientHistory: getPatientHistoryReducer,
   searchMedicine: searchMedicineReducer,
   getUser: getUserReducer,
   sendRequest: sendRequestReducer,
@@ -59,6 +63,10 @@ const rootReducer = combineReducers({
   syncData: syncDataReducer,
   refresh: refreshReducer,
   expiry: expiryReducer,
+  syncHistory: syncHistoryDetailsReducer,
+  appointmentList: getAppointmentListReducer,
+  allMedicineHistory: getAllMedicineHistoryReducer,
+  patientMedicineList: userMedicineListReducer,
 });
 
 export default rootReducer;

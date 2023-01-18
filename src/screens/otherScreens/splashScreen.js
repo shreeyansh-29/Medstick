@@ -1,22 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import styles from '../../styles/otherScreensStyles/onBoardingStyles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
-import {expiryRequest} from '../../redux/action/signUpAction/expiryActions';
-import { refreshRequest } from '../../redux/action/signUpAction/refreshAction';
-import { getMedicine } from '../../utils/storage';
+import {getMedicine} from '../../utils/storage';
 import CustomImage from '../../components/atoms/customImage';
 import Notifications from '../../pushNotification/pushNotifications';
 
 const SplashScreen = () => {
-  const dispatch = useDispatch();
-  const connected = useSelector(state => state.internetConnectivity?.data);
-  const load = useSelector(state => state.userInfo?.data);
-  const [isLoading, setIsLoading] = useState(true);
-  const expiry = useSelector(state => state.expiry?.error);
   const [medData, setMedData] = useState([]);
-  const Refresh = useSelector(state => state.refresh?.data);
 
   const getData = async () => {
     getMedicine().then(data => {
@@ -26,16 +16,15 @@ const SplashScreen = () => {
         setMedData([]);
       }
     });
-    setIsLoading(false);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getData();
-  },[])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     notifyNotification();
-  },[medData])
+  }, [medData]);
 
   const notifyNotification = () => {
     let date = new Date();

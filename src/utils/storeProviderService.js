@@ -1,6 +1,4 @@
-import {Store} from 'redux';
 let store;
-
 class StoreProviderService {
   init(configureStore) {
     store = configureStore();
@@ -16,6 +14,9 @@ class StoreProviderService {
   }
   get dispatch() {
     return this.getStore().dispatch;
+  }
+  get userLoggedIn() {
+    return this.state.userInfo?.data;
   }
 }
 const storeProviderService = new StoreProviderService();

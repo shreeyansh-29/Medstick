@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView, Alert, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import {Button} from 'react-native-elements';
 import {Divider} from 'react-native-elements/dist/divider/Divider';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -7,7 +7,7 @@ import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {day_data, months, todayDay} from './pushNotification/timeData';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
+import {faCaretDown, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 import {TextInput} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -22,27 +22,38 @@ import Notifications from '../../../pushNotification/pushNotifications';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import uuid from 'react-native-uuid';
 import {CustomAlert} from '../../../components/atoms/customAlert';
-import {SuccessToast} from '../../../components/atoms/customToast';
+import {ErrorToast, SuccessToast} from '../../../components/atoms/customToast';
+import {horizontalScale} from '../../../components/atoms/constant';
+import CustomTooltip from '../../../components/atoms/customTooltip';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
+  let medId = route.params.medId;
+
   const [picker, pickerstate] = useState(false);
+  const [showTip, setShowTip] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = useState(false);
   const [startDate, setStartDate] = useState(
     item.startDate !== null ? new Date(item.startDate) : new Date(),
   );
-  console.log(startDate,"start Date");
-  const [endDate, endDateState] = useState(new Date());
+  const [endDate, endDateState] = useState(
+    item.endDate !== null
+      ? item.endDate !== 'No End Date'
+        ? new Date(item.endDate)
+        : item.endDate
+      : new Date(),
+  );
   const [check1, setCheck1] = useState(
     item.everyday !== null ? item.everyday : false,
   );
-  const [check2, setCheck2] = useState(false);
+  const [check2, setCheck2] = useState(
+    item.everyday !== null && item.everyday === false ? true : false,
+  );
   const [title, titlestate] = useState(
     item.reminderTitle !== null ? item.reminderTitle : '',
   );
   const [time_picker_mode, time_picker_mode_state] = useState(false);
-  const [timeings, timestate] = useState([]);
   const [timearray, timearraystate] = useState([]);
   const [food, setFood] = useState(item.beforeAfter);
   const [frequency, setFrequency] = useState([]);
@@ -50,7 +61,8 @@ const Reminder = ({route, navigation}) => {
   const [lunchTouchable, setLunchTouchable] = useState(false);
   const [dinnerTouchable, setDinnerTouchable] = useState(false);
   const [noEndDate, setNoEndDate] = useState(false);
-  const [reminderStatus, setReminderStatus] = useState(true);
+  let reminderStatus = true;
+  let td_da = moment().format('YYYY-MM-DD');
   const totalReminders = 0;
   const currentCount = 0;
   const [foodBefore, setFoodBefore] = useState(
@@ -64,11 +76,15 @@ const Reminder = ({route, navigation}) => {
   const [dinner, setDinner] = useState(false);
   const [currentIndex, setCurrentIndex] = useState();
   const [fDateSecondary, setfDate] = useState(
-    startDate.getFullYear() +
-      '-' +
-      (startDate.getMonth() + 1) +
-      '-' +
-      startDate.getDate(),
+    item.endDate !== null
+      ? item.endDate !== 'No End Date'
+        ? item.endDate
+        : 'No End Date'
+      : startDate.getFullYear() +
+          '-' +
+          (startDate.getMonth() + 1) +
+          '-' +
+          startDate.getDate(),
   );
 
   let fDatePrimary =
@@ -77,6 +93,50 @@ const Reminder = ({route, navigation}) => {
     (startDate.getMonth() + 1) +
     '-' +
     startDate.getDate();
+
+  useEffect(() => {
+    if (item !== null) {
+      if (item.days !== '') {
+        let days = item.days.split(',');
+        if (days.length !== 7) {
+          slecteddaysstate(days);
+        }
+      }
+      if (item.frequency !== null) {
+        let frequency = item.frequency.split(',');
+
+        frequency.map(ele => {
+          if (ele === 'Breakfast') {
+            setBreakfastTouchable(true);
+            setBreakfast(true);
+          } else if (ele === 'Lunch') {
+            setLunchTouchable(true);
+            setLunch(true);
+          } else if (ele === 'Dinner') {
+            setDinnerTouchable(true);
+            setDinner(true);
+          }
+        });
+      }
+    }
+    return () => false;
+  }, [item]);
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          height: 58,
+          backgroundColor: colorPallete.basicColor,
+          paddingHorizontal: 16,
+        },
+      });
+  }, [navigation]);
 
   const onSelecteddaysItemsChange = selectedi => {
     slecteddaysstate(selectedi);
@@ -169,21 +229,37 @@ const Reminder = ({route, navigation}) => {
   const handleConfirm = date => {
     pickerstate(false);
     setStartDate(date);
-    store_start_date(date);
   };
 
   const handleConfirmfortime = date => {
+    let timings = null;
     if (date.getHours() > 11) {
-      timearray[currentIndex] =
-        hour[date.getHours()] + ':' + date.getMinutes() + ' PM';
-      timeings[currentIndex] = hour[date.getHours()] + ':' + date.getMinutes();
-      timestate(timeings);
+      timings = hour[date.getHours()] + ':' + date.getMinutes() + ' PM';
+      if (!timearray.includes(timings)) {
+        timearray[currentIndex] =
+          hour[date.getHours()] + ':' + date.getMinutes() + ' PM';
+      } else {
+        CustomAlert({text1: 'Cannot add same timings'});
+        time_picker_mode_state(true);
+      }
     } else {
-      timearray[currentIndex] =
-        date.getHours() + ':' + date.getMinutes() + ' AM';
-      timeings[currentIndex] = date.getHours() + ':' + date.getMinutes();
-      timestate(timeings);
+      if (date.getHours() >= 0 && date.getHours() <= 11) {
+        timings = date.getHours() + ':' + date.getMinutes() + ' AM';
+        if (!timearray.includes(timings)) {
+          timearray[currentIndex] =
+            date.getHours() + ':' + date.getMinutes() + ' AM';
+        } else {
+          CustomAlert({text1: 'Cannot add same timings'});
+          time_picker_mode_state(true);
+        }
+      } else {
+        CustomAlert({
+          text1: 'Add breakfast timing between',
+          text2: '1:00 AM to 11:00 AM',
+        });
+      }
     }
+
     hideDatePickerfortime();
   };
 
@@ -211,7 +287,10 @@ const Reminder = ({route, navigation}) => {
     totalReminders,
     currentCount,
   ) => {
-    if (fDatePrimary > fDateSecondary) {
+    if (
+      moment(fDatePrimary).format('YYYY-MM-DD') >
+      moment(fDateSecondary).format('YYYY-MM-DD')
+    ) {
       CustomAlert({text1: 'Start Date should be less than End Date'});
       return;
     } else if (title.length === 0) {
@@ -232,6 +311,9 @@ const Reminder = ({route, navigation}) => {
       (dinner === true && timearray[2] === undefined)
     ) {
       CustomAlert({text1: "Frequency can't be left as empty"});
+      return;
+    } else if (td_da > moment(fDateSecondary).format('YYYY-MM-DD')) {
+      CustomAlert({text1: "End Date should be greater than Today's Date"});
       return;
     }
 
@@ -305,39 +387,39 @@ const Reminder = ({route, navigation}) => {
     frequencyHandler();
     const frequencyTemp = frequency.toString();
 
+    let temporaryDate = fDateSecondary;
+
     if (endDate === 'No End Date') {
       setfDate('null');
     }
 
     let obj = route?.params?.data;
 
-    obj.days = days;
+    obj.days = check1
+      ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'].toString()
+      : days;
     obj.frequency = frequencyTemp;
-    obj.endDate = fDateSecondary;
+    obj.endDate =
+      temporaryDate !== 'No End Date'
+        ? moment(temporaryDate).format('YYYY-MM-DD')
+        : temporaryDate;
     obj.noEndDate = noEndDate;
     obj.reminderStatus = true;
     obj.reminderTime = time;
     obj.beforeAfter = food;
     obj.everyday = check1;
     obj.reminderTitle = title.trim();
-    obj.startDate = fDatePrimary;
+    obj.startDate = moment(fDatePrimary).format('YYYY-MM-DD');
     obj.totalReminders = totalReminders;
     obj.currentCount = currentCount;
     obj.isSynced = false;
 
     let name = route.params.data.medicineName;
 
-    function test(arr, sub) {
-      sub = sub.toLowerCase();
-      return arr.map(str =>
-        str.toLowerCase().startsWith(sub.slice(0, Math.max(str.length - 1, 1))),
-      );
-    }
-
     if (reminderStatus === true) {
       PushNotification.getScheduledLocalNotifications(rn => {
         for (let i = 0; i < rn.length; i++) {
-          if (test(rn[i].message, `Take ${name}`)) {
+          if (rn[i].message.includes(`Take ${name}`)) {
             PushNotification.cancelLocalNotification({id: rn[i].id});
           }
         }
@@ -347,27 +429,43 @@ const Reminder = ({route, navigation}) => {
 
     handlePushNotification(obj, check1, fDateSecondary, lengthSelectedDays);
 
-    getMedicine().then(data => {
-      const temp = data;
-      if (temp[route.params.index].reminderId !== null) {
-        temp[route.params.index] = obj;
-      } else {
-        console.log('zzzzzz', obj);
-        obj.reminderId = uuid.v4();
-        temp[route.params.index] = obj;
-      }
-      AddMedicine(temp);
-    });
-    loadstate(false);
+    setfDate(temporaryDate);
 
-    SuccessToast({
-      text1: 'Reminder Saved',
-      position: 'bottom',
-    });
+    getMedicine()
+      .then(data => {
+        const temp = data;
+        temp.map((ele, index) => {
+          if (ele.userMedicineId === medId) {
+            if (temp[index].reminderId !== null) {
+              temp[index] = obj;
+            } else {
+              obj.reminderId = uuid.v4();
+              temp[index] = obj;
+            }
+          }
+        });
 
-    setTimeout(() => {
-      navigation.pop();
-    }, 1000);
+        AddMedicine(temp);
+        loadstate(false);
+      })
+      .then(() => {
+        SuccessToast({
+          text1: 'Reminder Saved',
+          position: 'bottom',
+        });
+
+        setTimeout(() => {
+          navigation.pop();
+        }, 1500);
+      })
+      .catch(err => {
+        console.log(err);
+        ErrorToast({
+          text1: 'Something Went Wrong',
+          text2: 'Try Again',
+          position: 'bottom',
+        });
+      });
   };
 
   return (
@@ -466,7 +564,43 @@ const Reminder = ({route, navigation}) => {
           />
           <Divider></Divider>
           <View>
-            <Text style={styles.title}>Frequency</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+              }}>
+              <Text style={styles.title}>Frequency</Text>
+              <CustomTooltip
+                isVisible={showTip}
+                setShowTip={setShowTip}
+                placement="top"
+                supportedOrientations={['portrait']}
+                tooltipStyle={{}}
+                contentStyle={{width: '100%', height: '100%'}}
+                onClose={() => setShowTip(false)}
+                content={
+                  <View>
+                    <Text
+                      style={{fontSize: 16, color: 'grey', marginBottom: 4}}>
+                      Add Frequency Timings as:
+                    </Text>
+                    <Text>Breakfast - 00:00 AM to 11:00 AM</Text>
+                    <Text>Lunch - 12:00 PM to 6:00 PM</Text>
+                    <Text>Dinner - 7:00 PM to 11:00 PM</Text>
+                  </View>
+                }>
+                <TouchableOpacity
+                  style={{paddingHorizontal: 8}}
+                  activeOpacity={0.8}
+                  onPress={() => setShowTip(true)}>
+                  <FontAwesomeIcon
+                    icon={faInfoCircle}
+                    size={18}
+                    color={colorPallete.mainColor}
+                  />
+                </TouchableOpacity>
+              </CustomTooltip>
+            </View>
             <View
               style={{
                 flexDirection: 'row',
@@ -507,7 +641,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(0);
                     }}>
-                    <Text style={{fontSize: 15}}>
+                    <Text style={{fontSize: horizontalScale(14)}}>
                       {timearray[0] ? timearray[0] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
@@ -549,7 +683,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(1);
                     }}>
-                    <Text style={{fontSize: 15}}>
+                    <Text style={{fontSize: horizontalScale(14)}}>
                       {timearray[1] ? timearray[1] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
@@ -590,7 +724,7 @@ const Reminder = ({route, navigation}) => {
                       time_picker_mode_state(true);
                       setCurrentIndex(2);
                     }}>
-                    <Text style={{fontSize: 15}}>
+                    <Text style={{fontSize: horizontalScale(14)}}>
                       {timearray[2] ? timearray[2] : 'Select Time'}
                     </Text>
                     <View style={styles.arrow}>
@@ -659,7 +793,9 @@ const Reminder = ({route, navigation}) => {
               </TouchableOpacity>
             </View>
           </View>
-          <Divider></Divider>
+
+          <Divider />
+
           <View style={{marginBottom: 10}}>
             <Text style={styles.title}>Select Days</Text>
 
@@ -736,7 +872,7 @@ const Reminder = ({route, navigation}) => {
                 selectedItems={selecteddaysItems}></SectionedMultiSelect>
             )}
           </View>
-          <Divider></Divider>
+          <Divider />
           <Button
             loading={load}
             title="Save reminder"

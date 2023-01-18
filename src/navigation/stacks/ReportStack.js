@@ -8,7 +8,7 @@ const ReportStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Report"
-      screenOptions={{headerShown: false, orientation:'portrait'}}>
+      screenOptions={{headerShown: false, orientation: 'portrait'}}>
       <Stack.Screen name="Report" component={Report} />
     </Stack.Navigator>
   );

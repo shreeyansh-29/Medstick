@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 import SubHeader from '../../../components/molecules/headers/subHeader';
@@ -16,9 +16,11 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import CustomModal from '../../../components/molecules/customModal';
 import EditNotes from './editNotes';
 import EditMedicineView from './editMedicineView';
+import {monthName} from '../../../constants/constants';
 
 const MedicineList = ({route, navigation}) => {
   const data = route.params?.data;
+
   const [index, setIndex] = useState(route.params?.index);
   const isCarousel = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -26,9 +28,29 @@ const MedicineList = ({route, navigation}) => {
   const [edit, setEdit] = useState(false);
   const [medData, setMedData] = useState('');
 
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          height: 58,
+          backgroundColor: colorPallete.basicColor,
+          paddingHorizontal: 16,
+        },
+      });
+  }, [navigation]);
+
   const MedicineDetailCard = ({item}) => {
+    const dateHandler = date => {
+      let dob = date.split('-');
+      return dob[2] + '-' + monthName[dob[1]] + '-' + dob[0];
+    };
     return (
-      <TouchableOpacity activeOpacity={1}>
+      <View>
         <View style={styles.container} key={index}>
           <View style={styles.top}>
             <View style={styles.medNameContainer}>
@@ -71,9 +93,7 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemHeading}>Description : </Text>
                   </View>
                   <View style={styles.itemWidth}>
-                    <Text style={styles.itemData}>
-                      {item.description}
-                    </Text>
+                    <Text style={styles.itemData}>{item.description}</Text>
                   </View>
                 </View>
                 <View style={styles.itemView}>
@@ -140,11 +160,71 @@ const MedicineList = ({route, navigation}) => {
                     <Text style={styles.itemData}>{item.location}</Text>
                   </View>
                 </View>
+                <View style={styles.prescriptionContainer}>
+                  <View style={styles.prescriptionView}>
+                    <Text style={styles.prescriptionText}>
+                      Reminder Details
+                    </Text>
+                  </View>
+                  <View style={styles.line}></View>
+                  <View style={styles.itemView}>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemHeading}>Start Date : </Text>
+                    </View>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemData}>
+                        {item.startDate !== null
+                          ? dateHandler(item.startDate)
+                          : null}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.itemView}>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemHeading}>End Date : </Text>
+                    </View>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemData}>
+                        {item.endDate !== null && item.endDate !== 'No End Date'
+                          ? dateHandler(item.endDate)
+                          : item.endDate}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.itemView}>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemHeading}>Title : </Text>
+                    </View>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemData}>{item.reminderTitle}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.itemView}>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemHeading}>Timings : </Text>
+                    </View>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemData} numberOfLines={2}>
+                        {item.reminderTime}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.itemView}>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemHeading}>Days : </Text>
+                    </View>
+                    <View style={styles.itemWidth}>
+                      <Text style={styles.itemData} numberOfLines={2}>
+                        {item.days}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
               </View>
             </ScrollView>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   };
 
@@ -269,7 +349,7 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'left',
   },
-  line: {height: 1, width: '90%', backgroundColor: 'grey', marginTop: 4},
+  line: {height: 1, width: '100%', backgroundColor: 'grey', marginTop: 4},
   prescriptionContainer: {
     flexDirection: 'column',
     justifyContent: 'space-between',

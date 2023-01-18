@@ -52,7 +52,11 @@ const DoctorPrescription = ({navigation, route}) => {
           modalVisible={visible}
           text="imageViewer"
           onRequestClose={() => setVisible(!visible)}
-          modalView={<ImageViewer backgroundColor="white" imageUrls={images} />}
+          modalView={
+            <View style={{flex: 1}}>
+              <ImageViewer backgroundColor="white" imageUrls={images} />
+            </View>
+          }
         />
         <Card style={styles.card1}>
           <View style={styles.mainView}>

@@ -11,7 +11,7 @@ import {colorPallete} from '../../components/atoms/colorPalette';
 import * as Animatable from 'react-native-animatable';
 import {styles} from '../../styles/otherScreensStyles/prescriptionsStyles';
 import CustomImage from '../../components/atoms/customImage';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import {ListItem} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -19,6 +19,8 @@ import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
 import {getPrescription} from '../../utils/storage';
 import Loader from '../../components/atoms/loader';
 import {faSquareCheck} from '@fortawesome/free-regular-svg-icons';
+import syncMedicine from '../../sync/syncMedicine';
+import {useDispatch} from 'react-redux';
 
 const Prescriptions = ({navigation}) => {
   const [myPrescriptions, setMyPrescriptions] = useState([]);
@@ -27,7 +29,8 @@ const Prescriptions = ({navigation}) => {
   const [deleteBtn, setDeleteBtn] = useState(false);
   const [refresh, setRefresh] = useState(false);
   let flag = true;
-  const isFocused = useIsFocused();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTimeout(() => {
@@ -38,15 +41,13 @@ const Prescriptions = ({navigation}) => {
     };
   }, [showLoader]);
 
-  useEffect(() => {
-    if (isFocused) {
-      fetchData();
-    }
-
-    return () => {
-      false;
-    };
-  }, [isFocused]);
+  useFocusEffect(
+    React.useCallback(() => {
+      syncMedicine(dispatch).then(() => {
+        fetchData();
+      });
+    }, [deleteBtn]),
+  );
 
   const fetchData = () => {
     setRefresh(false);

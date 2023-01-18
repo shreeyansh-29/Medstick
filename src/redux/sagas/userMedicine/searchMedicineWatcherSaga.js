@@ -11,7 +11,7 @@ export function* searchMedicineWorkerSaga(data) {
     const response = yield call(networkService.searchMedicineRequest, data);
     yield put(searchMedicineSuccess(response?.data));
   } catch (err) {
-    yield put(searchMedicineError(err.response));
+    yield put(searchMedicineError(err));
   }
 }
 

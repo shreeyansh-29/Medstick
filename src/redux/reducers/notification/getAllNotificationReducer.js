@@ -31,7 +31,8 @@ const getAllNotificationReducer = (state = initialState, action = {}) => {
       return {
         ...state,
         loading: {...state.loading, loader: false},
-        error: {...state.error, error: action.type},
+        error: {...state.error, error: action.payload},
+        data: null,
       };
     }
     case getAllNotification.clearAllNotification:

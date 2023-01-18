@@ -14,12 +14,13 @@ const initialState = {
 export const searchMedicineReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_MEDICINE_REQUEST:
-      return {...state, isLoading: true};
+      return {...state, isLoading: true, data: null, error: null};
     case SEARCH_MEDICINE_SUCCESS: {
       return {
         ...state,
         data: action.payload,
         isLoading: false,
+        error: null,
       };
     }
     case SEARCH_MEDICINE_ERROR: {

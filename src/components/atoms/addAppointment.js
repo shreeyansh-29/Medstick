@@ -4,7 +4,7 @@ import {styles} from '../../styles/homeScreenStyles/subHeaderStyles';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {CustomAlert} from '../atoms/customAlert';
 
-const AddAppointment = ({navigation, routeName, notes}) => {
+const AddAppointment = ({navigation, routeName, doctorNameList}) => {
   const showAlert = () => {
     CustomAlert({text1: 'Add Medicine and Prescription Together'});
   };
@@ -14,8 +14,8 @@ const AddAppointment = ({navigation, routeName, notes}) => {
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          if (notes !== null && notes.length !== 0) {
-            navigation.navigate(routeName, {notes: notes});
+          if (doctorNameList !== null && doctorNameList.length !== 0) {
+            navigation.navigate(routeName, {doctorNameList: doctorNameList});
           } else {
             showAlert();
           }

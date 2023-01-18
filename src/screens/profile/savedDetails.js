@@ -9,6 +9,7 @@ import {getUserProfileRequest} from '../../redux/action/profileAction/getUserPro
 const SavedDetails = () => {
   const dispatch = useDispatch();
   const res = useSelector(state => state.getUserProfile?.data);
+  const errorState = useSelector(state => state.getUserProfile?.error);
   const loading = useSelector(state => state.getUserProfile?.isLoading);
   const dateHandler = date => {
     let dob = date.split('-');

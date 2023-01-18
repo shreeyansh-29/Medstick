@@ -18,8 +18,11 @@ import {
 import {AddMedicine, getPercentageDetails} from '../../utils/storage';
 import moment from 'moment';
 import {CustomAlert} from '../../components/atoms/customAlert';
+import {useDispatch} from 'react-redux';
+import syncHistory from '../../sync/syncHistory';
 
 const Reminders = ({showAlert, setPercentage, data}) => {
+  const dispatch = useDispatch();
   const medData = data;
   const [reminderList, setReminderList] = useState([]);
   let td_da = moment().format('YYYY-MM-DD');
@@ -49,7 +52,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
   function totalMedReminders(data, index) {
     let totalMedReminder = 0;
     data[index].historyList.map(h => {
-      console.log(h);
+      // console.log(h);
       h.time.split(',').map(t => {
         totalMedReminder += 1;
       });
@@ -64,7 +67,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
       medicine.map((item, index) => {
         item.totalReminders = totalMedReminders(medicine, index);
         item.historyList.map(r => {
-          if (r.date === td_da) {
+          if (r.date === td_da && item.flag === false) {
             r.time.split(',').map(z => {
               if (!(r.taken + r.notTaken).includes(z)) {
                 let temp = {};
@@ -141,7 +144,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
       ) {
         item.historyList.map(r => {
           if (r.historyId === historyId && !r.taken.includes(time)) {
-            if (item.dosageQuantity > item.stock) {
+            if (Number(item.dosageQuantity) > Number(item.stock)) {
               CustomAlert({
                 text1: 'You are out of stock ',
                 text2: 'Please refill the stock ',
@@ -149,6 +152,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               return;
             } else {
               r.taken = r.taken + time + ',';
+              r.synced = false;
               item.currentCount += 1;
               item.stock -= item.dosageQuantity;
               showAlert();
@@ -160,6 +164,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     let percent = getPercentage(medData);
     setPercentage(percent);
     AddMedicine(medData);
+    syncHistory(dispatch, userMedicineId);
   }
 
   //This function is used for marking the medicine as not taken
@@ -173,6 +178,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
         item.historyList.map(r => {
           if (r.historyId === historyId && !r.notTaken.includes(time)) {
             r.notTaken = r.notTaken + time + ',';
+            r.synced = false;
           }
         });
       }
@@ -180,6 +186,7 @@ const Reminders = ({showAlert, setPercentage, data}) => {
     let percent = getPercentage(medData);
     setPercentage(percent);
     AddMedicine(medData);
+    syncHistory(dispatch, userMedicineId);
   }
 
   const renderItem = (item, index) => {
@@ -208,10 +215,9 @@ const Reminders = ({showAlert, setPercentage, data}) => {
               style={{padding: 8}}
               activeOpacity={1}
               onPress={() => {
-                check(time) &&
-                  (markingTaken(item),
+                check(time) && markingTaken(item),
                   reminderList.splice(index, 1),
-                  setReminderList(reminderList));
+                  setReminderList(reminderList);
               }}>
               <FontAwesomeIcon
                 icon={faCircleCheck}

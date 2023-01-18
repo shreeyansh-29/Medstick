@@ -10,6 +10,7 @@ import uuid from 'react-native-uuid';
 import {AddMedicine, getMedicine} from '../../../utils/storage';
 import {ErrorToast, SuccessToast} from '../../../components/atoms/customToast';
 import {CustomAlert} from '../../../components/atoms/customAlert';
+import {useFocusEffect} from '@react-navigation/native';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -27,8 +28,19 @@ const AddMedicineLocal = ({navigation}) => {
     specialization: null,
   });
   const [add, setAdd] = useState(false);
+  const [medId, setMedId] = useState('');
 
   //React useEffect Hooks
+  useFocusEffect(
+    React.useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          display: 'none',
+        },
+      });
+    }, [navigation]),
+  );
+
   useEffect(() => {
     setType();
   }, [pill]);
@@ -50,6 +62,10 @@ const AddMedicineLocal = ({navigation}) => {
         setDoseType('ml');
         break;
       }
+      case 'Syrup': {
+        setDoseType('ml');
+        break;
+      }
       default: {
         setDoseType('mg');
       }
@@ -68,7 +84,7 @@ const AddMedicineLocal = ({navigation}) => {
 
       let obj = {
         userMedicineId: userMedicineId,
-        medicineId: medicineId,
+        medicineId: medId.length !== 0 ? medId : medicineId,
         medicineName: values.medicineName.trim(),
         description: values.description.trim(),
         prescriptionId: prescriptionObj.prescriptionId,
@@ -91,15 +107,16 @@ const AddMedicineLocal = ({navigation}) => {
         reminderTime: null,
         everyday: null,
         noEndDate: null,
-        reminderStatus: null,
+        reminderStatus: false,
         frequency: null,
         beforeAfter: null,
         totalReminders: null,
         currentCount: null,
         historyList: [],
-        appointmentList: [],
+        doctorAppointmentList: [],
         notes: '',
         isSynced: false,
+        flag: false,
       };
 
       getMedicine()
@@ -126,11 +143,11 @@ const AddMedicineLocal = ({navigation}) => {
             });
           }
         })
-        .then(() => [
+        .then(() => {
           setTimeout(() => {
             navigation.navigate('Home');
-          }, 2000),
-        ])
+          }, 2000);
+        })
         .catch(errors => {
           //some error occured
           console.log(errors);
@@ -199,6 +216,7 @@ const AddMedicineLocal = ({navigation}) => {
                 add={add}
                 setAdd={setAdd}
                 setKey={setKey}
+                setMedId={setMedId}
               />
             )}
           </Formik>

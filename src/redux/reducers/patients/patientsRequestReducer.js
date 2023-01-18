@@ -14,11 +14,16 @@ const initialState = {
 export const patientsRequestReducer = (state = initialState, action) => {
   switch (action.type) {
     case PATIENT_REQ_REQUEST:
-      return {...state, isLoading: true, error: null};
+      return {...state, isLoading: true, error: null, data: null};
     case PATIENT_REQ_SUCCESS:
-      return {...state, data: action.payload.result, isLoading: false};
+      return {
+        ...state,
+        data: action.payload.result,
+        isLoading: false,
+        error: null,
+      };
     case PATIENT_REQ_ERROR:
-      return {...state, error: action.payload.status, isLoading: false};
+      return {...state, error: action.payload, isLoading: false, data: null};
     case PATIENT_REQ_CLEAR:
       return {data: null, isLoading: false, error: null};
     default:

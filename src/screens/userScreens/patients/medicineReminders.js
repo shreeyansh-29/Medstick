@@ -5,9 +5,19 @@ import styles from '../../../styles/patientStyles/medicineReportStyles';
 import ProgressReport from '../../../components/atoms/progressCircle';
 import {colorPallete} from '../../../components/atoms/colorPalette';
 
-const Reminder = ({item, index}) => {
-  const nottaken = item.notTaken.split(',');
+const Reminder = ({item}) => {
   const taken = item.taken.split(',');
+  function getNotTaken() {
+    const time = item.time.split(',');
+    let notToken = [];
+    time.map(item => {
+      if (!taken.includes(item)) {
+        notToken.push(item);
+      }
+    });
+    return notToken;
+  }
+  const nottaken = getNotTaken();
   let tl, nt;
   nt = nottaken[0] === '' ? 0 : nottaken.length;
   tl = taken[0] === '' ? 0 : taken.length;

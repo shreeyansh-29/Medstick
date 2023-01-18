@@ -1,5 +1,5 @@
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import React, {useState, useEffect, useRef} from 'react';
+import {View, Text, TouchableOpacity, Alert, BackHandler} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
 import Reminders from './homeReminders';
@@ -7,93 +7,89 @@ import {styles} from '../../styles/homeScreenStyles/homeScreenStyles';
 import AnimatedProgressCircle from '../../components/atoms/AnimatedProgressCircle';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faInfo} from '@fortawesome/free-solid-svg-icons';
-import CustomModal from '../../components/molecules/customModal';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   myCaretakerClear,
   myCaretakerRequest,
 } from '../../redux/action/caretaker/myCaretakerAction';
 import {verticalScale} from '../../components/atoms/constant';
-import {
-  AddMedicine,
-  getMedicine,
-  getPercentageDetails,
-  savePercentageDetails,
-} from '../../utils/storage';
+import {getMedicine, getPercentageDetails} from '../../utils/storage';
 import {useFocusEffect} from '@react-navigation/native';
-import moment from 'moment';
-import {syncDataRequest} from '../../redux/action/userMedicine/syncDataAction';
 import Loader from '../../components/atoms/loader';
-import {week} from '../../constants/constants';
-import uuid from 'react-native-uuid';
-import Notifications from '../../pushNotification/pushNotifications';
 import {CustomAlert} from '../../components/atoms/customAlert';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import syncMedicine from '../../sync/syncMedicine';
+import fetchUserMedicine from '../../sync/fetchUserMedicine';
+import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
+import {getAppointmentListRequest} from '../../redux/action/userMedicine/getAppointmentListAction';
+import {getAllMedicineHistoryRequest} from '../../redux/action/userMedicine/getAllMedicineHistoryAction';
+import MedicineHistory from './medicineHistory';
+import getPercentage from './getPercentage';
+import {colorPallete} from '../../components/atoms/colorPalette';
+import CustomTooltip from '../../components/atoms/customTooltip';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const [percentage, setPercentage] = useState(0);
   const [medData, setMedData] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const connected = useSelector(state => state.internetConnectivity?.data);
-  const load = useSelector(state => state.userInfo?.data);
-  let res = useSelector(state => state.myCaretaker?.data);
   const [isLoading, setIsLoading] = useState(true);
   const [myCaretakers, setMyCaretakers] = useState([]);
-  let td_da = moment().format('YYYY-MM-DD');
+  const [showTip, setShowTip] = useState(false);
 
-  const syncMedicine = () => {
-    getMedicine().then(data => {
-      if (data !== null && data.length !== 0) {
-        let updatedList = data;
-        let syncArray = [];
-        updatedList.map(item => {
-          if (item.isSynced === false) {
-            let obj = {
-              userMedicineId: item.userMedicineId,
-              medicineId: item.medicineId,
-              medicineName: item.medicineName,
-              description: item.description,
-              present: item.present,
-              dosageType: item.dosageType,
-              dosageQuantity: item.dosageQuantity,
-              dosagePower: item.dosagePower,
-              stock: item.stock,
-              leftStock: item.leftStock,
-              reminderId: item.reminderId,
-              startDate: item.startDate,
-              endDate: item.endDate,
-              days: item.days,
-              reminderTitle: item.reminderTitle,
-              reminderTime: item.reminderTime,
-              everyday: item.everyday,
-              noEndDate: item.noEndDate,
-              reminderStatus: item.reminderStatus,
-              frequency: item.frequency,
-              beforeAfter: item.beforeAfter,
-              totalReminders: item.totalReminders,
-              currentCount: item.currentCount,
-              prescriptionId: item.prescriptionId,
-              doctorName: item.doctorName,
-              specialization: item.specialization,
-              contact: item.contact,
-              location: item.location,
-              prescriptionUrl: item.prescriptionUrl,
-              doctorAppointmentList: item.appointmentList,
-              flag: true,
-            };
-            syncArray.push(obj);
-          }
-        });
-        dispatch(syncDataRequest(syncArray));
-      }
-    });
+  const connected = useSelector(state => state.internetConnectivity?.data);
+  const load = useSelector(state => state.userInfo?.data);
+  const res = useSelector(state => state.myCaretaker?.data);
+  const userMedicine = useSelector(state => state.medicineList?.data);
+  const appointmentList = useSelector(state => state.appointmentList?.data);
+  const historyList = useSelector(state => state.allMedicineHistory?.data);
+
+  const backAction = () => {
+    Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+      {text: 'YES', onPress: () => BackHandler.exitApp()},
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+    ]);
+    return true;
   };
 
- 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, []);
+
+  useEffect(() => {
+    if (
+      userMedicine !== null &&
+      userMedicine.length !== 0 &&
+      historyList !== null &&
+      appointmentList != null
+    ) {
+      fetchUserMedicine(userMedicine, appointmentList, historyList);
+    }
+  }, [userMedicine, historyList, appointmentList]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getData().then(() => {
+        if (connected && load) {
+          syncMedicine(dispatch);
+        }
+      });
+    }, [connected, load]),
+  );
+
   useEffect(() => {
     if (connected && load) {
-      dispatch(myCaretakerRequest(0));
+      if (medData.length !== 0) {
+        dispatch(myCaretakerRequest(0));
+      }
+      dispatch(loadMedicineList());
+      dispatch(getAllMedicineHistoryRequest());
+      dispatch(getAppointmentListRequest());
     }
   }, [connected, load]);
 
@@ -102,64 +98,15 @@ const HomeScreen = ({navigation}) => {
       setMyCaretakers(res);
       dispatch(myCaretakerClear());
     }
+    return () => false;
   }, [res]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      getData();
-      return () => {};
-    }, []),
-  );
-
-  //for Calculating Overall Percentage
-  function getPercentage(data) {
-    let tr = 0;
-    let cc = 0;
-    data.map(item => {
-      item.historyList.map(k => {
-        if (k.date === td_da && item.reminderTime !== '') {
-          tr += item.reminderTime.split(',').length;
-          let temp = k.taken.split(',');
-          temp.map(i => {
-            if (i !== '') {
-              cc += 1;
-            }
-          });
-        }
-      });
-    });
-    getPercentageDetails().then(data => {
-      let obj = [];
-      let temp = {};
-      if (data === null) {
-        temp.date = td_da;
-        temp.percentage = Math.floor((cc / tr) * 100);
-        obj.push(temp);
-        savePercentageDetails(obj);
-      } else if (data !== null && data.length !== 0) {
-        obj = data;
-        obj.map((item, index) => {
-          const a = b => b.date == td_da;
-          if (item.date === td_da) {
-            item.percentage = Math.floor((cc / tr) * 100);
-            obj[index] = item;
-          } else if (!obj.some(a) && tr !== 0) {
-            temp.date = td_da;
-            temp.percentage = Math.floor((cc / tr) * 100);
-            obj.push(temp);
-          }
-        });
-        savePercentageDetails(data);
-      }
-    });
-    return Math.floor((cc / tr) * 100);
-  }
 
   const getData = async () => {
     getMedicine().then(data => {
-      if (data.length !== 0 && data !== null) {
-        // dispatch(storeRequest(data));
+      // console.log(data,"homescreen");
+      if (data !== null && data.length !== 0) {
         setMedData(data);
+        //for Calculating Overall Percentage
         let p = getPercentage(data);
         setPercentage(p);
       } else {
@@ -170,182 +117,54 @@ const HomeScreen = ({navigation}) => {
     setIsLoading(false);
   };
 
-  //for Calculating today's Reminder
-  const MedicineHistory = data => {
-    var updateArray = [];
-    let history = {
-      historyId: null,
-      date: null,
-      taken: '',
-      notTaken: '',
-      time: '',
-      isSynced: false,
-    };
-    for (let i = 0; i < data?.length; i++) {
-      if (data[i].everyday == true) {
-        data[i].days = [
-          'Sun',
-          'Mon',
-          'Tue',
-          'Wed',
-          'Thur',
-          'Fri',
-          'Sat',
-        ].toString();
-      }
-      let arr = data[i].days.split(',');
-      let set = new Set(arr);
-      var start_date = data[i].startDate;
-      var end_date = data[i].endDate;
-      var tody_date = new Date();
-      let td_da = moment().format('YYYY-MM-DD');
-      if (
-        data[i].endDate !== 'No End Date' &&
-        set.has(week[tody_date.getDay()]) &&
-        start_date <= td_da &&
-        td_da <= end_date
-      ) {
-        if (data[i].historyList.length === 0) {
-          history.historyId = uuid.v4();
-          history.date = td_da;
-          history.time = data[i].reminderTime;
-          history.notTaken = '';
-          history.taken = '';
-          data[i].historyList.push(history);
-        } else {
-          const a = b => b.date === td_da;
-          const index = data[i].historyList.findIndex(a);
-          if (
-            index >= 0 &&
-            data[i].reminderTime !== data[i].historyList[index].time
-          ) {
-            // console.log('Inside Reminder update')
-            history.historyId = data[i].historyList[index].historyId;
-            history.date = data[i].historyList[index].date;
-            history.notTaken = '';
-            history.taken = '';
-            history.time = data[i].reminderTime;
-            data[i].historyList[index] = history;
-            data[i].totalReminders = 0;
-            data[i].currentCount = 0;
-          } else if (index < 0) {
-            history.historyId = uuid.v4();
-            history.date = td_da;
-            history.time = data[i].reminderTime;
-            history.notTaken = '';
-            history.taken = '';
-            data[i].historyList.push(history);
-          }
-        }
-      } else if (data[i].endDate === 'No End Date') {
-        const a = b => b.date == td_da;
-        const index = data[i].historyList.findIndex(a);
-        if (data[i].historyList.length === 0) {
-          history.historyId = uuid.v4();
-          history.date = td_da;
-          history.time = data[i].reminderTime;
-          history.notTaken = '';
-          data[i].historyList.push(history);
-        } else {
-          const a = b => b.date === td_da;
-          const index = data[i].historyList.findIndex(a);
-          // console.log('Indisde No End Date update Reminder')
-          if (
-            index >= 0 &&
-            data[i].reminderTime !== data[i].historyList[index].time
-          ) {
-            history.historyId = data[i].historyList[index].historyId;
-            history.date = data[i].historyList[index].date;
-            history.notTaken = '';
-            history.taken = '';
-            history.time = data[i].reminderTime;
-            data[i].historyList[index] = history;
-            data[i].totalReminders = 0;
-            data[i].currentCount = 0;
-          } else if (index < 0) {
-            history.historyId = uuid.v4();
-            history.date = td_da;
-            history.time = data[i].reminderTime;
-            history.notTaken = '';
-            history.taken = '';
-            data[i].historyList.push(history);
-          }
-        }
-      } else if (td_da > end_date) {
-        data[i].reminderStatus = false;
-      }
-
-      updateArray.push(data[i]);
-    }
-    AddMedicine(updateArray);
-  };
-
   useEffect(() => {
-    medData.map(item => {
-      item.reminderId !== null && MedicineHistory(medData);
-    });
+    //for Calculating today's Reminder
+    medData.length !== 0 ? MedicineHistory(medData, dispatch) : null;
   }, [medData]);
-
-  useEffect(() => {
-    notifyNotification(medData);
-  }, []);
-
-  const notifyNotification = medData => {
-    let date = new Date();
-    let dateNew = moment(date).add(1, 'm').toDate();
-    // console.log(medData, 'date');
-    let i;
-    for (i = 0; i < medData.length; i++) {
-      if (parseInt(medData[i].leftStock) >= parseInt(medData[i].stock)) {
-        Notifications.notifyMedicineNotification(dateNew, medData[i]?.stock);
-      }
-    }
-  };
 
   //for Calculating Overall Percentage on particular date
   function getDate(data) {
     getPercentageDetails().then(item => {
       if (item !== null && item.length !== 0) {
         let temp = item;
-        temp.forEach(p => {
-          if (p.date === data) {
-            console.log('Fetch % from local for date', p.percentage);
-            setPercentage(p.percentage);
-          } else {
-            setPercentage(0);
-          }
-        });
+        const index = temp.findIndex(a => a.date == data);
+        if (index >= 0) {
+          setPercentage(temp[index].percentage);
+        } else {
+          setPercentage(0);
+        }
+        return;
       }
     });
   }
 
   const showAlert = () => {
     if (connected && load) {
-      if (myCaretakers?.length === 0) {
-        CustomAlert({text1: 'Need to add caretaker first'});
-      } else {
-        Alert.alert(
-          'Would you like to send a snap to caretaker',
-          'Click Ok to send',
-          [
-            {
-              text: 'Ok',
-              onPress: () => {
+      Alert.alert(
+        'Would you like to send a snap to caretaker',
+        'Click Ok to send',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {
+              if (myCaretakers.length === 0) {
+                CustomAlert({text1: 'Need to add caretaker first'});
+              } else {
                 navigation.navigate('HomeStack', {
                   screen: 'SendSnapToCaretaker',
                 });
-              },
+              }
             },
-            {
-              text: 'Cancel',
-              onPress: () => {
-                {
-                }
-              },
+          },
+          {
+            text: 'Cancel',
+            onPress: () => {
+              {
+              }
             },
-          ],
-        );
-      }
+          },
+        ],
+      );
     }
   };
 
@@ -374,40 +193,35 @@ const HomeScreen = ({navigation}) => {
             <Text style={styles.progressText}>Overall Performance</Text>
           </View>
         </View>
-        <View>
-          <CustomModal
-            modalVisible={modalVisible}
-            type="fade"
-            modalView={
-              <View style={styles.modalContainer}>
-                <Text style={styles.modalHeading}>INFO</Text>
-                <Text style={{fontSize: 18, color: 'grey'}} numberOfLines={3}>
-                  All your Reminders will be shown here. Save and mark your
-                  reminders to view your report in Report Section.
-                </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                  activeOpacity={0.8}
-                  style={styles.modalTouch}>
-                  <Text style={styles.modalOk}>OK</Text>
-                </TouchableOpacity>
-              </View>
-            }
-            onRequestClose={() => setModalVisible(!modalVisible)}
-            customStyles={styles.modal}
-          />
-        </View>
+
         <View style={styles.reminderView}>
           <Text style={styles.font}>Reminders</Text>
           <View style={styles.info}>
-            <TouchableOpacity
-              style={styles.circle}
-              activeOpacity={0.8}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <FontAwesomeIcon icon={faInfo} color={'grey'} size={13} />
-            </TouchableOpacity>
+            <CustomTooltip
+              isVisible={showTip}
+              setShowTip={setShowTip}
+              placement="top"
+              supportedOrientations={['portrait']}
+              tooltipStyle={{marginLeft: 14}}
+              contentStyle={{width: '100%', height: '100%'}}
+              onClose={() => setShowTip(false)}
+              content={
+                <Text style={{fontSize: 16, color: 'grey'}}>
+                  All your reminders will be shown here. Save and mark your
+                  reminders to view your report in Report Tab.
+                </Text>
+              }>
+              <TouchableOpacity
+                style={styles.circle}
+                activeOpacity={0.6}
+                onPress={() => setShowTip(true)}>
+                <FontAwesomeIcon
+                  icon={faInfo}
+                  color={colorPallete.mainColor}
+                  size={13}
+                />
+              </TouchableOpacity>
+            </CustomTooltip>
           </View>
         </View>
         <View style={{width: '100%', height: '44%'}}>

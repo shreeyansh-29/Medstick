@@ -5,7 +5,6 @@ import {View} from 'react-native';
 import {Tab, TabView} from 'react-native-elements';
 import {styles} from '../../../styles/patientStyles/patientsStyles';
 import SubHeader from '../../../components/molecules/headers/subHeader';
-
 import {Iconcomp1, Iconcomp2} from '../careTaker/allIcons';
 
 const Patients = ({navigation}) => {

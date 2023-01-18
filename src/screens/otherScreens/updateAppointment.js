@@ -24,6 +24,7 @@ import PushNotification from 'react-native-push-notification';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import {SuccessToast} from '../../components/atoms/customToast';
 import {CustomAlert} from '../../components/atoms/customAlert';
+import syncMedicine from '../../sync/syncMedicine';
 
 const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
@@ -35,6 +36,7 @@ const UpdateAppointment = ({
   appointmentId,
   setAppointments,
   todayDate,
+  dispatch,
 }) => {
   //React useState hooks
   const [dateOpen, setDateOpen] = useState(false);
@@ -55,19 +57,18 @@ const UpdateAppointment = ({
       let localTime;
       let updatedList = data;
       updatedList.map(item => {
-        if (item.appointmentList.length !== 0) {
-          item.appointmentList.map((ele, index) => {
+        if (item.doctorAppointmentList.length !== 0) {
+          item.doctorAppointmentList.map((ele, index) => {
             //updating the previously stored data
             if (ele.appointmentId === appointmentId) {
               localTime = ele.localTime;
-              item.appointmentList[index] = obj;
+              item.doctorAppointmentList[index] = obj;
               item.isSynced = false;
             }
           });
         }
 
-        //pushing the updated list      let time;
-
+        //pushing the updated list
         AddMedicine(updatedList);
         SuccessToast({text1: 'Updated Successfully', position: 'top'});
 
@@ -76,22 +77,21 @@ const UpdateAppointment = ({
           if (data !== null && data.length !== 0) {
             let reminderList = [];
             data.map(item => {
-              if (item.appointmentList.length !== 0) {
-                item.appointmentList.map(ele => {
-                  if (ele?.localDate >= todayDate) {
+              if (item.doctorAppointmentList.length !== 0) {
+                item.doctorAppointmentList.map(ele => {
+                  if (
+                    ele?.localDate >= todayDate &&
+                    !reminderList.some(
+                      a => a.appointmentId === ele.appointmentId,
+                    )
+                  ) {
                     //pushing appointments to display
                     reminderList.push(ele);
                   }
                 });
               }
             });
-
-            //fetching unique appointment wrt appointmentId
-            const key = 'appointmentId';
-            const uniqueReminder = [
-              ...new Map(reminderList.map(item => [item[key], item])).values(),
-            ];
-            setAppointments(uniqueReminder);
+            setAppointments(reminderList);
           }
         });
       });
@@ -116,6 +116,7 @@ const UpdateAppointment = ({
         ? handlePushNotification(obj, reminderTime, obj.time)
         : null;
       handlePushNotification(obj, time1, obj.time);
+      syncMedicine(dispatch);
       setTimeout(() => {
         setModalVisible(false);
       }, 1000);
@@ -133,12 +134,7 @@ const UpdateAppointment = ({
 
     let d = new Date();
     let currentTime = d.getHours() + ':' + d.getMinutes();
-    let currentDate =
-      d.getFullYear() +
-      '-' +
-      (d.getMonth() + 1) +
-      '-' +
-      (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
+    let currentDate = moment().format('YYYY-MM-DD');
     let time1 = moment(obj.localTime, ['h:mm A']).format('HH:mm');
     let time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
 

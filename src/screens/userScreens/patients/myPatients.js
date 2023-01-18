@@ -17,8 +17,9 @@ import NoInternet from '../../../components/atoms/noInternet';
 const MyPatients = ({navigation}) => {
   //React Redux Hooks
   const dispatch = useDispatch();
-  const res = useSelector(state => state.myPatients);
+  const res = useSelector(state => state.myPatients?.data);
   const connected = useSelector(state => state.internetConnectivity?.data);
+  const errorState = useSelector(state => state.myPatients?.error);
 
   //React useState hook
   const [pageNo, setPageNo] = useState(0);
@@ -35,24 +36,27 @@ const MyPatients = ({navigation}) => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+    return () => false;
   }, [isLoading]);
 
   useEffect(() => {
     pageNo === 0 ? dispatch(myPatientsRequest(pageNo)) : null;
+    return () => false;
   }, []);
 
   useEffect(() => {
-    if (res?.data !== null && res.data.length !== 0) {
+    if (res !== null && res?.length !== 0) {
       setRefresh(false);
-      setMyPatients([...myPatients, ...res.data]);
+      setMyPatients([...myPatients, ...res]);
       dispatch(myPatientsClear());
     }
+    return () => false;
   }, [res]);
 
   //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
-    if (myPatients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+    if (myPatients?.length % 8 === 0 && a !== 0) {
       dispatch(myPatientsRequest(a));
       setPageNo(a);
     }
@@ -111,7 +115,7 @@ const MyPatients = ({navigation}) => {
               }
               onEndReached={({distanceFromEnd}) => {
                 if (!onEndReachedCalledDuringMomentum) {
-                  onEnd();
+                  errorState === null ? onEnd() : null;
                   setOnEndReachedCalledDuringMomentum(true);
                 }
               }}
@@ -137,7 +141,7 @@ const MyPatients = ({navigation}) => {
           {connected ? (
             <View style={styles.button}>
               <AddButton
-                text="Caretaker"
+                text={'Caretaker'}
                 routeName={'SearchScreen'}
                 navigation={navigation}
                 styles={styles.addBtn}

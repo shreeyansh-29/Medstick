@@ -16,7 +16,7 @@ const SubHeader = ({
   download,
   options,
   routeName,
-  notes,
+  doctorNameList,
   deleteBtn,
   prescriptionId,
   setPrescriptionList,
@@ -24,13 +24,12 @@ const SubHeader = ({
   setDeleteBtn,
   setEdit,
   flag,
-  key1,
+  errorState,
 }) => {
-  const name = key1;
   return (
     <View style={styles.subHeader}>
       <TouchableOpacity
-        activeOpacity={1}
+        activeOpacity={0.8}
         style={styles.backIcon}
         onPress={() => {
           navigation.pop();
@@ -44,14 +43,14 @@ const SubHeader = ({
       <View style={styles.header}>
         <Text style={styles.subHeaderFont}>{title}</Text>
       </View>
-      {title !== 'Medicine Report' ? null : (
+      {title !== 'Medicine Report' ? null : errorState === null ? (
         <DownloadButton download={download} />
-      )}
+      ) : null}
       {title !== 'Appointment Reminders' ? null : (
         <AddAppointment
           navigation={navigation}
           routeName={routeName}
-          notes={notes}
+          doctorNameList={doctorNameList}
         />
       )}
       {title !== 'Send Snap' ? null : <ShareButton options={options} />}
@@ -65,7 +64,6 @@ const SubHeader = ({
           setPrescriptionList={setPrescriptionList}
           setPrescriptionId={setPrescriptionId}
           setDeleteBtn={setDeleteBtn}
-          name={name}
         />
       )}
     </View>

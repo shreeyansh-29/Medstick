@@ -35,7 +35,9 @@ export const styles = StyleSheet.create({
   },
   textbox: {
     width: '50%',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   text: {
     fontSize: 17,

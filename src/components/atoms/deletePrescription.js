@@ -28,6 +28,16 @@ const DeletePrescription = ({
       },
     });
   };
+
+  const refresh = () => {
+    getPrescription().then(data => {
+      if (data !== null && data.length !== 0) {
+        setPrescriptionList(data);
+        setPrescriptionId('');
+        setDeleteBtn(false);
+      }
+    });
+  };
   const deletePrescription = prescriptionId => {
     getMedicine().then(data => {
       let counter = 0;
@@ -51,13 +61,7 @@ const DeletePrescription = ({
                   let index = list.findIndex(a);
                   list.splice(index, 1);
                   savePrescription(list);
-                  getPrescription().then(data => {
-                    if (data !== null) {
-                      setPrescriptionList(data);
-                      setPrescriptionId('');
-                      setDeleteBtn(false);
-                    }
-                  });
+                  refresh();
                 });
               },
             },
@@ -70,6 +74,30 @@ const DeletePrescription = ({
             },
           ]);
         }
+      } else {
+        Alert.alert('Are you sure', 'Click ok to proceed', [
+          {
+            text: 'Ok',
+            onPress: () => {
+              getPrescription().then(data => {
+                // console.log('Doctor List with no med',prescriptionId, data);
+                let list = data;
+                let a = b => b.prescriptionId == prescriptionId;
+                let index = list.findIndex(a);
+                list.splice(index, 1);
+                savePrescription(list);
+                refresh();
+              });
+            },
+          },
+          {
+            text: 'Cancel',
+            onPress: () => {
+              setPrescriptionId('');
+              setDeleteBtn(false);
+            },
+          },
+        ]);
       }
     });
   };

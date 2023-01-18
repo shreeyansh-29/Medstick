@@ -14,11 +14,16 @@ const initialState = {
 export const caretakerRequestReducer = (state = initialState, action) => {
   switch (action.type) {
     case CARETAKER_REQ_REQUEST:
-      return {...state, isLoading: true, error: null};
+      return {...state, isLoading: true, error: null, data: null};
     case CARETAKER_REQ_SUCCESS:
-      return {...state, data: action.payload.result, isLoading: false};
+      return {
+        ...state,
+        data: action.payload.result,
+        isLoading: false,
+        error: null,
+      };
     case CARETAKER_REQ_ERROR:
-      return {...state, error: action.payload, isLoading: false};
+      return {...state, error: action, isLoading: false, data: null};
     case CARETAKER_REQ_CLEAR:
       return {data: null, isLoading: false, error: null};
     default:

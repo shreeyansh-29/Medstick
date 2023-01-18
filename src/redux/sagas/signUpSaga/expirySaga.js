@@ -11,7 +11,7 @@ export function* expirySaga() {
     let response = yield call(networkService.expiry);
     yield put(expirySuccess(response?.data));
   } catch (error) {
-    yield put(expiryError(error.response));
+    yield put(expiryError(error));
   }
 }
 

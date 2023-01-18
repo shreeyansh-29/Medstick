@@ -34,7 +34,7 @@ const AppointmentReminders = ({navigation, route}) => {
   const [dateOpen, setDateOpen] = useState(false);
   const [saveTimeOpen, setSaveTimeOpen] = useState(false);
 
-  let doctor = route.params.notes;
+  let doctorNameList = route.params.doctorNameList;
 
   const showAlert = () => {
     CustomAlert({text1: 'Please add valid time'});
@@ -53,7 +53,7 @@ const AppointmentReminders = ({navigation, route}) => {
         updatedList.map((item, index) => {
           //storing the appointment
           if (item.prescriptionId === prescriptionId) {
-            updatedList[index].appointmentList.push(obj);
+            updatedList[index].doctorAppointmentList.push(obj);
             updatedList[index].isSynced = false;
           }
         });
@@ -73,7 +73,7 @@ const AppointmentReminders = ({navigation, route}) => {
       handlePushNotification(obj, time1, obj.localTime);
       setTimeout(() => {
         navigation.pop();
-      }, 1500);
+      }, 2000);
     });
   };
 
@@ -90,12 +90,7 @@ const AppointmentReminders = ({navigation, route}) => {
 
     let d = new Date();
     let currentTime = d.getHours() + ':' + d.getMinutes();
-    let currentDate =
-      d.getFullYear() +
-      '-' +
-      (d.getMonth() + 1) +
-      '-' +
-      (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
+    let currentDate = moment().format('YYYY-MM-DD');
 
     let time1 = moment(obj.localTime, ['h:mm A']).format('HH:mm');
     let time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
@@ -136,7 +131,7 @@ const AppointmentReminders = ({navigation, route}) => {
             validator={() => ({})}
             enableReinitialize
             initialValues={{
-              doctorName: doctor[0].prescriptionId,
+              doctorName: doctorNameList[0].prescriptionId,
               notes: '',
               date: '',
               time: '',
@@ -166,7 +161,7 @@ const AppointmentReminders = ({navigation, route}) => {
                       onValueChange={itemValue => {
                         setFieldValue('doctorName', itemValue);
                       }}>
-                      {doctor?.map(item => {
+                      {doctorNameList?.map(item => {
                         return (
                           <Picker.Item
                             label={item.doctorName}
@@ -305,7 +300,7 @@ const AppointmentReminders = ({navigation, route}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={1000} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };
@@ -354,8 +349,8 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 16,
     marginLeft: 8,
-    fontWeight: '700',
-    color: 'black',
+    fontWeight: '600',
+    color: 'grey',
   },
   dateText1: {
     fontSize: 17,
@@ -375,9 +370,9 @@ const styles = StyleSheet.create({
   formBody: {alignItems: 'center', flex: 1, marginTop: 19},
   picker: {marginBottom: 16},
   docName: {
-    fontSize: 18,
-    color: 'black',
-    fontWeight: '700',
+    fontSize: 17,
+    color: colorPallete.colorTabsOutline,
+    fontWeight: '600',
   },
   pickerBody: {width: '58%', color: 'black'},
   notes: {

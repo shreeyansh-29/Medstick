@@ -10,6 +10,7 @@ import {
 import {colorPallete} from '../../components/atoms/colorPalette';
 import Loader from '../../components/atoms/loader';
 import CustomImage from '../../components/atoms/customImage';
+import NoInternet from '../../components/atoms/noInternet';
 
 const NotificationScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const NotificationScreen = ({navigation}) => {
   const [scrollEnd, setScrollEnd] = useState(true);
 
   const res = useSelector(state => state.getAllNotificationReducer?.data);
+
+  const connected = useSelector(state => state.internetConnectivity?.data);
 
   const loading = useSelector(
     state => state.getAllNotificationReducer?.loading?.loader,
@@ -35,20 +38,28 @@ const NotificationScreen = ({navigation}) => {
   }, []);
 
   const onEnd = () => {
-    if (!scrollEnd) {
-      setScrollEnd(true);
-    } else {
-      let a = pageNo + 1;
-      if (
-        notification.length % 8 === 0 &&
-        a !== 0 &&
-        res?.object.length !== 0
-      ) {
-        dispatch(loadGetAllNotification(a));
-        setPageNo(a);
-      }
+    let a = pageNo + 1;
+    if (notification.length % 8 === 0 && a !== 0 && res?.object.length !== 0) {
+      dispatch(loadGetAllNotification(a));
+      setPageNo(a);
     }
   };
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
+    return () =>
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          height: 58,
+          backgroundColor: colorPallete.basicColor,
+          paddingHorizontal: 16,
+        },
+      });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -81,13 +92,17 @@ const NotificationScreen = ({navigation}) => {
                   sender={item.sender}
                 />
               )}
-              onEndReached={onEnd}
-              onEndReachedThreshold={0.01}
-              onMomentumScrollBegin={() => {
-                setScrollEnd(false);
+              onEndReachedThreshold={0.1}
+              onMomentumScrollBegin={() => setScrollEnd(false)}
+              onEndReached={({distanceFromEnd}) => {
+                if (!scrollEnd) {
+                  onEnd();
+                  setScrollEnd(true);
+                }
               }}
             />
           )}
+          {connected ? null : <NoInternet />}
         </>
       )}
     </View>
@@ -102,7 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
-  img: {width: '70%'},
+  img: {width: '80%'},
 });
 
 export default NotificationScreen;

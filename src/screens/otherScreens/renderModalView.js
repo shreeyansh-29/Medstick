@@ -29,7 +29,6 @@ const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
 
 const RenderModalView = ({item, setEdit, navigation}) => {
   const [visible, setVisible] = useState(false);
-  const [load, loadstate] = useState(false);
   const [uri, setUri] = useState(item.prescriptionUrl);
   const images = [
     {
@@ -38,7 +37,6 @@ const RenderModalView = ({item, setEdit, navigation}) => {
   ];
 
   const savePrescriptionValues = values => {
-    loadstate(true);
     let prescription_id = item.prescriptionId;
     let obj = {
       prescriptionId: prescription_id,
@@ -62,36 +60,40 @@ const RenderModalView = ({item, setEdit, navigation}) => {
             updatedList[index].prescriptionUrl = obj.prescriptionUrl;
             updatedList[index].isSynced = false;
           }
-          AddMedicine(updatedList);
         });
+        AddMedicine(updatedList);
       }
     });
 
-    getPrescription().then(data => {
-      if (data !== null) {
-        let updatedList = data;
-        updatedList.map((item, index) => {
-          if (item.prescriptionId === prescription_id) {
-            updatedList[index] = obj;
-          }
-        });
-        savePrescription(updatedList);
+    getPrescription()
+      .then(data => {
+        if (data !== null && data.length !== 0) {
+          let updatedList = data;
+          updatedList.map((item, index) => {
+            if (item.prescriptionId === prescription_id) {
+              updatedList[index] = obj;
+            }
+          });
+          savePrescription(updatedList);
 
-        SuccessToast({
-          text1: 'Prescription Updated Successfully',
-          position: 'bottom',
-        });
-      } else {
+          SuccessToast({
+            text1: 'Prescription Updated Successfully',
+            position: 'bottom',
+          });
+        }
+      })
+      .then(() => {
+        setTimeout(() => {
+          navigation.pop();
+        }, 2000);
+      })
+      .catch(err => {
+        console.log(err);
         ErrorToast({
           text1: 'Something Went Wrong',
           position: 'bottom',
         });
-      }
-    });
-    loadstate(false);
-    setTimeout(() => {
-      navigation.pop();
-    }, 1500);
+      });
   };
 
   return (
@@ -148,7 +150,7 @@ const RenderModalView = ({item, setEdit, navigation}) => {
             initialValues={{
               doctorName: item.doctorName,
               specialization: item.specialization,
-              contact: item.contact,
+              contact: item.contact.toString(),
               location: item.location,
               image: item.prescriptionUrl,
             }}
@@ -175,13 +177,12 @@ const RenderModalView = ({item, setEdit, navigation}) => {
                 setVisible={setVisible}
                 setFieldValue={setFieldValue}
                 setUri={setUri}
-                load={load}
               />
             )}
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={1000} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

@@ -9,7 +9,10 @@ import {
 import React, {useEffect, useState} from 'react';
 import SubHeader from '../../../components/molecules/headers/subHeader';
 import {colorPallete} from '../../../components/atoms/colorPalette';
-import {loadMedicineList} from '../../../redux/action/userMedicine/medicineListAction';
+import {
+  userMedicineListClear,
+  userMedicineListRequest,
+} from '../../../redux/action/patients/userMedicineListAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../../components/atoms/loader';
 import CustomImage from '../../../components/atoms/customImage';
@@ -23,35 +26,41 @@ import {
 } from '../../../redux/action/patients/notifyUserAction';
 import Ripple from 'react-native-material-ripple';
 import {style} from '../../../styles/patientStyles/viewMedicineStyles';
+import {serverErrors} from '../../../constants/statusCodes';
+import ErrorBoundary from '../../otherScreens/errorBoundary';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ViewMedicines = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const res = useSelector(state => state.medicineList);
+  const res = useSelector(state => state.patientMedicineList);
+  const errorState = useSelector(state => state.patientMedicineList.error);
   const res1 = useSelector(state => state.notifyUser?.data);
-  const loading = useSelector(state => state.medicineList?.isLoading);
+  const loading = useSelector(state => state.patientMedicineList?.isLoading);
   const [medicines, setMedicines] = useState([]);
   const [refresh, setRefresh] = useState(false);
   let resp = route?.params?.item;
 
   useEffect(() => {
     if (res1?.status === 'Success') {
-      ToastAndroid.show('Send Successfully', ToastAndroid.LONG);
-      dispatch(notifyUserClear());
+      ToastAndroid.show('Sent Successfully', ToastAndroid.LONG);
     } else if (res1?.status === 'Failed') {
       ToastAndroid.show('Error', ToastAndroid.LONG);
-      dispatch(notifyUserClear());
     }
+    dispatch(notifyUserClear());
   }, [res1]);
 
-  useEffect(() => {
+  useEffect(() => { 
     if (res?.data !== null) {
       setMedicines(res?.data);
+      dispatch(userMedicineListClear());
     }
   }, [res]);
 
-  useEffect(() => {
-    dispatch(loadMedicineList(resp?.userId));
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(userMedicineListRequest(resp?.userId));
+    }, []),
+  );
 
   const sendNotificationToUser = (fcmToken, medName, patientId) => {
     dispatch(notifyUserRequest({medName, fcmToken, patientId}));
@@ -82,10 +91,10 @@ const ViewMedicines = ({navigation, route}) => {
                 {item.medicineName}
               </ListItem.Title>
               <ListItem.Subtitle numberOfLines={1} style={style.subtitle1}>
-                {item?.days}
+                {item?.days !== '' ? item?.days : null}
               </ListItem.Subtitle>
               <ListItem.Subtitle numberOfLines={1} style={style.subtitle2}>
-                {item?.reminderTime}
+                {item?.reminderTime !== null ? item?.reminderTime : null}
               </ListItem.Subtitle>
             </ListItem.Content>
             <View style={style.options}>
@@ -133,34 +142,41 @@ const ViewMedicines = ({navigation, route}) => {
         <Loader />
       ) : (
         <>
-          {medicines.length === 0 ? (
-            <View style={style.imgCont}>
-              <CustomImage
-                resizeMode="contain"
-                source={require('../../../assets/images/noMedicinesPatient.png')}
-                styles={{width: '70%'}}
-              />
-            </View>
+          {errorState === serverErrors.SERVER_ERROR ? (
+            <ErrorBoundary />
           ) : (
-            <View style={style.flatList}>
-              <FlatList
-                data={medicines}
-                keyExtractor={(item, index) => index.toString()}
-                showsVerticalScrollIndicator={false}
-                renderItem={renderItem}
-                refreshControl={
-                  <RefreshControl
-                    colors={[colorPallete.mainColor]}
-                    tintColor={[colorPallete.mainColor]}
-                    refreshing={refresh}
-                    onRefresh={() => {
-                      setRefresh(false);
-                      dispatch(loadMedicineList(resp?.userId));
-                    }}
+            <>
+              {medicines.length === 0 &&
+              errorState === serverErrors.NOT_FOUND ? (
+                <View style={style.imgCont}>
+                  <CustomImage
+                    resizeMode="contain"
+                    source={require('../../../assets/images/noMedicinesPatient.png')}
+                    styles={{width: '80%'}}
                   />
-                }
-              />
-            </View>
+                </View>
+              ) : (
+                <View style={style.flatList}>
+                  <FlatList
+                    data={medicines}
+                    keyExtractor={(item, index) => index.toString()}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={renderItem}
+                    refreshControl={
+                      <RefreshControl
+                        colors={[colorPallete.mainColor]}
+                        tintColor={[colorPallete.mainColor]}
+                        refreshing={refresh}
+                        onRefresh={() => {
+                          setRefresh(false);
+                          dispatch(userMedicineListRequest(resp?.userId));
+                        }}
+                      />
+                    }
+                  />
+                </View>
+              )}
+            </>
           )}
         </>
       )}

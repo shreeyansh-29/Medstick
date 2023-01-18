@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   container: {height: '100%'},
   innerView: {flex: 1},
-  camera: {height: '100%'},
   image: {
     borderColor: 'white',
     position: 'absolute',

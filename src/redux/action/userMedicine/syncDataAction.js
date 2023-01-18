@@ -18,3 +18,8 @@ export const syncDataError = payload => {
     payload,
   };
 };
+export const syncDataClear = () => {
+  return {
+    type: types.SYNC_DATA_CLEAR,
+  };
+};

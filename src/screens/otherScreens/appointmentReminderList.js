@@ -6,9 +6,8 @@ import {
   StyleSheet,
   Text,
   RefreshControl,
-  ScrollView,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import {ListItem} from 'react-native-elements';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -16,7 +15,7 @@ import CustomImage from '../../components/atoms/customImage';
 import {faPenToSquare} from '@fortawesome/free-solid-svg-icons';
 import CustomModal from '../../components/molecules/customModal';
 import UpdateAppointment from './updateAppointment';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {AddMedicine, getMedicine} from '../../utils/storage';
 import Loader from '../../components/atoms/loader';
 import PushNotification from 'react-native-push-notification';
@@ -24,11 +23,11 @@ import {faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {monthName} from '../../constants/constants';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import syncMedicine from '../../sync/syncMedicine';
 
 const AppointmentReminderList = ({navigation}) => {
   //React Navigation Hook
-  const isFocused = useIsFocused();
 
   //React useState Hook
   const [appointments, setAppointments] = useState([]);
@@ -37,11 +36,14 @@ const AppointmentReminderList = ({navigation}) => {
   const [temp, setTemp] = useState('');
   const [time1, setTime1] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [doctorName, setDoctorName] = useState([]);
+  const [doctorNameList, setDoctorNameList] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
   const [refresh, setRefresh] = useState(false);
 
-  const [refreshing,setRefreshing]=useState(false)
+  //React redux hooks
+  const dispatch = useDispatch();
+
+  //date formatter
   let todayDate = new Date();
   let currentTime =
     todayDate?.getHours() +
@@ -50,79 +52,62 @@ const AppointmentReminderList = ({navigation}) => {
       ? '0' + todayDate.getMinutes()
       : todayDate.getMinutes());
 
-  
-
-
-  todayDate =
-    todayDate.getFullYear() +
-    '-' +
-    (todayDate.getMonth() + 1) +
-    '-' +
-    (todayDate.getDate() < 10
-      ? '0' + todayDate.getDate()
-      : todayDate.getDate());
+  todayDate = moment(todayDate).format('YYYY-MM-DD');
 
   //React useEffect Hook
-  useEffect(() => {
-    if (isFocused) {
-      fetchData();
-    }
-  }, [isFocused]);
+  useFocusEffect(
+    React.useCallback(() => {
+      syncMedicine(dispatch).then(() => fetchData());
+    }, []),
+  );
 
   useEffect(() => {
     setTimeout(() => {
       setShowLoader(false);
     }, 1500);
 
-    return () => {};
+    return () => false;
   }, [showLoader]);
 
   //Function to display data
   const fetchData = () => {
-    getMedicine().then(data => {
-      if (data !== null && data.length !== 0) {
-        let updatedList = data;
-        let doctorList = [];
-        let reminderList = [];
-        updatedList.map(item => {
-          //fetching doctors for saving appointment
-          if (item.doctorName !== null && item.medicineName !== null) {
-            doctorList.push({
-              doctorName: item.doctorName,
-              prescriptionId: item.prescriptionId,
-            });
-          }
-          if (item.appointmentList.length !== 0) {
-            item.appointmentList.map(ele => {
-              if (ele?.localDate >= todayDate) {
-                //pushing appointments to display
-                reminderList.push(ele);
-              }
-              //  else {
-              //   //poping out reminder if it gets expired
-              //   item.appointmentList.pop(ele);
-              //   AddMedicine(updatedList);
-              // }
-            });
-          }
-        });
-
-        //fetching unique doctors
-        const key1 = 'prescriptionId';
-        const uniqueDoctor = [
-          ...new Map(doctorList.map(item => [item[key1], item])).values(),
-        ];
-
-        setDoctorName(uniqueDoctor);
-
-        //fetching unique appointment reminders
-        const key2 = 'appointmentId';
-        const uniqueReminder = [
-          ...new Map(reminderList.map(item => [item[key2], item])).values(),
-        ];
-        setAppointments(uniqueReminder);
-      }
-    });
+    getMedicine()
+      .then(data => {
+        if (data !== null && data?.length !== 0) {
+          let updatedList = data;
+          let doctorList = [];
+          let reminderList = [];
+          updatedList.map(item => {
+            //fetching doctors for saving appointment
+            if (
+              item.doctorName !== null &&
+              item.medicineName !== null &&
+              !doctorList.some(
+                ele => ele.prescriptionId === item.prescriptionId,
+              )
+            ) {
+              doctorList.push({
+                doctorName: item.doctorName,
+                prescriptionId: item.prescriptionId,
+              });
+            }
+            if (item.doctorAppointmentList.length !== 0) {
+              item.doctorAppointmentList.map(ele => {
+                if (
+                  ele?.localDate >= todayDate &&
+                  !reminderList.some(a => a.appointmentId === ele.appointmentId)
+                ) {
+                  //pushing appointments to display
+                  reminderList.push(ele);
+                }
+              });
+            }
+          });
+          setDoctorNameList(doctorList);
+          setAppointments(reminderList);
+        }
+      })
+      .catch(err => console.log(err));
     setRefresh(false);
   };
 
@@ -132,12 +117,12 @@ const AppointmentReminderList = ({navigation}) => {
       let updatedList = data;
       let time;
       updatedList.map(a => {
-        if (a.appointmentList.length !== 0) {
-          a.appointmentList.map((r, index) => {
+        if (a.doctorAppointmentList.length !== 0) {
+          a.doctorAppointmentList.map((r, index) => {
             //splicing up the selected reminder
             if (r.appointmentId === deleteId) {
               time = r.localTime;
-              a.appointmentList.splice(index, 1);
+              a.doctorAppointmentList.splice(index, 1);
               a.isSynced = false;
             }
           });
@@ -149,23 +134,19 @@ const AppointmentReminderList = ({navigation}) => {
         if (data !== null && data.length !== 0) {
           let reminderList = [];
           data.map(item => {
-            if (item.appointmentList.length !== 0) {
-              //fetching unique reminders
-              item.appointmentList.map(ele => {
-                if (ele?.localDate >= todayDate) {
+            if (item.doctorAppointmentList.length !== 0) {
+              item.doctorAppointmentList.map(ele => {
+                if (
+                  ele?.localDate >= todayDate &&
+                  !reminderList.some(a => a.appointmentId === ele.appointmentId)
+                ) {
                   //pushing appointments to display
                   reminderList.push(ele);
                 }
               });
             }
           });
-
-          //fetching unique appointment reminders
-          const key2 = 'appointmentId';
-          const uniqueReminder = [
-            ...new Map(reminderList.map(item => [item[key2], item])).values(),
-          ];
-          setAppointments(uniqueReminder);
+          setAppointments(reminderList);
         }
       });
 
@@ -229,47 +210,6 @@ const AppointmentReminderList = ({navigation}) => {
   };
 
   //FlatList RenderItem
-  const refresh1=()=>{
-    if (isFocused) {
-      getMedicine().then(data => {
-        if (data !== null && data.length !== 0) {
-          let updatedList = data;
-          let doctorList = [];
-          let reminderList = [];
-
-          updatedList.map(item => {
-            if (item.doctorName !== null && item.medicineName !== null) {
-              doctorList.push({
-                doctorName: item.doctorName,
-                prescriptionId: item.prescriptionId,
-              });
-            }
-            if (item.appointmentList.length !== 0) {
-              item.appointmentList.map(ele => {
-                if (ele?.date >= todayDate) {
-                  reminderList.push(ele);
-                } else {
-                  item.appointmentList.pop(ele);
-                  AddMedicine(updatedList);
-                }
-              });
-            }
-          });
-          setAppointments(reminderList);
-          setDoctorName(doctorList);
-        }
-      });
-    }
-  }
-
-  const onRefresh=()=>{
-    setRefreshing(true)
-   refresh1()
-   setTimeout(()=>{
-    setRefreshing(false)
-   },3000) 
-  }
-
   const renderItem = ({item}) => {
     const dateHandler = date => {
       let dob = date.split('-');
@@ -279,9 +219,7 @@ const AppointmentReminderList = ({navigation}) => {
     let localTime = moment(item.localTime, ['h:mm A']).format('HH:mm');
 
     return (
-      <View style={styles.top}
-    >
-      
+      <View style={styles.top}>
         <ListItem>
           <ListItem.Content style={styles.mainView}>
             <View style={styles.view}>
@@ -347,7 +285,7 @@ const AppointmentReminderList = ({navigation}) => {
         title={'Appointment Reminders'}
         navigation={navigation}
         routeName={'SaveAppointment'}
-        notes={doctorName}
+        doctorNameList={doctorNameList}
       />
 
       <CustomModal
@@ -363,6 +301,7 @@ const AppointmentReminderList = ({navigation}) => {
             appointmentId={appointmentId}
             setAppointments={setAppointments}
             todayDate={todayDate}
+            dispatch={dispatch}
           />
         }
       />
@@ -387,7 +326,7 @@ const AppointmentReminderList = ({navigation}) => {
               keyExtractor={(item, index) => index.toString()}
               refreshControl={
                 <RefreshControl
-                  refreshing={refresh1}
+                  refreshing={refresh}
                   onRefresh={() => {
                     setRefresh(true);
                     setShowLoader(true);

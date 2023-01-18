@@ -14,9 +14,14 @@ const initialState = {
 export const myPatientsReducer = (state = initialState, action) => {
   switch (action.type) {
     case MY_PATIENTS_REQUEST:
-      return {...state, isLoading: true, error: null};
+      return {...state, isLoading: true, error: null, data: null};
     case MY_PATIENTS_SUCCESS:
-      return {...state, data: action.payload.result, isLoading: false};
+      return {
+        ...state,
+        data: action.payload.result,
+        isLoading: false,
+        error: null,
+      };
     case MY_PATIENTS_ERROR:
       return {
         ...state,

@@ -1,9 +1,8 @@
 import * as types from '../../actionTypes';
 
-const loadMedicineList = payload => {
+const loadMedicineList = () => {
   return {
     type: types.MEDICINE_LIST_REQUEST,
-    payload,
   };
 };
 const successMedicineList = payload => {
@@ -19,4 +18,15 @@ const errorMedicineList = payload => {
   };
 };
 
-export {loadMedicineList, successMedicineList, errorMedicineList};
+const clearMedicineList = () => {
+  return {
+    type: types.MEDICINE_LIST_CLEAR,
+  };
+};
+
+export {
+  loadMedicineList,
+  successMedicineList,
+  errorMedicineList,
+  clearMedicineList,
+};

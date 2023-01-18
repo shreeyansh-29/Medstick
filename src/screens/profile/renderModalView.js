@@ -20,6 +20,8 @@ import {colorPallete} from '../../components/atoms/colorPalette';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons';
 import {bloodGroup, gender} from '../../constants/pickerItem';
 import {ErrorToast, SuccessToast} from '../../components/atoms/customToast';
+import {getUserProfileClear} from '../../redux/action/profileAction/getUserProfileAction';
+import moment from 'moment';
 
 const RenderModalVisible = ({
   isCancel,
@@ -31,9 +33,12 @@ const RenderModalVisible = ({
   const avoidKeyboardRequired = Platform.OS === 'ios' && avoidKeyboard;
   const dispatch = useDispatch();
   const res = useSelector(state => state.editProfile);
+  const [loadState, setLoadState] = useState(false);
 
   useEffect(() => {
+    setLoadState(false);
     if (res?.data?.status === 'Success') {
+      dispatch(getUserProfileClear());
       dispatch(resetProfile());
       SuccessToast({text1: 'Updated Successfully', position: 'bottom'});
 
@@ -42,6 +47,7 @@ const RenderModalVisible = ({
         setEdit(false);
       }, 1500);
     } else if (res?.data?.status === 'Failed') {
+      dispatch(getUserProfileClear());
       dispatch(resetProfile());
       ErrorToast({text1: 'Something Went Wrong!!!', position: 'bottom'});
     }
@@ -91,21 +97,24 @@ const RenderModalVisible = ({
               validator={() => ({})}
               enableReinitialize
               initialValues={{
-                bio: result?.bio,
-                contact: result?.contact,
-                dateofBirth: result?.dateOfBirth,
+                bio: result?.bio !== null ? result?.bio : '',
+                contact: !result?.contact ? '' : result?.contact,
+                dateofBirth: !result?.dateOfBirth
+                  ? moment().format('YYYY-MM-DD')
+                  : result?.dateOfBirth,
                 gender:
-                  result?.gender === '' ? gender[0].value : result?.gender,
-                country: result?.country,
+                  result?.gender === null ? gender[0].value : result?.gender,
+                country: !result?.country ? '' : result?.country,
                 bloodGroup:
-                  result?.bloodGroup === ''
+                  result?.bloodGroup === null
                     ? bloodGroup[0].value
                     : result?.bloodGroup,
-                address: result?.address,
-                state: result?.state,
+                address: !result?.address ? '' : result?.address,
+                state: !result?.state ? '' : result?.state,
               }}
               validationSchema={profileValidationSchema}
               onSubmit={values => {
+                setLoadState(true);
                 handleClick(values);
               }}>
               {({
@@ -125,6 +134,7 @@ const RenderModalVisible = ({
                   setFieldValue={setFieldValue}
                   handleSubmit={handleSubmit}
                   values={values}
+                  loadState={loadState}
                 />
               )}
             </Formik>

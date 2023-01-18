@@ -8,7 +8,7 @@ export function* loginSaga(payload) {
     let response = yield call(networkService.login, payload);
     yield put(loginSuccess(response));
   } catch (error) {
-    yield put(loginError(error.response));
+    yield put(loginError(error));
   }
 }
 

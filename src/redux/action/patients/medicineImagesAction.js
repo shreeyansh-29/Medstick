@@ -18,3 +18,8 @@ export const medicineImagesError = payload => {
     payload,
   };
 };
+export const medicineImagesClear = () => {
+  return {
+    type: types.USER_MED_IMAGES_CLEAR,
+  };
+};

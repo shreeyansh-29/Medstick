@@ -30,6 +30,7 @@ const PatientRequest = () => {
   //React Redux Hooks
   const dispatch = useDispatch();
   const res = useSelector(state => state.patientsRequest);
+  const errorState = useSelector(state => state.patientsRequest?.error);
   const acceptedStatus = useSelector(state => state.acceptPatientRequest?.data);
   const deletedStatus = useSelector(state => state.deletePatientRequest?.data);
   const connected = useSelector(state => state.internetConnectivity?.data);
@@ -57,10 +58,12 @@ const PatientRequest = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
+    return () => false;
   }, [isLoading]);
 
   useEffect(() => {
     pageNo === 0 ? dispatch(patientsReqRequest(pageNo)) : null;
+    return () => false;
   }, []);
 
   useEffect(() => {
@@ -71,7 +74,7 @@ const PatientRequest = () => {
       InfoToast({text1: 'Something Went Wrong', position: 'bottom'});
       dispatch(clearRequestStatus());
     }
-    return () => {};
+    return () => false;
   }, [acceptedStatus]);
 
   useEffect(() => {
@@ -82,7 +85,7 @@ const PatientRequest = () => {
       InfoToast({text1: 'Something Went Wrong', position: 'bottom'});
       dispatch(clearRequestStatus());
     }
-    return () => {};
+    return () => false;
   }, [deletedStatus]);
 
   useEffect(() => {
@@ -91,12 +94,13 @@ const PatientRequest = () => {
       setPatients([...patients, ...res.data]);
       dispatch(patientsReqClear());
     }
+    return () => false;
   }, [res]);
 
   //FlatList OnEnd Function
   const onEnd = () => {
     let a = pageNo + 1;
-    if (patients?.length % 8 === 0 && a !== 0 && res?.length !== 0) {
+    if (patients?.length % 8 === 0 && a !== 0) {
       dispatch(patientsReqRequest(a));
       setPageNo(a);
     }
@@ -214,7 +218,7 @@ const PatientRequest = () => {
               }
               onEndReached={({distanceFromEnd}) => {
                 if (!onEndReachedCalledDuringMomentum) {
-                  onEnd();
+                  !errorState ? onEnd() : null;
                   setOnEndReachedCalledDuringMomentum();
                 }
               }}

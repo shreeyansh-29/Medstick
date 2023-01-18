@@ -7,7 +7,7 @@ export function* storeSaga(data) {
     let response = yield put(data);
     yield put(storeSuccess(response?.data));
   } catch (error) {
-    yield put(storeError(error.response));
+    yield put(storeError(error));
   }
 }
 

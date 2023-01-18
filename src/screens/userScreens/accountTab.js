@@ -24,7 +24,7 @@ const AccountTab = ({navigation}) => {
 
   useFocusEffect(() => {
     async function checkforlog() {
-      const checkforlogin = await AsyncStorage.getItem('user_id');   
+      const checkforlogin = await AsyncStorage.getItem('user_id');
       if (checkforlogin !== null) {
         setName(await AsyncStorage.getItem('user_name'));
         imgstate(await AsyncStorage.getItem('user_photo'));

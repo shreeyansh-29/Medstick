@@ -1,11 +1,12 @@
 import {Linking, Share, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import SettingsList from 'react-native-settings-list';
 import styles from '../../styles/otherScreensStyles/settingsStyles';
 import SubHeader from '../../components/molecules/headers/subHeader';
 import {useSelector} from 'react-redux';
 import {ErrorToast} from '../../components/atoms/customToast';
 import Toast from 'react-native-toast-message';
+import {colorPallete} from '../../components/atoms/colorPalette';
 
 const Settings = ({navigation}) => {
   const connected = useSelector(state => state.internetConnectivity?.data);
