@@ -1,7 +1,7 @@
 import axios from 'axios';
 import instance from './instance';
 import {hideMessage} from 'react-native-flash-message';
-import {Actions} from 'react-native-router-flux';
+// import {Actions} from 'react-native-router-flux';
 import * as apiUrl from '../constants/apiUrl';
 class RequestService {
   CatchErrorHandler = error => {
@@ -32,7 +32,7 @@ class RequestService {
             text: 'alert.ok',
             onPress: () => {
               userDataClearInLocal(() => {
-                Actions.reset('LoginScreen');
+                // Actions.reset('LoginScreen');
               });
             },
           },
