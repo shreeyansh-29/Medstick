@@ -7,7 +7,7 @@ import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {day_data, months, todayDay} from './pushNotification/timeData';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
+import {faCaretDown, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 import {TextInput} from 'react-native-paper';
 import CheckBox from 'react-native-check-box';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -24,11 +24,14 @@ import uuid from 'react-native-uuid';
 import {CustomAlert} from '../../../components/atoms/customAlert';
 import {ErrorToast, SuccessToast} from '../../../components/atoms/customToast';
 import {horizontalScale} from '../../../components/atoms/constant';
+import CustomTooltip from '../../../components/atoms/customTooltip';
 
 const Reminder = ({route, navigation}) => {
   let item = route.params.data;
+  let medId = route.params.medId;
 
   const [picker, pickerstate] = useState(false);
+  const [showTip, setShowTip] = useState(false);
   const [selecteddaysItems, slecteddaysstate] = useState([]);
   const [load, loadstate] = useState(false);
   const [startDate, setStartDate] = useState(
@@ -51,7 +54,6 @@ const Reminder = ({route, navigation}) => {
     item.reminderTitle !== null ? item.reminderTitle : '',
   );
   const [time_picker_mode, time_picker_mode_state] = useState(false);
-  const [timeings, timestate] = useState([]);
   const [timearray, timearraystate] = useState([]);
   const [food, setFood] = useState(item.beforeAfter);
   const [frequency, setFrequency] = useState([]);
@@ -192,7 +194,6 @@ const Reminder = ({route, navigation}) => {
           check2,
           lengthSelectedDays,
           number[i],
-          obj.title,
         );
       } else {
         let dateTime = moment(obj.startDate + ' ' + number[i]);
@@ -204,7 +205,6 @@ const Reminder = ({route, navigation}) => {
           check2,
           lengthSelectedDays,
           number[i],
-          obj.title,
         );
       }
     }
@@ -232,17 +232,34 @@ const Reminder = ({route, navigation}) => {
   };
 
   const handleConfirmfortime = date => {
+    let timings = null;
     if (date.getHours() > 11) {
-      timearray[currentIndex] =
-        hour[date.getHours()] + ':' + date.getMinutes() + ' PM';
-      timeings[currentIndex] = hour[date.getHours()] + ':' + date.getMinutes();
-      timestate(timeings);
+      timings = hour[date.getHours()] + ':' + date.getMinutes() + ' PM';
+      if (!timearray.includes(timings)) {
+        timearray[currentIndex] =
+          hour[date.getHours()] + ':' + date.getMinutes() + ' PM';
+      } else {
+        CustomAlert({text1: 'Cannot add same timings'});
+        time_picker_mode_state(true);
+      }
     } else {
-      timearray[currentIndex] =
-        date.getHours() + ':' + date.getMinutes() + ' AM';
-      timeings[currentIndex] = date.getHours() + ':' + date.getMinutes();
-      timestate(timeings);
+      if (date.getHours() >= 0 && date.getHours() <= 11) {
+        timings = date.getHours() + ':' + date.getMinutes() + ' AM';
+        if (!timearray.includes(timings)) {
+          timearray[currentIndex] =
+            date.getHours() + ':' + date.getMinutes() + ' AM';
+        } else {
+          CustomAlert({text1: 'Cannot add same timings'});
+          time_picker_mode_state(true);
+        }
+      } else {
+        CustomAlert({
+          text1: 'Add breakfast timing between',
+          text2: '1:00 AM to 11:00 AM',
+        });
+      }
     }
+
     hideDatePickerfortime();
   };
 
@@ -417,12 +434,17 @@ const Reminder = ({route, navigation}) => {
     getMedicine()
       .then(data => {
         const temp = data;
-        if (temp[route.params.index].reminderId !== null) {
-          temp[route.params.index] = obj;
-        } else {
-          obj.reminderId = uuid.v4();
-          temp[route.params.index] = obj;
-        }
+        temp.map((ele, index) => {
+          if (ele.userMedicineId === medId) {
+            if (temp[index].reminderId !== null) {
+              temp[index] = obj;
+            } else {
+              obj.reminderId = uuid.v4();
+              temp[index] = obj;
+            }
+          }
+        });
+
         AddMedicine(temp);
         loadstate(false);
       })
@@ -542,7 +564,43 @@ const Reminder = ({route, navigation}) => {
           />
           <Divider></Divider>
           <View>
-            <Text style={styles.title}>Frequency</Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+              }}>
+              <Text style={styles.title}>Frequency</Text>
+              <CustomTooltip
+                isVisible={showTip}
+                setShowTip={setShowTip}
+                placement="top"
+                supportedOrientations={['portrait']}
+                tooltipStyle={{}}
+                contentStyle={{width: '100%', height: '100%'}}
+                onClose={() => setShowTip(false)}
+                content={
+                  <View>
+                    <Text
+                      style={{fontSize: 16, color: 'grey', marginBottom: 4}}>
+                      Add Frequency Timings as:
+                    </Text>
+                    <Text>Breakfast - 00:00 AM to 11:00 AM</Text>
+                    <Text>Lunch - 12:00 PM to 6:00 PM</Text>
+                    <Text>Dinner - 7:00 PM to 11:00 PM</Text>
+                  </View>
+                }>
+                <TouchableOpacity
+                  style={{paddingHorizontal: 8}}
+                  activeOpacity={0.8}
+                  onPress={() => setShowTip(true)}>
+                  <FontAwesomeIcon
+                    icon={faInfoCircle}
+                    size={18}
+                    color={colorPallete.mainColor}
+                  />
+                </TouchableOpacity>
+              </CustomTooltip>
+            </View>
             <View
               style={{
                 flexDirection: 'row',

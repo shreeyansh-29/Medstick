@@ -107,7 +107,7 @@ const AddMedicineLocal = ({navigation}) => {
         reminderTime: null,
         everyday: null,
         noEndDate: null,
-        reminderStatus: null,
+        reminderStatus: false,
         frequency: null,
         beforeAfter: null,
         totalReminders: null,

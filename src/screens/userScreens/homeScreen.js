@@ -1,5 +1,4 @@
 import {View, Text, TouchableOpacity, Alert, BackHandler} from 'react-native';
-import Tooltip from 'react-native-walkthrough-tooltip';
 import React, {useState, useEffect} from 'react';
 import MainHeader from '../../components/molecules/headers/mainHeader';
 import Calender from '../../components/organisms/calender';
@@ -17,27 +16,16 @@ import {verticalScale} from '../../components/atoms/constant';
 import {getMedicine, getPercentageDetails} from '../../utils/storage';
 import {useFocusEffect} from '@react-navigation/native';
 import Loader from '../../components/atoms/loader';
-// import Notifications from '../../pushNotification/pushNotifications';
 import {CustomAlert} from '../../components/atoms/customAlert';
 import syncMedicine from '../../sync/syncMedicine';
 import fetchUserMedicine from '../../sync/fetchUserMedicine';
-import {
-  clearMedicineList,
-  loadMedicineList,
-} from '../../redux/action/userMedicine/medicineListAction';
-import {
-  getAppointmentListClear,
-  getAppointmentListRequest,
-} from '../../redux/action/userMedicine/getAppointmentListAction';
-import {
-  getAllMedicineHistoryClear,
-  getAllMedicineHistoryRequest,
-} from '../../redux/action/userMedicine/getAllMedicineHistoryAction';
+import {loadMedicineList} from '../../redux/action/userMedicine/medicineListAction';
+import {getAppointmentListRequest} from '../../redux/action/userMedicine/getAppointmentListAction';
+import {getAllMedicineHistoryRequest} from '../../redux/action/userMedicine/getAllMedicineHistoryAction';
 import MedicineHistory from './medicineHistory';
 import getPercentage from './getPercentage';
 import {colorPallete} from '../../components/atoms/colorPalette';
 import CustomTooltip from '../../components/atoms/customTooltip';
-import syncHistory from '../../sync/syncHistory';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -53,8 +41,6 @@ const HomeScreen = ({navigation}) => {
   const userMedicine = useSelector(state => state.medicineList?.data);
   const appointmentList = useSelector(state => state.appointmentList?.data);
   const historyList = useSelector(state => state.allMedicineHistory?.data);
-
-  // console.log('userMed', userMedicine);
 
   const backAction = () => {
     Alert.alert('Hold on!', 'Are you sure you want to go back?', [
@@ -135,22 +121,6 @@ const HomeScreen = ({navigation}) => {
     //for Calculating today's Reminder
     medData.length !== 0 ? MedicineHistory(medData, dispatch) : null;
   }, [medData]);
-
-  // useEffect(() => {
-  //   notifyNotification(medData);
-  // }, []);
-
-  // const notifyNotification = medData => {
-  //   let date = new Date();
-  //   let dateNew = moment(date).add(1, 'm').toDate();
-  //   // console.log(medData, 'date');
-  //   let i;
-  //   for (i = 0; i < medData.length; i++) {
-  //     if (parseInt(medData[i].leftStock) >= parseInt(medData[i].stock)) {
-  //       Notifications.notifyMedicineNotification(dateNew, medData[i]?.stock);
-  //     }
-  //   }
-  // };
 
   //for Calculating Overall Percentage on particular date
   function getDate(data) {

@@ -192,7 +192,7 @@ const RenderModalView = ({setVisible, props}) => {
         activityIndicator()
       ) : (
         <>
-          {error !== serverErrors.SERVER_ERROR ? (
+          {error === serverErrors.SERVER_ERROR ? (
             <ErrorBoundary />
           ) : (
             <>

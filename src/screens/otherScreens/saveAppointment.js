@@ -57,7 +57,7 @@ const AppointmentReminders = ({navigation, route}) => {
             updatedList[index].isSynced = false;
           }
         });
-       
+
         //pushing the updatedList
         AddMedicine(updatedList);
         SuccessToast({
@@ -73,7 +73,7 @@ const AppointmentReminders = ({navigation, route}) => {
       handlePushNotification(obj, time1, obj.localTime);
       setTimeout(() => {
         navigation.pop();
-      }, 1500);
+      }, 2000);
     });
   };
 
@@ -90,12 +90,7 @@ const AppointmentReminders = ({navigation, route}) => {
 
     let d = new Date();
     let currentTime = d.getHours() + ':' + d.getMinutes();
-    let currentDate =
-      d.getFullYear() +
-      '-' +
-      (d.getMonth() + 1) +
-      '-' +
-      (d.getDate() < 10 ? '0' + d.getDate() : d.getDate());
+    let currentDate = moment().format('YYYY-MM-DD');
 
     let time1 = moment(obj.localTime, ['h:mm A']).format('HH:mm');
     let time2 = moment(currentTime, ['h:mm A']).format('HH:mm');
@@ -305,7 +300,7 @@ const AppointmentReminders = ({navigation, route}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={1000} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

@@ -25,16 +25,7 @@ class Notifications {
     });
   }
 
-  schduleNotification(
-    date,
-    check1,
-    name,
-    enddate,
-    check2,
-    length,
-    time,
-    title,
-  ) {
+  schduleNotification(date, check1, name, enddate, check2, length, time) {
     let currentTime = new Date();
     let currentTime2 =
       currentTime.getFullYear() +
@@ -46,7 +37,7 @@ class Notifications {
     if (check1 || enddate == 'No End Date') {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
-        title: title,
+        title: 'Time to take medicine',
         message: `Take ${name} at ${time}`,
         date: date,
         repeatType: 'day',
@@ -55,7 +46,7 @@ class Notifications {
     } else if (check2) {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
-        title: title,
+        title: 'Time to take medicine',
         message: `Take ${name} at ${time}`,
         date: date,
         repeatType: 'week',
@@ -65,7 +56,7 @@ class Notifications {
     } else {
       PushNotification.localNotificationSchedule({
         channelId: 'reminders',
-        title: title,
+        title: 'Time to take medicine',
         message: `Take ${name} at ${time}`,
         date: date,
         repeatType: currentTime2 <= enddate ? 'day' : null,

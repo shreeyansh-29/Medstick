@@ -67,7 +67,7 @@ const AddPrescription = ({navigation}) => {
       .then(() => {
         setTimeout(() => {
           navigation.pop();
-        }, 1500);
+        }, 2000);
       })
       .catch(err => {
         console.log(err);
@@ -151,7 +151,7 @@ const AddPrescription = ({navigation}) => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Toast visibilityTime={1000} />
+      <Toast visibilityTime={1500} />
     </View>
   );
 };

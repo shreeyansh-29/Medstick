@@ -148,7 +148,7 @@ const MedicinePanel = ({navigation}) => {
                         screen: 'Reminder',
                         params: {
                           data: item,
-                          index: index,
+                          medId: item.userMedicineId,
                         },
                       });
                     }}>
